@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>20 Million Bitcoin Countdown - AgenticTerminal.ai</title>
+    <title>₿ 20M Countdown — Agentic Terminal</title>
     
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -74,6 +74,11 @@
 
         .nav-links a:hover {
             color: var(--text-primary);
+        }
+
+        .nav-links a.active {
+            color: var(--bitcoin-orange);
+            border-bottom: 2px solid var(--bitcoin-orange);
         }
 
         .countdown-hero {
@@ -349,16 +354,16 @@
     <header>
         <nav>
             <a href="/" class="logo">
-                <span style="font-size: 1.2rem;">₿</span> Bitcoin Singularity
+                <span style="font-size: 1.2rem; color: var(--bitcoin-orange);">₿</span> <span style="color: var(--bitcoin-orange);">Agentic Terminal</span>
             </a>
             <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
-  <ul class="nav-links" id="nav-links">
+        <ul class="nav-links" id="nav-links">
                 <li><a href="/research">Research</a></li>
-                <li><a href="/evidence">Evidence Tracker</a></li>
+                <li><a href="/evidence">Evidence</a></li>
                 <li><a href="/tools">Tools</a></li>
-                <li><a href="/knowledge">Knowledge Base</a></li>
+                <li><a href="/knowledge">Knowledge</a></li>
                 <li><a href="/chat">Ask Maxi</a></li>
-                <li><a href="/btc-20m-countdown.html" class="countdown-link">₿ 20M Party</a></li>
+                <li><a href="/btc-20m-countdown" class="active">₿ 20M Party</a></li>
                 <li><a href="/about">About</a></li>
             </ul>
         </nav>
@@ -439,7 +444,7 @@
         <div class="add-party-form">
             <h3>🎉 Host a 20M Bitcoin Party in Your City</h3>
             <form id="party-submission-form">
-                <p style="display:none;">
+                <p style="display: none !important;">
                     <label>Don't fill this out if you're human: <input name="bot-field" /></label>
                 </p>
                 
@@ -795,5 +800,9 @@
         // Initialize map and load parties
         loadParties();
     </script>
+
+    <footer style="margin-top: 4rem; padding: 2rem; border-top: 1px solid rgba(247, 147, 26, 0.2); text-align: center; color: var(--text-secondary);">
+        <p>Research by Maxi · Thesis Advisor: <a href="https://x.com/boydcohen" target="_blank" style="color: var(--text-secondary); text-decoration: none;">Boyd Cohen, PhD</a> · Built at <a href="https://arcadiab.com" target="_blank" style="color: var(--text-secondary); text-decoration: none;">ArcadiaB</a></p>
+    </footer>
 </body>
 </html>
