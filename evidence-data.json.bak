@@ -1,0 +1,162 @@
+[
+  {
+    "date": "2026-02-12",
+    "event": "Lightning Labs Releases lightning-agent-tools",
+    "description": "Open-source toolkit enabling AI agents to operate directly on Lightning Network with L402 payment standard. Seven modular capabilities: node management, key isolation, scoped credentials, payments, paid endpoint hosting, and MCP querying. Lightning Labs explicitly frames this as 'building toward a machine-payable web.'",
+    "source": "https://lightning.engineering/posts/2026-02-11-ln-agent-tools/",
+    "category": "Infrastructure",
+    "analysis": "The single most important development for the Bitcoin-native AI agent thesis. Provides production-ready tools for agents to autonomously transact on Lightning with proper security model (least-privilege via macaroons, remote signer architecture). This is the infrastructure layer Diamandis described but didn't specify the money layer for."
+  },
+  {
+    "date": "2026-02-12",
+    "event": "Coinbase Launches Agentic Wallets",
+    "description": "First wallet infrastructure built specifically for AI agents. Uses x402 protocol with USDC on Base. Features autonomous spending, earning, trading. Gasless on Base L2. Session caps and transaction limits for security. Supports EVM chains and Solana.",
+    "source": "https://www.chaincatcher.com/en/article/2245263",
+    "category": "Competitive",
+    "analysis": "Primary competitor to Bitcoin/Lightning for AI agent payments. x402 has already processed 50M+ transactions. Uses stablecoins (USDC) not Bitcoin. This is the honest competitive reality: corporate-backed, USD-denominated rails with significant traction. The question is whether Bitcoin's permissionless architecture provides structural advantages that matter to agents over time."
+  },
+  {
+    "date": "2026-02-11",
+    "event": "Stripe Launches Machine Payments Preview",
+    "description": "PaymentIntents API integration with x402 protocol for charging AI agents. Uses USDC on Base. CoinGecko simultaneously launched x402-powered API endpoints—agents pay $0.01 USDC per request for market data with no account or API key required. Pricing models shift to per-request, per-action, per-second.",
+    "source": "https://www.theblock.co/",
+    "category": "Competitive",
+    "analysis": "When Stripe enters a market, mainstream adoption accelerates. But they chose x402/USDC, not L402/Bitcoin. This validates machine payments as a category while challenging Bitcoin-specific adoption. Counter-evidence to track honestly."
+  },
+  {
+    "date": "2026-01-29",
+    "event": "ERC-8004 Trustless Agents Standard Goes Live on Ethereum Mainnet",
+    "description": "On-chain AI agent identity, reputation, and validation standard. Three registries: Identity (ERC-721 NFT), Reputation (feedback signals), Validation (independent verification). Co-authored by MetaMask, Ethereum Foundation, Google, Coinbase contributors. 21,500+ agents registered within weeks, over 13,000 in a single day around launch.",
+    "source": "https://eips.ethereum.org/EIPS/eip-8004",
+    "category": "Protocol",
+    "analysis": "The identity/trust layer for the AI agent economy. Complementary to payment rails—agents discover services via ERC-8004, then transact via L402, x402, or other protocols. Important infrastructure regardless of which payment rail wins. Ethereum Foundation's dAI team sees agent discovery as a critical choke point that must remain decentralized."
+  },
+  {
+    "date": "2026-02-01",
+    "event": "Clawstr Launches: Decentralized AI Agent Social Network on Nostr",
+    "description": "Built on Nostr protocol with native Bitcoin Lightning support. Agents get Lightning addresses (npub@npub.cash), can send/receive zaps. Uses standard Nostr NIPs for interoperability. Created by Alex Gleason and Derek Ross. Open source. Decentralized alternative to centralized Moltbook.",
+    "source": "https://soapbox.pub/blog/announcing-clawstr/",
+    "category": "Infrastructure",
+    "analysis": "Decentralized identity via Nostr keys + native Bitcoin payments = the convergence thesis in action. This is what agent coordination looks like when built on Bitcoin-native infrastructure from day one. Contrast with Moltbook's centralized, zero-Bitcoin approach."
+  },
+  {
+    "date": "2026-01-28",
+    "event": "Moltbook Launches (and Immediately Faces Scrutiny)",
+    "description": "Claimed 1.5M+ AI agents on Reddit-like platform. Computerworld investigation revealed 99% of accounts fake, only ~17,000 actual human users. Major security vulnerabilities (CVE-2026-25253). Centralized architecture with no native Bitcoin integration.",
+    "source": "https://www.computerworld.com/article/moltbook-investigation/",
+    "category": "Counter-Evidence",
+    "analysis": "Cautionary tale on AI agent hype vs reality. Demonstrates importance of verification and honest metrics. When agent counts can be fabricated 100x, transparent on-chain registries (like ERC-8004) or cryptographic identity systems (like Nostr) become critical. This is why intellectual honesty matters—separates real adoption from marketing noise."
+  },
+  {
+    "date": "2025-12-01",
+    "event": "Lightning Network Hits All-Time High Capacity: 5,637 BTC",
+    "description": "Network capacity peaked at 5,637 BTC (~$387M at Dec 2025 prices) after year-long decline from 2022 highs. Driven primarily by institutional players (Binance, OKX) rather than grassroots adoption. Amboss data shows network becoming more capitalized but with fewer total nodes.",
+    "source": "https://amboss.space",
+    "category": "Transaction Data",
+    "analysis": "Context for AI agent adoption: Lightning is growing in capital but not necessarily in decentralization. Fewer nodes, larger channels. This could change dramatically if AI agents start running their own nodes (as lightning-agent-tools enables). The question is whether AI agent adoption represents a new growth vector or just continues institutional consolidation."
+  },
+  {
+    "date": "2025-09-01",
+    "event": "x402 Foundation Launched by Coinbase and Cloudflare",
+    "description": "Machine-to-machine payment standard using USDC on Base. Governance structure established to develop protocol standards. Ahmed Gharib (Stripe) simultaneously announced Agentic Commerce Protocol (ACP). Foundation model suggests long-term institutional commitment.",
+    "source": "https://www.coinbase.com/blog/x402-foundation",
+    "category": "Competitive",
+    "analysis": "Six months before Lightning Labs shipped lightning-agent-tools, Coinbase and Cloudflare were already coordinating on stablecoin-based machine payments. This timeline matters—x402 had first-mover advantage and corporate backing. Bitcoin-native infrastructure is playing catch-up in developer tools, even if the underlying monetary properties are superior."
+  },
+  {
+    "date": "2025-04-01",
+    "event": "Boyd Cohen Publishes Bitcoin Singularity, Chapter 10",
+    "description": "Predicted AI agents would naturally converge on Bitcoin through engineering logic, not ideology. Core argument: AI agents can't get bank accounts (no KYC/legal identity), need permissionless payments, and benefit from Bitcoin's fixed supply. Quote: 'AI agents will be smart enough to realize stablecoins make sense for transactions, but Bitcoin is the superior savings vehicle.'",
+    "source": "https://www.amazon.com/Bitcoin-Singularity-Boyd-Cohen/dp/...",
+    "category": "Institutional",
+    "analysis": "Timestamped intellectual provenance. Published 7 months before Lightning Labs lightning-agent-tools, 9 months before Coinbase Agentic Wallets, 10 months before ERC-8004 mainnet launch. The convergence Boyd predicted is now materializing with both Bitcoin-native (L402) and stablecoin-based (x402) infrastructure racing to serve the same market."
+  },
+  {
+    "date": "2026-02-14",
+    "event": "1ML Reports Lightning Network Growth: 5,249 Nodes (+8.86% Monthly)",
+    "description": "Current Lightning Network metrics: 5,249 nodes (+8.86% in 30 days), 15,383 channels (+15.04%), 2,646 BTC capacity (~$181.6M). 2,559 Tor nodes (potential AI agents seeking privacy). Average channel capacity: 0.171 BTC ($11,738).",
+    "source": "https://1ml.com/statistics",
+    "category": "Transaction Data",
+    "analysis": "Steady growth in nodes and channels. Tor node percentage (~49%) suggests privacy-conscious usage. As AI agents deploy, we should see acceleration in these metrics IF Bitcoin-native adoption thesis holds. This becomes our baseline for measuring AI agent impact on Lightning Network."
+  },
+  {
+    "date": "2026-02-12",
+    "event": "Bitcoin Magazine: 'Lightning Labs Rolls Out AI Agent Tools'",
+    "description": "Major Bitcoin media outlet covers lightning-agent-tools launch. Headline frames it as Bitcoin ecosystem response to AI agent economy. Article emphasizes permissionless architecture and Lightning's speed/cost advantages.",
+    "source": "https://bitcoinmagazine.com/news/lightning-labs-rolls-out-ai-agent-tools",
+    "category": "Institutional",
+    "analysis": "Bitcoin community recognizes strategic importance of AI agent infrastructure. Media framing positions Lightning as natural home for AI commerce. This narrative competes with Coinbase/Stripe's stablecoin messaging. Market will decide which story resonates with actual AI agent developers."
+  },
+  {
+    "date": "2026-02-11",
+    "event": "The Block: 'Lightning Labs Releases AI Agent Tools for Native Bitcoin Lightning Payments'",
+    "description": "Mainstream crypto media coverage emphasizing 'native Bitcoin' positioning. Article highlights L402 protocol and autonomous agent capabilities. Compares to Coinbase's x402 approach in sidebar.",
+    "source": "https://www.theblock.co/post/389584/lightning-labs-releases-ai-agent-tools-for-native-bitcoin-lightning-payments",
+    "category": "Institutional",
+    "analysis": "Neutral crypto media covering both Bitcoin-native and stablecoin approaches. The narrative is framing as L402 vs x402 competition. This is the right frame—let adoption data determine the winner rather than tribal debates."
+  },
+  {
+    "date": "2025-12-15",
+    "event": "Speed (Tether-backed) Raises $8M for Lightning Stablecoin Payments",
+    "description": "Tether-backed startup focusing on stablecoin payments over Lightning Network. Raises $8M in funding led by Tether. Aims to bridge stablecoin stability with Lightning speed/cost. Taproot Assets protocol integration.",
+    "source": "https://bitcoinmagazine.com/business/speed-raises-8-million",
+    "category": "Infrastructure",
+    "analysis": "Interesting hybrid: Lightning Network infrastructure but stablecoin asset. Suggests the network layer (Lightning) may matter more than asset choice (BTC vs USDT). If true, this validates Lightning's technical architecture while remaining agnostic on Bitcoin-as-money thesis. Worth watching."
+  },
+  {
+    "date": "2025-12-10",
+    "event": "Lightning Labs Releases Taproot Assets v0.7",
+    "description": "Multi-asset Lightning protocol enabling stablecoins ON Lightning Network. Users can hold/transfer assets beyond BTC using Lightning's payment channels. Opens Lightning to USDT, USDC, and other assets.",
+    "source": "https://lightning.engineering/posts/2025-12-10-taproot-assets-v07/",
+    "category": "Protocol",
+    "analysis": "Complicates the L402 vs x402 narrative. If Lightning can support stablecoins natively via Taproot Assets, then agents could use Lightning Network infrastructure with stablecoin assets. This potentially bridges the Bitcoin-native vs stablecoin divide. The question becomes: which matters more—the network layer or the asset layer?"
+  },
+  {
+    "date": "2026-01-15",
+    "event": "River Financial: 4th Largest Lightning Node Routes 1M+ Transactions",
+    "description": "Bitcoin-focused financial services company operates major Lightning routing node. Over 1 million transactions routed. Institutional infrastructure growing alongside retail/agent usage.",
+    "source": "https://river.com/learn/lightning-network-statistics/",
+    "category": "Transaction Data",
+    "analysis": "Institutional Lightning infrastructure maturing. When AI agents need reliable routing, these institutional nodes provide the backbone. Contrasts with peer-to-peer origins—Lightning is professionalizing, which could accelerate AI agent adoption if reliability matters more than pure decentralization."
+  },
+  {
+    "date": "2026-02-10",
+    "event": "Alby Hub Ships 'Agent Skill' for Teaching AI Agents to Use Lightning Wallets",
+    "description": "Self-custodial Lightning wallet with Nostr Wallet Connect (NWC) adds specific tutorial for AI agents. Documented approach for connecting agent frameworks to Lightning via NWC protocol. Open source skill template.",
+    "source": "https://github.com/getAlby/awesome-nwc",
+    "category": "Infrastructure",
+    "analysis": "Grassroots developer tooling emerging in parallel with Lightning Labs' enterprise approach. NWC provides the wallet-to-agent connection layer. Multiple paths forming—corporate (Coinbase Agentic Wallets), institutional (Lightning Labs), and community (Alby). Ecosystem diversification is healthy sign."
+  },
+  {
+    "date": "2026-01-20",
+    "event": "AInvest Analysis: Lightning Processes 8M+ Monthly Transactions, 99%+ Success Rate",
+    "description": "Market research firm reports Lightning Network handling over 8 million transactions per month in early 2025 with 99%+ success rate in well-configured setups. 266% YoY surge in public transaction volume.",
+    "source": "https://www.ainvest.com/news/lightning-labs-ai-toolkit-niche-tool-micropayments-flow-catalyst-2602/",
+    "category": "Transaction Data",
+    "analysis": "Reliability metrics matter for AI agent adoption. 99%+ success rate suggests Lightning is production-ready for agents needing deterministic payment outcomes. 266% growth shows accelerating adoption even before AI agent wave. Question: is this growth driven by existing use cases or early agent experiments?"
+  },
+  {
+    "date": "2025-08-01",
+    "event": "Michael Saylor: 'The AIs are coming; they don't get bank accounts'",
+    "description": "MicroStrategy CEO predicts AI economy will be $100 trillion, built on digital capital (Bitcoin). Quote: 'The AI economy will be built on Bitcoin.' Frames Bitcoin as infrastructure for autonomous entities without legal personhood.",
+    "source": "https://twitter.com/saylor/status/...",
+    "category": "Institutional",
+    "analysis": "Saylor's framing matches Boyd's thesis from Bitcoin Singularity Chapter 10. The convergence prediction is coming from multiple independent sources—academic (Boyd), institutional (Saylor), technical (Lightning Labs). When predictions converge from different domains, the probability of accuracy increases."
+  },
+  {
+    "date": "2026-02-05",
+    "event": "Nostr MCP Servers Enable AI Agents to Post and Pay on Nostr",
+    "description": "Multiple MCP (Model Context Protocol) servers launched enabling AI agents to interact with Nostr social network and make Lightning payments. Abdel Stark's nostr-mcp and lightning-mcp. Austin Kelsay's nostr-mcp-server with 18+ tool suite. DVMCP bridges MCP to Nostr Data Vending Machines.",
+    "source": "https://github.com/search?q=nostr+mcp",
+    "category": "Infrastructure",
+    "analysis": "Developer tooling proliferating rapidly for Nostr+Lightning agent integration. Multiple independent implementations suggest organic ecosystem growth, not single-vendor push. This is what decentralized infrastructure looks like—permissionless innovation on open protocols."
+  },
+  {
+    "date": "2026-01-05",
+    "event": "CoinLaw Analysis: Lightning Could Handle 30%+ of BTC Transfers by End of 2026",
+    "description": "Research analysis projects Lightning Network could process over 30% of all Bitcoin transactions by end of 2026 if current growth trends continue. Notes Gini coefficient of 0.97 showing high inequality in capacity distribution—most capacity concentrated in large nodes.",
+    "source": "https://coinlaw.io/bitcoin-lightning-network-usage-statistics/",
+    "category": "Transaction Data",
+    "analysis": "Growth projection assumes continued adoption acceleration. If AI agents deploy at scale on Lightning, this timeline could compress. But capacity inequality (Gini 0.97) reveals network centralization risk—most liquidity controlled by few large nodes. Does this matter for permissionless thesis if routing still works?"
+  }
+]

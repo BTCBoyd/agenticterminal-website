@@ -1,0 +1,4 @@
+# WARNING: This script was disabled on 2026-02-16
+# It was accidentally overwriting production content with old MVP versions
+# DO NOT use unless you specifically need to revert to MVP content
+# Renamed to prevent accidental execution

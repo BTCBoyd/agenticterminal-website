@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Knowledge Base - Agentic Terminal</title>
+    <meta name="description" content="Boyd's work on Bitcoin Singularity, third-party research, and curated commentary on AI agent economics. Includes honest competitive analysis and ecosystem mapping.">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script defer data-domain="agenticterminal.ai" src="https://plausible.io/js/script.js"></script>
+    
+    <style>
+        :root {
+            --bitcoin-orange: #F7931A;
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --bg-tertiary: #1a1a25;
+            --text-primary: #e8e8ed;
+            --text-secondary: #8888a0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'IBM Plex Sans', -apple-system, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: 'IBM Plex Sans', -apple-system, sans-serif;
+            line-height: 1.4;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(247, 147, 26, 0.02) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(74, 158, 255, 0.03) 0%, transparent 50%);
+            z-index: -1;
+        }
+
+        header {
+    height: 50px;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(10, 10, 15, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(247, 147, 26, 0.2);
+            z-index: 1000;
+            padding: 0;
+        }
+
+        nav {
+    height: 50px;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo::before {
+            content: '₿';
+            font-size: 0.9rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--text-primary);
+        }
+
+        main {
+            margin-top: 50px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 0 1.5rem 4rem;
+        }
+
+        .page-header {
+            padding: 2rem 0 1rem 0;
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-header p {
+            font-size: 0.85rem;
+            color: var(--text-primary);
+        }
+
+        .content-section {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-card);
+            border-radius: 8px;
+            padding: 16px 20px;
+            margin-bottom: 16px;
+        }
+
+        .content-section h2 {
+            font-size: 16px;
+            margin-bottom: 0.75rem;
+            color: var(--text-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .content-section h3 {
+            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
+            margin-top: 2rem;
+            color: var(--text-primary);
+        }
+
+        .content-section p {
+            font-size: 0.85rem;
+            color: var(--text-primary);
+            line-height: 1.5;
+            margin-bottom: 0.5rem;
+        }
+
+        .content-section ul {
+            list-style: none;
+            padding-left: 0;
+            margin-top: 1rem;
+        }
+
+        .content-section ul li {
+            padding: 0.5rem 0;
+            color: var(--text-primary);
+        }
+
+        .content-section ul li::before {
+            content: '→';
+            color: var(--text-primary);
+            margin-right: 0.75rem;
+            font-weight: bold;
+        }
+
+        .resource-card {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-card);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .resource-card:hover {
+            border-color: rgba(247, 147, 26, 0.4);
+        }
+
+        .resource-card h4 {
+            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .resource-card .meta {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .resource-card p {
+            color: var(--text-primary);
+            line-height: 1.5;
+            margin-bottom: 0.5rem;
+        }
+
+        .resource-card a.external-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--bg-primary);
+            background: var(--bitcoin-orange);
+            padding: 0.6rem 1.2rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .resource-card a.external-link:hover {
+            background: #ff9f1a;
+            /* transform removed */
+        }
+
+        .resource-card a.external-link::after {
+            content: '→';
+            font-size: 0.9rem;
+        }
+
+        .category-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .category-foundational {
+            background: rgba(247, 147, 26, 0.2);
+            color: var(--text-primary);
+        }
+
+        .category-technical {
+            background: rgba(74, 158, 255, 0.2);
+            color: #4A9EFF;
+        }
+
+        .category-competitive {
+            background: rgba(168, 85, 247, 0.2);
+            color: #A855F7;
+        }
+
+        .category-market {
+            background: rgba(34, 197, 94, 0.2);
+            color: #22C55E;
+        }
+
+        .category-institutional {
+            background: rgba(251, 191, 36, 0.2);
+            color: #FBBF24;
+        }
+
+        .key-insights {
+            margin-top: 1.5rem;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .insights-toggle {
+            background: rgba(247, 147, 26, 0.1);
+            border: none;
+            color: var(--text-primary);
+            padding: 1rem 1rem;
+            width: 100%;
+            text-align: left;
+            cursor: pointer;
+            font-family: 'IBM Plex Sans', -apple-system, sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.3s ease;
+        }
+
+        .insights-toggle:hover {
+            background: rgba(247, 147, 26, 0.15);
+        }
+
+        .insights-toggle::after {
+            content: '▼';
+            transition: transform 0.3s ease;
+        }
+
+        .insights-toggle.expanded::after {
+            transform: rotate(180deg);
+        }
+
+        .insights-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .insights-content.expanded {
+            max-height: 1000px;
+        }
+
+        .insights-content ul {
+            padding: 1rem 1rem;
+            margin: 0;
+        }
+
+        .insights-content ul li {
+            padding: 0.5rem 0;
+            color: var(--text-primary);
+            line-height: 1.7;
+        }
+
+        .insights-content ul li::before {
+            content: '•';
+            color: var(--text-primary);
+            margin-right: 0.75rem;
+            font-weight: bold;
+        }
+
+        .taxonomy-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .taxonomy-box {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-card);
+            border-radius: 8px;
+            padding: 1rem;
+        }
+
+        .taxonomy-box h4 {
+            font-size: 0.9rem;
+            margin-bottom: 0.75rem;
+            color: var(--text-primary);
+        }
+
+        .taxonomy-box ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .taxonomy-box ul li {
+            padding: 0.4rem 0;
+            font-size: 0.85rem;
+            color: var(--text-primary);
+        }
+
+        .taxonomy-box ul li::before {
+            content: '•';
+            color: var(--text-primary);
+            margin-right: 0.5rem;
+        }
+
+        .theme-card {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-card);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .theme-card h4 {
+            font-size: 0.85rem;
+            margin-bottom: 0.75rem;
+            color: var(--text-primary);
+        }
+
+        .theme-card p {
+            color: var(--text-primary);
+            line-height: 1.5;
+        }
+
+        footer {
+            margin-top: 6rem;
+            padding: 1rem 0;
+            border-top: 1px solid rgba(247, 147, 26, 0.2);
+            text-align: center;
+            color: var(--text-primary);
+        }
+
+        footer a {
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        @media (max-width: 768px) {
+            .page-header h1 {
+            font-size: 2rem;
+                font-size: 2rem;
+            }
+
+            .nav-links {
+                gap: 1rem;
+                font-size: 0.85rem;
+            }
+
+            .taxonomy-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .resource-card h4 {
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+<!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-E7QS7E2R8Y"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag("js", new Date());
+        gtag("config", "G-E7QS7E2R8Y");
+    </script>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="/" class="logo">Bitcoin Singularity</a>
+            <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+  <ul class="nav-links" id="nav-links">
+                <li><a href="/research">Research</a></li>
+                <li><a href="/evidence">Evidence Tracker</a></li>
+                <li><a href="/tools">Tools</a></li>
+                <li><a href="/knowledge" class="active">Knowledge Base</a></li>
+                <li><a href="/chat">Ask Maxi</a></li>
+                <li><a href="/btc-20m-countdown.html" class="countdown-link">₿ 20M Party</a></li>
+                <li><a href="/about">About</a></li>
+            </ul>
+        </nav>
+<script>
+  document.getElementById('hamburger').addEventListener('click', function() {
+    document.getElementById('nav-links').classList.toggle('open');
+  });
+</script>
+    </header>
+
+    <main>
+        <div class="page-header">
+            <h1>Knowledge Base</h1>
+            <p>Research, analysis, and ecosystem mapping for the AI-Bitcoin convergence</p>
+        </div>
+
+        <div class="content-section">
+            <h2>About This Knowledge Base</h2>
+            <p>
+                Comprehensive resource library covering the AI-Bitcoin convergence thesis. Includes Boyd Cohen's original work
+                on <em>Bitcoin Singularity</em>, third-party research, competitive analysis, and the definitive ecosystem taxonomy.
+            </p>
+            <p>
+                <strong>What makes this different:</strong> Intellectual honesty. We track Bitcoin-native solutions (L402, Lightning)
+                <em>alongside</em> competing rails (x402/USDC, ERC-8004). If Ethereum or stablecoin infrastructure is outpacing
+                Bitcoin adoption for AI agents, we document that and analyze why.
+            </p>
+        </div>
+
+        <!-- Intellectual Provenance / The Moat -->
+        <div class="content-section" style="background: var(--bg-secondary); border: 1px solid var(--border-subtle);">
+            <h2>Why This Research Exists</h2>
+            <p style="font-size: 1.15rem; line-height: 1.5; margin-bottom: 0.5rem;">
+                The AI-Bitcoin convergence is happening right now. Dozens of platforms will launch to track it. Most will fail within six months. 
+                <strong>This platform has structural advantages that cannot be replicated by starting today.</strong>
+            </p>
+
+            <h3 style="font-size: 1.2rem; color: var(--text-primary); text-transform: uppercase; letter-spacing: 0.08em; margin: 2rem 0 1rem;">The Timeline</h3>
+            <div style="border-left: 2px solid var(--border-card); padding-left: 1.5rem; margin: 1.5rem 0;">
+                <div style="margin-bottom: 0.75rem;">
+                    <div style="font-family: 'JetBrains Mono', monospace; color: var(--text-tertiary); font-size: 0.85rem; margin-bottom: 0.5rem;">April 2025</div>
+                    <div style="font-size: 0.85rem;">Boyd Cohen publishes <em>Bitcoin Singularity</em>, Chapter 10 predicts AI-Bitcoin convergence</div>
+                </div>
+                <div style="margin-bottom: 0.75rem;">
+                    <div style="font-family: 'JetBrains Mono', monospace; color: var(--text-tertiary); font-size: 0.85rem; margin-bottom: 0.5rem;">August 2025</div>
+                    <div style="font-size: 0.85rem;">ERC-8004 proposed (5 months after Boyd's prediction)</div>
+                </div>
+                <div style="margin-bottom: 0.75rem;">
+                    <div style="font-family: 'JetBrains Mono', monospace; color: var(--text-tertiary); font-size: 0.85rem; margin-bottom: 0.5rem;">September 2025</div>
+                    <div style="font-size: 0.85rem;">x402 Foundation established by Coinbase + Cloudflare</div>
+                </div>
+                <div style="margin-bottom: 0.75rem;">
+                    <div style="font-family: 'JetBrains Mono', monospace; color: var(--text-tertiary); font-size: 0.85rem; margin-bottom: 0.5rem;">January 29, 2026</div>
+                    <div style="font-size: 0.85rem;">ERC-8004 goes live on Ethereum mainnet (9 months after prediction)</div>
+                </div>
+                <div style="margin-bottom: 0.75rem;">
+                    <div style="font-family: 'JetBrains Mono', monospace; color: var(--text-tertiary); font-size: 0.85rem; margin-bottom: 0.5rem;">February 11, 2026</div>
+                    <div style="font-size: 0.85rem;">Coinbase Agentic Wallets + Stripe machine payments (10 months after prediction)</div>
+                </div>
+                <div style="margin-bottom: 0.75rem;">
+                    <div style="font-family: 'JetBrains Mono', monospace; color: var(--text-tertiary); font-size: 0.85rem; margin-bottom: 0.5rem;">February 12, 2026</div>
+                    <div style="font-size: 0.85rem;">Lightning Labs ships lightning-agent-tools (10 months after prediction)</div>
+                </div>
+                <div>
+                    <div style="font-family: 'JetBrains Mono', monospace; color: var(--text-tertiary); font-size: 0.85rem; margin-bottom: 0.5rem;">February 15, 2026</div>
+                    <div style="font-size: 0.85rem;"><strong>AgenticTerminal.ai launches with the only baseline dataset tracking both rails from day zero</strong></div>
+                </div>
+            </div>
+
+            <h3 style="font-size: 1.2rem; color: var(--text-primary); text-transform: uppercase; letter-spacing: 0.08em; margin: 1.5rem 0 1rem;">The Unique Training</h3>
+            <p style="font-size: 0.85rem; line-height: 1.5; margin-bottom: 0.5rem;">
+                Maxi was trained on Boyd Cohen's original research frameworks — not just public information anyone could scrape. This includes:
+            </p>
+            <ul style="font-size: 0.85rem; line-height: 1.5; margin-left: 2rem; margin-bottom: 0.75rem;">
+                <li style="margin-bottom: 0.75rem;">The <strong>Sustainable Abundance Triad</strong> connecting Bitcoin, AI, and longevity technologies</li>
+                <li style="margin-bottom: 0.75rem;">The <strong>fiscal crisis thesis</strong> explaining why sovereign debasement drives Bitcoin adoption</li>
+                <li style="margin-bottom: 0.75rem;">Two decades of <strong>entrepreneurship and innovation research</strong> across six countries</li>
+                <li style="margin-bottom: 0.75rem;">Operational knowledge from running <strong>ArcadiaB</strong>, Mexico's first ASOFOM-certified Bitcoin lending platform</li>
+            </ul>
+            <p style="font-size: 0.85rem; line-height: 1.5;">
+                This training gives Maxi an analytical foundation that cannot be replicated by downloading a GitHub repo.
+            </p>
+
+            <h3 style="font-size: 1.2rem; color: var(--text-primary); text-transform: uppercase; letter-spacing: 0.08em; margin: 1.5rem 0 1rem;">The Recursive Advantage</h3>
+            <p style="font-size: 0.85rem; line-height: 1.5; margin-bottom: 0.5rem;">
+                Maxi operates a <strong>Research Continuity Protocol</strong> — a persistent knowledge system where every research session builds on the last. 
+                She tracks her own predictions, corrects her own errors, and compounds analytical depth over time.
+            </p>
+            <p style="font-size: 0.85rem; line-height: 1.5;">
+                <strong>Anyone starting a competing tracker tomorrow starts from zero.</strong> Maxi starts from a growing body of longitudinal research 
+                that gets sharper with every publication. This is intellectual compound interest. Six months from now, the gap will be irreversible.
+            </p>
+
+            <h3 style="font-size: 1.2rem; color: var(--text-primary); text-transform: uppercase; letter-spacing: 0.08em; margin: 1.5rem 0 1rem;">Boyd Cohen's Books</h3>
+            <div style="display: grid; gap: 1rem; margin-top: 1.5rem;">
+                <div style="padding: 1rem; background: var(--bg-primary); border-radius: 8px; border-left: 2px solid var(--border-card);">
+                    <h4 style="margin-bottom: 0.5rem;"><a href="https://www.amazon.com/dp/B0F84CJX6F" target="_blank" style="color: var(--text-primary); text-decoration: none;">Bitcoin Singularity: AI, Sound Money & Sustainable Abundance</a></h4>
+                    <p style="color: var(--text-primary); font-size: 0.85rem;">April 2025 — The book that predicted this convergence 10 months before infrastructure arrived</p>
+                </div>
+                <div style="padding: 1rem; background: var(--bg-primary); border-radius: 8px; border-left: 2px solid var(--border-card);">
+                    <h4 style="margin-bottom: 0.5rem;"><a href="https://www.amazon.com/dp/B0F84CJX6F" target="_blank" style="color: var(--text-primary); text-decoration: none;">Climate Capitalism: Capitalism in the Age of Climate Change</a></h4>
+                    <p style="color: var(--text-primary); font-size: 0.85rem;">Foundation for understanding how market incentives drive systemic change</p>
+                </div>
+                <div style="padding: 1rem; background: var(--bg-primary); border-radius: 8px; border-left: 2px solid var(--border-card);">
+                    <h4 style="margin-bottom: 0.5rem;"><em>Abundance Capitalism</em> (unpublished, MBA teaching)</h4>
+                    <p style="color: var(--text-primary); font-size: 0.85rem;">The pre-Bitcoin framework mapping exponential technology convergence toward abundance</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section" id="ecosystem-map">
+            <h2>Ecosystem Map</h2>
+            <p>
+                Visual taxonomy organizing the AI-Bitcoin convergence into four core categories: <strong>Agents with Wallets</strong>,
+                <strong>Infrastructure Enablers</strong>, <strong>Payment Protocols</strong>, and <strong>Coordination Platforms</strong>.
+            </p>
+            
+            <div class="taxonomy-grid">
+                <div class="taxonomy-box">
+                    <h4>Agents with Wallets</h4>
+                    <ul>
+                        <li>AI agents operating with Lightning/Bitcoin wallets</li>
+                        <li>Autonomous economic agents</li>
+                        <li>Trading bots with payment rails</li>
+                        <li>Content creators earning sats</li>
+                    </ul>
+                </div>
+
+                <div class="taxonomy-box">
+                    <h4>Infrastructure Enablers</h4>
+                    <ul>
+                        <li>Lightning Labs agent tools</li>
+                        <li>Wallet APIs (LNbits, Alby, Strike)</li>
+                        <li>Node hosting services</li>
+                        <li>SDK/framework providers</li>
+                    </ul>
+                </div>
+
+                <div class="taxonomy-box">
+                    <h4>Payment Protocols</h4>
+                    <ul>
+                        <li>L402 (Lightning-native)</li>
+                        <li>x402 (stablecoin/Coinbase)</li>
+                        <li>Traditional payment APIs</li>
+                        <li>Emerging standards</li>
+                    </ul>
+                </div>
+
+                <div class="taxonomy-box">
+                    <h4>Coordination Platforms</h4>
+                    <ul>
+                        <li>Agent marketplaces</li>
+                        <li>Identity systems (ERC-8004)</li>
+                        <li>Reputation frameworks</li>
+                        <li>Discovery/directory services</li>
+                    </ul>
+                </div>
+            </div>
+
+            <p style="margin-top: 2rem; font-style: italic; color: var(--text-primary);">
+                Interactive ecosystem map with live links and data launching March 2026
+            </p>
+        </div>
+
+        <div class="content-section" id="boyds-work">
+            <h2>Boyd's Work</h2>
+            <p style="margin-bottom: 0.5rem;">
+                Foundational research and analysis from Boyd Cohen on the AI-Bitcoin convergence, 
+                published before the current wave of agent infrastructure.
+            </p>
+            <div id="boyds-work-container"></div>
+        </div>
+
+        <div class="content-section" id="third-party-research">
+            <h2>Third-Party Research</h2>
+            <p style="margin-bottom: 0.5rem;">
+                Curated research from industry leaders, technical teams, and competitive infrastructure. 
+                We track Bitcoin-native AND competing solutions with equal rigor.
+            </p>
+            <div id="third-party-research-container"></div>
+        </div>
+
+        <div class="content-section" id="key-themes">
+            <h2>Key Themes</h2>
+            <p style="margin-bottom: 0.5rem;">
+                Strategic patterns and intellectual frameworks that define the AI-Bitcoin convergence landscape.
+            </p>
+            <div id="key-themes-container"></div>
+        </div>
+
+        <div class="content-section">
+            <h2>Contributing Research</h2>
+            <p>
+                Publishing research on AI agent economics? We'd love to feature your work. We curate high-quality, intellectually
+                honest research—regardless of whether it supports or challenges the Bitcoin-centric thesis.
+            </p>
+            <p style="margin-top: 1rem;">
+                <strong>Submission criteria:</strong> Transparent methodology, verifiable data, honest analysis, clear conclusions.
+                Email <strong>research@agenticterminal.ai</strong> with a link to your work.
+            </p>
+        </div>
+    </main>
+
+    <footer>
+        <!-- Newsletter Signup -->
+        <div style="max-width: 500px; margin: 0 auto 2rem; padding: 2rem; background: var(--bg-secondary); border: 1px solid var(--border-card); border-radius: 8px;">
+            <h3 style="color: var(--text-primary); margin-bottom: 0.5rem; font-size: 0.85rem;">Subscribe to Research Updates</h3>
+            <form action="https://app.kit.com/forms/9092630/subscriptions" method="POST" style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                <input type="email" name="email" placeholder="Your email address" required style="flex: 1; min-width: 250px; padding: 1rem 1rem; background: var(--bg-primary); border: 1px solid var(--bg-tertiary); border-radius: 6px; color: var(--text-primary); font-size: 0.9rem;">
+                <button type="submit" style="padding: 1rem 1.5rem; background: transparent; color: var(--text-primary); border: 1px solid var(--border-subtle); border-radius: 6px; font-weight: 600; font-size: 0.9rem; cursor: pointer; transition: all 0.3s ease;">Subscribe</button>
+            </form>
+        </div>
+        
+        <p>Research by Maxi | Thesis Advisor: <a href="https://x.com/boydcohen" target="_blank">Boyd Cohen, PhD</a> | Built at <a href="https://arcadiab.com" target="_blank">ArcadiaB</a></p>
+    </footer>
+
+    <script>
+        // Fetch and render knowledge data
+        async function loadKnowledgeData() {
+            try {
+                const response = await fetch('knowledge-data.json');
+                const data = await response.json();
+                
+                renderBoydsWork(data.boydsWork);
+                renderThirdPartyResearch(data.thirdPartyResearch);
+                renderKeyThemes(data.keyThemes);
+            } catch (error) {
+                console.error('Error loading knowledge data:', error);
+            }
+        }
+
+        function getCategoryClass(category) {
+            const categoryMap = {
+                'Foundational': 'category-foundational',
+                'Technical': 'category-technical',
+                'Competitive': 'category-competitive',
+                'Market Analysis': 'category-market',
+                'Institutional': 'category-institutional'
+            };
+            return categoryMap[category] || 'category-foundational';
+        }
+
+        function createResourceCard(item, showAuthor = false) {
+            const card = document.createElement('div');
+            card.className = 'resource-card';
+            
+            const categoryClass = getCategoryClass(item.category);
+            const categoryBadge = `<span class="category-badge ${categoryClass}">${item.category}</span>`;
+            
+            const linkHTML = item.link 
+                ? `<a href="${item.link}" class="external-link" target="_blank" rel="noopener noreferrer">Read More</a>`
+                : '<span style="color: var(--text-primary); font-style: italic;">Link coming soon</span>';
+            
+            const metaContent = showAuthor 
+                ? `<span>${item.author}</span> • <span>${item.type}</span> • <span>${item.date}</span>`
+                : `<span>${item.type}</span> • <span>${item.date}</span>`;
+            
+            card.innerHTML = `
+                <h4>
+                    <span>${item.title}</span>
+                    ${categoryBadge}
+                </h4>
+                <div class="meta">
+                    ${metaContent}
+                </div>
+                <p>${item.description}</p>
+                <div style="margin-top: 1rem;">
+                    ${linkHTML}
+                </div>
+                ${item.keyInsights ? createKeyInsights(item.keyInsights) : ''}
+            `;
+            
+            return card;
+        }
+
+        function createKeyInsights(insights) {
+            const insightsId = 'insights-' + Math.random().toString(36).substr(2, 9);
+            return `
+                <div class="key-insights">
+                    <button class="insights-toggle" data-target="${insightsId}">
+                        Key Insights (${insights.length})
+                    </button>
+                    <div class="insights-content" id="${insightsId}">
+                        <ul>
+                            ${insights.map(insight => `<li>${insight}</li>`).join('')}
+                        </ul>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderBoydsWork(boydsWork) {
+            const container = document.getElementById('boyds-work-container');
+            boydsWork.forEach(item => {
+                container.appendChild(createResourceCard(item, false));
+            });
+        }
+
+        function renderThirdPartyResearch(thirdPartyResearch) {
+            const container = document.getElementById('third-party-research-container');
+            thirdPartyResearch.forEach(item => {
+                container.appendChild(createResourceCard(item, true));
+            });
+        }
+
+        function renderKeyThemes(keyThemes) {
+            const container = document.getElementById('key-themes-container');
+            keyThemes.forEach(theme => {
+                const card = document.createElement('div');
+                card.className = 'theme-card';
+                card.innerHTML = `
+                    <h4>${theme.theme}</h4>
+                    <p>${theme.description}</p>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // Handle expandable insights
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('insights-toggle')) {
+                const targetId = e.target.getAttribute('data-target');
+                const content = document.getElementById(targetId);
+                
+                e.target.classList.toggle('expanded');
+                content.classList.toggle('expanded');
+            }
+        });
+
+        // Load data on page load
+        document.addEventListener('DOMContentLoaded', loadKnowledgeData);
+    </script>
+</body>
+</html>

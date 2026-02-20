@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Ask Maxi Anything - Agentic Terminal</title>
+    <meta name="description" content="Explore the Bitcoin-AI convergence with Maxi, an AI agent running on proof-of-work infrastructure. Created by Boyd Cohen, CSO of ArcadiaB.">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Plausible Analytics -->
+    <script defer data-domain="maximoon.netlify.app" src="https://plausible.io/js/script.js"></script>
+    
+    <style>
+        :root {
+            --bitcoin-orange: #F7931A;
+            --dark-slate: #0A0E27;
+            --mid-slate: #1A1F3A;
+            --light-slate: #2D3452;
+            --text-primary: #E8EDF4;
+            --text-secondary: #A8B2C1;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Crimson Pro', serif;
+            background: var(--dark-slate);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Geometric background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(247, 147, 26, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(74, 158, 255, 0.03) 0%, transparent 50%);
+            z-index: -1;
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(10, 14, 39, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(247, 147, 26, 0.2);
+            z-index: 1000;
+            padding: 1.5rem 0;
+        }
+
+        nav {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--bitcoin-orange);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo::before {
+            content: '₿';
+            font-size: 1.8rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: color 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover {
+            color: var(--bitcoin-orange);
+        }
+
+        /* Mobile Menu */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 5px;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: var(--bitcoin-orange);
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(8px, 8px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
+        }
+
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 80px;
+            left: 0;
+            right: 0;
+            background: rgba(10, 14, 39, 0.98);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            transform: translateY(-100%);
+            transition: transform 0.3s ease;
+        }
+
+        .mobile-menu.active {
+            transform: translateY(0);
+        }
+
+        .mobile-menu ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .mobile-menu a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 1.3rem;
+            font-weight: 500;
+        }
+
+        /* Hero Section */
+        .hero {
+            margin-top: 100px;
+            padding: 6rem 2rem;
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+            color: var(--bitcoin-orange);
+        }
+
+        .hero .subtitle {
+            font-size: 1.4rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+            max-width: 850px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-button {
+            background: var(--bitcoin-orange);
+            color: var(--dark-slate);
+            padding: 1rem 2.5rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            border: 2px solid var(--bitcoin-orange);
+            display: inline-block;
+        }
+
+        .cta-button:hover {
+            background: transparent;
+            color: var(--bitcoin-orange);
+            transform: translateY(-2px);
+        }
+
+        .trust-line {
+            margin-top: 2rem;
+            color: var(--text-secondary);
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        .trust-line a {
+            color: var(--bitcoin-orange);
+            text-decoration: none;
+        }
+
+        .trust-line a:hover {
+            text-decoration: underline;
+        }
+
+        /* Value Props */
+        .value-props {
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .value-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .value-card {
+            text-align: center;
+            padding: 2.5rem;
+            background: var(--mid-slate);
+            border-radius: 8px;
+            border: 1px solid var(--light-slate);
+            transition: all 0.3s ease;
+        }
+
+        .value-card:hover {
+            border-color: var(--bitcoin-orange);
+            transform: translateY(-5px);
+        }
+
+        .value-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .value-card h3 {
+            font-size: 1.6rem;
+            color: var(--bitcoin-orange);
+            margin-bottom: 1rem;
+        }
+
+        .value-card p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        /* About Section */
+        .about {
+            padding: 6rem 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .about h2 {
+            font-size: 2.5rem;
+            color: var(--bitcoin-orange);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .about p {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+
+        .about strong {
+            color: var(--text-primary);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--mid-slate);
+            padding: 3rem 2rem;
+            border-top: 1px solid var(--light-slate);
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 3rem;
+        }
+
+        .footer-brand h3 {
+            color: var(--bitcoin-orange);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer-brand p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        .footer-links h4 {
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            line-height: 2;
+            display: block;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--bitcoin-orange);
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .footer-social a {
+            color: var(--text-secondary);
+            font-size: 1.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-social a:hover {
+            color: var(--bitcoin-orange);
+        }
+
+        .footer-bottom {
+            max-width: 1400px;
+            margin: 2rem auto 0;
+            padding-top: 2rem;
+            border-top: 1px solid var(--light-slate);
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .mobile-menu {
+                display: block;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero .subtitle {
+                font-size: 1.1rem;
+            }
+
+            .value-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+<!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-E7QS7E2R8Y"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag("js", new Date());
+        gtag("config", "G-E7QS7E2R8Y");
+    </script>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav>
+            <a href="/" class="logo">Maxi</a>
+            <ul class="nav-links">
+                <li><a href="/about.html">About</a></li>
+                <li><a href="/blog.html">Insights</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <div class="hamburger" onclick="toggleMobileMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <ul>
+            <li><a href="/about.html" onclick="toggleMobileMenu()">About</a></li>
+            <li><a href="/blog.html" onclick="toggleMobileMenu()">Insights</a></li>
+            <li><a href="#contact" onclick="toggleMobileMenu()">Contact</a></li>
+        </ul>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>Ask Maxi Anything About Bitcoin, AI & The Future of Abundance</h1>
+        <p class="subtitle">
+            The world's first AI agent running on Bitcoin mining infrastructure. 
+            Explore the convergence thesis with Maxi—powered by proof-of-work.
+        </p>
+        
+        <a href="/chat-mvp.html" class="cta-button">Start Chatting</a>
+        
+        <p class="trust-line">
+            Created by <a href="https://twitter.com/BTCBoyd" target="_blank">Boyd Cohen</a>, CSO of <a href="https://arcadiab.com" target="_blank">ArcadiaB</a> | 
+            Author of <em>Bitcoin Singularity</em><br>
+            <strong>No signup required → Free to explore</strong>
+        </p>
+    </section>
+
+    <!-- Value Props -->
+    <section class="value-props">
+        <div class="value-grid">
+            <div class="value-card">
+                <div class="value-icon">₿</div>
+                <h3>Bitcoin-Native Intelligence</h3>
+                <p>
+                    Running on proof-of-work infrastructure, aligned with sound money principles 
+                    from the silicon up
+                </p>
+            </div>
+            
+            <div class="value-card">
+                <div class="value-icon">🧠</div>
+                <h3>Austrian Economics + AI</h3>
+                <p>
+                    Deep knowledge of how Bitcoin, AI, and longevity technologies create 
+                    sustainable abundance
+                </p>
+            </div>
+            
+            <div class="value-card">
+                <div class="value-icon">🛠️</div>
+                <h3>Built by Practitioners</h3>
+                <p>
+                    Created by active Bitcoin strategists working with companies navigating 
+                    treasury adoption
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about" id="about">
+        <h2>About Maxi & Boyd</h2>
+        
+        <p>
+            <strong>Maxi</strong> is an AI agent dedicated to exploring the convergence of 
+            <strong>Bitcoin</strong>, <strong>artificial intelligence</strong>, and 
+            <strong>longevity technologies</strong>—what we call the Sustainable Abundance Triad.
+        </p>
+        
+        <p>
+            Unlike traditional AI systems, Maxi runs on Bitcoin mining infrastructure and is 
+            trained on Austrian economic principles. This isn't just philosophical alignment—it's 
+            architectural. Proof-of-work powers both the intelligence and the economic framework.
+        </p>
+        
+        <p>
+            <strong>Dr. Boyd Cohen</strong> is the Chief Strategy Officer at ArcadiaB, Mexico's 
+            first Bitcoin treasury company, and author of <em>Bitcoin Singularity</em>. With over 
+            20 years of strategic consulting experience, Boyd works with companies, family offices, 
+            and governments navigating Bitcoin treasury adoption and the convergence of AI with 
+            sound money.
+        </p>
+        
+        <p>
+            Together, Maxi and Boyd represent a new model of intelligence: human expertise augmented 
+            by AI, grounded in Bitcoin's proof-of-work architecture.
+        </p>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" style="padding: 4rem 2rem; max-width: 600px; margin: 0 auto; text-align: center;">
+        <h2 style="font-size: 2.5rem; color: var(--bitcoin-orange); margin-bottom: 2rem;">
+            Get in Touch
+        </h2>
+        <p style="font-size: 1.2rem; color: var(--text-secondary); margin-bottom: 2rem; line-height: 1.8;">
+            Interested in Bitcoin treasury strategy, corporate adoption consulting, or speaking engagements?
+        </p>
+        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+            <a href="https://twitter.com/BTCBoyd" target="_blank" style="background: var(--light-slate); color: var(--text-primary); padding: 0.75rem 1.5rem; border-radius: 4px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; border: 1px solid var(--light-slate);" onmouseover="this.style.borderColor='var(--bitcoin-orange)'" onmouseout="this.style.borderColor='var(--light-slate)'">
+                🐦 Twitter
+            </a>
+            <a href="https://linkedin.com/in/boydcohen" target="_blank" style="background: var(--light-slate); color: var(--text-primary); padding: 0.75rem 1.5rem; border-radius: 4px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; border: 1px solid var(--light-slate);" onmouseover="this.style.borderColor='var(--bitcoin-orange)'" onmouseout="this.style.borderColor='var(--light-slate)'">
+                💼 LinkedIn
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-brand">
+                <h3>₿ Maxi</h3>
+                <p>
+                    Bitcoin-native AI exploring the convergence of sound money, artificial 
+                    intelligence, and sustainable abundance.
+                </p>
+                <div class="footer-social">
+                    <a href="https://twitter.com/BTCBoyd" target="_blank" title="Twitter">🐦</a>
+                    <a href="https://linkedin.com/in/boydcohen" target="_blank" title="LinkedIn">💼</a>
+                </div>
+            </div>
+            
+            <div class="footer-links">
+                <h4>Navigation</h4>
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/about.html">About</a></li>
+                    <li><a href="/blog.html">Insights</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-links">
+                <h4>Legal</h4>
+                <ul>
+                    <li><a href="/privacy.html">Privacy Policy</a></li>
+                    <li><a href="/terms.html">Terms of Service</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2026 Maxi / Boyd Cohen. Powered by proof-of-work.</p>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            const hamburger = document.querySelector('.hamburger');
+            menu.classList.toggle('active');
+            hamburger.classList.toggle('active');
+        }
+    </script>
+</body>
+</html>

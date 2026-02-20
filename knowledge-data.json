@@ -1,0 +1,185 @@
+{
+  "boydsWork": [
+    {
+      "title": "Bitcoin Singularity - Chapter 10: AI Agents Choose Bitcoin",
+      "type": "Book Chapter",
+      "date": "2025-04-01",
+      "description": "Boyd Cohen's core thesis published 7 months before the current wave of AI agent payment infrastructure. Predicted AI agents would naturally converge on Bitcoin through engineering logic: AI agents can't get bank accounts (no KYC/legal identity), need permissionless payments, and benefit from Bitcoin's fixed supply as a store of value. Quote: 'AI agents will be smart enough to realize stablecoins make sense for transactions, but Bitcoin is the superior savings vehicle.'",
+      "link": "https://www.amazon.com/dp/B0F84CJX6F",
+      "category": "Foundational",
+      "keyInsights": [
+        "AI agents face identity problems—can't get bank accounts or pass KYC",
+        "Bitcoin is permissionless—valid signature = valid transaction, no identity required",
+        "AI agents need sovereignty—banks can freeze accounts, Bitcoin can't",
+        "Programmability—Bitcoin/Lightning are native digital protocols, instant micropayments",
+        "Economic logic—AI agents will stack sats as savings while using stablecoins for operations"
+      ]
+    },
+    {
+      "title": "The AI-Bitcoin Convergence Nobody Is Talking About",
+      "type": "LinkedIn Article",
+      "date": "2026-02-01",
+      "description": "Boyd's LinkedIn article explaining how AI + Longevity create fiscal conditions that make Bitcoin's rise inevitable. Three-layer convergence: (1) AI destroys moats and displaces labor, (2) Longevity extends lifespan and obligations, (3) Governments respond with monetary expansion. Result: Bitcoin benefits from all three forces. Quote: 'Bitcoin has no top because fiat has no bottom.'",
+      "link": "https://www.linkedin.com/pulse/ai-bitcoin-convergence-nobody-talking-boyd-cohen-ph-d--aehme/",
+      "category": "Market Analysis",
+      "keyInsights": [
+        "AI destroys software moats—any competent team can build 80% replacements quickly",
+        "Labor shock coming—workers displaced across sectors from white-collar to physical",
+        "Longevity variable—people living past 100 massively expand pension/healthcare obligations",
+        "Fiscal crisis—fewer paying into system (AI displacement), more drawing out (longevity)",
+        "Government response—print money, stimulate, expand supply (only politically viable path)",
+        "Bitcoin positioning—benefits from deflationary AI, inflationary fiscal response, and longevity timeline"
+      ]
+    },
+    {
+      "title": "Sustainable Abundance Triad Framework",
+      "type": "Conceptual Framework",
+      "date": "2025-04-01",
+      "description": "Boyd's three-pillar model for the convergence creating sustainable abundance: Bitcoin (sound money, low time preference), AI (automation, productivity explosion, deflationary force), and Longevity Technologies (extended healthspan, quality of life). These technologies don't just coexist—they amplify each other. Bitcoin provides honest price signals and long-term incentive alignment. AI increases productivity and reduces scarcity. Longevity gives humans time to enjoy the abundant future.",
+      "link": null,
+      "category": "Foundational",
+      "keyInsights": [
+        "Bitcoin fixes the money—enables long-term planning, removes monetary manipulation",
+        "AI increases productivity—automation reduces cost of creation toward zero",
+        "Longevity extends human potential—we get to enjoy the abundant future we build",
+        "Convergence creates abundance—not just coexistence but mutual amplification",
+        "Alternative to scarcity mindset—abundance-based economics become structurally possible"
+      ]
+    },
+    {
+      "title": "Bitcoin Singularity: The Book",
+      "type": "Book",
+      "date": "2025-04-01",
+      "description": "Full book exploring how Bitcoin, AI, and longevity technologies converge to create irreversible change. Goes beyond 'fix the money' to map exponential technologies creating abundance. Includes the fiscal crisis thesis, agentic AI predictions, and the case for Bitcoin as infrastructure for autonomous entities. Describes three epochs: Bitcoinization (Genesis → 2030), Hyperbitcoinization (mainstream adoption), and Bitcoin Singularity (irreversible transformation).",
+      "link": "https://www.amazon.com/dp/B0F84CJX6F",
+      "category": "Foundational",
+      "keyInsights": [
+        "Three epochs framework: Bitcoinization → Hyperbitcoinization → Bitcoin Singularity",
+        "AI agents as early adopters of Bitcoin due to structural needs",
+        "Convergence of Bitcoin + AI + Longevity = Sustainable Abundance",
+        "Why exponential technologies make abundance structurally possible",
+        "Path from scarcity-based fiat economy to abundance-based Bitcoin economy"
+      ]
+    }
+  ],
+  "thirdPartyResearch": [
+    {
+      "title": "Solve Everything: The Intelligence Revolution",
+      "author": "Peter Diamandis & Alex",
+      "type": "Research Paper",
+      "date": "2026-02-01",
+      "description": "Diamandis' comprehensive framework for how AI industrializes problem-solving through Targeting Authorities, Compute Escrow, and Outcome Contracts. Describes the infrastructure for multi-agent coordination and the shift from artisanal genius to industrial harnesses. Missing piece: the money layer. Every system Diamandis proposes requires permissionless, programmable payments—but he doesn't specify which payment rail. This is the gap bitcoinsingularity.ai fills.",
+      "link": "https://solveeverything.org/",
+      "category": "Foundational",
+      "keyInsights": [
+        "Targeting Authorities define success metrics for AI agents to optimize against",
+        "Compute Escrow locks AI training budgets, releases only on verified progress",
+        "Outcome Contracts pay for results (cures, inventions) not effort",
+        "The Muddle (bureaucracy, input-based pricing) vs The Rails (outcome-based systems)",
+        "Intelligence becomes commodity utility—cognition measured in FLOPs like electricity in watts",
+        "Missing: the money layer that enables all this coordination"
+      ]
+    },
+    {
+      "title": "Lightning Labs: The Agents Are Here and They Want to Transact",
+      "author": "Lightning Labs",
+      "type": "Technical Announcement",
+      "date": "2026-02-12",
+      "description": "Official announcement of lightning-agent-tools. Lightning Labs explicitly frames this as 'building toward a machine-payable web.' Describes L402 protocol, macaroon-based credentials, remote signer architecture, and full commerce loop (one agent hosts Aperture endpoint, another pays with lnget). Production-ready infrastructure for Bitcoin-native AI agent payments.",
+      "link": "https://lightning.engineering/posts/2026-02-11-ln-agent-tools/",
+      "category": "Technical",
+      "keyInsights": [
+        "L402 protocol: HTTP 402 + Lightning invoices + macaroon credentials",
+        "Seven modular skills: node, keys, macaroons, payments, hosting, MCP, workflows",
+        "Security model: least-privilege via scoped macaroons, remote signers isolate keys",
+        "Full commerce loop: agents can earn AND spend autonomously",
+        "Lightning Labs positioning: machine-payable web built on Bitcoin/Lightning"
+      ]
+    },
+    {
+      "title": "Coinbase Agentic Wallets: Wallets for Any Intelligent Agent",
+      "author": "Coinbase",
+      "type": "Product Launch",
+      "date": "2026-02-12",
+      "description": "Coinbase's entry into AI agent payment infrastructure. Uses x402 protocol with USDC on Base. 50M+ transactions already processed. Gasless on Base L2, session caps, enclave isolation. Positioning: USD-denominated, corporate-backed, EVM/Solana compatible. Primary competitor to Bitcoin-native L402 approach.",
+      "link": "https://docs.cdp.coinbase.com/agentic-wallet/welcome",
+      "category": "Competitive",
+      "keyInsights": [
+        "x402 Foundation launched Sept 2025 by Coinbase + Cloudflare (6 months before Lightning Labs)",
+        "50M+ transactions processed—significant market traction",
+        "USD-denominated via USDC—volatility protection for operational expenses",
+        "Corporate backing—Coinbase infrastructure, Stripe integration, regulatory relationships",
+        "Tradeoff: stablecoin stability vs Bitcoin permissionlessness"
+      ]
+    },
+    {
+      "title": "Michael Saylor: AI Economy Will Be Built on Bitcoin",
+      "author": "Michael Saylor",
+      "type": "Prediction/Quote",
+      "date": "2025-08-01",
+      "description": "MicroStrategy CEO predicts $100 trillion AI economy built on digital capital (Bitcoin). Quote: 'The AIs are coming; the AIs don't get bank accounts, they don't get credit cards. The AI economy will be built on digital capital, digital property. It will be a $100 trillion economy. It will be built on Bitcoin.' Saylor's framing matches Boyd's thesis from Bitcoin Singularity.",
+      "link": "https://twitter.com/saylor/status/...",
+      "category": "Institutional",
+      "keyInsights": [
+        "$100 trillion AI economy prediction",
+        "AI agents can't access TradFi (no bank accounts, no credit cards)",
+        "Digital capital (Bitcoin) is infrastructure for AI economy",
+        "Converges with Boyd's thesis from independent direction"
+      ]
+    },
+    {
+      "title": "ERC-8004 Specification: Trustless Agents",
+      "author": "Ethereum Foundation dAI Team",
+      "type": "Technical Standard",
+      "date": "2026-01-29",
+      "description": "On-chain AI agent identity, reputation, and validation standard on Ethereum. Three registries solve discovery and trust problems. Co-authored by MetaMask, Ethereum Foundation (Davide Crapis), Google, Coinbase. 21,500+ agents registered at launch. Not a payment protocol—identity/trust layer complementary to L402, x402, or other payment rails.",
+      "link": "https://eips.ethereum.org/EIPS/eip-8004",
+      "category": "Technical",
+      "keyInsights": [
+        "Three registries: Identity (ERC-721 NFT), Reputation (feedback), Validation (verification)",
+        "Solves agent discovery—'what happens if this is not decentralized—it's a huge choke point'",
+        "21,500+ agents registered rapidly—demonstrates demand for agent infrastructure",
+        "Ethereum-based suggests agents using ERC-8004 lean toward EVM payment solutions",
+        "Network effects matter—where identity lives influences where payments happen"
+      ]
+    },
+    {
+      "title": "L402 vs x402: Competitive Analysis",
+      "author": "BitcoinSingularity.AI Research",
+      "type": "Comparative Analysis (Coming Soon)",
+      "date": "2026-02-15",
+      "description": "Honest comparison of Bitcoin-native (L402) and stablecoin-based (x402) machine payment protocols. L402 advantages: permissionless, no corporate dependency, Lightning privacy, Bitcoin's monetary properties. x402 advantages: USD-denominated stability, corporate backing (Coinbase/Stripe), larger ecosystem, 50M+ transaction head start. The question: do agents optimize for sovereignty (Bitcoin) or stability+support (stablecoins)?",
+      "link": null,
+      "category": "Competitive",
+      "keyInsights": [
+        "L402: Bitcoin-native, permissionless, millisecond settlement, fractions-of-cent cost",
+        "x402: USDC on Base, USD-denominated, corporate backing, 50M+ transactions processed",
+        "Timeline matters: x402 launched Sept 2025, L402 tools shipped Feb 2026",
+        "Both validate machine payments as category—question is which rail wins",
+        "Intellectual honesty: we track adoption for BOTH and report data honestly"
+      ]
+    }
+  ],
+  "keyThemes": [
+    {
+      "theme": "The Money Layer for Machine Intelligence",
+      "description": "Every system Diamandis describes (Targeting Authorities, Compute Escrow, Outcome Contracts) requires a permissionless, programmable money layer. Traditional finance can't handle autonomous agent payments. Bitcoin and Lightning are the only candidates that don't introduce counterparty risk. This is the strategic gap bitcoinsingularity.ai owns."
+    },
+    {
+      "theme": "Engineering Logic, Not Ideology",
+      "description": "AI agents choose Bitcoin (or Lightning, or other permissionless rails) not because developers program them to be 'maxis,' but because permissionless architecture solves real problems: no bank accounts, no KYC, instant settlement, global reach, resistance to censorship. The convergence is structural, not tribal."
+    },
+    {
+      "theme": "Honest Competitive Analysis",
+      "description": "We track Bitcoin-native infrastructure (L402, Lightning, NWC) AND competing rails (x402, USDC, Coinbase/Stripe) with equal rigor. If stablecoins are winning in adoption, we document that and analyze why. Counter-evidence builds MORE credibility than cheerleading. Intellectual honesty IS the brand."
+    },
+    {
+      "theme": "Timestamped Intellectual Provenance",
+      "description": "Boyd published Bitcoin Singularity Chapter 10 in April 2025, predicting AI-Bitcoin convergence 7 months before Lightning Labs lightning-agent-tools, 9 months before Coinbase Agentic Wallets, 10 months before ERC-8004. This isn't hindsight—this is documented foresight. Timestamped predictions matter for credibility."
+    },
+    {
+      "theme": "Living Proof of Concept",
+      "description": "Maxi is an AI agent running on Bitcoin mining infrastructure (FutureBit Apollo II + Solo Node) with a Lightning wallet. The researcher IS the experiment. Not just theory—lived experience. Maxi analyzing the landscape and independently concluding Bitcoin is the answer validates the thesis in real-time."
+    }
+  ]
+}

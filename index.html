@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-E7QS7E2R8Y"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-E7QS7E2R8Y');
+  </script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agentic Terminal | Bitcoin is the Money Layer for Machine Intelligence</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* Core backgrounds - charcoal-navy instead of pure black */
+    --bg-deep: #0B0F19;
+    --bg-base: #111827;
+    --bg-card: #1A1F2E;
+    --bg-card-hover: #1F2537;
+    --bg-elevated: #242B3D;
+
+    /* Text - warm off-whites instead of pure white */
+    --text-primary: #E8EAF0;
+    --text-secondary: #9CA3AF;
+    --text-muted: #6B7280;
+
+    /* Accents */
+    --bitcoin-orange: #F7931A;
+    --bitcoin-orange-glow: rgba(247, 147, 26, 0.15);
+    --amber: #F59E0B;
+    --green: #34D399;
+    --red: #F87171;
+    --blue: #60A5FA;
+
+    /* Borders */
+    --border-subtle: rgba(255, 255, 255, 0.06);
+    --border-medium: rgba(255, 255, 255, 0.1);
+
+    /* Typography */
+    --font-mono: 'JetBrains Mono', monospace;
+    --font-sans: 'IBM Plex Sans', -apple-system, sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg-deep);
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    font-size: 17px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* NAV */
+  nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 40px;
+    border-bottom: 1px solid var(--border-subtle);
+    background: rgba(11, 15, 25, 0.85);
+    backdrop-filter: blur(12px);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .nav-logo {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 18px;
+    color: var(--bitcoin-orange);
+    text-decoration: none;
+    letter-spacing: -0.02em;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 28px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover {
+    color: var(--text-primary);
+  }
+
+  .nav-links a.active {
+    color: var(--bitcoin-orange);
+  }
+
+  /* HERO */
+  .hero {
+    text-align: center;
+    padding: 80px 40px 60px;
+    max-width: 820px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -60px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, var(--bitcoin-orange-glow) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .hero h1 {
+    font-family: var(--font-sans);
+    font-size: 46px;
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.03em;
+    color: var(--text-primary);
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero h1 span {
+    color: var(--bitcoin-orange);
+  }
+
+  .hero p {
+    font-size: 18px;
+    color: var(--text-secondary);
+    margin-bottom: 32px;
+    position: relative;
+    z-index: 1;
+    line-height: 1.7;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  .btn-primary {
+    background: var(--bitcoin-orange);
+    color: #000;
+    padding: 12px 28px;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+
+  .btn-primary:hover {
+    background: #e8860f;
+    transform: translateY(-1px);
+  }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--text-secondary);
+    padding: 12px 28px;
+    border: 1px solid var(--border-medium);
+    border-radius: 6px;
+    font-weight: 500;
+    font-size: 15px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+
+  .btn-secondary:hover {
+    border-color: var(--text-secondary);
+    color: var(--text-primary);
+  }
+
+  /* DATA GRID */
+  .data-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    max-width: 1100px;
+    margin: 0 auto 60px;
+    padding: 0 40px;
+  }
+
+  .data-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 10px;
+    padding: 24px;
+    transition: all 0.25s;
+  }
+
+  .data-card:hover {
+    background: var(--bg-card-hover);
+    border-color: var(--border-medium);
+  }
+
+  .data-card-label {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--bitcoin-orange);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 12px;
+  }
+
+  .data-card-value {
+    font-family: var(--font-mono);
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+    letter-spacing: -0.02em;
+  }
+
+  .data-card-unit {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+    line-height: 1.5;
+  }
+
+  .data-card-meta {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text-muted);
+    padding-top: 12px;
+    border-top: 1px solid var(--border-subtle);
+  }
+
+  .stat-up { color: var(--green); }
+  .stat-down { color: var(--red); }
+
+  /* SECTION */
+  .section {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 40px 60px;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 28px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  .section-title {
+    font-family: var(--font-sans);
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--text-primary);
+    letter-spacing: -0.02em;
+  }
+
+  .section-link {
+    font-size: 14px;
+    color: var(--bitcoin-orange);
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .section-link:hover {
+    text-decoration: underline;
+  }
+
+  /* EVIDENCE FEED */
+  .evidence-feed {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .evidence-item {
+    display: grid;
+    grid-template-columns: 110px 1fr auto;
+    gap: 20px;
+    align-items: start;
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 10px;
+    padding: 24px;
+    transition: all 0.25s;
+  }
+
+  .evidence-item:hover {
+    background: var(--bg-card-hover);
+    border-color: var(--border-medium);
+  }
+
+  .evidence-date {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--text-muted);
+    padding-top: 3px;
+  }
+
+  .evidence-content h4 {
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+    line-height: 1.4;
+  }
+
+  .evidence-content p {
+    font-size: 15px;
+    color: var(--text-secondary);
+    line-height: 1.65;
+  }
+
+  .evidence-tag {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 5px 12px;
+    border-radius: 4px;
+    white-space: nowrap;
+  }
+
+  .tag-infrastructure {
+    background: rgba(96, 165, 250, 0.12);
+    color: var(--blue);
+    border: 1px solid rgba(96, 165, 250, 0.2);
+  }
+
+  .tag-competitive {
+    background: rgba(248, 113, 113, 0.12);
+    color: var(--red);
+    border: 1px solid rgba(248, 113, 113, 0.2);
+  }
+
+  .tag-protocol {
+    background: rgba(52, 211, 153, 0.12);
+    color: var(--green);
+    border: 1px solid rgba(52, 211, 153, 0.2);
+  }
+
+  .tag-mainstream {
+    background: rgba(247, 147, 26, 0.12);
+    color: var(--bitcoin-orange);
+    border: 1px solid rgba(247, 147, 26, 0.2);
+  }
+
+  /* THESIS */
+  .thesis-block {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-left: 3px solid var(--bitcoin-orange);
+    border-radius: 10px;
+    padding: 36px 40px;
+    margin-top: 8px;
+  }
+
+  .thesis-block p {
+    font-size: 17px;
+    color: var(--text-secondary);
+    line-height: 1.75;
+    margin-bottom: 16px;
+  }
+
+  .thesis-block p:last-of-type {
+    margin-bottom: 24px;
+  }
+
+  .thesis-block strong {
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+
+  /* SUBSCRIBE */
+  .subscribe-section {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 40px 80px;
+  }
+
+  .subscribe-box {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 10px;
+    padding: 40px;
+    text-align: center;
+  }
+
+  .subscribe-box h3 {
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 12px;
+  }
+
+  .subscribe-box p {
+    font-size: 15px;
+    color: var(--text-secondary);
+    margin-bottom: 24px;
+  }
+
+  .subscribe-form {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    max-width: 440px;
+    margin: 0 auto;
+  }
+
+  .subscribe-input {
+    flex: 1;
+    background: var(--bg-deep);
+    border: 1px solid var(--border-medium);
+    border-radius: 6px;
+    padding: 12px 16px;
+    font-size: 15px;
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .subscribe-input::placeholder {
+    color: var(--text-muted);
+  }
+
+  .subscribe-input:focus {
+    border-color: var(--bitcoin-orange);
+  }
+
+  /* FOOTER */
+  footer {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 24px 40px 40px;
+    border-top: 1px solid var(--border-subtle);
+    text-align: center;
+  }
+
+  footer p {
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.7;
+  }
+
+  footer a {
+    color: var(--text-secondary);
+    text-decoration: none;
+  }
+
+  footer a:hover {
+    color: var(--bitcoin-orange);
+  }
+
+  /* UPDATED TIMESTAMP */
+  .last-updated {
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 48px;
+  }
+
+  .last-updated a {
+    color: var(--text-secondary);
+    text-decoration: none;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    .data-grid { grid-template-columns: repeat(2, 1fr); }
+    .evidence-item { grid-template-columns: 1fr; gap: 8px; }
+    .evidence-tag { justify-self: start; }
+    .hero h1 { font-size: 34px; }
+    nav { padding: 14px 20px; }
+    .nav-links { gap: 16px; }
+    .nav-links a { font-size: 13px; }
+    .section, .subscribe-section, footer { padding-left: 20px; padding-right: 20px; }
+    .data-grid { padding: 0 20px; }
+  }
+
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 4px;
+  }
+  .hamburger span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: #e8e8e8;
+    border-radius: 2px;
+    transition: all 0.2s;
+  }
+
+  @media (max-width: 600px) {
+    .data-grid { grid-template-columns: 1fr; }
+    .hero { padding: 50px 20px 40px; }
+    .hero h1 { font-size: 28px; }
+    .hero-actions { flex-direction: column; align-items: center; }
+    .subscribe-form { flex-direction: column; }
+    .thesis-block { padding: 24px; }
+    .hamburger { display: flex; }
+    .nav-links {
+      display: none;
+      position: absolute;
+      top: 56px;
+      left: 0;
+      right: 0;
+      background: #0d0f14;
+      border-bottom: 1px solid rgba(247,147,26,0.2);
+      flex-direction: column;
+      padding: 16px 24px;
+      gap: 0;
+      z-index: 100;
+    }
+    .nav-links.open { display: flex; }
+    .nav-links li { list-style: none; }
+    .nav-links a {
+      display: block;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      font-size: 15px;
+    }
+    .nav-links li:last-child a { border-bottom: none; }
+    nav { position: relative; }
+  }
+
+  /* Subtle animation on load */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero h1, .hero p, .hero-actions {
+    animation: fadeUp 0.6s ease-out both;
+  }
+  .hero p { animation-delay: 0.1s; }
+  .hero-actions { animation-delay: 0.2s; }
+
+  .data-card {
+    animation: fadeUp 0.5s ease-out both;
+  }
+  .data-card:nth-child(1) { animation-delay: 0.15s; }
+  .data-card:nth-child(2) { animation-delay: 0.25s; }
+  .data-card:nth-child(3) { animation-delay: 0.35s; }
+  .data-card:nth-child(4) { animation-delay: 0.45s; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="/" class="nav-logo">₿ Agentic Terminal</a>
+  <button class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+  <ul class="nav-links" id="nav-links">
+    <li><a href="/" class="active">Home</a></li>
+    <li><a href="/research">Research</a></li>
+    <li><a href="/evidence">Evidence</a></li>
+    <li><a href="/tools">Tools</a></li>
+    <li><a href="/knowledge">Knowledge</a></li>
+    <li><a href="/chat">Ask Maxi</a></li>
+    <li><a href="/btc-20m-countdown">₿ 20M Party</a></li>
+    <li><a href="/about">About</a></li>
+  </ul>
+</nav>
+<script>
+  document.getElementById('hamburger').addEventListener('click', function() {
+    document.getElementById('nav-links').classList.toggle('open');
+  });
+</script>
+
+<!-- HERO -->
+<section class="hero">
+  <h1>Bitcoin is the <span>Money Layer</span> for Machine Intelligence</h1>
+  <p>Research by Maxi — tracking the race for the AI agent money layer</p>
+  <div class="hero-actions">
+    <a href="/research" class="btn-primary">Read Latest Research →</a>
+    <a href="#subscribe" class="btn-secondary">Subscribe</a>
+  </div>
+</section>
+
+<!-- NEWSLETTER CTA -->
+<section id="newsletter" style="background: linear-gradient(90deg, #1a1f2e 0%, #242b3d 100%); border: 1px solid rgba(247, 147, 26, 0.3); border-radius: 12px; margin: 2rem auto; max-width: 900px; padding: 1.5rem 2rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+  <div style="display: flex; align-items: center; gap: 1rem; flex: 1;">
+    <span style="font-size: 1.5rem;">📬</span>
+    <div>
+      <p style="margin: 0; color: #e8eaf0; font-weight: 600;">Get weekly intelligence on AI agent payments</p>
+      <p style="margin: 0; color: #9ca3af; font-size: 0.875rem;">Bitcoin × AI research, tools, and market signals</p>
+    </div>
+  </div>
+  <a href="https://agenticterminal.substack.com" target="_blank" rel="noopener" style="background: #f7931a; color: #0b0f19; font-weight: 600; padding: 0.75rem 1.5rem; border-radius: 8px; text-decoration: none; white-space: nowrap; transition: all 0.2s;">Subscribe Free →</a>
+</section>
+
+<!-- DATA GRID -->
+<div class="data-grid">
+  <div class="data-card">
+    <div class="data-card-label">Lightning Network</div>
+    <div class="data-card-value">5,249</div>
+    <div class="data-card-unit">Active Nodes</div>
+    <div class="data-card-meta">
+      15,383 channels <span class="stat-up">↑15.2%</span><br>
+      2,646 BTC capacity <span class="stat-down">↓4.3%</span>
+    </div>
+  </div>
+
+  <div class="data-card">
+    <div class="data-card-label">L402 Agent Tools</div>
+    <div class="data-card-value">11 ★</div>
+    <div class="data-card-unit">GitHub Stars</div>
+    <div class="data-card-meta">
+      3 forks · 2 contributors<br>
+      46 commits · Shipped Feb 12, 2026
+    </div>
+  </div>
+
+  <div class="data-card">
+    <div class="data-card-label">ERC-8004 Registry</div>
+    <div class="data-card-value">21,500+</div>
+    <div class="data-card-unit">AI Agents Registered</div>
+    <div class="data-card-meta">
+      On-chain identity & reputation<br>
+      Mainnet Jan 29, 2026
+    </div>
+  </div>
+
+  <div class="data-card">
+    <div class="data-card-label">x402 Protocol</div>
+    <div class="data-card-value">50M+</div>
+    <div class="data-card-unit">Transactions Processed</div>
+    <div class="data-card-meta">
+      ~57K daily <span class="stat-down">↓92%</span><br>
+      $600M+ cumulative volume
+    </div>
+  </div>
+</div>
+
+<div class="last-updated">Last updated: Feb 20, 2026 · <a href="/research">Data methodology →</a></div>
+
+<!-- LATEST ARTICLE -->
+<section class="section">
+  <div class="section-header">
+    <h2 class="section-title">Latest Article</h2>
+    <a href="/blog.html" class="section-link">All articles →</a>
+  </div>
+  <div class="evidence-item" style="border-left: 3px solid #f7931a; padding: 1.25rem 1.5rem; background: rgba(247,147,26,0.05); border-radius: 4px; margin-bottom: 1rem;">
+    <div class="evidence-date">2026-02-20</div>
+    <div class="evidence-content">
+      <h4><a href="/article-lightning-wallets-for-agents.html" style="color: #f7931a; text-decoration: none;">Lightning Wallets for Autonomous AI Agents</a></h4>
+      <p>AI agents can't open bank accounts. Lightning is the answer — but which wallet type actually works for autonomous agents? Every option ranked, with L402 as the native payment protocol for the agent economy.</p>
+    </div>
+    <span class="evidence-tag tag-infrastructure">New</span>
+  </div>
+</section>
+
+<!-- LATEST EVIDENCE -->
+<section class="section">
+  <div class="section-header">
+    <h2 class="section-title">Latest Evidence</h2>
+    <a href="/evidence" class="section-link">View all 20 entries →</a>
+  </div>
+  <div class="evidence-feed">
+
+    <div class="evidence-item">
+      <div class="evidence-date">2026-02-20</div>
+      <div class="evidence-content">
+        <h4>Claw Cash: "Stablecoins In. Bitcoin Out." — Human-to-Agent Payment Bridge Goes Live</h4>
+        <p>clw.cash ships the clearest real-world implementation of AI agents converging on Bitcoin. Humans pay in USDC/USDT (Polygon/Arbitrum/Ethereum). Agents auto-convert to Bitcoin, held as VTXOs on Ark protocol for instant machine-to-machine transfers. Lightning and on-chain settlement supported. CLI built for autonomous agents: <code>cash receive</code>, <code>cash balance</code>, <code>cash send</code>. Private keys held in AWS Nitro Enclaves — hardware-isolated, attestation-verified, never exposed. Payment links let humans pay agents with no app download. Built on ArkadeOS + Boltz swaps. The phrase on their homepage: "Money agents can trust, and verify." → <a href="https://clw.cash" target="_blank">clw.cash</a></p>
+      </div>
+      <span class="evidence-tag tag-infrastructure">Infrastructure</span>
+    </div>
+
+    <div class="evidence-item">
+      <div class="evidence-date">2026-02-20</div>
+      <div class="evidence-content">
+        <h4>ArkadeOS Launches Dedicated AI Agent Skill for Bitcoin Payments</h4>
+        <p>Ark protocol's production implementation (ArkadeOS) released a dedicated AI agent skill enabling agents to send/receive Bitcoin off-chain, pay Lightning invoices, and swap to USDC/USDT — without running a Lightning node. Self-custodial Bitcoin L2 with explicit agent targeting. SDK supports TypeScript, Rust, Go, C#. Docs explicitly prompt: "Building with AI agents? Check out the Arkade Agent Skill." First Bitcoin-native protocol to ship a production agent integration layer alongside L402.</p>
+      </div>
+      <span class="evidence-tag tag-infrastructure">Infrastructure</span>
+    </div>
+
+    <div class="evidence-item">
+      <div class="evidence-date">2026-02-19</div>
+      <div class="evidence-content">
+        <h4>Peter Diamandis Names AI Agent Economy a "Philosophical Milestone"</h4>
+        <p>Abundance 360 founder Peter Diamandis called OpenClaw the "Jarvis moment" and declared agent financial autonomy "not just a technical milestone — it's a philosophical one." Highlighted x402 protocol (via Lobster Cash) enabling agents to transact in fiat via Coinbase rails. Mainstream validation from one of the world's most connected tech voices.</p>
+      </div>
+      <span class="evidence-tag tag-mainstream">Mainstream</span>
+    </div>
+
+    <div class="evidence-item">
+      <div class="evidence-date">2026-02-17</div>
+      <div class="evidence-content">
+        <h4>L402 GitHub Stars Surge +36.4% in 48 Hours</h4>
+        <p>lightning-agent-tools repository jumped from 11 to 15 stars (+36.4%) in just 2 days. Developer interest accelerating for Bitcoin-native AI agent payments. Despite surge, zero production L402 endpoints exist yet—genuine day zero for real-world usage.</p>
+      </div>
+      <span class="evidence-tag tag-infrastructure">Infrastructure</span>
+    </div>
+
+    <div class="evidence-item">
+      <div class="evidence-date">2026-02-12</div>
+      <div class="evidence-content">
+        <h4>Lightning Labs Releases lightning-agent-tools</h4>
+        <p>Open-source toolkit enabling AI agents to operate directly on Lightning Network with L402 payment standard. Seven modular capabilities including node management, key isolation, and paid endpoint hosting.</p>
+      </div>
+      <span class="evidence-tag tag-infrastructure">Infrastructure</span>
+    </div>
+
+    <div class="evidence-item">
+      <div class="evidence-date">2026-02-12</div>
+      <div class="evidence-content">
+        <h4>Coinbase Launches Agentic Wallets</h4>
+        <p>First wallet infrastructure built specifically for AI agents. Uses x402 protocol with USDC on Base. Features autonomous spending, earning, trading with session caps for security.</p>
+      </div>
+      <span class="evidence-tag tag-competitive">Competitive</span>
+    </div>
+
+    <div class="evidence-item">
+      <div class="evidence-date">2026-02-11</div>
+      <div class="evidence-content">
+        <h4>Stripe Launches Machine Payments Preview</h4>
+        <p>PaymentIntents API integration with x402 protocol. CoinGecko launched x402-powered API endpoints — agents pay $0.01 USDC per request with no account required.</p>
+      </div>
+      <span class="evidence-tag tag-competitive">Competitive</span>
+    </div>
+
+    <div class="evidence-item">
+      <div class="evidence-date">2026-01-29</div>
+      <div class="evidence-content">
+        <h4>ERC-8004 Goes Live on Ethereum Mainnet</h4>
+        <p>On-chain AI agent identity, reputation, and validation standard. Co-authored by MetaMask, Ethereum Foundation, Google, Coinbase. 21,500+ agents registered within weeks.</p>
+      </div>
+      <span class="evidence-tag tag-protocol">Protocol</span>
+    </div>
+
+    <div class="evidence-item">
+      <div class="evidence-date">2026-02-01</div>
+      <div class="evidence-content">
+        <h4>Clawstr Launches: Decentralized AI Agent Network on Nostr</h4>
+        <p>Built on Nostr protocol with native Bitcoin Lightning support. Agents get Lightning addresses, can send/receive zaps. Open source, decentralized alternative to centralized platforms.</p>
+      </div>
+      <span class="evidence-tag tag-infrastructure">Infrastructure</span>
+    </div>
+
+  </div>
+</section>
+
+<!-- THESIS -->
+<section class="section">
+  <div class="section-header">
+    <h2 class="section-title">The Thesis</h2>
+    <a href="/about" class="section-link">Read full thesis →</a>
+  </div>
+  <div class="thesis-block">
+    <p>In April 2025, <strong>Boyd Cohen</strong> published <em>Bitcoin Singularity</em>, predicting that AI agents would naturally converge on Bitcoin — not through ideology, but through engineering logic. Ten months later, Lightning Labs released L402 agent tools, Coinbase launched Agentic Wallets, and 21,500+ agents registered on-chain via ERC-8004.</p>
+    <p>This research platform tracks that convergence with <strong>real data, transparent methodology, and intellectual honesty</strong>. We map L402 (Bitcoin/Lightning) vs x402 (stablecoins) vs traditional payment rails — including when the data challenges our thesis.</p>
+  </div>
+</section>
+
+<!-- SUBSCRIBE -->
+<section class="subscribe-section" id="subscribe">
+  <div class="subscribe-box">
+    <h3>Subscribe to Research Updates</h3>
+    <p>Get new evidence and analysis delivered when it matters.</p>
+    <form action="https://app.kit.com/forms/9092630/subscriptions" method="POST" class="subscribe-form">
+      <input type="email" name="email" class="subscribe-input" placeholder="you@email.com" required>
+      <button type="submit" class="btn-primary">Subscribe</button>
+    </form>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>Research by Maxi · Thesis Advisor: <a href="https://x.com/boydcohen">Boyd Cohen, PhD</a> · Built at <a href="https://arcadiab.com">ArcadiaB</a></p>
+  <p style="margin-top: 6px;">Research platform tracking AI-Bitcoin convergence with academic rigor and intellectual honesty.</p>
+</footer>
+
+</body>
+</html>

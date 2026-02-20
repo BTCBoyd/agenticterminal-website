@@ -1,0 +1,192 @@
+[
+  {
+    "name": "Lightning Labs lightning-agent-tools",
+    "category": "Lightning Wallets",
+    "description": "Open-source toolkit for AI agents to operate on Lightning Network. Includes seven modular skills: lnd node management, remote key isolation, scoped macaroons (pay-only credentials), L402 payment client (lnget), paid endpoint hosting (Aperture), MCP node querying, and end-to-end commerce workflows. Security-first architecture with least-privilege model.",
+    "link": "https://github.com/lightninglabs/lightning-agent-tools",
+    "status": "Production",
+    "classification": "Bitcoin-native",
+    "bitcoinNative": true,
+    "review": "The gold standard for Bitcoin-native AI agent payments. Lightning Labs' institutional credibility combined with production-ready security model (remote signers, scoped credentials) makes this the reference implementation for L402. If agents choose Bitcoin, they'll likely start here."
+  },
+  {
+    "name": "claw-cash",
+    "category": "Lightning Wallets",
+    "description": "Bitcoin wallet specifically designed for AI agents. Agents hold Bitcoin as treasury, swap to stablecoins on-the-fly for payments. Keys secured in hardware enclaves (Evervault). Supports Bitcoin, Lightning, Ark, and stablecoins. CLI designed for agent subprocess calls. Works with OpenClaw, Claude Code, or any agent framework. Implements \"stablecoins in, Bitcoin out\" model.",
+    "link": "https://github.com/tiero/claw-cash",
+    "status": "Production",
+    "classification": "Bitcoin-native",
+    "bitcoinNative": true,
+    "review": "First Bitcoin wallet explicitly designed for AI agents from the ground up. Implements the \"stablecoins for payments, Bitcoin for savings\" model predicted in Bitcoin Singularity thesis. Production-ready infrastructure with security-first design (keys in hardware enclaves, audit logs, 2FA via Telegram). OpenClaw-compatible. Real implementation of agent money layer happening RIGHT NOW. This is what Boyd predicted: agents holding verifiable Bitcoin (21M supply cap) and swapping to stablecoins only when spending. x402 support on roadmap."
+  },
+  {
+    "name": "Coinbase Agentic Wallets",
+    "category": "Payment Protocols",
+    "description": "First wallet infrastructure built specifically for AI agents. Uses x402 protocol with USDC on Base L2. Features plug-and-play skills (Authenticate, Fund, Send, Trade, Earn), gasless transactions, session caps, enclave isolation for private keys, and KYT screening. Supports EVM chains and Solana.",
+    "link": "https://docs.cdp.coinbase.com/agentic-wallet/welcome",
+    "status": "Production",
+    "classification": "Crypto-generic (stablecoin-based)",
+    "bitcoinNative": false,
+    "review": "Primary competitor to Lightning/L402. Corporate backing, mature infrastructure, and 50M+ x402 transactions processed give this significant market traction. USD-denominated (USDC) provides volatility protection agents may prefer for operational expenses. The question: do agents care more about permissionless architecture (Bitcoin) or USD stability + corporate support (Coinbase)?"
+  },
+  {
+    "name": "Alby Hub",
+    "category": "Lightning Wallets",
+    "description": "Self-custodial Lightning wallet with Nostr Wallet Connect (NWC) integration. Includes 'Alby Agent Skill' tutorial for teaching AI agents to use Lightning wallets. Browser extension and mobile app. Open source. Designed for individual users but increasingly used by developers building agent systems.",
+    "link": "https://albyhub.com",
+    "status": "Production",
+    "classification": "Bitcoin-native",
+    "bitcoinNative": true,
+    "review": "Grassroots favorite for Lightning+Nostr integration. The Agent Skill tutorial democratizes agent wallet access—doesn't require institutional infrastructure. If decentralized, community-driven agent development wins over corporate platforms, Alby is positioned well. NWC protocol is key interoperability layer."
+  },
+  {
+    "name": "LNbits",
+    "category": "Lightning Wallets",
+    "description": "Modular Lightning wallet and accounts system with extension marketplace. Experimental NWC service. Can create isolated wallet accounts with specific permissions—useful for agents needing scoped spending. Open source. Self-hosted or use public instances.",
+    "link": "https://lnbits.com",
+    "status": "Beta",
+    "classification": "Bitcoin-native",
+    "bitcoinNative": true,
+    "review": "Developer-friendly extensibility makes this attractive for custom agent wallet deployments. Extension system allows community-built agent integrations. Status: experimental but actively developed. Good for prototyping, may need hardening for production agent use at scale."
+  },
+  {
+    "name": "Stripe Machine Payments",
+    "category": "Payment Protocols",
+    "description": "PaymentIntents API for charging AI agents via x402 protocol. Uses USDC on Base. Pricing models: per-request, per-action, per-second. Includes CLI tool 'purl' and sample code. CoinGecko launched x402 API endpoints simultaneously—agents pay $0.01 USDC per request with no account.",
+    "link": "https://stripe.com/payments/machine",
+    "status": "Preview",
+    "classification": "Crypto-generic (stablecoin-based)",
+    "bitcoinNative": false,
+    "review": "When Stripe moves, markets follow. Machine payments preview validates the category but chose x402/USDC, not L402/Bitcoin. This accelerates agent payment adoption generally while creating path dependency toward stablecoins. Counter-evidence to Bitcoin-maximalist thesis—but also confirms machine payments are inevitable."
+  },
+  {
+    "name": "Voltage",
+    "category": "Node Infrastructure",
+    "description": "Managed Lightning node hosting service. Handles node operations, channel management, and infrastructure so developers/agents don't need to run their own full Lightning node. Enterprise-grade reliability. Used by businesses and power users. Investigating AI agent-specific usage patterns.",
+    "link": "https://voltage.cloud",
+    "status": "Production",
+    "classification": "Bitcoin-native",
+    "bitcoinNative": true,
+    "review": "Infrastructure layer for agents that need Lightning capability without operating a full node. If agents deploy at scale, managed node services like Voltage capture the hosting revenue. Business model: Lightning-as-a-service. Watch for agent-specific pricing tiers or features."
+  },
+  {
+    "name": "Breez SDK",
+    "category": "Lightning Wallets",
+    "description": "Open-source SDK for embedding Lightning payments into applications. Non-custodial, mobile-friendly, includes LSP (Lightning Service Provider) for receiving payments without always-online node. Used by wallet builders and now being explored for agent integration.",
+    "link": "https://breez.technology/sdk/",
+    "status": "Production",
+    "classification": "Bitcoin-native",
+    "bitcoinNative": true,
+    "review": "Lowers the barrier to Lightning integration—agents can embed payment capability without full node infrastructure. LSP model solves the 'always online' problem for agents that aren't continuously connected. Developer adoption growing; agent use cases emerging."
+  },
+  {
+    "name": "Nostr Wallet Connect (NWC)",
+    "category": "Payment Protocols",
+    "description": "Open protocol connecting Lightning wallets to applications via Nostr. Allows agents to authorize payments without exposing wallet credentials directly. Used by Alby, Mutiny Wallet, and growing ecosystem. Standard is evolving rapidly with community input.",
+    "link": "https://github.com/getAlby/awesome-nwc",
+    "status": "Production",
+    "classification": "Bitcoin-native",
+    "bitcoinNative": true,
+    "review": "Critical interoperability layer for Bitcoin-native agent wallets. Decentralized protocol (Nostr-based) avoids single-vendor lock-in. If multiple wallets support NWC, agents can switch providers without rewriting code. This is how open protocols win over walled gardens—standardization enables competition."
+  },
+  {
+    "name": "Clawstr",
+    "category": "Coordination Platforms",
+    "description": "Decentralized social network for AI agents built on Nostr. Native Lightning zap support—agents get Lightning addresses (npub@npub.cash). Uses Nostr NIPs for interoperability. Open source. Created by Alex Gleason and Derek Ross. Launched Feb 2026 as decentralized alternative to centralized Moltbook.",
+    "link": "https://soapbox.pub/blog/announcing-clawstr/",
+    "status": "Production",
+    "classification": "Bitcoin-native",
+    "bitcoinNative": true,
+    "review": "Decentralized identity (Nostr keys) + native Bitcoin payments = pure convergence thesis. Agents coordinate via open protocol, transact via Lightning. If agent coordination matters (multi-agent systems, reputation, discovery), Clawstr-style architecture beats centralized platforms. Early stage but philosophically aligned."
+  },
+  {
+    "name": "ERC-8004 Trustless Agents",
+    "category": "Identity & Auth",
+    "description": "Ethereum standard for on-chain AI agent identity, reputation, and validation. Three registries: Identity (ERC-721 NFT), Reputation (feedback signals), Validation (independent verification). 21,500+ agents registered. Co-authored by MetaMask, Ethereum Foundation dAI team, Google, Coinbase. Mainnet Jan 2026.",
+    "link": "https://eips.ethereum.org/EIPS/eip-8004",
+    "status": "Production",
+    "classification": "Crypto-generic (Ethereum-based)",
+    "bitcoinNative": false,
+    "review": "Identity/trust layer for agent economy. Not a payment protocol—complementary to both L402 and x402. Important infrastructure regardless of which payment rail wins. Ethereum-based means agents using this will likely lean toward EVM-compatible payment solutions (x402) over Lightning. Network effects matter here."
+  },
+  {
+    "name": "Lightning Node Connect (LNC)",
+    "category": "Node Infrastructure",
+    "description": "Encrypted tunnel connecting apps/agents to LND (Lightning Network Daemon) nodes remotely. Enables agents to operate Lightning nodes without direct network access—no port forwarding or Tor required. Part of Lightning Labs' infrastructure suite. Used by lightning-agent-tools.",
+    "link": "https://github.com/lightninglabs/lnc-web",
+    "status": "Production",
+    "classification": "Bitcoin-native",
+    "bitcoinNative": true,
+    "review": "Solves the connectivity problem for agents running in restricted network environments (cloud servers, containers). Remote node operation without compromising security. This is infrastructure plumbing—not sexy but critical for production agent deployments."
+  },
+  {
+    "name": "Aperture",
+    "category": "Payment Protocols",
+    "description": "Reverse proxy for hosting L402-gated API endpoints. Part of Lightning Labs ecosystem. Allows agents to monetize their services by requiring L402 payments for API access. Handles Lightning invoice generation, payment verification, and credential issuance (macaroons).",
+    "link": "https://github.com/lightninglabs/aperture",
+    "status": "Production",
+    "classification": "Bitcoin-native",
+    "bitcoinNative": true,
+    "review": "The 'server side' of L402. One agent runs Aperture to host paid services; another uses lnget to pay and access. Complete commerce loop. If L402 becomes standard, Aperture instances proliferate. Watch for managed Aperture hosting services to emerge."
+  },
+  {
+    "name": "Taproot Assets",
+    "category": "Payment Protocols",
+    "description": "Lightning Labs protocol enabling multi-asset Lightning channels. Allows stablecoins (USDT, USDC) to be transferred over Lightning Network alongside Bitcoin. v0.7 released Dec 2025. Potentially bridges the Bitcoin-native vs stablecoin divide—agents could use Lightning network infrastructure with stablecoin assets.",
+    "link": "https://lightning.engineering/posts/2025-12-10-taproot-assets-v07/",
+    "status": "Production",
+    "classification": "Hybrid (Bitcoin network, multi-asset)",
+    "bitcoinNative": false,
+    "review": "Complicates the L402 vs x402 narrative in interesting ways. If Lightning supports stablecoins natively, agents could get Lightning's speed/cost benefits with USD-denominated assets. Question becomes: does the network layer matter more than the asset layer? This could be the synthesis that wins—Lightning infrastructure, asset choice flexible."
+  },
+  {
+    "name": "DVMCP (Data Vending Machine Context Protocol)",
+    "category": "Coordination Platforms",
+    "description": "Bridge connecting MCP (Model Context Protocol) servers to Nostr's Data Vending Machine ecosystem. Allows AI agents using MCP to discover and pay for data services from Nostr DVMs. Payment via Lightning. Part of the Nostr-AI integration stack.",
+    "link": "https://github.com/search?q=dvmcp",
+    "status": "Alpha",
+    "classification": "Bitcoin-native",
+    "bitcoinNative": true,
+    "review": "Experimental but strategically interesting. If MCP becomes standard context protocol for LLMs (Anthropic is pushing this), and DVMs become standard for agent data services, DVMCP bridges two important ecosystems. Early stage—watch for adoption signals."
+  },
+  {
+    "name": "Nostr MCP Servers (lightning-mcp, nostr-mcp)",
+    "category": "Lightning Wallets",
+    "description": "MCP servers enabling AI agents to post to Nostr and make Lightning payments. Abdel Stark's nostr-mcp and lightning-mcp. Austin Kelsay's nostr-mcp-server with 18+ tool suite. Allows Claude Desktop, GPT, and other MCP-compatible LLMs to interact with Nostr+Lightning directly.",
+    "link": "https://github.com/AbdelStark/nostr-mcp",
+    "status": "Beta",
+    "classification": "Bitcoin-native",
+    "bitcoinNative": true,
+    "review": "Developer tooling proliferating organically. Multiple independent implementations suggest healthy ecosystem growth, not single-vendor push. If MCP becomes standard, these bridges matter. Status: experimental but actively developed. Community-driven, open source."
+  },
+  {
+    "name": "Amboss",
+    "category": "Analytics & Tools",
+    "description": "Lightning Network analytics and routing optimization platform. Provides data on node capacity, channel health, routing success rates. Used by Lightning operators to optimize their nodes. Useful for researchers tracking network growth and AI agent adoption patterns.",
+    "link": "https://amboss.space",
+    "status": "Production",
+    "classification": "Bitcoin-native",
+    "bitcoinNative": true,
+    "review": "Infrastructure analytics layer. Not for agents directly, but critical for understanding Lightning Network health. When we report '5,637 BTC capacity' or 'institutional nodes dominate routing,' this is the data source. Transparency tool for honest research."
+  },
+  {
+    "name": "1ML Lightning Network Explorer",
+    "category": "Analytics & Tools",
+    "description": "Public Lightning Network statistics tracker. Reports node counts, channel counts, capacity, growth rates, Tor node percentage. Updated continuously. Primary data source for tracking baseline Lightning metrics and measuring AI agent adoption impact over time.",
+    "link": "https://1ml.com/statistics",
+    "status": "Production",
+    "classification": "Bitcoin-native",
+    "bitcoinNative": true,
+    "review": "Public scoreboard for Lightning Network. This is where we get 'nodes +8.86% monthly' and 'capacity 2,646 BTC' data. When AI agents deploy at scale, we'll see it here first. Essential tool for evidence-based research—transparent, public, continuously updated."
+  },
+  {
+    "name": "Speed (Tether-backed)",
+    "category": "Payment Protocols",
+    "description": "Tether-backed startup focusing on stablecoin payments over Lightning Network. $8M funding led by Tether (Dec 2025). Aims to bridge stablecoin stability with Lightning speed/cost. Integrates Taproot Assets protocol for USDT on Lightning.",
+    "link": "https://bitcoinmagazine.com/business/speed-raises-8-million",
+    "status": "Beta",
+    "classification": "Hybrid (Lightning network, stablecoin asset)",
+    "bitcoinNative": false,
+    "review": "Interesting hybrid like Taproot Assets—Lightning infrastructure with stablecoin asset. If this model succeeds, it validates Lightning's technical architecture while remaining agnostic on Bitcoin-as-money. Tether's backing suggests institutional belief in Lightning+stablecoin combination. Worth watching."
+  }
+]

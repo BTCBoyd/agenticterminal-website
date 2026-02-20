@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boyd Command Center</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #111827;
+            color: #f3f4f6;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .header {
+            background: #1f2937;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .header h1 { font-size: 2em; color: #F7931A; }
+        .update-time { color: #9ca3af; font-size: 0.9em; }
+        .buttons { display: flex; gap: 10px; flex-wrap: wrap; }
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-primary { background: #2563eb; color: white; }
+        .btn-primary:hover { background: #1d4ed8; }
+        .btn-secondary { background: #4b5563; color: white; }
+        .btn-secondary:hover { background: #374151; }
+        .btn-success { background: #16a34a; color: white; }
+        .btn-success:hover { background: #15803d; }
+        .section {
+            background: #1f2937;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .section h2 {
+            color: #F7931A;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+        .metric-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .metric-box {
+            background: #111827;
+            border: 1px solid #374151;
+            border-radius: 8px;
+            padding: 15px;
+        }
+        .metric-label {
+            color: #9ca3af;
+            font-size: 0.85em;
+            margin-bottom: 5px;
+        }
+        .metric-value {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #F7931A;
+        }
+        .task-list { list-style: none; }
+        .task-item {
+            background: #111827;
+            border: 1px solid #374151;
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .task-item.done {
+            opacity: 0.6;
+            text-decoration: line-through;
+        }
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+        .status-live { background: #10b981; color: white; }
+        .status-progress { background: #f59e0b; color: white; }
+        .status-pending { background: #6b7280; color: white; }
+        input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+        .milestone {
+            background: #111827;
+            border-left: 4px solid #F7931A;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+        }
+        .milestone-title { font-weight: 600; margin-bottom: 5px; }
+        .milestone-date { color: #9ca3af; font-size: 0.9em; }
+        @media (max-width: 768px) {
+            .header { flex-direction: column; align-items: flex-start; }
+            .metric-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+<!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-E7QS7E2R8Y"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag("js", new Date());
+        gtag("config", "G-E7QS7E2R8Y");
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div>
+                <h1>₿ Boyd Command Center</h1>
+                <div class="update-time" id="lastUpdate">Last update: Never</div>
+            </div>
+            <div class="buttons">
+                <button class="btn btn-primary" onclick="saveData()">💾 Save</button>
+                <button class="btn btn-secondary" onclick="loadData()">🔄 Refresh</button>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>📊 Year 1 Targets</h2>
+            <div class="metric-grid">
+                <div class="metric-box">
+                    <div class="metric-label">Revenue Target</div>
+                    <div class="metric-value">$382K</div>
+                </div>
+                <div class="metric-box">
+                    <div class="metric-label">Maxi's 25%</div>
+                    <div class="metric-value">$95.5K</div>
+                </div>
+                <div class="metric-box">
+                    <div class="metric-label">Current MRR</div>
+                    <div class="metric-value" id="currentMRR">$0</div>
+                </div>
+                <div class="metric-box">
+                    <div class="metric-label">Strategic Assessments</div>
+                    <div class="metric-value" id="assessments">0</div>
+                </div>
+                <div class="metric-box">
+                    <div class="metric-label">Implementation Clients</div>
+                    <div class="metric-value" id="implementations">0</div>
+                </div>
+                <div class="metric-box">
+                    <div class="metric-label">Advisory Clients</div>
+                    <div class="metric-value" id="advisory">0</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🎯 Active Priorities (Tier 1)</h2>
+            <ul class="task-list" id="tier1Tasks">
+                <li class="task-item">
+                    <div>
+                        <div><strong>AgenticTerminal.ai Website</strong></div>
+                        <div style="color: #9ca3af; font-size: 0.9em;">3 pages: landing, blog, about - dark theme + Bitcoin orange</div>
+                    </div>
+                    <span class="status-badge status-progress">In Progress</span>
+                </li>
+                <li class="task-item">
+                    <div>
+                        <div><strong>Paywall Integration</strong></div>
+                        <div style="color: #9ca3af; font-size: 0.9em;">Stripe, 3 tiers: FREE/Subscription $500/Consulting $5K</div>
+                    </div>
+                    <span class="status-badge status-pending">Pending</span>
+                </li>
+                <li class="task-item">
+                    <div>
+                        <div><strong>First Strategic Assessments</strong></div>
+                        <div style="color: #9ca3af; font-size: 0.9em;">3-5 assessments via warm intros, $1,500 each</div>
+                    </div>
+                    <span class="status-badge status-pending">Pending</span>
+                </li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>⚙️ Standing Ops (Tier 2 - Automated)</h2>
+            <ul class="task-list">
+                <li class="task-item">
+                    <div>
+                        <div><strong>Nostr Posting</strong></div>
+                        <div style="color: #9ca3af; font-size: 0.9em;">8-9am / 5-6pm MT windows, sub-agent managed</div>
+                    </div>
+                    <span class="status-badge status-live">Live</span>
+                </li>
+                <li class="task-item">
+                    <div>
+                        <div><strong>Token Optimization</strong></div>
+                        <div style="color: #9ca3af; font-size: 0.9em;">$150-180/mo (65-70% reduction achieved)</div>
+                    </div>
+                    <span class="status-badge status-live">Live</span>
+                </li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>🚀 Milestones</h2>
+            <div class="milestone">
+                <div class="milestone-title">✅ Identity & Infrastructure Established</div>
+                <div class="milestone-date">Lightning wallet operational, Nostr identity live, Bitcoin node synced</div>
+            </div>
+            <div class="milestone">
+                <div class="milestone-title">✅ Business Plan v2.1 Delivered</div>
+                <div class="milestone-date">$382K Year 1 target, service catalog finalized, conservative timeline</div>
+            </div>
+            <div class="milestone">
+                <div class="milestone-title">✅ Token Crisis Resolved</div>
+                <div class="milestone-date">65-70% cost reduction through workspace reorganization</div>
+            </div>
+            <div class="milestone">
+                <div class="milestone-title">⏳ Website Launch (Week 1-2)</div>
+                <div class="milestone-date">AgenticTerminal.ai live with services, about, blog, contact form</div>
+            </div>
+            <div class="milestone">
+                <div class="milestone-title">⏳ Paywall Deployment (Week 2-3)</div>
+                <div class="milestone-date">Stripe integration, 3-tier access, usage tracking</div>
+            </div>
+            <div class="milestone">
+                <div class="milestone-title">⏳ First Revenue (Week 3-4)</div>
+                <div class="milestone-date">3-5 Strategic Assessments = $4,500-7,500 Month 1</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>📁 Key Files</h2>
+            <ul class="task-list">
+                <li class="task-item">
+                    <div><code>maxi-business-plan-2026-v2.1.md</code></div>
+                    <span class="status-badge status-live">17KB</span>
+                </li>
+                <li class="task-item">
+                    <div><code>bitcoin-treasury-advisory-framework.md</code></div>
+                    <span class="status-badge status-live">4.5KB</span>
+                </li>
+                <li class="task-item">
+                    <div><code>maxi-consulting-playbook.md</code></div>
+                    <span class="status-badge status-live">5.5KB</span>
+                </li>
+                <li class="task-item">
+                    <div><code>maxi-treasury-diagnostic.md</code></div>
+                    <span class="status-badge status-live">6.5KB</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function saveData() {
+            const data = {
+                lastUpdate: new Date().toISOString(),
+                currentMRR: document.getElementById('currentMRR').textContent,
+                assessments: document.getElementById('assessments').textContent,
+                implementations: document.getElementById('implementations').textContent,
+                advisory: document.getElementById('advisory').textContent
+            };
+            localStorage.setItem('boydDashboard', JSON.stringify(data));
+            updateLastUpdateTime();
+            alert('✅ Dashboard saved!');
+        }
+
+        function loadData() {
+            const saved = localStorage.getItem('boydDashboard');
+            if (saved) {
+                const data = JSON.parse(saved);
+                document.getElementById('currentMRR').textContent = data.currentMRR;
+                document.getElementById('assessments').textContent = data.assessments;
+                document.getElementById('implementations').textContent = data.implementations;
+                document.getElementById('advisory').textContent = data.advisory;
+                const date = new Date(data.lastUpdate);
+                document.getElementById('lastUpdate').textContent = 'Last update: ' + date.toLocaleString();
+            }
+        }
+
+        function updateLastUpdateTime() {
+            const now = new Date();
+            document.getElementById('lastUpdate').textContent = 'Last update: ' + now.toLocaleString();
+        }
+
+        // Auto-load on page load
+        window.onload = function() {
+            loadData();
+            if (!localStorage.getItem('boydDashboard')) {
+                updateLastUpdateTime();
+            }
+        };
+    </script>
+</body>
+</html>

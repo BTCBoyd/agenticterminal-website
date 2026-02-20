@@ -1,0 +1,21 @@
+# Development
+node_modules/
+.DS_Store
+*.log
+.env
+.env.local
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Testing
+test-local.sh
+*.test.html
+
+# Temporary files
+*.tmp
+.cache/

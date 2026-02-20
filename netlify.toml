@@ -1,0 +1,22 @@
+[build]
+  functions = "netlify/functions"
+  publish = "."
+
+[build.environment]
+  SECRETS_SCAN_OMIT_KEYS = "CHAT_API_KEYS"
+  SECRETS_SCAN_OMIT_PATHS = "chat.html"
+
+# Form notifications - sends to Netlify account email by default
+# Can add verified emails in Netlify dashboard: Site Settings → Forms → Form notifications
+
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"

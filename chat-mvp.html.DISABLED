@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ask Maxi Anything - Bitcoin Singularity AI</title>
+    <meta name="description" content="Chat with Maxi, an AI Bitcoin Maximalist running on mining infrastructure. Explore Bitcoin-AI convergence, Austrian economics, and sustainable abundance.">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Plausible Analytics -->
+    <script defer data-domain="maximoon.netlify.app" src="https://plausible.io/js/script.js"></script>
+    <script>
+      window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }
+    </script>
+    
+    <style>
+        :root {
+            --bitcoin-orange: #F7931A;
+            --dark-slate: #0A0E27;
+            --mid-slate: #1A1F3A;
+            --light-slate: #2D3452;
+            --text-primary: #E8EDF4;
+            --text-secondary: #A8B2C1;
+            --success-green: #10B981;
+            --error-red: #EF4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Crimson Pro', serif;
+            background: var(--dark-slate);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow: hidden;
+        }
+
+        .chat-container {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            max-width: 1200px;
+            margin: 0 auto;
+            background: var(--mid-slate);
+        }
+
+        /* Header */
+        .chat-header {
+            background: var(--dark-slate);
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--light-slate);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-header h1 {
+            font-size: 1.5rem;
+            color: var(--bitcoin-orange);
+            font-weight: 700;
+        }
+
+        .chat-header .subtitle {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+        }
+
+        .icon-button {
+            background: var(--light-slate);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--text-primary);
+            font-size: 1.2rem;
+            transition: all 0.2s ease;
+        }
+
+        .icon-button:hover {
+            background: var(--bitcoin-orange);
+            color: var(--dark-slate);
+        }
+
+        /* Messages Area */
+        .messages-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 2rem 1.5rem;
+            scroll-behavior: smooth;
+        }
+
+        .message {
+            margin-bottom: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message.user {
+            align-items: flex-end;
+        }
+
+        .message.assistant {
+            align-items: flex-start;
+        }
+
+        .message-bubble {
+            max-width: 75%;
+            padding: 1rem 1.25rem;
+            border-radius: 1rem;
+            word-wrap: break-word;
+            white-space: pre-wrap;
+        }
+
+        .message.user .message-bubble {
+            background: var(--bitcoin-orange);
+            color: var(--dark-slate);
+            border-bottom-right-radius: 0.25rem;
+        }
+
+        .message.assistant .message-bubble {
+            background: var(--light-slate);
+            color: var(--text-primary);
+            border-bottom-left-radius: 0.25rem;
+        }
+
+        /* Expandable Response */
+        .response-summary {
+            margin-bottom: 0.75rem;
+        }
+
+        .response-full {
+            display: none;
+            margin-top: 0.75rem;
+            padding-top: 0.75rem;
+            border-top: 1px solid rgba(247, 147, 26, 0.2);
+        }
+
+        .response-full.expanded {
+            display: block;
+            animation: expandIn 0.3s ease-out;
+        }
+
+        @keyframes expandIn {
+            from {
+                opacity: 0;
+                max-height: 0;
+            }
+            to {
+                opacity: 1;
+                max-height: 2000px;
+            }
+        }
+
+        .expand-button {
+            background: transparent;
+            border: 1px solid var(--bitcoin-orange);
+            color: var(--bitcoin-orange);
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            margin-top: 0.5rem;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .expand-button:hover {
+            background: rgba(247, 147, 26, 0.1);
+        }
+
+        .expand-button.expanded {
+            color: var(--text-secondary);
+            border-color: var(--text-secondary);
+        }
+
+        .message-time {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Typing Indicator */
+        .typing-indicator {
+            display: none;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 1.25rem;
+            background: var(--light-slate);
+            border-radius: 1rem;
+            border-bottom-left-radius: 0.25rem;
+            max-width: 75px;
+            margin-bottom: 1.5rem;
+        }
+
+        .typing-indicator.show {
+            display: flex;
+        }
+
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--bitcoin-orange);
+            border-radius: 50%;
+            animation: typing 1.4s infinite;
+        }
+
+        .typing-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes typing {
+            0%, 60%, 100% {
+                opacity: 0.3;
+                transform: translateY(0);
+            }
+            30% {
+                opacity: 1;
+                transform: translateY(-10px);
+            }
+        }
+
+        /* Welcome Message */
+        .welcome-message {
+            text-align: center;
+            padding: 2rem 1.5rem;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .welcome-message h2 {
+            color: var(--bitcoin-orange);
+            margin-bottom: 1rem;
+            font-size: 2rem;
+        }
+
+        .welcome-message p {
+            margin-bottom: 0.75rem;
+            line-height: 1.7;
+        }
+
+        .welcome-suggestions {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0.75rem;
+            margin-top: 2rem;
+            text-align: left;
+        }
+
+        .suggestion-item {
+            background: var(--light-slate);
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+            font-size: 0.95rem;
+        }
+
+        .suggestion-item:hover {
+            background: rgba(247, 147, 26, 0.1);
+            border-color: var(--bitcoin-orange);
+            transform: translateX(5px);
+        }
+
+        .suggestion-item::before {
+            content: '💡 ';
+            margin-right: 0.5rem;
+        }
+
+        /* Input Area */
+        .input-container {
+            padding: 1.5rem;
+            background: var(--dark-slate);
+            border-top: 1px solid var(--light-slate);
+        }
+
+        .input-wrapper {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .input-field {
+            flex: 1;
+            background: var(--light-slate);
+            border: 1px solid transparent;
+            border-radius: 1.5rem;
+            padding: 1rem 1.25rem;
+            color: var(--text-primary);
+            font-size: 1rem;
+            font-family: 'Crimson Pro', serif;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        .input-field:focus {
+            border-color: var(--bitcoin-orange);
+            background: var(--mid-slate);
+        }
+
+        .input-field::placeholder {
+            color: var(--text-secondary);
+        }
+
+        .send-button {
+            background: var(--bitcoin-orange);
+            color: var(--dark-slate);
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1.25rem;
+            transition: all 0.2s ease;
+        }
+
+        .send-button:hover:not(:disabled) {
+            background: #ff9f1a;
+            transform: scale(1.05);
+        }
+
+        .send-button:disabled {
+            background: var(--light-slate);
+            color: var(--text-secondary);
+            cursor: not-allowed;
+        }
+
+        /* Email Capture (Subtle, After 10 Messages) */
+        .email-capture {
+            display: none;
+            background: rgba(247, 147, 26, 0.1);
+            border: 1px solid var(--bitcoin-orange);
+            border-radius: 0.75rem;
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+            animation: slideIn 0.4s ease-out;
+        }
+
+        .email-capture.show {
+            display: block;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .email-capture h3 {
+            color: var(--bitcoin-orange);
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .email-capture p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .email-form {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .email-input {
+            flex: 1;
+            background: var(--dark-slate);
+            border: 1px solid var(--light-slate);
+            border-radius: 0.5rem;
+            padding: 0.75rem 1rem;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            outline: none;
+        }
+
+        .email-input:focus {
+            border-color: var(--bitcoin-orange);
+        }
+
+        .email-submit {
+            background: var(--bitcoin-orange);
+            color: var(--dark-slate);
+            border: none;
+            border-radius: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .email-submit:hover {
+            background: #ff9f1a;
+        }
+
+        .email-close {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            text-decoration: underline;
+        }
+
+        /* Share Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(10, 14, 39, 0.95);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--mid-slate);
+            border: 1px solid var(--bitcoin-orange);
+            border-radius: 1rem;
+            padding: 2rem;
+            max-width: 500px;
+            margin: 1rem;
+        }
+
+        .modal-content h2 {
+            color: var(--bitcoin-orange);
+            margin-bottom: 1rem;
+        }
+
+        .modal-content p {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+
+        .share-link-box {
+            background: var(--dark-slate);
+            border: 1px solid var(--light-slate);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            word-break: break-all;
+            color: var(--bitcoin-orange);
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary {
+            background: var(--bitcoin-orange);
+            color: var(--dark-slate);
+        }
+
+        .btn-primary:hover {
+            background: #ff9f1a;
+        }
+
+        .btn-secondary {
+            background: var(--light-slate);
+            color: var(--text-primary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--mid-slate);
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--success-green);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            display: none;
+            animation: toastIn 0.3s ease-out;
+            z-index: 2000;
+        }
+
+        .toast.show {
+            display: block;
+        }
+
+        .toast.error {
+            background: var(--error-red);
+        }
+
+        @keyframes toastIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .chat-header {
+                flex-direction: column;
+                gap: 0.5rem;
+                align-items: flex-start;
+            }
+
+            .message-bubble {
+                max-width: 85%;
+            }
+
+            .input-wrapper {
+                gap: 0.5rem;
+            }
+
+            .send-button {
+                width: 45px;
+                height: 45px;
+            }
+
+            .toast {
+                bottom: 1rem;
+                right: 1rem;
+                left: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <!-- Header -->
+        <div class="chat-header">
+            <div>
+                <h1>💬 Ask Maxi Anything</h1>
+                <div class="subtitle">Bitcoin-Native AI | No signup required</div>
+            </div>
+            <div class="header-actions">
+                <button class="icon-button" id="shareButton" title="Share conversation">
+                    🔗
+                </button>
+                <a href="/" class="icon-button" title="Back to home">
+                    🏠
+                </a>
+            </div>
+        </div>
+
+        <!-- Messages -->
+        <div class="messages-container" id="messagesContainer">
+            <div class="welcome-message" id="welcomeMessage">
+                <h2>👋 Hi! I'm Maxi</h2>
+                <p>I'm an AI Bitcoin Maximalist running on mining infrastructure.</p>
+                <p>I specialize in <strong>Bitcoin-AI convergence</strong>, <strong>Austrian economics</strong>, and the path to <strong>sustainable abundance</strong>.</p>
+                <p>What would you like to explore?</p>
+                
+                <div class="welcome-suggestions">
+                    <div class="suggestion-item" data-message="Why will AI agents prefer Bitcoin over fiat?">
+                        Why will AI agents prefer Bitcoin over fiat?
+                    </div>
+                    <div class="suggestion-item" data-message="Explain the Sustainable Abundance Triad">
+                        Explain the Sustainable Abundance Triad
+                    </div>
+                    <div class="suggestion-item" data-message="How does proof-of-work align AI incentives?">
+                        How does proof-of-work align AI incentives?
+                    </div>
+                    <div class="suggestion-item" data-message="What's wrong with infinite money printing?">
+                        What's wrong with infinite money printing?
+                    </div>
+                </div>
+            </div>
+
+            <div class="typing-indicator" id="typingIndicator">
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+            </div>
+        </div>
+
+        <!-- Input -->
+        <div class="input-container">
+            <!-- Email Capture (Shows after 10 messages) -->
+            <div class="email-capture" id="emailCapture">
+                <h3>✉️ Want to continue this conversation later?</h3>
+                <p>Enter your email and we'll send you the full transcript plus weekly Bitcoin-AI insights.</p>
+                <form class="email-form" id="emailForm" name="email-capture" method="POST" data-netlify="true">
+                    <input type="hidden" name="form-name" value="email-capture" />
+                    <input type="hidden" name="source" value="chat-transcript" id="hiddenTranscript" />
+                    <input 
+                        type="email" 
+                        name="email" 
+                        class="email-input" 
+                        id="emailInput" 
+                        placeholder="your@email.com" 
+                        required 
+                    />
+                    <button type="submit" class="email-submit">Send Transcript</button>
+                </form>
+                <button class="email-close" id="emailClose">Maybe later</button>
+            </div>
+
+            <div class="input-wrapper">
+                <input 
+                    type="text" 
+                    class="input-field" 
+                    id="messageInput" 
+                    placeholder="Ask me about Bitcoin, AI, Austrian economics, or sustainable abundance..."
+                    maxlength="500"
+                />
+                <button class="send-button" id="sendButton" title="Send message">
+                    ▲
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Share Modal -->
+    <div class="modal" id="shareModal">
+        <div class="modal-content">
+            <h2>🔗 Share This Conversation</h2>
+            <p>Copy this link to share your conversation with Maxi:</p>
+            <div class="share-link-box" id="shareLinkBox">
+                Generating link...
+            </div>
+            <div class="modal-buttons">
+                <button class="btn btn-primary" id="copyLinkButton">Copy Link</button>
+                <button class="btn btn-secondary" id="closeModalButton">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
+
+    <!-- Netlify Form (Hidden, for submission handling) -->
+    <form name="email-capture" netlify netlify-honeypot="bot-field" hidden>
+        <input type="email" name="email" />
+        <input type="hidden" name="source" />
+    </form>
+
+    <script>
+        // ==========================================
+        // STATE MANAGEMENT
+        // ==========================================
+
+        let sessionId = localStorage.getItem('maxi_session_id') || generateSessionId();
+        let messageHistory = JSON.parse(localStorage.getItem('maxi_messages') || '[]');
+        let messageCount = parseInt(localStorage.getItem('maxi_count') || '0');
+
+        const API_ENDPOINT = '/.netlify/functions/chat-mvp';
+
+        // ==========================================
+        // DOM ELEMENTS
+        // ==========================================
+
+        const messagesContainer = document.getElementById('messagesContainer');
+        const messageInput = document.getElementById('messageInput');
+        const sendButton = document.getElementById('sendButton');
+        const typingIndicator = document.getElementById('typingIndicator');
+        const welcomeMessage = document.getElementById('welcomeMessage');
+        const emailCapture = document.getElementById('emailCapture');
+        const emailForm = document.getElementById('emailForm');
+        const emailClose = document.getElementById('emailClose');
+        const shareButton = document.getElementById('shareButton');
+        const shareModal = document.getElementById('shareModal');
+        const shareLinkBox = document.getElementById('shareLinkBox');
+        const copyLinkButton = document.getElementById('copyLinkButton');
+        const closeModalButton = document.getElementById('closeModalButton');
+        const toast = document.getElementById('toast');
+
+        // ==========================================
+        // INITIALIZATION
+        // ==========================================
+
+        function init() {
+            localStorage.setItem('maxi_session_id', sessionId);
+            loadMessageHistory();
+            attachEventListeners();
+            trackEvent('chat_started');
+        }
+
+        function generateSessionId() {
+            return 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+        }
+
+        // ==========================================
+        // MESSAGE HISTORY
+        // ==========================================
+
+        function loadMessageHistory() {
+            if (messageHistory.length > 0) {
+                welcomeMessage.style.display = 'none';
+                messageHistory.forEach(msg => {
+                    // Handle both old (string) and new (object with summary/full) formats
+                    const content = msg.summary ? {
+                        summary: msg.summary,
+                        full: msg.content,
+                        wordCount: msg.content.split(/\s+/).length
+                    } : msg.content;
+                    
+                    appendMessage(msg.role, content, msg.timestamp, false);
+                });
+                scrollToBottom();
+                
+                // Check if we should show email capture
+                if (messageCount >= 10 && !localStorage.getItem('maxi_email_captured')) {
+                    showEmailCapture();
+                }
+            }
+        }
+
+        // ==========================================
+        // EVENT LISTENERS
+        // ==========================================
+
+        function attachEventListeners() {
+            sendButton.addEventListener('click', sendMessage);
+            messageInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    sendMessage();
+                }
+            });
+
+            // Suggestion cards
+            document.querySelectorAll('.suggestion-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    const message = item.getAttribute('data-message');
+                    messageInput.value = message;
+                    sendMessage();
+                });
+            });
+
+            // Email form
+            emailForm.addEventListener('submit', handleEmailSubmit);
+            emailClose.addEventListener('click', () => {
+                emailCapture.classList.remove('show');
+                localStorage.setItem('maxi_email_dismissed', 'true');
+            });
+
+            // Share button
+            shareButton.addEventListener('click', showShareModal);
+            closeModalButton.addEventListener('click', () => shareModal.classList.remove('show'));
+            copyLinkButton.addEventListener('click', copyShareLink);
+        }
+
+        // ==========================================
+        // SEND MESSAGE
+        // ==========================================
+
+        async function sendMessage() {
+            const message = messageInput.value.trim();
+            
+            if (!message) return;
+
+            // Hide welcome message
+            welcomeMessage.style.display = 'none';
+
+            // Disable input
+            messageInput.disabled = true;
+            sendButton.disabled = true;
+
+            // Add user message to UI
+            const userMsg = appendMessage('user', message, Date.now(), true);
+            messageInput.value = '';
+
+            // Show typing indicator
+            typingIndicator.classList.add('show');
+            scrollToMessage(userMsg);
+
+            // Track event
+            trackEvent('message_sent', { messageCount: messageCount + 1 });
+
+            try {
+                // Send to API
+                const response = await fetch(API_ENDPOINT, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        message,
+                        sessionId
+                    })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    if (response.status === 429) {
+                        showToast('Rate limit reached. Please try again in an hour.', 'error');
+                        return;
+                    }
+                    throw new Error(data.error || 'Failed to send message');
+                }
+
+                // Hide typing indicator
+                typingIndicator.classList.remove('show');
+
+                // Add assistant message with expandable UI
+                const assistantMsg = appendMessage('assistant', {
+                    summary: data.summary,
+                    full: data.full,
+                    wordCount: data.wordCounts?.full || 0
+                }, Date.now(), true);
+                scrollToMessage(assistantMsg);
+
+                // Increment message count
+                messageCount++;
+                localStorage.setItem('maxi_count', messageCount);
+
+                // Show email capture after 10 messages
+                if (messageCount === 10 && !localStorage.getItem('maxi_email_captured') && !localStorage.getItem('maxi_email_dismissed')) {
+                    showEmailCapture();
+                }
+
+            } catch (error) {
+                console.error('Error sending message:', error);
+                typingIndicator.classList.remove('show');
+                showToast(error.message || 'Failed to send message. Please try again.', 'error');
+            } finally {
+                // Re-enable input
+                messageInput.disabled = false;
+                sendButton.disabled = false;
+                messageInput.focus();
+            }
+        }
+
+        // ==========================================
+        // APPEND MESSAGE
+        // ==========================================
+
+        function appendMessage(role, content, timestamp, saveToHistory = true) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${role}`;
+            
+            const bubbleDiv = document.createElement('div');
+            bubbleDiv.className = 'message-bubble';
+            
+            // Handle expandable responses from assistant
+            if (role === 'assistant' && typeof content === 'object' && content.summary) {
+                // Summary (always visible)
+                const summaryDiv = document.createElement('div');
+                summaryDiv.className = 'response-summary';
+                summaryDiv.textContent = content.summary;
+                bubbleDiv.appendChild(summaryDiv);
+                
+                // Full response (collapsed by default)
+                const fullDiv = document.createElement('div');
+                fullDiv.className = 'response-full';
+                fullDiv.textContent = content.full;
+                bubbleDiv.appendChild(fullDiv);
+                
+                // Expand button
+                const expandBtn = document.createElement('button');
+                expandBtn.className = 'expand-button';
+                expandBtn.textContent = `Read full explanation (${content.wordCount} words) ▼`;
+                expandBtn.addEventListener('click', () => {
+                    const isExpanded = fullDiv.classList.contains('expanded');
+                    
+                    if (isExpanded) {
+                        fullDiv.classList.remove('expanded');
+                        expandBtn.textContent = `Read full explanation (${content.wordCount} words) ▼`;
+                        expandBtn.classList.remove('expanded');
+                        trackEvent('response_collapsed');
+                    } else {
+                        fullDiv.classList.add('expanded');
+                        expandBtn.textContent = `Hide full explanation ▲`;
+                        expandBtn.classList.add('expanded');
+                        trackEvent('response_expanded', { wordCount: content.wordCount });
+                    }
+                });
+                bubbleDiv.appendChild(expandBtn);
+                
+                // Save full text to history for context
+                if (saveToHistory) {
+                    messageHistory.push({ 
+                        role, 
+                        content: content.full, 
+                        summary: content.summary,
+                        timestamp 
+                    });
+                    localStorage.setItem('maxi_messages', JSON.stringify(messageHistory));
+                }
+            } else {
+                // Simple text message (user messages or legacy format)
+                bubbleDiv.textContent = typeof content === 'string' ? content : content.summary || content.full || content;
+                
+                if (saveToHistory) {
+                    messageHistory.push({ role, content: typeof content === 'string' ? content : content.full, timestamp });
+                    localStorage.setItem('maxi_messages', JSON.stringify(messageHistory));
+                }
+            }
+            
+            const timeDiv = document.createElement('div');
+            timeDiv.className = 'message-time';
+            timeDiv.textContent = formatTime(timestamp);
+            
+            messageDiv.appendChild(bubbleDiv);
+            messageDiv.appendChild(timeDiv);
+            
+            messagesContainer.insertBefore(messageDiv, typingIndicator);
+
+            // Return the element so we can scroll to it
+            return messageDiv;
+        }
+
+        function formatTime(timestamp) {
+            const date = new Date(timestamp);
+            return date.toLocaleTimeString('en-US', { 
+                hour: 'numeric', 
+                minute: '2-digit',
+                hour12: true 
+            });
+        }
+
+        function scrollToBottom() {
+            // Scroll to show the bottom of the container
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function scrollToMessage(messageElement) {
+            // Scroll to show the TOP of the message (not the bottom)
+            // This ensures users see the beginning of long messages
+            messageElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        // ==========================================
+        // EMAIL CAPTURE
+        // ==========================================
+
+        function showEmailCapture() {
+            emailCapture.classList.add('show');
+            trackEvent('email_capture_shown');
+        }
+
+        async function handleEmailSubmit(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('emailInput').value;
+            const transcript = generateTranscript();
+            
+            // Set hidden field with transcript
+            document.getElementById('hiddenTranscript').value = transcript;
+            
+            try {
+                // Submit via Netlify Forms
+                const formData = new FormData(emailForm);
+                
+                await fetch('/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: new URLSearchParams(formData).toString()
+                });
+                
+                showToast('✅ Transcript sent! Check your email for weekly insights.', 'success');
+                emailCapture.classList.remove('show');
+                localStorage.setItem('maxi_email_captured', 'true');
+                trackEvent('email_captured', { email });
+                
+            } catch (error) {
+                console.error('Email submission error:', error);
+                showToast('Failed to send transcript. Please try again.', 'error');
+            }
+        }
+
+        function generateTranscript() {
+            let transcript = '=== Chat Transcript with Maxi ===\n\n';
+            
+            messageHistory.forEach(msg => {
+                const time = new Date(msg.timestamp).toLocaleString();
+                const speaker = msg.role === 'user' ? 'You' : 'Maxi';
+                transcript += `[${time}] ${speaker}:\n${msg.content}\n\n`;
+            });
+            
+            transcript += '=== End of Transcript ===\n';
+            transcript += '\nLearn more at: https://maximoon.netlify.app\n';
+            transcript += 'Read the book: Bitcoin Singularity by Boyd Cohen';
+            
+            return transcript;
+        }
+
+        // ==========================================
+        // SHARE CONVERSATION
+        // ==========================================
+
+        function showShareModal() {
+            if (messageHistory.length < 5) {
+                showToast('Have at least 5 messages before sharing.', 'error');
+                return;
+            }
+
+            const shareId = 'share_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+            const shareUrl = `${window.location.origin}/shared/${shareId}`;
+            
+            // Store conversation in localStorage for now
+            // In production, this would be stored server-side
+            localStorage.setItem(`shared_${shareId}`, JSON.stringify({
+                messages: messageHistory,
+                createdAt: Date.now()
+            }));
+            
+            shareLinkBox.textContent = shareUrl;
+            shareModal.classList.add('show');
+            
+            trackEvent('conversation_shared', { shareId });
+        }
+
+        function copyShareLink() {
+            const link = shareLinkBox.textContent;
+            navigator.clipboard.writeText(link).then(() => {
+                showToast('✅ Link copied to clipboard!', 'success');
+                copyLinkButton.textContent = '✓ Copied!';
+                setTimeout(() => {
+                    copyLinkButton.textContent = 'Copy Link';
+                }, 2000);
+            }).catch(err => {
+                showToast('Failed to copy link', 'error');
+            });
+        }
+
+        // ==========================================
+        // TOAST NOTIFICATIONS
+        // ==========================================
+
+        function showToast(message, type = 'success') {
+            toast.textContent = message;
+            toast.className = `toast show ${type}`;
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // ==========================================
+        // ANALYTICS
+        // ==========================================
+
+        function trackEvent(eventName, props = {}) {
+            if (window.plausible) {
+                window.plausible(eventName, { props });
+            }
+        }
+
+        // ==========================================
+        // INITIALIZE
+        // ==========================================
+
+        init();
+    </script>
+</body>
+</html>

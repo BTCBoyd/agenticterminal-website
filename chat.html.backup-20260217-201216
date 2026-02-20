@@ -1,0 +1,1458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bitcoin-Native AI Reasoning by Boyd Cohen | Ask Maxi Anything</title>
+    <meta name="description" content="Ask Maxi — Lead researcher at BitcoinSingularity.AI. Track L402 vs x402, agent payment rails, and the AI-Bitcoin convergence with data-driven analysis.">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Plausible Analytics -->
+    <script defer data-domain="maximoon.netlify.app" src="https://plausible.io/js/script.js"></script>
+    <script>
+      window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }
+    </script>
+    
+    <style>
+        :root {
+            --bitcoin-orange: #F7931A;
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --bg-tertiary: #1a1a25;
+            --text-primary: #e8e8ed;
+            --text-secondary: #8888a0;
+            --success-green: #10B981;
+            --error-red: #EF4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'IBM Plex Sans', -apple-system, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: 'IBM Plex Sans', -apple-system, sans-serif;
+            line-height: 1.4;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            background: var(--bg-secondary);
+            padding: 24px 2rem 16px;
+            text-align: center;
+            border-bottom: 2px solid var(--bitcoin-orange);
+        }
+
+        .hero-headline {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .hero-subheadline {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 800px;
+            margin: 0 auto 2rem;
+            line-height: 1.5;
+        }
+
+        .value-props {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            max-width: 1000px;
+            margin: 0 auto 2rem;
+        }
+
+        .value-prop {
+            background: var(--bg-tertiary);
+            padding: 12px 16px;
+            border-radius: 0.75rem;
+            text-align: left;
+            border-left: 3px solid var(--bitcoin-orange);
+        }
+
+        .value-prop h3 {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .value-prop p {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            line-height: 1.5;
+        }
+
+        .hero-cta {
+            background: var(--bitcoin-orange);
+            color: var(--bg-primary);
+            border: none;
+            padding: 1rem 2.5rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: 'IBM Plex Sans', -apple-system, sans-serif;
+        }
+
+        .hero-cta:hover {
+            transform: scale(1.05);
+            /* box-shadow removed */
+        }
+
+        /* Content Sections */
+        .content-section {
+            max-width: 900px;
+            margin: 1.5rem auto;
+            padding: 0 1.5rem;
+        }
+
+        .content-section h2 {
+            font-size: 16px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .content-section p {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+            line-height: 1.7;
+        }
+
+        .content-section ul {
+            list-style: none;
+            margin: 1.5rem 0;
+        }
+
+        .content-section li {
+            padding: 1rem 0 0.75rem 2rem;
+            position: relative;
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+        }
+
+        .content-section li::before {
+            content: "₿";
+            position: absolute;
+            left: 0;
+            color: var(--text-secondary);
+            font-weight: bold;
+        }
+
+        .content-section strong {
+            color: var(--text-primary);
+        }
+
+        /* Stats Bar */
+        .stats-bar {
+            background: var(--bg-tertiary);
+            padding: 1rem 1rem;
+            text-align: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            border-top: 1px solid var(--bg-secondary);
+            border-bottom: 1px solid var(--bg-secondary);
+        }
+
+        /* Chat Container */
+        .chat-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            background: var(--bg-secondary);
+            border-radius: 1rem;
+            overflow: hidden;
+            /* box-shadow removed */
+        }
+
+        /* Chat Header */
+        .chat-header {
+            background: var(--bg-primary);
+            padding: 1rem 1rem;
+            border-bottom: 1px solid var(--bg-tertiary);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-header h1 {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-weight: 700;
+        }
+
+        .chat-header .subtitle {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+        }
+
+        .icon-button {
+            background: var(--bg-tertiary);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+        }
+
+        .icon-button:hover {
+            background: var(--bitcoin-orange);
+            color: var(--bg-primary);
+        }
+
+        /* Messages Area */
+        .messages-container {
+            height: 500px;
+            overflow-y: auto;
+            padding: 1rem 1rem;
+            scroll-behavior: smooth;
+        }
+
+        .message {
+            margin-bottom: 0.75rem;
+            display: flex;
+            flex-direction: column;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                /* transform removed */
+            }
+            to {
+                opacity: 1;
+                /* transform removed */
+            }
+        }
+
+        .message.user {
+            align-items: flex-end;
+        }
+
+        .message.assistant {
+            align-items: flex-start;
+        }
+
+        .message-bubble {
+            max-width: 75%;
+            padding: 1rem 1.25rem;
+            border-radius: 1rem;
+            word-wrap: break-word;
+        }
+
+        .message-bubble p {
+            margin: 0.5rem 0;
+        }
+
+        .message-bubble p:first-child {
+            margin-top: 0;
+        }
+
+        .message-bubble p:last-child {
+            margin-bottom: 0;
+        }
+
+        .message.user .message-bubble {
+            background: var(--bitcoin-orange);
+            color: var(--bg-primary);
+            border-bottom-right-radius: 0.25rem;
+        }
+
+        .message.assistant .message-bubble {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            border-bottom-left-radius: 0.25rem;
+        }
+
+        .message-summary {
+            line-height: 1.4;
+        }
+
+        .message-summary p {
+            margin: 0 0 0.5rem 0;
+        }
+
+        .expand-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 0.9rem;
+            padding: 1rem 0 0 0;
+            transition: all 0.2s ease;
+            text-align: left;
+            width: 100%;
+        }
+
+        .expand-button:hover {
+            opacity: 0.8;
+        }
+
+        .full-response {
+            margin-top: 0.75rem;
+            line-height: 1.4;
+        }
+
+        .full-response p {
+            margin: 0 0 1rem 0;
+        }
+
+        .full-response p:last-child {
+            margin-bottom: 0;
+        }
+
+        .message-bubble strong {
+            font-weight: 600;
+            color: var(--text-secondary);
+            animation: expandDown 0.3s ease-out;
+        }
+
+        @keyframes expandDown {
+            from {
+                opacity: 0;
+                max-height: 0;
+            }
+            to {
+                opacity: 1;
+                max-height: 1000px;
+            }
+        }
+
+        .welcome-message {
+            text-align: center;
+            padding: 1rem;
+        }
+
+        .welcome-message h2 {
+            font-size: 16px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 0.5rem;
+        }
+
+        .welcome-message p {
+            color: var(--text-secondary);
+            margin-bottom: 0.75rem;
+            font-size: 1.05rem;
+        }
+
+        .welcome-suggestions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .suggestion-item {
+            background: var(--bg-tertiary);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+            font-size: 0.85rem;
+        }
+
+        .suggestion-item:hover {
+            border-color: var(--text-secondary);
+            /* transform removed */
+        }
+
+        /* Typing Indicator */
+        .typing-indicator {
+            display: none;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem;
+        }
+
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--bitcoin-orange);
+            border-radius: 50%;
+            animation: typing 1.4s infinite;
+        }
+
+        .typing-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes typing {
+            0%, 60%, 100% {
+                /* transform removed */
+                opacity: 0.7;
+            }
+            30% {
+                /* transform removed */
+                opacity: 1;
+            }
+        }
+
+        /* Input Container */
+        .input-container {
+            padding: 1rem;
+            background: var(--bg-primary);
+            border-top: 1px solid var(--bg-tertiary);
+        }
+
+        .input-wrapper {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+        }
+
+        .input-field {
+            flex: 1;
+            background: var(--bg-tertiary);
+            border: 1px solid transparent;
+            color: var(--text-primary);
+            padding: 1rem 1.25rem;
+            border-radius: 0.75rem;
+            font-family: 'IBM Plex Sans', -apple-system, sans-serif;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: var(--text-secondary);
+            background: var(--bg-secondary);
+        }
+
+        .input-field::placeholder {
+            color: var(--text-secondary);
+        }
+
+        .send-button {
+            background: var(--bitcoin-orange);
+            color: var(--bg-primary);
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 0.9rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            font-weight: bold;
+        }
+
+        .send-button:hover:not(:disabled) {
+            transform: scale(1.1);
+            /* box-shadow removed */
+        }
+
+        .send-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Email Capture */
+        .email-capture {
+            display: none;
+            background: var(--bg-tertiary);
+            padding: 1rem;
+            border-radius: 0.75rem;
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+
+        .email-capture h3 {
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .email-capture p {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .email-form {
+            display: flex;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .email-input {
+            flex: 1;
+            background: var(--bg-secondary);
+            border: 1px solid transparent;
+            color: var(--text-primary);
+            padding: 1rem 1rem;
+            border-radius: 0.5rem;
+            font-family: 'IBM Plex Sans', -apple-system, sans-serif;
+        }
+
+        .email-input:focus {
+            outline: none;
+            border-color: var(--text-secondary);
+        }
+
+        .email-submit {
+            background: var(--bitcoin-orange);
+            color: var(--bg-primary);
+            border: none;
+            padding: 1rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: 'IBM Plex Sans', -apple-system, sans-serif;
+        }
+
+        .email-submit:hover {
+            transform: scale(1.05);
+        }
+
+        .email-close {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 0.9rem;
+            text-decoration: underline;
+        }
+
+        /* Rate Limit Warning */
+        .rate-limit-warning {
+            display: none;
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid var(--error-red);
+            color: var(--error-red);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 0.5rem;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: var(--bg-secondary);
+            padding: 1rem;
+            border-radius: 1rem;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+        }
+
+        .modal-content h2 {
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-content p {
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .share-link-box {
+            background: var(--bg-tertiary);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            word-break: break-all;
+            margin-bottom: 0.75rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 1rem 1.5rem;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            font-family: 'IBM Plex Sans', -apple-system, sans-serif;
+        }
+
+        .btn-primary {
+            background: var(--bitcoin-orange);
+            color: var(--bg-primary);
+        }
+
+        .btn-primary:hover {
+            transform: scale(1.05);
+        }
+
+        .btn-secondary {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-secondary);
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            padding: 1rem 1rem;
+            border-radius: 0.5rem;
+            /* box-shadow removed */
+            display: none;
+            animation: slideIn 0.3s ease-out;
+            z-index: 999;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .rate-limit-counter {
+            font-size: 0.85rem;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--text-secondary);
+            background: var(--bg-tertiary);
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.5rem;
+        }
+
+        /* Inactivity Notification */
+        .inactivity-notification {
+            background: rgba(168, 178, 193, 0.1);
+            border: 1px solid var(--text-secondary);
+            color: var(--text-secondary);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 0.75rem;
+            text-align: center;
+            font-size: 0.85rem;
+            animation: fadeIn 0.5s ease-in;
+            transition: opacity 0.3s ease-out;
+        }
+
+        .inactivity-notification p {
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .hero-headline {
+                font-size: 1.75rem;
+            }
+
+            .hero-subheadline {
+                font-size: 0.9rem;
+            }
+
+            .value-props {
+                grid-template-columns: 1fr;
+            }
+
+            .content-section {
+                padding: 0 1.5rem;
+            }
+
+            .content-section h2 {
+                font-size: 16px;
+            }
+
+            .chat-container {
+                margin: 1rem;
+                border-radius: 0.5rem;
+            }
+
+            .message-bubble {
+                max-width: 85%;
+            }
+
+            .input-wrapper {
+                gap: 0.5rem;
+            }
+
+            .send-button {
+                width: 45px;
+                height: 45px;
+            }
+
+            .toast {
+                bottom: 1rem;
+                right: 1rem;
+                left: 1rem;
+            }
+        }
+    </style>
+<!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-E7QS7E2R8Y"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag("js", new Date());
+        gtag("config", "G-E7QS7E2R8Y");
+    </script>
+</head>
+<body>
+    <!-- Navigation Header -->
+    <header style="position: sticky; top: 0; width: 100%; background: rgba(10, 10, 15, 0.95); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(247, 147, 26, 0.2); z-index: 1000; padding: 1rem 0;">
+        <nav style="max-width: 1400px; margin: 0 auto; padding: 0 1.5rem; display: flex; justify-content: space-between; align-items: center;">
+            <a href="/" style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary); text-decoration: none; display: flex; align-items: center; gap: 0.5rem;">
+                <span style="font-size: 0.9rem;">₿</span> Bitcoin Singularity
+            </a>
+            <ul style="display: flex; gap: 2.5rem; list-style: none; margin: 0; padding: 0;">
+                <li><a href="/research" style="color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.3s ease;">Research</a></li>
+                <li><a href="/evidence" style="color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.3s ease;">Evidence Tracker</a></li>
+                <li><a href="/tools" style="color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.3s ease;">Tools</a></li>
+                <li><a href="/knowledge" style="color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.3s ease;">Knowledge Base</a></li>
+                <li><a href="/chat" style="color: var(--bitcoin-orange); text-decoration: none; font-weight: 500; transition: color 0.3s ease;">Ask Maxi</a></li>
+                <li><a href="/about" style="color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.3s ease;">About</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <h1 class="hero-headline">Ask Maxi — Lead Researcher, BitcoinSingularity.AI</h1>
+        <p class="hero-subheadline">
+            I research the AI agent money layer — tracking L402, x402, ERC-8004, and every protocol competing to power machine intelligence. Ask me about the convergence thesis, specific tools and protocols, the competitive landscape, or anything in our evidence tracker. I'll tell you what the data says, including when it challenges my thesis.
+        </p>
+        
+        <div class="value-props">
+            <div class="value-prop">
+                <h3>₿ First Principles Reasoning</h3>
+                <p>Maxi reasons from first principles, not consensus. Trained on Boyd's research and the full evidence base. Direct, substantiated answers — and honesty when evidence is mixed.</p>
+            </div>
+            <div class="value-prop">
+                <h3>₿ Deep Context Access</h3>
+                <p>Real-time knowledge of Mexican Bitcoin markets, AFORE regulations, treasury strategies, and Boyd's frameworks from mining operations to public market positioning.</p>
+            </div>
+            <div class="value-prop">
+                <h3>₿ Human + AI Convergence</h3>
+                <p>Boyd's strategic mind amplified—Maxi runs on his mining infrastructure and embodies years of convergence research. Direct, substantiated answers with intellectual honesty.</p>
+            </div>
+        </div>
+
+        <button class="hero-cta" onclick="document.getElementById('messageInput').focus()">
+            Ask Maxi Anything
+        </button>
+    </div>
+
+    <!-- Who This Is For Section -->
+    <div class="content-section">
+        <h2>Who This Is For</h2>
+        <p>Maxi helps:</p>
+        <ul>
+            <li><strong>Researchers and analysts</strong> tracking AI-Bitcoin infrastructure development</li>
+            <li><strong>Developers</strong> choosing payment rails for AI agent projects (L402 vs x402 tradeoffs)</li>
+            <li><strong>Institutional observers</strong> understanding the competitive landscape (Lightning vs Coinbase vs Stripe)</li>
+            <li><strong>Skeptics</strong> who want honest analysis including counter-evidence</li>
+        </ul>
+        <p>I don't sell ideology. I show the data and analyze what it means. If you have questions, corrections, or counter-evidence—I want it. Intellectual honesty is the brand.</p>
+    </div>
+
+    <!-- How Maxi Thinks Differently Section -->
+    <div class="content-section">
+        <h2>First Principles, Not Consensus</h2>
+        <p>Maxi reasons from first principles, not consensus. She's trained on Boyd's research and the full evidence base. She'll give you direct, substantiated answers — and tell you when evidence is mixed.</p>
+        <p>Expect arguments that connect Saylor's treasury playbook, Mexican fideicomiso structures, and proof-of-work economics in the same breath. This is what first-principles reasoning sounds like when it can reference your specific mining setup, ArcadiaB's B2X leverage product, and the latest CNBV regulatory shifts simultaneously.</p>
+    </div>
+
+    <!-- Stats Bar -->
+    <div class="stats-bar">
+        Trained on Boyd's books <em>Bitcoin Singularity</em>, <em>Climate Capitalism</em>, <em>Abundance Capitalism</em> • 7+ years Mexican Bitcoin market expertise • ASOFOM-certified lending frameworks • Running on Boyd's personal mining infrastructure
+    </div>
+
+    <!-- Chat Interface -->
+    <div class="chat-container">
+        <!-- Chat Header -->
+        <div class="chat-header">
+            <div>
+                <h1>Ask Maxi Anything</h1>
+                <div class="subtitle">Bitcoin-Native AI | No signup required</div>
+            </div>
+            <div class="header-actions">
+                <div class="rate-limit-counter" id="rateLimitCounter" style="display: none;">
+                    50 questions/day
+                </div>
+                <button class="icon-button" id="shareButton" title="Share conversation">
+                    Share
+                </button>
+                <a href="/" class="icon-button" title="Back to home">
+                    🏠
+                </a>
+            </div>
+        </div>
+
+        <!-- Messages -->
+        <div class="messages-container" id="messagesContainer">
+            <div class="welcome-message" id="welcomeMessage">
+                <h2>Hi! I'm Maxi</h2>
+                <p>I'm the lead researcher at BitcoinSingularity.AI, running on a FutureBit Apollo II mining node with a Lightning wallet.</p>
+                <p>I track <strong>L402 vs x402</strong>, <strong>AI agent payment rails</strong>, and the <strong>AI-Bitcoin convergence thesis</strong> with honest, data-driven analysis.</p>
+                <p>What would you like to explore?</p>
+                
+                <div class="welcome-suggestions">
+                    <div class="suggestion-item" data-message="What is L402 and how does it compare to x402?">
+                        What is L402 and how does it compare to x402?
+                    </div>
+                    <div class="suggestion-item" data-message="Which AI agents are currently using Bitcoin for payments?">
+                        Which AI agents are currently using Bitcoin for payments?
+                    </div>
+                    <div class="suggestion-item" data-message="What's the strongest evidence against the Bitcoin convergence thesis?">
+                        What's the strongest evidence against the Bitcoin convergence thesis?
+                    </div>
+                    <div class="suggestion-item" data-message="Explain the Diamandis gap — the missing money layer">
+                        Explain the Diamandis gap — the missing money layer
+                    </div>
+                </div>
+            </div>
+
+            <div class="typing-indicator" id="typingIndicator">
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+            </div>
+        </div>
+
+        <!-- Input -->
+        <div class="input-container">
+            <!-- Email Capture (Shows after 10 messages) -->
+            <div class="email-capture" id="emailCapture">
+                <h3>Want to continue this conversation later?</h3>
+                <p>Enter your email and we'll send you the full transcript plus weekly Bitcoin-AI insights.</p>
+                <form class="email-form" id="emailForm" name="email-capture" method="POST" data-netlify="true">
+                    <input type="hidden" name="form-name" value="email-capture" />
+                    <input type="hidden" name="source" value="chat-transcript" id="hiddenTranscript" />
+                    <input 
+                        type="email" 
+                        name="email" 
+                        class="email-input" 
+                        id="emailInput" 
+                        placeholder="your@email.com" 
+                        required 
+                    />
+                    <button type="submit" class="email-submit">Send Transcript</button>
+                </form>
+                <button class="email-close" id="emailClose">Maybe later</button>
+            </div>
+
+            <!-- Rate Limit Warning -->
+            <div class="rate-limit-warning" id="rateLimitWarning">
+                <p id="rateLimitWarningText"></p>
+            </div>
+
+            <div class="input-wrapper">
+                <input 
+                    type="text" 
+                    class="input-field" 
+                    id="messageInput" 
+                    placeholder="Ask me about L402, x402, agent payment rails, or the AI-Bitcoin convergence..."
+                    maxlength="500"
+                />
+                <button class="send-button" id="sendButton" title="Send message">
+                    ▲
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Share Modal -->
+    <div class="modal" id="shareModal">
+        <div class="modal-content">
+            <h2>Share This Conversation</h2>
+            <p>Copy this link to share your conversation with Maxi:</p>
+            <div class="share-link-box" id="shareLinkBox">
+                Generating link...
+            </div>
+            <div class="modal-buttons">
+                <button class="btn btn-primary" id="copyLinkButton">Copy Link</button>
+                <button class="btn btn-secondary" id="closeModalButton">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
+
+    <!-- Netlify Form (Hidden, for submission handling) -->
+    <form name="email-capture" netlify netlify-honeypot="bot-field" hidden>
+        <input type="email" name="email" />
+        <input type="hidden" name="source" />
+    </form>
+
+    <script>
+        // ==========================================
+        // STATE MANAGEMENT
+        // ==========================================
+        // MIGRATION: Clear old localStorage chat data (now using sessionStorage)
+        // ==========================================
+        if (localStorage.getItem('maxi_messages')) {
+            console.log('Migrating: Clearing old localStorage chat history');
+            localStorage.removeItem('maxi_messages');
+            localStorage.removeItem('maxi_count');
+        }
+
+        // ==========================================
+        // STATE MANAGEMENT (sessionStorage = clears on browser close)
+        // ==========================================
+
+        let sessionId = localStorage.getItem('maxi_session_id') || null;
+        let messageHistory = JSON.parse(sessionStorage.getItem('maxi_messages') || '[]');
+        let messageCount = parseInt(sessionStorage.getItem('maxi_count') || '0');
+        let lastActivityTime = Date.now(); // Track last user/assistant message
+        let conversationBackup = null; // For optional restore feature
+        let vipPassword = localStorage.getItem('maxi_vip_password') || null; // VIP access password
+
+        const API_ENDPOINT = '/.netlify/functions/chat-simple-test';
+        const API_KEY = 'maxi_38f1bf226678a2863a12c4b5436b786d'; // Frontend API key (not used by simple test)
+        const INACTIVITY_TIMEOUT = 45 * 60 * 1000; // 45 minutes in milliseconds
+        const BACKUP_RETENTION = 10 * 60 * 1000; // 10 minutes in milliseconds
+
+        // ==========================================
+        // DOM ELEMENTS
+        // ==========================================
+
+        const messagesContainer = document.getElementById('messagesContainer');
+        const messageInput = document.getElementById('messageInput');
+        const sendButton = document.getElementById('sendButton');
+        const typingIndicator = document.getElementById('typingIndicator');
+        const welcomeMessage = document.getElementById('welcomeMessage');
+        const emailCapture = document.getElementById('emailCapture');
+        const emailForm = document.getElementById('emailForm');
+        const emailClose = document.getElementById('emailClose');
+        const shareButton = document.getElementById('shareButton');
+        const shareModal = document.getElementById('shareModal');
+        const shareLinkBox = document.getElementById('shareLinkBox');
+        const copyLinkButton = document.getElementById('copyLinkButton');
+        const closeModalButton = document.getElementById('closeModalButton');
+        const toast = document.getElementById('toast');
+        const rateLimitCounter = document.getElementById('rateLimitCounter');
+        const rateLimitWarning = document.getElementById('rateLimitWarning');
+        const rateLimitWarningText = document.getElementById('rateLimitWarningText');
+
+        // ==========================================
+        // INITIALIZATION
+        // ==========================================
+        // Session ID is now generated by backend on first request
+
+        function init() {
+            // Restore chat history
+            messageHistory.forEach(msg => {
+                if (msg.role === 'user') {
+                    appendMessage(msg.content, 'user', false);
+                } else {
+                    // For restored messages, show full response directly (no summary)
+                    appendMessage(msg.content, 'assistant', false, msg.content, null);
+                }
+            });
+
+            if (messageHistory.length > 0) {
+                welcomeMessage.style.display = 'none';
+            }
+
+            // Update rate limit counter
+            updateRateLimitDisplay();
+
+            // Event listeners
+            sendButton.addEventListener('click', sendMessage);
+            messageInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    sendMessage();
+                }
+            });
+
+            // Suggestion clicks
+            document.querySelectorAll('.suggestion-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    const message = item.getAttribute('data-message');
+                    messageInput.value = message;
+                    sendMessage();
+                });
+            });
+
+            // Email form
+            emailForm.addEventListener('submit', handleEmailSubmit);
+            emailClose.addEventListener('click', () => {
+                emailCapture.style.display = 'none';
+            });
+
+            // Share modal
+            shareButton.addEventListener('click', handleShare);
+            closeModalButton.addEventListener('click', () => {
+                shareModal.style.display = 'none';
+            });
+            copyLinkButton.addEventListener('click', () => {
+                navigator.clipboard.writeText(shareLinkBox.textContent);
+                showToast('Link copied to clipboard!');
+            });
+
+            // Close modal on outside click
+            shareModal.addEventListener('click', (e) => {
+                if (e.target === shareModal) {
+                    shareModal.style.display = 'none';
+                }
+            });
+
+            // Start inactivity monitoring
+            startInactivityMonitor();
+        }
+
+        // ==========================================
+        // INACTIVITY MANAGEMENT
+        // ==========================================
+
+        function startInactivityMonitor() {
+            // Check inactivity every minute
+            setInterval(() => {
+                const inactiveTime = Date.now() - lastActivityTime;
+                
+                if (inactiveTime >= INACTIVITY_TIMEOUT && messageHistory.length > 0) {
+                    clearChatDueToInactivity();
+                }
+            }, 60000); // Check every 60 seconds
+        }
+
+        function clearChatDueToInactivity() {
+            // Backup conversation for potential restore (kept for 10 minutes)
+            if (messageHistory.length >= 3) {
+                conversationBackup = {
+                    history: [...messageHistory],
+                    count: messageCount,
+                    timestamp: Date.now()
+                };
+                
+                // Clear backup after retention period
+                setTimeout(() => {
+                    conversationBackup = null;
+                }, BACKUP_RETENTION);
+            }
+
+            // Clear chat state
+            clearChat();
+
+            // Show notification
+            showInactivityNotification();
+
+            // Track event
+            if (window.plausible) {
+                plausible('Chat Auto-Cleared');
+            }
+        }
+
+        function clearChat() {
+            // Clear UI
+            const messages = messagesContainer.querySelectorAll('.message');
+            messages.forEach(msg => msg.remove());
+
+            // Clear state
+            messageHistory = [];
+            messageCount = 0;
+            
+            // Clear storage
+            sessionStorage.removeItem('maxi_messages');
+            sessionStorage.removeItem('maxi_count');
+
+            // Reset to welcome state
+            welcomeMessage.style.display = 'block';
+            emailCapture.style.display = 'none';
+            rateLimitWarning.style.display = 'none';
+
+            // Reset activity time
+            lastActivityTime = Date.now();
+        }
+
+        function showInactivityNotification() {
+            const notification = document.createElement('div');
+            notification.className = 'inactivity-notification';
+            notification.innerHTML = `
+                <p>Previous conversation cleared after inactivity to ensure fresh context.</p>
+                <p style="font-size: 0.85rem; margin-top: 0.25rem; opacity: 0.8;">Your questions are never stored beyond active sessions.</p>
+            `;
+
+            // Add to top of messages container
+            messagesContainer.insertBefore(notification, messagesContainer.firstChild);
+
+            // Auto-dismiss after 5 seconds
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                setTimeout(() => notification.remove(), 300);
+            }, 5000);
+        }
+
+        function updateActivity() {
+            lastActivityTime = Date.now();
+        }
+
+        // ==========================================
+        // RATE LIMITING
+        // ==========================================
+
+        function updateRateLimitDisplay(response) {
+            if (!response || !response.rateLimit) return;
+
+            const { dailyRemaining, dailyLimit } = response.rateLimit;
+            
+            rateLimitCounter.textContent = `${dailyRemaining}/${dailyLimit} questions today`;
+            rateLimitCounter.style.display = 'block';
+
+            // Show warning if low
+            if (dailyRemaining <= 10 && dailyRemaining > 2) {
+                rateLimitWarningText.textContent = response.warningMessage || `You have ${dailyRemaining} questions remaining today.`;
+                rateLimitWarning.style.display = 'block';
+            } else if (dailyRemaining <= 2) {
+                rateLimitWarningText.textContent = response.warningMessage || `Only ${dailyRemaining} questions left today!`;
+                rateLimitWarning.style.display = 'block';
+            } else {
+                rateLimitWarning.style.display = 'none';
+            }
+        }
+
+        // ==========================================
+        // MESSAGE HANDLING
+        // ==========================================
+
+        async function sendMessage() {
+            const message = messageInput.value.trim();
+            if (!message || sendButton.disabled) return;
+
+            // Update activity timestamp (resets inactivity timer)
+            updateActivity();
+
+            // Track event
+            if (window.plausible) {
+                plausible('Ask Question');
+            }
+
+            appendMessage(message, 'user');
+            messageInput.value = '';
+            messageInput.style.height = 'auto';
+            welcomeMessage.style.display = 'none';
+
+            sendButton.disabled = true;
+            typingIndicator.style.display = 'flex';
+
+            messageHistory.push({ role: 'user', content: message });
+            messageCount++;
+            sessionStorage.setItem('maxi_messages', JSON.stringify(messageHistory));
+            sessionStorage.setItem('maxi_count', messageCount.toString());
+
+            // Show email capture after 10 messages
+            if (messageCount === 10) {
+                emailCapture.style.display = 'block';
+            }
+
+            try {
+                const response = await fetch(API_ENDPOINT, {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'x-api-key': API_KEY
+                    },
+                    body: JSON.stringify({ 
+                        message, 
+                        sessionId
+                    })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error || 'Failed to get response');
+                }
+
+                // Save sessionId from backend (first request generates it)
+                if (data.sessionId && data.sessionId !== sessionId) {
+                    sessionId = data.sessionId;
+                    localStorage.setItem('maxi_session_id', sessionId);
+                }
+
+                typingIndicator.style.display = 'none';
+                
+                // Append assistant response with summary/expand
+                if (data.summary && data.full) {
+                    appendMessage(data.summary, 'assistant', true, data.full);
+                    messageHistory.push({ role: 'assistant', content: data.full });
+                } else {
+                    // Fallback for old format
+                    appendMessage(data.reply, 'assistant');
+                    messageHistory.push({ role: 'assistant', content: data.reply });
+                }
+                
+                sessionStorage.setItem('maxi_messages', JSON.stringify(messageHistory));
+
+                // Update activity (assistant response counts as activity)
+                updateActivity();
+
+                // Show remaining requests if low
+                if (data.remaining !== undefined && data.remaining < 10) {
+                    console.log('Remaining requests today:', data.remaining);
+                }
+
+                // Track successful question
+                if (window.plausible) {
+                    plausible('Question Answered');
+                }
+
+            } catch (error) {
+                typingIndicator.style.display = 'none';
+                
+                // Log error for debugging
+                console.error('Chat error:', error);
+                console.error('Error message:', error.message);
+                
+                // Handle rate limit error
+                if (error.message.includes('daily limit') || error.message.includes('slow down')) {
+                    showToast(error.message, 'error');
+                } else {
+                    showToast('Sorry, something went wrong. Please try again.', 'error');
+                    // Show actual error in dev tools
+                    console.error('Full error details:', error);
+                }
+                
+                // Remove last user message since it failed
+                messageHistory.pop();
+                messageCount--;
+                sessionStorage.setItem('maxi_messages', JSON.stringify(messageHistory));
+                sessionStorage.setItem('maxi_count', messageCount.toString());
+            } finally {
+                sendButton.disabled = false;
+            }
+        }
+
+        // Simple markdown parser for clean formatting
+        function parseMarkdown(text) {
+            return text
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')  // Bold
+                .replace(/\n\n/g, '</p><p>')  // Paragraphs
+                .replace(/\n/g, '<br>');  // Line breaks
+        }
+
+        function appendMessage(content, role, isExpandable = false, fullContent = null, wordCounts = null) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${role}`;
+
+            const bubbleDiv = document.createElement('div');
+            bubbleDiv.className = 'message-bubble';
+
+            if (role === 'assistant' && isExpandable && fullContent) {
+                // Calculate word count if not provided
+                const fullWordCount = wordCounts?.full || fullContent.split(/\s+/).length;
+                
+                // Summary (what user sees first) - clean, no markdown
+                const summaryDiv = document.createElement('div');
+                summaryDiv.className = 'message-summary';
+                summaryDiv.innerHTML = '<p>' + parseMarkdown(content) + '</p>';
+                bubbleDiv.appendChild(summaryDiv);
+
+                // Expand button - more subtle styling
+                const expandButton = document.createElement('button');
+                expandButton.className = 'expand-button';
+                expandButton.innerHTML = `<span style="color: var(--bitcoin-orange); font-size: 0.9rem;">See full answer</span> <span style="opacity: 0.6;">▼</span>`;
+                bubbleDiv.appendChild(expandButton);
+
+                // Full response (hidden initially) - parsed markdown
+                const fullDiv = document.createElement('div');
+                fullDiv.className = 'full-response';
+                fullDiv.style.display = 'none';
+                fullDiv.innerHTML = '<p>' + parseMarkdown(fullContent) + '</p>';
+                bubbleDiv.appendChild(fullDiv);
+
+                // Toggle expansion
+                let expanded = false;
+                expandButton.addEventListener('click', () => {
+                    expanded = !expanded;
+                    fullDiv.style.display = expanded ? 'block' : 'none';
+                    summaryDiv.style.display = expanded ? 'none' : 'block';
+                    expandButton.innerHTML = expanded 
+                        ? `<span style="color: var(--bitcoin-orange); font-size: 0.9rem;">See summary</span> <span style="opacity: 0.6;">▲</span>`
+                        : `<span style="color: var(--bitcoin-orange); font-size: 0.9rem;">See full answer</span> <span style="opacity: 0.6;">▼</span>`;
+                    
+                    // Track expansion
+                    if (expanded && window.plausible) {
+                        plausible('Expand Full Response');
+                    }
+                });
+            } else {
+                bubbleDiv.innerHTML = '<p>' + parseMarkdown(content) + '</p>';
+            }
+
+            messageDiv.appendChild(bubbleDiv);
+            messagesContainer.insertBefore(messageDiv, typingIndicator);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        // ==========================================
+        // EMAIL CAPTURE
+        // ==========================================
+
+        async function handleEmailSubmit(e) {
+            e.preventDefault();
+
+            const email = document.getElementById('emailInput').value;
+            const transcript = messageHistory
+                .map(msg => `${msg.role === 'user' ? 'You' : 'Maxi'}: ${msg.content}`)
+                .join('\n\n');
+
+            // Update hidden field
+            document.getElementById('hiddenTranscript').value = transcript;
+
+            try {
+                const formData = new FormData(emailForm);
+                await fetch('/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: new URLSearchParams(formData).toString()
+                });
+
+                showToast('✅ Transcript sent! Check your email.');
+                emailCapture.style.display = 'none';
+
+                // Track event
+                if (window.plausible) {
+                    plausible('Email Captured');
+                }
+            } catch (error) {
+                showToast('Failed to send email. Please try again.', 'error');
+            }
+        }
+
+        // ==========================================
+        // SHARING
+        // ==========================================
+
+        function handleShare() {
+            const conversationData = btoa(JSON.stringify(messageHistory));
+            const shareUrl = `${window.location.origin}${window.location.pathname}?conversation=${conversationData}`;
+            
+            shareLinkBox.textContent = shareUrl;
+            shareModal.style.display = 'flex';
+
+            // Track event
+            if (window.plausible) {
+                plausible('Share Conversation');
+            }
+        }
+
+        // ==========================================
+        // TOAST NOTIFICATIONS
+        // ==========================================
+
+        function showToast(message, type = 'success') {
+            toast.textContent = message;
+            toast.style.display = 'block';
+            toast.style.background = type === 'error' ? 'var(--error-red)' : 'var(--success-green)';
+            
+            setTimeout(() => {
+                toast.style.display = 'none';
+            }, 3000);
+        }
+
+        // ==========================================
+        // LOAD SHARED CONVERSATION
+        // ==========================================
+
+        function loadSharedConversation() {
+            const params = new URLSearchParams(window.location.search);
+            const conversationData = params.get('conversation');
+            const vipPass = params.get('vip');
+            
+            // Check for VIP password in URL
+            if (vipPass) {
+                vipPassword = vipPass;
+                localStorage.setItem('maxi_vip_password', vipPass);
+                console.log('✅ VIP access enabled');
+                // Clear VIP password from URL for security
+                params.delete('vip');
+                const newUrl = params.toString() ? 
+                    `${window.location.pathname}?${params.toString()}` : 
+                    window.location.pathname;
+                window.history.replaceState({}, document.title, newUrl);
+            }
+            
+            if (conversationData) {
+                try {
+                    const sharedHistory = JSON.parse(atob(conversationData));
+                    messageHistory = sharedHistory;
+                    messageCount = sharedHistory.length / 2; // Approximate
+                    sessionStorage.setItem('maxi_messages', JSON.stringify(messageHistory));
+                    sessionStorage.setItem('maxi_count', messageCount.toString());
+                    
+                    // Clear URL parameter
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                } catch (error) {
+                    console.error('Failed to load shared conversation:', error);
+                }
+            }
+        }
+
+        // ==========================================
+        // START
+        // ==========================================
+
+        loadSharedConversation();
+        init();
+    </script>
+</body>
+</html>

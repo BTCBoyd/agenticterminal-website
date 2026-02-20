@@ -1,0 +1,32 @@
+--- a/tools.html
++++ b/tools.html
+@@ -195,11 +195,15 @@
+         }
+ 
+         /* Tools Grid */
+         .tools-container {
+-            margin-top: 2rem;
++            display: grid;
++            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
++            gap: 16px;
++            margin-top: 1rem;
+         }
+ 
+         .tool-card {
+-            padding: 2rem;
++            padding: 16px;
++            font-size: 13px;
+         }
+ 
+         .tool-card h4 {
+-            font-size: 1.3rem;
++            font-size: 15px;
+         }
+ 
+         .tool-description {
+-            font-size: 1rem;
+-            margin: 1rem 0;
++            font-size: 12px;
++            margin: 8px 0;
++            line-height: 1.5;
+         }

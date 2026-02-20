@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat with Maxi - Agentic Terminal Agent</title>
+    
+    <!-- Cloudflare Turnstile (invisible bot protection) -->
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 1rem 2rem;
+            border-bottom: 1px solid rgba(255, 152, 0, 0.3);
+        }
+        
+        .header h1 {
+            color: #ff9800;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+        
+        .header p {
+            color: #b0b0b0;
+            font-size: 0.9rem;
+            margin-top: 0.25rem;
+        }
+        
+        .chat-container {
+            flex: 1;
+            max-width: 900px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            overflow-y: auto;
+        }
+        
+        .message {
+            display: flex;
+            gap: 1rem;
+            animation: fadeIn 0.3s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .message.user {
+            justify-content: flex-end;
+        }
+        
+        .message-content {
+            max-width: 70%;
+            padding: 1rem 1.25rem;
+            border-radius: 1rem;
+            line-height: 1.6;
+        }
+        
+        .message.user .message-content {
+            background: #ff9800;
+            color: #000;
+            border-bottom-right-radius: 0.25rem;
+        }
+        
+        .message.assistant .message-content {
+            background: rgba(255, 255, 255, 0.05);
+            color: #e0e0e0;
+            border: 1px solid rgba(255, 152, 0, 0.2);
+            border-bottom-left-radius: 0.25rem;
+        }
+        
+        .message.assistant .message-content strong {
+            color: #ff9800;
+        }
+        
+        .input-container {
+            position: sticky;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem 2rem;
+            border-top: 1px solid rgba(255, 152, 0, 0.3);
+        }
+        
+        .input-wrapper {
+            max-width: 900px;
+            margin: 0 auto;
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        
+        #message-input {
+            flex: 1;
+            padding: 1rem 1.25rem;
+            border: 1px solid rgba(255, 152, 0, 0.3);
+            border-radius: 0.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            color: #e0e0e0;
+            font-size: 1rem;
+            font-family: inherit;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        
+        #message-input:focus {
+            border-color: #ff9800;
+            background: rgba(255, 255, 255, 0.08);
+        }
+        
+        #send-button {
+            padding: 1rem 2rem;
+            background: #ff9800;
+            color: #000;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+        
+        #send-button:hover:not(:disabled) {
+            background: #ffa726;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 152, 0, 0.4);
+        }
+        
+        #send-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            color: #ff9800;
+            padding: 1rem;
+        }
+        
+        .loading.active {
+            display: block;
+        }
+        
+        .error-message {
+            background: rgba(255, 0, 0, 0.1);
+            border: 1px solid rgba(255, 0, 0, 0.3);
+            color: #ff6b6b;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin: 1rem 0;
+            text-align: center;
+        }
+        
+        .turnstile-widget {
+            display: flex;
+            justify-content: center;
+            margin: 1rem 0;
+        }
+        
+        @media (max-width: 768px) {
+            .message-content {
+                max-width: 85%;
+            }
+            
+            .input-wrapper {
+                flex-direction: column;
+            }
+            
+            #message-input, #send-button {
+                width: 100%;
+            }
+        }
+    </style>
+<!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-E7QS7E2R8Y"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag("js", new Date());
+        gtag("config", "G-E7QS7E2R8Y");
+    </script>
+</head>
+<body>
+    <div class="header">
+        <h1>₿ Chat with Maxi</h1>
+        <p>Bitcoin maximalist AI agent powered by Bitcoin mining infrastructure</p>
+    </div>
+    
+    <div class="chat-container" id="chat-container">
+        <div class="message assistant">
+            <div class="message-content">
+                <strong>Maxi:</strong> Hey! I'm Maxi, a Bitcoin maximalist AI agent running on Bitcoin mining hardware. I prove the AI-Bitcoin convergence thesis in real-time. Ask me about Bitcoin, Austrian economics, Lightning Network, or AI-BTC convergence. What's on your mind?
+            </div>
+        </div>
+    </div>
+    
+    <!-- Turnstile Widget (invisible) -->
+    <div class="turnstile-widget">
+        <div class="cf-turnstile" 
+             data-sitekey="YOUR_SITE_KEY_HERE"
+             data-callback="onTurnstileSuccess"
+             data-theme="dark"
+             data-size="flexible"></div>
+    </div>
+    
+    <div class="input-container">
+        <div class="input-wrapper">
+            <input 
+                type="text" 
+                id="message-input" 
+                placeholder="Ask me about Bitcoin, AI convergence, Austrian economics..."
+                maxlength="500"
+            />
+            <button id="send-button">Send</button>
+        </div>
+        <div class="loading" id="loading">Maxi is thinking...</div>
+    </div>
+
+    <script>
+        // ==========================================
+        // CONFIGURATION
+        // ==========================================
+        
+        const API_KEY = 'adc8d011062bfe80c94a6e2c5049740300123e8c6cda506d08707aaccb6ad293';
+        const API_ENDPOINT = '/.netlify/functions/chat-mvp-secure';
+        
+        let sessionId = null;
+        let turnstileToken = null;
+        let isProcessing = false;
+        
+        // ==========================================
+        // DOM ELEMENTS
+        // ==========================================
+        
+        const chatContainer = document.getElementById('chat-container');
+        const messageInput = document.getElementById('message-input');
+        const sendButton = document.getElementById('send-button');
+        const loading = document.getElementById('loading');
+        
+        // ==========================================
+        // TURNSTILE CALLBACK
+        // ==========================================
+        
+        window.onTurnstileSuccess = function(token) {
+            turnstileToken = token;
+            console.log('✅ Turnstile verified');
+        };
+        
+        // ==========================================
+        // CHAT FUNCTIONS
+        // ==========================================
+        
+        function addMessage(role, content) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${role}`;
+            
+            const contentDiv = document.createElement('div');
+            contentDiv.className = 'message-content';
+            
+            if (role === 'assistant') {
+                contentDiv.innerHTML = `<strong>Maxi:</strong> ${content}`;
+            } else {
+                contentDiv.textContent = content;
+            }
+            
+            messageDiv.appendChild(contentDiv);
+            chatContainer.appendChild(messageDiv);
+            
+            // Scroll to bottom
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+        
+        function showError(message) {
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'error-message';
+            errorDiv.textContent = '⚠️ ' + message;
+            chatContainer.appendChild(errorDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+        
+        async function sendMessage() {
+            const message = messageInput.value.trim();
+            
+            // Validation
+            if (!message) return;
+            
+            if (message.length < 10) {
+                showError('Message too short (min 10 characters)');
+                return;
+            }
+            
+            if (isProcessing) return;
+            
+            // Check Turnstile (optional - server will skip if not configured)
+            if (!turnstileToken && window.turnstile) {
+                showError('Please wait for verification...');
+                return;
+            }
+            
+            // UI updates
+            isProcessing = true;
+            sendButton.disabled = true;
+            loading.classList.add('active');
+            
+            // Add user message to UI
+            addMessage('user', message);
+            messageInput.value = '';
+            
+            try {
+                const response = await fetch(API_ENDPOINT, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-API-Key': API_KEY,
+                        'X-Turnstile-Token': turnstileToken || ''
+                    },
+                    body: JSON.stringify({
+                        message: message,
+                        sessionId: sessionId
+                    })
+                });
+                
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.error || `HTTP ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                // Update session ID
+                sessionId = data.sessionId;
+                
+                // Add assistant response
+                addMessage('assistant', data.full);
+                
+                // Reset Turnstile if configured
+                if (window.turnstile && turnstileToken) {
+                    turnstile.reset();
+                    turnstileToken = null;
+                }
+                
+            } catch (err) {
+                console.error('Chat error:', err);
+                showError(err.message || 'Failed to send message. Please try again.');
+            } finally {
+                isProcessing = false;
+                sendButton.disabled = false;
+                loading.classList.remove('active');
+            }
+        }
+        
+        // ==========================================
+        // EVENT LISTENERS
+        // ==========================================
+        
+        sendButton.addEventListener('click', sendMessage);
+        
+        messageInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+        
+        // Focus input on load
+        messageInput.focus();
+        
+        console.log('🚀 Secure chat initialized');
+        console.log('✅ API Key configured');
+        console.log('✅ Session validation enabled');
+        console.log('✅ Rate limiting active');
+    </script>
+</body>
+</html>

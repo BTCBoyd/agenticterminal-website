@@ -1,0 +1,18 @@
+{
+  "parties": {
+    "monterrey-lacuraduria": {
+      "city": "Monterrey",
+      "country": "Mexico",
+      "lat": 25.6866,
+      "lng": -100.3161,
+      "venue": "LaCuraduría",
+      "organizer": "Bitcoin Network Monterrey / ArcadiaB / BitcoinSingularity.AI",
+      "date": "March 12, 2026, 7:30 PM",
+      "contact": "https://linktr.ee/btcnetworkmty",
+      "description": "The flagship 20 Million Bitcoin celebration in Monterrey, Mexico. Join the Bitcoin community to celebrate this historic milestone!",
+      "flagship": true,
+      "approved": true,
+      "submittedAt": "2026-02-16T22:04:00Z"
+    }
+  }
+}

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple Chat Test</title>
+    <style>
+        body { font-family: sans-serif; max-width: 600px; margin: 50px auto; padding: 20px; }
+        #messages { border: 1px solid #ccc; padding: 20px; min-height: 300px; margin-bottom: 20px; }
+        input { width: 70%; padding: 10px; }
+        button { padding: 10px 20px; }
+        .user { color: blue; margin: 10px 0; }
+        .assistant { color: green; margin: 10px 0; }
+        .error { color: red; margin: 10px 0; }
+    </style>
+<!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-E7QS7E2R8Y"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag("js", new Date());
+        gtag("config", "G-E7QS7E2R8Y");
+    </script>
+</head>
+<body>
+    <h1>Simple Chat Test (No Auth/Session)</h1>
+    <div id="messages"></div>
+    <input type="text" id="input" placeholder="Type a message...">
+    <button onclick="sendMessage()">Send</button>
+    <p><small>Testing: /.netlify/functions/chat-simple-test</small></p>
+
+    <script>
+        async function sendMessage() {
+            const input = document.getElementById('input');
+            const messages = document.getElementById('messages');
+            const message = input.value.trim();
+            
+            if (!message) return;
+            
+            // Display user message
+            messages.innerHTML += `<div class="user"><strong>You:</strong> ${message}</div>`;
+            input.value = '';
+            
+            try {
+                const response = await fetch('/.netlify/functions/chat-simple-test', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message })
+                });
+                
+                const data = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(data.error || 'Request failed');
+                }
+                
+                // Display assistant response
+                const reply = data.full || data.reply || 'No response';
+                messages.innerHTML += `<div class="assistant"><strong>Maxi:</strong> ${reply}</div>`;
+                
+            } catch (error) {
+                messages.innerHTML += `<div class="error"><strong>Error:</strong> ${error.message}</div>`;
+            }
+        }
+        
+        document.getElementById('input').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') sendMessage();
+        });
+    </script>
+</body>
+</html>

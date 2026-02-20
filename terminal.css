@@ -1,0 +1,337 @@
+/* Bitcoin Singularity AI - Terminal Design System */
+
+:root {
+    /* Backgrounds */
+    --bg-primary: #0a0a0f;
+    --bg-secondary: #12121a;
+    --bg-tertiary: #1a1a25;
+    
+    /* Text */
+    --text-primary: #e8e8ed;
+    --text-secondary: #8888a0;
+    --text-tertiary: #55556a;
+    
+    /* Accents - USE SPARINGLY */
+    --accent-bitcoin: #F7931A;
+    --accent-up: #00c853;
+    --accent-down: #ff1744;
+    --accent-neutral: #448aff;
+    --accent-protocol: #7c4dff;
+    
+    /* Borders */
+    --border-subtle: #1e1e2e;
+    --border-card: #252535;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'IBM Plex Sans', -apple-system, sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.6;
+}
+
+/* HEADER - Compact */
+header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background: var(--bg-primary);
+    border-bottom: 1px solid var(--border-subtle);
+    z-index: 1000;
+    height: 50px;
+}
+
+nav {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 50px;
+}
+
+.logo {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-primary);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.logo-btc {
+    color: var(--accent-bitcoin);
+    font-size: 18px;
+}
+
+.nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+}
+
+.nav-links a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 13px;
+    transition: color 0.2s ease;
+    position: relative;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+    color: var(--text-primary);
+}
+
+.nav-links a.active::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--accent-bitcoin);
+}
+
+/* MAIN */
+main {
+    margin-top: 50px;
+    max-width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 24px 2rem 60px;
+}
+
+/* PAGE HEADER */
+.page-header {
+    padding: 16px 0 24px;
+    border-bottom: 1px solid var(--border-subtle);
+    margin-bottom: 32px;
+}
+
+.page-header h1 {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.page-header p {
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+/* CONTENT SECTIONS */
+.content-section {
+    margin-bottom: 32px;
+    padding: 20px 24px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-card);
+    border-radius: 4px;
+}
+
+.content-section h2 {
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+}
+
+.content-section h3 {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 16px 0 8px;
+}
+
+.content-section p {
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+}
+
+.content-section ul, .content-section ol {
+    margin-left: 1.5rem;
+    margin-bottom: 12px;
+}
+
+.content-section li {
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+}
+
+.content-section a {
+    color: var(--accent-neutral);
+    text-decoration: none;
+}
+
+.content-section a:hover {
+    text-decoration: underline;
+}
+
+/* BUTTONS */
+.btn, button[type="submit"], input[type="submit"] {
+    padding: 8px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    background: transparent;
+    border: 1px solid var(--accent-bitcoin);
+    color: var(--accent-bitcoin);
+    border-radius: 2px;
+    cursor: pointer;
+    font-family: 'IBM Plex Sans', sans-serif;
+    letter-spacing: 0.04em;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn:hover, button[type="submit"]:hover {
+    background: rgba(247, 147, 26, 0.1);
+}
+
+.btn-secondary {
+    border-color: var(--accent-neutral);
+    color: var(--accent-neutral);
+}
+
+.btn-secondary:hover {
+    background: rgba(68, 138, 255, 0.1);
+}
+
+/* FORMS */
+input[type="email"], input[type="text"], textarea {
+    padding: 8px 12px;
+    font-size: 13px;
+    background: var(--bg-primary);
+    border: 1px solid var(--border-card);
+    border-radius: 2px;
+    color: var(--text-primary);
+    font-family: 'IBM Plex Sans', sans-serif;
+}
+
+input[type="email"]::placeholder, input[type="text"]::placeholder {
+    color: var(--text-tertiary);
+}
+
+/* CATEGORY BADGES */
+.category-badge {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 10px;
+    font-weight: 600;
+    font-family: 'IBM Plex Sans', sans-serif;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.category-badge.infrastructure {
+    background: rgba(68, 138, 255, 0.15);
+    color: #448aff;
+}
+
+.category-badge.competitive {
+    background: rgba(247, 147, 26, 0.15);
+    color: #F7931A;
+}
+
+.category-badge.protocol {
+    background: rgba(124, 77, 255, 0.15);
+    color: #7c4dff;
+}
+
+.category-badge.transaction-data {
+    background: rgba(0, 200, 83, 0.15);
+    color: #00c853;
+}
+
+.category-badge.institutional {
+    background: rgba(245, 158, 11, 0.15);
+    color: #F59E0B;
+}
+
+.category-badge.counter-evidence {
+    background: rgba(255, 23, 68, 0.15);
+    color: #ff1744;
+}
+
+/* FOOTER */
+footer {
+    margin-top: 60px;
+    padding: 24px 2rem;
+    border-top: 1px solid var(--border-subtle);
+    text-align: center;
+    max-width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+footer .newsletter {
+    max-width: 500px;
+    margin: 0 auto 20px;
+    padding: 16px 20px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-card);
+    border-radius: 4px;
+}
+
+footer .newsletter h3 {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+}
+
+footer .newsletter form {
+    display: flex;
+    gap: 8px;
+}
+
+footer .newsletter input {
+    flex: 1;
+}
+
+footer .credits {
+    font-size: 12px;
+    color: var(--text-tertiary);
+    line-height: 1.6;
+}
+
+footer .credits a {
+    color: var(--accent-bitcoin);
+    text-decoration: none;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    nav {
+        padding: 0 1rem;
+    }
+
+    main {
+        padding: 24px 1rem 60px;
+    }
+
+    .nav-links {
+        gap: 1rem;
+        font-size: 11px;
+    }
+
+    .page-header h1 {
+        font-size: 20px;
+    }
+}

@@ -1,0 +1,10 @@
+{
+  "name": "bitcoin-singularity-website",
+  "version": "1.0.0",
+  "description": "Bitcoin Singularity website with secure AI chat",
+  "private": true,
+  "dependencies": {},
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
