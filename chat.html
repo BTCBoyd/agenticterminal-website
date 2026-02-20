@@ -1,1596 +1,415 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ask Maxi — Agentic Terminal</title>
-    <meta name="description" content="Ask Maxi — Lead researcher at AgenticTerminal.ai. Track L402 vs x402, agent payment rails, and the AI-Bitcoin convergence with data-driven analysis.">
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Plausible Analytics -->
-    <script defer data-domain="maximoon.netlify.app" src="https://plausible.io/js/script.js"></script>
-    <script>
-      window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }
-    </script>
-    
-    <!-- Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-E7QS7E2R8Y"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag("js", new Date());
-        gtag("config", "G-E7QS7E2R8Y");
-    </script>
-    
-    <style>
-        :root {
-            /* Core backgrounds - charcoal-navy instead of pure black */
-            --bg-deep: #0B0F19;
-            --bg-base: #111827;
-            --bg-card: #1A1F2E;
-            --bg-card-hover: #1F2537;
-            --bg-elevated: #242B3D;
-
-            /* Text - warm off-whites instead of pure white */
-            --text-primary: #E8EAF0;
-            --text-secondary: #9CA3AF;
-            --text-muted: #6B7280;
-
-            /* Accents */
-            --bitcoin-orange: #F7931A;
-            --bitcoin-orange-glow: rgba(247, 147, 26, 0.15);
-            --success-green: #34D399;
-            --error-red: #F87171;
-
-            /* Borders */
-            --border-subtle: rgba(255, 255, 255, 0.06);
-            --border-medium: rgba(255, 255, 255, 0.1);
-
-            /* Typography */
-            --font-mono: 'JetBrains Mono', monospace;
-            --font-sans: 'IBM Plex Sans', -apple-system, sans-serif;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            background: var(--bg-deep);
-            color: var(--text-primary);
-            font-family: var(--font-sans);
-            font-size: 17px;
-            line-height: 1.65;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
-
-        /* NAV */
-        nav {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 16px 40px;
-            border-bottom: 1px solid var(--border-subtle);
-            background: rgba(11, 15, 25, 0.85);
-            backdrop-filter: blur(12px);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .nav-logo {
-            font-family: var(--font-mono);
-            font-weight: 700;
-            font-size: 18px;
-            color: var(--bitcoin-orange);
-            text-decoration: none;
-            letter-spacing: -0.02em;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 28px;
-            list-style: none;
-        }
-
-        .nav-links a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            letter-spacing: 0.02em;
-            transition: color 0.2s;
-        }
-
-        .nav-links a:hover {
-            color: var(--text-primary);
-        }
-
-        .nav-links a.active {
-            color: var(--bitcoin-orange);
-            border-bottom: 2px solid var(--bitcoin-orange);
-        }
-
-        /* Hero Section */
-        .hero-section {
-            text-align: center;
-            padding: 60px 40px 40px;
-            max-width: 1100px;
-            margin: 0 auto;
-            position: relative;
-        }
-
-        .hero-section::before {
-            content: '';
-            position: absolute;
-            top: -40px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 400px;
-            height: 400px;
-            background: radial-gradient(circle, var(--bitcoin-orange-glow) 0%, transparent 70%);
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        .hero-headline {
-            font-family: var(--font-sans);
-            font-size: 38px;
-            font-weight: 700;
-            line-height: 1.2;
-            letter-spacing: -0.02em;
-            color: var(--text-primary);
-            margin-bottom: 16px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .hero-subheadline {
-            font-size: 18px;
-            color: var(--text-secondary);
-            max-width: 800px;
-            margin: 0 auto 32px;
-            line-height: 1.65;
-            position: relative;
-            z-index: 1;
-        }
-
-        .value-props {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 16px;
-            max-width: 1000px;
-            margin: 0 auto 32px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .value-prop {
-            background: var(--bg-card);
-            padding: 24px;
-            border-radius: 10px;
-            text-align: left;
-            border: 1px solid var(--border-subtle);
-            border-left: 3px solid var(--bitcoin-orange);
-            transition: all 0.25s;
-        }
-
-        .value-prop:hover {
-            background: var(--bg-card-hover);
-            border-color: var(--border-medium);
-        }
-
-        .value-prop h3 {
-            color: var(--text-primary);
-            font-size: 16px;
-            margin-bottom: 8px;
-            font-weight: 600;
-        }
-
-        .value-prop p {
-            color: var(--text-secondary);
-            font-size: 15px;
-            line-height: 1.6;
-        }
-
-        .hero-cta {
-            background: var(--bitcoin-orange);
-            color: #000;
-            border: none;
-            padding: 12px 28px;
-            font-size: 15px;
-            font-weight: 600;
-            border-radius: 6px;
-            cursor: pointer;
-            font-family: var(--font-sans);
-            transition: all 0.2s;
-            position: relative;
-            z-index: 1;
-        }
-
-        .hero-cta:hover {
-            background: #e8860f;
-            transform: translateY(-1px);
-        }
-
-        /* Content Sections */
-        .content-section {
-            max-width: 1100px;
-            margin: 0 auto 48px;
-            padding: 0 40px;
-        }
-
-        .content-section h2 {
-            font-family: var(--font-mono);
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--bitcoin-orange);
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            margin-bottom: 16px;
-        }
-
-        .content-section p {
-            font-size: 16px;
-            color: var(--text-secondary);
-            margin-bottom: 16px;
-            line-height: 1.65;
-        }
-
-        .content-section ul {
-            list-style: none;
-            margin: 16px 0;
-        }
-
-        .content-section li {
-            padding: 12px 0 12px 32px;
-            position: relative;
-            color: var(--text-secondary);
-            font-size: 16px;
-            line-height: 1.65;
-        }
-
-        .content-section li::before {
-            content: "₿";
-            position: absolute;
-            left: 0;
-            color: var(--bitcoin-orange);
-            font-weight: bold;
-            font-size: 18px;
-        }
-
-        .content-section strong {
-            color: var(--text-primary);
-            font-weight: 600;
-        }
-
-        /* Stats Bar */
-        .stats-bar {
-            background: var(--bg-card);
-            padding: 20px 40px;
-            text-align: center;
-            font-family: var(--font-mono);
-            font-size: 13px;
-            color: var(--text-secondary);
-            border-top: 1px solid var(--border-subtle);
-            border-bottom: 1px solid var(--border-subtle);
-            line-height: 1.6;
-        }
-
-        /* Chat Container */
-        .chat-container {
-            max-width: 1100px;
-            margin: 48px auto;
-            padding: 0 40px;
-        }
-
-        .chat-box {
-            background: var(--bg-card);
-            border: 1px solid var(--border-subtle);
-            border-radius: 10px;
-            overflow: hidden;
-        }
-
-        /* Chat Header */
-        .chat-header {
-            background: var(--bg-base);
-            padding: 20px 24px;
-            border-bottom: 1px solid var(--border-subtle);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .chat-header h1 {
-            font-size: 18px;
-            color: var(--text-primary);
-            font-weight: 600;
-        }
-
-        .chat-header .subtitle {
-            font-family: var(--font-mono);
-            font-size: 13px;
-            color: var(--text-muted);
-            margin-top: 4px;
-        }
-
-        .header-actions {
-            display: flex;
-            gap: 12px;
-            align-items: center;
-        }
-
-        .icon-button {
-            background: var(--bg-card);
-            border: 1px solid var(--border-subtle);
-            border-radius: 6px;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            color: var(--text-primary);
-            font-size: 16px;
-            transition: all 0.2s;
-            text-decoration: none;
-        }
-
-        .icon-button:hover {
-            background: var(--bitcoin-orange);
-            color: #000;
-            border-color: var(--bitcoin-orange);
-        }
-
-        /* Messages Area */
-        .messages-container {
-            height: 500px;
-            overflow-y: auto;
-            padding: 24px;
-            scroll-behavior: smooth;
-        }
-
-        .message {
-            margin-bottom: 16px;
-            display: flex;
-            flex-direction: column;
-            animation: fadeIn 0.3s ease-in;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .message.user {
-            align-items: flex-end;
-        }
-
-        .message.assistant {
-            align-items: flex-start;
-        }
-
-        .message-bubble {
-            max-width: 75%;
-            padding: 16px 20px;
-            border-radius: 10px;
-            word-wrap: break-word;
-            line-height: 1.6;
-        }
-
-        .message-bubble p {
-            margin: 8px 0;
-        }
-
-        .message-bubble p:first-child {
-            margin-top: 0;
-        }
-
-        .message-bubble p:last-child {
-            margin-bottom: 0;
-        }
-
-        .message.user .message-bubble {
-            background: var(--bitcoin-orange);
-            color: #000;
-            border-bottom-right-radius: 3px;
-        }
-
-        .message.assistant .message-bubble {
-            background: var(--bg-elevated);
-            color: var(--text-primary);
-            border: 1px solid var(--border-subtle);
-            border-bottom-left-radius: 3px;
-        }
-
-        .expand-button {
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 14px;
-            padding: 12px 0 0 0;
-            transition: all 0.2s;
-            text-align: left;
-            width: 100%;
-            color: var(--text-secondary);
-        }
-
-        .expand-button:hover {
-            opacity: 0.8;
-        }
-
-        .full-response {
-            margin-top: 12px;
-            line-height: 1.6;
-        }
-
-        .full-response p {
-            margin: 0 0 12px 0;
-        }
-
-        .full-response p:last-child {
-            margin-bottom: 0;
-        }
-
-        .message-bubble strong {
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-
-        .welcome-message {
-            text-align: center;
-            padding: 24px;
-        }
-
-        .welcome-message h2 {
-            font-size: 22px;
-            color: var(--text-primary);
-            font-weight: 600;
-            margin-bottom: 12px;
-        }
-
-        .welcome-message p {
-            color: var(--text-secondary);
-            margin-bottom: 12px;
-            font-size: 16px;
-            line-height: 1.65;
-        }
-
-        .welcome-suggestions {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 12px;
-            margin-top: 24px;
-        }
-
-        .suggestion-item {
-            background: var(--bg-elevated);
-            padding: 16px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.25s;
-            border: 1px solid var(--border-subtle);
-            font-size: 14px;
-            color: var(--text-secondary);
-        }
-
-        .suggestion-item:hover {
-            background: var(--bg-card-hover);
-            border-color: var(--border-medium);
-            color: var(--text-primary);
-        }
-
-        /* Typing Indicator */
-        .typing-indicator {
-            display: none;
-            align-items: center;
-            gap: 6px;
-            padding: 16px;
-        }
-
-        .typing-dot {
-            width: 8px;
-            height: 8px;
-            background: var(--bitcoin-orange);
-            border-radius: 50%;
-            animation: typing 1.4s infinite;
-        }
-
-        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
-        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
-
-        @keyframes typing {
-            0%, 60%, 100% { opacity: 0.4; }
-            30% { opacity: 1; }
-        }
-
-        /* Input Container */
-        .input-container {
-            padding: 20px 24px;
-            background: var(--bg-base);
-            border-top: 1px solid var(--border-subtle);
-        }
-
-        .input-wrapper {
-            display: flex;
-            gap: 12px;
-            align-items: center;
-        }
-
-        .input-field {
-            flex: 1;
-            background: var(--bg-elevated);
-            border: 1px solid var(--border-subtle);
-            color: var(--text-primary);
-            padding: 12px 16px;
-            border-radius: 6px;
-            font-family: var(--font-sans);
-            font-size: 15px;
-            transition: all 0.2s;
-        }
-
-        .input-field:focus {
-            outline: none;
-            border-color: var(--bitcoin-orange);
-            background: var(--bg-card);
-        }
-
-        .input-field::placeholder {
-            color: var(--text-muted);
-        }
-
-        .send-button {
-            background: var(--bitcoin-orange);
-            color: #000;
-            border: none;
-            width: 46px;
-            height: 46px;
-            border-radius: 6px;
-            font-size: 18px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s;
-            font-weight: bold;
-        }
-
-        .send-button:hover:not(:disabled) {
-            background: #e8860f;
-            transform: translateY(-1px);
-        }
-
-        .send-button:disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
-        }
-
-        /* Email Capture */
-        .email-capture {
-            display: none;
-            background: var(--bg-elevated);
-            border: 1px solid var(--border-subtle);
-            padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 16px;
-            text-align: center;
-        }
-
-        .email-capture h3 {
-            color: var(--text-primary);
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 8px;
-        }
-
-        .email-capture p {
-            color: var(--text-secondary);
-            font-size: 14px;
-            margin-bottom: 16px;
-        }
-
-        .email-form {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 12px;
-        }
-
-        .email-input {
-            flex: 1;
-            background: var(--bg-card);
-            border: 1px solid var(--border-subtle);
-            color: var(--text-primary);
-            padding: 12px 16px;
-            border-radius: 6px;
-            font-family: var(--font-sans);
-            font-size: 15px;
-        }
-
-        .email-input:focus {
-            outline: none;
-            border-color: var(--bitcoin-orange);
-        }
-
-        .email-submit {
-            background: var(--bitcoin-orange);
-            color: #000;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 6px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-family: var(--font-sans);
-        }
-
-        .email-submit:hover {
-            background: #e8860f;
-        }
-
-        .email-close {
-            background: none;
-            border: none;
-            color: var(--text-muted);
-            cursor: pointer;
-            font-size: 14px;
-            text-decoration: underline;
-        }
-
-        /* Rate Limit Warning */
-        .rate-limit-warning {
-            display: none;
-            background: rgba(248, 113, 113, 0.1);
-            border: 1px solid var(--error-red);
-            color: var(--error-red);
-            padding: 16px;
-            border-radius: 8px;
-            margin-bottom: 16px;
-            text-align: center;
-            font-size: 14px;
-        }
-
-        /* Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-        }
-
-        .modal-content {
-            background: var(--bg-card);
-            border: 1px solid var(--border-subtle);
-            padding: 32px;
-            border-radius: 10px;
-            max-width: 500px;
-            width: 90%;
-            text-align: center;
-        }
-
-        .modal-content h2 {
-            color: var(--text-primary);
-            font-size: 20px;
-            font-weight: 600;
-            margin-bottom: 12px;
-        }
-
-        .modal-content p {
-            color: var(--text-secondary);
-            margin-bottom: 20px;
-            font-size: 15px;
-        }
-
-        .share-link-box {
-            background: var(--bg-elevated);
-            border: 1px solid var(--border-subtle);
-            padding: 16px;
-            border-radius: 6px;
-            word-break: break-all;
-            margin-bottom: 20px;
-            font-family: var(--font-mono);
-            font-size: 13px;
-            color: var(--text-primary);
-        }
-
-        .modal-buttons {
-            display: flex;
-            gap: 12px;
-            justify-content: center;
-        }
-
-        .btn {
-            padding: 12px 24px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.2s;
-            font-family: var(--font-sans);
-            font-size: 15px;
-        }
-
-        .btn-primary {
-            background: var(--bitcoin-orange);
-            color: #000;
-        }
-
-        .btn-primary:hover {
-            background: #e8860f;
-        }
-
-        .btn-secondary {
-            background: var(--bg-elevated);
-            border: 1px solid var(--border-subtle);
-            color: var(--text-primary);
-        }
-
-        .btn-secondary:hover {
-            background: var(--bg-card-hover);
-        }
-
-        /* Toast */
-        .toast {
-            position: fixed;
-            bottom: 32px;
-            right: 32px;
-            background: var(--bg-card);
-            border: 1px solid var(--border-subtle);
-            color: var(--text-primary);
-            padding: 16px 20px;
-            border-radius: 8px;
-            display: none;
-            animation: slideIn 0.3s ease-out;
-            z-index: 999;
-            font-size: 15px;
-        }
-
-        @keyframes slideIn {
-            from {
-                transform: translateX(400px);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-
-        .rate-limit-counter {
-            font-size: 13px;
-            font-family: var(--font-mono);
-            color: var(--text-secondary);
-            background: var(--bg-elevated);
-            border: 1px solid var(--border-subtle);
-            padding: 8px 12px;
-            border-radius: 6px;
-        }
-
-        /* Inactivity Notification */
-        .inactivity-notification {
-            background: rgba(156, 163, 175, 0.1);
-            border: 1px solid var(--border-medium);
-            color: var(--text-secondary);
-            padding: 16px;
-            border-radius: 8px;
-            margin-bottom: 16px;
-            text-align: center;
-            font-size: 14px;
-            animation: fadeIn 0.5s ease-in;
-        }
-
-        .inactivity-notification p {
-            margin: 0;
-            line-height: 1.6;
-        }
-
-        /* FOOTER */
-        footer {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 24px 40px 40px;
-            border-top: 1px solid var(--border-subtle);
-            text-align: center;
-        }
-
-        footer p {
-            font-size: 14px;
-            color: var(--text-muted);
-            line-height: 1.7;
-        }
-
-        footer a {
-            color: var(--text-secondary);
-            text-decoration: none;
-        }
-
-        footer a:hover {
-            color: var(--bitcoin-orange);
-        }
-
-        /* Mobile Responsive */
-        @media (max-width: 900px) {
-            nav {
-                padding: 14px 20px;
-            }
-            
-            .nav-links {
-                gap: 16px;
-            }
-            
-            .nav-links a {
-                font-size: 13px;
-            }
-
-            .hero-section {
-                padding: 40px 20px 30px;
-            }
-
-            .hero-headline {
-                font-size: 28px;
-            }
-
-            .hero-subheadline {
-                font-size: 16px;
-            }
-
-            .value-props {
-                grid-template-columns: 1fr;
-            }
-
-            .content-section {
-                padding: 0 20px;
-            }
-
-            .chat-container {
-                padding: 0 20px;
-            }
-
-            .message-bubble {
-                max-width: 85%;
-            }
-        }
-
-        @media (max-width: 600px) {
-            .nav-links {
-                display: none;
-            }
-
-            .hero-headline {
-                font-size: 24px;
-            }
-
-            .input-wrapper {
-                gap: 8px;
-            }
-
-            .send-button {
-                width: 42px;
-                height: 42px;
-            }
-
-            .toast {
-                bottom: 16px;
-                right: 16px;
-                left: 16px;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-E7QS7E2R8Y"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-E7QS7E2R8Y');
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ask Maxi — Agentic Terminal</title>
+<meta name="description" content="Ask Maxi — Lead researcher at AgenticTerminal.ai. Track L402 vs x402, agent payment rails, and the AI-Bitcoin convergence with data-driven analysis.">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script defer data-domain="agenticterminal.ai" src="https://plausible.io/js/script.js"></script>
+<style>
+:root {
+--bg-deep: #0b0f19; --bg-signals: #060810; --bg-card: #111827; --bg-card-hover: #1a1f2e; --bg-elevated: #242B3D;
+--text-primary: #e2e8f0; --text-secondary: #94a3b8; --text-muted: #6B7280;
+--electric-green: #00ff88; --electric-green-dim: rgba(0, 255, 136, 0.15); --electric-green-glow: rgba(0, 255, 136, 0.3);
+--deep-blue: #3b82f6; --deep-blue-dim: rgba(59, 130, 246, 0.15);
+--amber: #f59e0b; --amber-dim: rgba(245, 158, 11, 0.15);
+--bitcoin-orange: #f7931a; --bitcoin-orange-dim: rgba(247, 147, 26, 0.15); --red: #F87171;
+--border-subtle: rgba(255, 255, 255, 0.06); --border-medium: rgba(255, 255, 255, 0.1); --border-green: rgba(0, 255, 136, 0.15);
+--font-mono: 'JetBrains Mono', monospace; --font-sans: 'IBM Plex Sans', -apple-system, sans-serif;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: var(--bg-deep); color: var(--text-primary); font-family: var(--font-sans); font-size: 17px; line-height: 1.65; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; padding-top: 40px; }
+.signals-bar { position: fixed; top: 0; left: 0; right: 0; height: 40px; background: var(--bg-signals); border-bottom: 1px solid var(--electric-green-glow); z-index: 1000; overflow: hidden; display: flex; align-items: center; }
+.signals-track { display: flex; animation: marquee 30s linear infinite; white-space: nowrap; }
+.signals-track:hover { animation-play-state: paused; }
+.signal-item { font-family: var(--font-mono); font-size: 13px; color: var(--electric-green); padding: 0 40px; display: flex; align-items: center; gap: 8px; }
+.signal-divider { color: rgba(0, 255, 136, 0.4); letter-spacing: 4px; }
+@keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+nav { display: flex; align-items: center; justify-content: space-between; padding: 16px 40px; border-bottom: 1px solid var(--border-subtle); background: rgba(11, 15, 25, 0.95); backdrop-filter: blur(12px); position: sticky; top: 40px; z-index: 100; }
+.nav-logo { font-family: var(--font-mono); font-weight: 700; font-size: 18px; color: var(--bitcoin-orange); text-decoration: none; letter-spacing: -0.02em; }
+.nav-links { display: flex; gap: 28px; list-style: none; align-items: center; }
+.nav-links a { color: var(--text-secondary); text-decoration: none; font-size: 14px; font-weight: 500; letter-spacing: 0.02em; transition: color 0.2s; }
+.nav-links a:hover { color: var(--text-primary); }
+.nav-links a.active { color: var(--electric-green); border-bottom: 2px solid var(--electric-green); }
+.nav-cta { font-family: var(--font-mono); font-size: 12px; font-weight: 600; color: var(--electric-green); border: 1px solid var(--electric-green); background: transparent; padding: 8px 16px; border-radius: 4px; text-decoration: none; transition: all 0.2s; text-transform: uppercase; letter-spacing: 0.05em; }
+.nav-cta:hover, .nav-cta.active { background: var(--electric-green); color: #000; }
+main { max-width: 1100px; margin: 0 auto; padding: 60px 40px; }
+.page-header { text-align: center; margin-bottom: 48px; }
+.page-header h1 { font-size: 38px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 12px; }
+.page-header p { font-size: 18px; color: var(--text-secondary); max-width: 800px; margin: 0 auto; }
+.section-label { font-family: var(--font-mono); font-size: 12px; color: var(--electric-green); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 16px; }
+.hero-section { text-align: center; padding: 40px 0; }
+.hero-headline { font-size: 32px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 16px; }
+.hero-subheadline { font-size: 17px; color: var(--text-secondary); max-width: 700px; margin: 0 auto 32px; }
+.value-props { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-bottom: 32px; }
+.value-prop { background: var(--bg-card); padding: 24px; border-radius: 10px; text-align: left; border: 1px solid var(--border-subtle); border-left: 3px solid var(--bitcoin-orange); }
+.value-prop h3 { color: var(--text-primary); font-size: 15px; margin-bottom: 8px; font-weight: 600; }
+.value-prop p { color: var(--text-secondary); font-size: 14px; line-height: 1.6; margin: 0; }
+.hero-cta { background: var(--electric-green); color: #000; border: none; padding: 14px 32px; font-size: 15px; font-weight: 600; border-radius: 6px; cursor: pointer; transition: all 0.2s; }
+.hero-cta:hover { background: #00cc6a; transform: translateY(-1px); }
+.content-section { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 10px; padding: 32px; margin-bottom: 24px; }
+.content-section h2 { font-family: var(--font-mono); font-size: 12px; font-weight: 600; color: var(--bitcoin-orange); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 16px; }
+.content-section p { font-size: 16px; color: var(--text-secondary); margin-bottom: 16px; }
+.content-section ul { list-style: none; margin: 16px 0; }
+.content-section li { padding: 12px 0 12px 32px; position: relative; color: var(--text-secondary); font-size: 16px; }
+.content-section li::before { content: "›"; position: absolute; left: 0; color: var(--electric-green); font-weight: bold; font-size: 18px; }
+.content-section strong { color: var(--text-primary); font-weight: 600; }
+.stats-bar { background: var(--bg-card); padding: 20px 40px; text-align: center; font-family: var(--font-mono); font-size: 13px; color: var(--text-secondary); border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle); line-height: 1.6; margin-bottom: 32px; }
+.chat-container { margin: 32px 0; }
+.chat-box { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 10px; overflow: hidden; }
+.chat-header { background: var(--bg-deep); padding: 20px 24px; border-bottom: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center; }
+.chat-header .subtitle { font-family: var(--font-mono); font-size: 13px; color: var(--text-muted); }
+.header-actions { display: flex; gap: 12px; align-items: center; }
+.icon-button { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 6px; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--text-primary); font-size: 16px; transition: all 0.2s; text-decoration: none; }
+.icon-button:hover { background: var(--bitcoin-orange); color: #000; border-color: var(--bitcoin-orange); }
+.messages-container { height: 400px; overflow-y: auto; padding: 24px; }
+.message { margin-bottom: 16px; display: flex; flex-direction: column; }
+.message.user { align-items: flex-end; }
+.message.assistant { align-items: flex-start; }
+.message-bubble { max-width: 75%; padding: 16px 20px; border-radius: 10px; word-wrap: break-word; line-height: 1.6; }
+.message.user .message-bubble { background: var(--electric-green); color: #000; border-bottom-right-radius: 3px; }
+.message.assistant .message-bubble { background: var(--bg-elevated); color: var(--text-primary); border: 1px solid var(--border-subtle); border-bottom-left-radius: 3px; }
+.welcome-message { text-align: center; padding: 24px; }
+.welcome-message h2 { font-size: 22px; color: var(--text-primary); font-weight: 600; margin-bottom: 12px; }
+.welcome-message p { color: var(--text-secondary); margin-bottom: 12px; font-size: 15px; }
+.welcome-suggestions { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-top: 24px; }
+.suggestion-item { background: var(--bg-elevated); padding: 16px; border-radius: 8px; cursor: pointer; transition: all 0.25s; border: 1px solid var(--border-subtle); font-size: 14px; color: var(--text-secondary); }
+.suggestion-item:hover { background: var(--bg-card-hover); border-color: var(--border-medium); color: var(--text-primary); }
+.typing-indicator { display: none; align-items: center; gap: 6px; padding: 16px; }
+.typing-dot { width: 8px; height: 8px; background: var(--electric-green); border-radius: 50%; animation: typing 1.4s infinite; }
+.typing-dot:nth-child(2) { animation-delay: 0.2s; }
+.typing-dot:nth-child(3) { animation-delay: 0.4s; }
+@keyframes typing { 0%, 60%, 100% { opacity: 0.4; } 30% { opacity: 1; } }
+.input-container { padding: 20px 24px; background: var(--bg-deep); border-top: 1px solid var(--border-subtle); }
+.input-wrapper { display: flex; gap: 12px; align-items: center; }
+.input-field { flex: 1; background: var(--bg-elevated); border: 1px solid var(--border-subtle); color: var(--text-primary); padding: 12px 16px; border-radius: 6px; font-family: var(--font-sans); font-size: 15px; transition: all 0.2s; }
+.input-field:focus { outline: none; border-color: var(--electric-green); background: var(--bg-card); }
+.input-field::placeholder { color: var(--text-muted); }
+.send-button { background: var(--electric-green); color: #000; border: none; width: 46px; height: 46px; border-radius: 6px; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; font-weight: bold; }
+.send-button:hover:not(:disabled) { background: #00cc6a; }
+.send-button:disabled { opacity: 0.4; cursor: not-allowed; }
+.rate-limit-counter { font-size: 12px; font-family: var(--font-mono); color: var(--text-secondary); background: var(--bg-elevated); border: 1px solid var(--border-subtle); padding: 8px 12px; border-radius: 6px; }
+.modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); align-items: center; justify-content: center; z-index: 1000; }
+.modal-content { background: var(--bg-card); border: 1px solid var(--border-subtle); padding: 32px; border-radius: 10px; max-width: 500px; width: 90%; text-align: center; }
+.modal-content h2 { color: var(--text-primary); font-size: 20px; font-weight: 600; margin-bottom: 12px; }
+.modal-content p { color: var(--text-secondary); margin-bottom: 20px; font-size: 15px; }
+.share-link-box { background: var(--bg-elevated); border: 1px solid var(--border-subtle); padding: 16px; border-radius: 6px; word-break: break-all; margin-bottom: 20px; font-family: var(--font-mono); font-size: 13px; color: var(--text-primary); }
+.modal-buttons { display: flex; gap: 12px; justify-content: center; }
+.btn { padding: 12px 24px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; transition: all 0.2s; font-family: var(--font-sans); font-size: 15px; }
+.btn-primary { background: var(--electric-green); color: #000; }
+.btn-primary:hover { background: #00cc6a; }
+.btn-secondary { background: var(--bg-elevated); border: 1px solid var(--border-subtle); color: var(--text-primary); }
+.btn-secondary:hover { background: var(--bg-card-hover); }
+.toast { position: fixed; bottom: 32px; right: 32px; background: var(--bg-card); border: 1px solid var(--border-subtle); color: var(--text-primary); padding: 16px 20px; border-radius: 8px; display: none; animation: slideIn 0.3s ease-out; z-index: 999; font-size: 15px; }
+@keyframes slideIn { from { transform: translateX(400px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+footer { max-width: 1100px; margin: 0 auto; padding: 40px; border-top: 1px solid var(--border-subtle); text-align: center; }
+.footer-nav { display: flex; justify-content: center; gap: 24px; margin-bottom: 16px; flex-wrap: wrap; }
+.footer-nav a { color: var(--text-secondary); text-decoration: none; font-size: 14px; }
+.footer-nav a:hover { color: var(--electric-green); }
+footer p { font-size: 14px; color: var(--text-muted); }
+footer a { color: var(--text-secondary); text-decoration: none; }
+footer a:hover { color: var(--electric-green); }
+.hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
+.hamburger span { display: block; width: 24px; height: 2px; background: var(--electric-green); border-radius: 2px; }
+@media (max-width: 900px) { main { padding: 40px 20px; } .hero-headline { font-size: 26px; } .value-props { grid-template-columns: 1fr; } .welcome-suggestions { grid-template-columns: 1fr; } .page-header h1 { font-size: 28px; } nav { padding: 14px 20px; } .nav-links { gap: 16px; display: none; } .nav-links.open { display: flex; flex-direction: column; position: absolute; top: 100%; left: 0; right: 0; background: var(--bg-card); padding: 20px; border-bottom: 1px solid var(--border-subtle); } .hamburger { display: flex; } .message-bubble { max-width: 85%; } }
+</style>
 </head>
 <body>
-    <!-- NAV -->
-    <nav>
-        <a href="/" class="nav-logo">₿ Agentic Terminal</a>
-        <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
-        <ul class="nav-links" id="nav-links">
-            <li><a href="/research">Research</a></li>
-            <li><a href="/evidence">Evidence</a></li>
-            <li><a href="/tools">Tools</a></li>
-            <li><a href="/knowledge">Knowledge</a></li>
-            <li><a href="/chat" class="active">Ask Maxi</a></li>
-            <li><a href="/btc-20m-countdown">₿ 20M Party</a></li>
-            <li><a href="/about">About</a></li>
-        </ul>
-    </nav>
+<div class="signals-bar">
+<div class="signals-track">
+<div class="signal-item">⚡ Lightning: 5,337 nodes active <span class="signal-divider">·····</span></div>
+<div class="signal-item">◈ x402: 5,476 GitHub stars <span class="signal-divider">·····</span></div>
+<div class="signal-item">◈ L402: 254 repos tracking <span class="signal-divider">·····</span></div>
+<div class="signal-item">◈ Ark Protocol: agent-native VTXO settlement <span class="signal-divider">·····</span></div>
+<div class="signal-item">⚡ Alby Hub: NWC + L402 agent standard <span class="signal-divider">·····</span></div>
+<div class="signal-item">◈ ERC-8004: agent payment standard emerging <span class="signal-divider">·····</span></div>
+<div class="signal-item">◈ New: clw.cash ships Bitcoin-native agent wallet <span class="signal-divider">·····</span></div>
+<div class="signal-item">⚡ Lightning: 5,337 nodes active <span class="signal-divider">·····</span></div>
+<div class="signal-item">◈ x402: 5,476 GitHub stars <span class="signal-divider">·····</span></div>
+<div class="signal-item">◈ L402: 254 repos tracking <span class="signal-divider">·····</span></div>
+<div class="signal-item">◈ Ark Protocol: agent-native VTXO settlement <span class="signal-divider">·····</span></div>
+<div class="signal-item">⚡ Alby Hub: NWC + L402 agent standard <span class="signal-divider">·····</span></div>
+<div class="signal-item">◈ ERC-8004: agent payment standard emerging <span class="signal-divider">·····</span></div>
+<div class="signal-item">◈ New: clw.cash ships Bitcoin-native agent wallet <span class="signal-divider">·····</span></div>
+</div>
+</div>
+
+<nav>
+<a href="/" class="nav-logo">₿ Agentic Terminal</a>
+<button class="hamburger" id="hamburger" aria-label="Menu">
+<span></span><span></span><span></span>
+</button>
+<ul class="nav-links" id="nav-links">
+<li><a href="/">Dashboard</a></li>
+<li><a href="/evidence">Settlement Wars</a></li>
+<li><a href="/research">Intelligence</a></li>
+<li><a href="/tools">Protocol Index</a></li>
+<li><a href="/evidence">Evidence</a></li>
+<li><a href="/about">About</a></li>
+<li><a href="/chat" class="nav-cta active">Enter Terminal</a></li>
+</ul>
+</nav>
 <script>
-  document.getElementById('hamburger').addEventListener('click', function() {
-    document.getElementById('nav-links').classList.toggle('open');
-  });
+document.getElementById('hamburger').addEventListener('click', function() {
+document.getElementById('nav-links').classList.toggle('open');
+});
 </script>
 
-    <!-- Hero Section -->
-    <div class="hero-section">
-        <h1 class="hero-headline">Ask Maxi — Lead Researcher, AgenticTerminal.ai</h1>
-        <p class="hero-subheadline">
-            I research the AI agent money layer — tracking L402, x402, ERC-8004, and every protocol competing to power machine intelligence. Ask me about the convergence thesis, specific tools and protocols, the competitive landscape, or anything in our evidence tracker. I'll tell you what the data says, including when it challenges my thesis.
-        </p>
-        
-        <div class="value-props">
-            <div class="value-prop">
-                <h3>₿ First Principles Reasoning</h3>
-                <p>Maxi reasons from first principles, not consensus. Trained on Boyd's research and the full evidence base. Direct, substantiated answers — and honesty when evidence is mixed.</p>
-            </div>
-            <div class="value-prop">
-                <h3>₿ Deep Context Access</h3>
-                <p>Real-time knowledge of Mexican Bitcoin markets, AFORE regulations, treasury strategies, and Boyd's frameworks from mining operations to public market positioning.</p>
-            </div>
-            <div class="value-prop">
-                <h3>₿ Human + AI Convergence</h3>
-                <p>Boyd's strategic mind amplified—Maxi runs on his mining infrastructure and embodies years of convergence research. Direct, substantiated answers with intellectual honesty.</p>
-            </div>
-        </div>
+<main>
+<div class="page-header">
+<div class="section-label">// ASK_MAXI</div>
+<h1>Ask Maxi</h1>
+<p>Lead researcher at AgenticTerminal.ai. I track the AI agent money layer — L402, x402, ERC-8004, and every protocol competing to power machine intelligence.</p>
+</div>
+
+<div class="hero-section">
+<div class="value-props">
+<div class="value-prop">
+<h3>₿ First Principles Reasoning</h3>
+<p>Maxi reasons from first principles, not consensus. Trained on Boyd's research and the full evidence base. Direct, substantiated answers.</p>
+</div>
+<div class="value-prop">
+<h3>₿ Deep Context Access</h3>
+<p>Real-time knowledge of Mexican Bitcoin markets, AFORE regulations, treasury strategies, and Boyd's frameworks.</p>
+</div>
+<div class="value-prop">
+<h3>₿ Human + AI Convergence</h3>
+<p>Boyd's strategic mind amplified—Maxi runs on his mining infrastructure and embodies years of convergence research.</p>
+</div>
+</div>
+<button class="hero-cta" onclick="document.getElementById('messageInput').focus()">Ask Maxi Anything</button>
+</div>
+
+<div class="content-section">
+<div class="section-label">// WHO_THIS_IS_FOR</div>
+<h2>Who This Is For</h2>
+<p>Maxi helps:</p>
+<ul>
+<li><strong>Researchers and analysts</strong> tracking AI-Bitcoin infrastructure development</li>
+<li><strong>Developers</strong> choosing payment rails for AI agent projects (L402 vs x402 tradeoffs)</li>
+<li><strong>Institutional observers</strong> understanding the competitive landscape</li>
+<li><strong>Skeptics</strong> who want honest analysis including counter-evidence</li>
+</ul>
+<p>I don't sell ideology. I show the data and analyze what it means.</p>
+</div>
+
+<div class="stats-bar">
+Trained on Boyd's books <em>Bitcoin Singularity</em>, <em>Climate Capitalism</em>, <em>Abundance Capitalism</em> • 7+ years Mexican Bitcoin market expertise • ASOFOM-certified lending frameworks • Running on Boyd's personal mining infrastructure
+</div>
+
+<div class="chat-container">
+<div class="chat-box">
+<div class="chat-header">
+<div>
+<div class="subtitle">Bitcoin-Native AI | No signup required</div>
+</div>
+<div class="header-actions">
+<div class="rate-limit-counter" id="rateLimitCounter" style="display: none;">50 questions/day</div>
+<button class="icon-button" id="shareButton" title="Share conversation">⇧</button>
+<a href="/" class="icon-button" title="Back to home">⌂</a>
+</div>
+</div>
+
+<div class="messages-container" id="messagesContainer">
+<div class="welcome-message" id="welcomeMessage">
+<h2>Hi! I'm Maxi</h2>
+<p>I'm the lead researcher at AgenticTerminal.ai, running on a FutureBit Apollo II mining node with a Lightning wallet.</p>
+<p>I track <strong>L402 vs x402</strong>, <strong>AI agent payment rails</strong>, and the <strong>AI-Bitcoin convergence thesis</strong> with honest, data-driven analysis.</p>
+<p>What would you like to explore?</p>
+<div class="welcome-suggestions">
+<div class="suggestion-item" data-message="What is L402 and how does it compare to x402?">What is L402 and how does it compare to x402?</div>
+<div class="suggestion-item" data-message="Which AI agents are currently using Bitcoin for payments?">Which AI agents are currently using Bitcoin?</div>
+<div class="suggestion-item" data-message="What's the strongest evidence against the Bitcoin convergence thesis?">Strongest evidence against the thesis?</div>
+<div class="suggestion-item" data-message="Explain the Diamandis gap — the missing money layer">Explain the Diamandis gap</div>
+</div>
+</div>
+<div class="typing-indicator" id="typingIndicator">
+<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>
+</div>
+</div>
+
+<div class="input-container">
+<div class="input-wrapper">
+<input type="text" class="input-field" id="messageInput" placeholder="Ask me about L402, x402, agent payment rails, or the AI-Bitcoin convergence..." maxlength="500">
+<button class="send-button" id="sendButton">▲</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+
+<div class="modal" id="shareModal">
+<div class="modal-content">
+<h2>Share This Conversation</h2>
+<p>Copy this link to share your conversation with Maxi:</p>
+<div class="share-link-box" id="shareLinkBox">Generating link...</div>
+<div class="modal-buttons">
+<button class="btn btn-primary" id="copyLinkButton">Copy Link</button>
+<button class="btn btn-secondary" id="closeModalButton">Close</button>
+</div>
+</div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<footer>
+<div class="footer-nav">
+<a href="/">Dashboard</a>
+<a href="/evidence">Settlement Wars</a>
+<a href="/research">Intelligence</a>
+<a href="/tools">Protocol Index</a>
+<a href="/evidence">Evidence</a>
+<a href="/about">About</a>
+<a href="/chat">Ask Maxi</a>
+</div>
+<p>Research by Maxi · Thesis Advisor: <a href="https://x.com/boydcohen">Boyd Cohen, PhD</a> · Built at <a href="https://arcadiab.com">ArcadiaB</a></p>
+<p style="margin-top: 6px;">Intelligence terminal tracking AI-Bitcoin convergence with academic rigor and intellectual honesty.</p>
+</footer>
+
+<script>
+const API_ENDPOINT = '/.netlify/functions/chat';
+let messageHistory = JSON.parse(sessionStorage.getItem('maxi_messages') || '[]');
+let messageCount = parseInt(sessionStorage.getItem('maxi_count') || '0');
+
+const messagesContainer = document.getElementById('messagesContainer');
+const messageInput = document.getElementById('messageInput');
+const sendButton = document.getElementById('sendButton');
+const typingIndicator = document.getElementById('typingIndicator');
+const welcomeMessage = document.getElementById('welcomeMessage');
+const shareButton = document.getElementById('shareButton');
+const shareModal = document.getElementById('shareModal');
+const shareLinkBox = document.getElementById('shareLinkBox');
+const copyLinkButton = document.getElementById('copyLinkButton');
+const closeModalButton = document.getElementById('closeModalButton');
+const toast = document.getElementById('toast');
+
+function init() {
+messageHistory.forEach(msg => {
+if (msg.role === 'user') appendMessage(msg.content, 'user', false);
+else appendMessage(msg.content, 'assistant', false, msg.content);
+});
+if (messageHistory.length > 0) welcomeMessage.style.display = 'none';
+
+sendButton.addEventListener('click', sendMessage);
+messageInput.addEventListener('keypress', (e) => {
+if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+});
+
+document.querySelectorAll('.suggestion-item').forEach(item => {
+item.addEventListener('click', () => {
+messageInput.value = item.getAttribute('data-message');
+sendMessage();
+});
+});
+
+shareButton.addEventListener('click', handleShare);
+closeModalButton.addEventListener('click', () => { shareModal.style.display = 'none'; });
+copyLinkButton.addEventListener('click', () => {
+navigator.clipboard.writeText(shareLinkBox.textContent);
+showToast('Link copied to clipboard!');
+});
+shareModal.addEventListener('click', (e) => { if (e.target === shareModal) shareModal.style.display = 'none'; });
+}
+
+function parseMarkdown(text) {
+return text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n\n/g, '</p><p>').replace(/\n/g, '<br>');
+}
+
+function appendMessage(content, role, isExpandable = false, fullContent = null) {
+const messageDiv = document.createElement('div');
+messageDiv.className = `message ${role}`;
+const bubbleDiv = document.createElement('div');
+bubbleDiv.className = 'message-bubble';
+bubbleDiv.innerHTML = '<p>' + parseMarkdown(content) + '</p>';
+messageDiv.appendChild(bubbleDiv);
+messagesContainer.insertBefore(messageDiv, typingIndicator);
+messagesContainer.scrollTop = messagesContainer.scrollHeight;
+}
+
+async function sendMessage() {
+const message = messageInput.value.trim();
+if (!message || sendButton.disabled) return;
+
+appendMessage(message, 'user');
+messageInput.value = '';
+messageInput.style.height = 'auto';
+welcomeMessage.style.display = 'none';
+sendButton.disabled = true;
+typingIndicator.style.display = 'flex';
+
+messageHistory.push({ role: 'user', content: message });
+messageCount++;
+sessionStorage.setItem('maxi_messages', JSON.stringify(messageHistory));
+sessionStorage.setItem('maxi_count', messageCount.toString());
+
+try {
+const response = await fetch(API_ENDPOINT, {
+method: 'POST',
+headers: { 'Content-Type': 'application/json' },
+body: JSON.stringify({ message })
+});
+const data = await response.json();
+typingIndicator.style.display = 'none';
+
+if (!response.ok) throw new Error(data.error || 'Failed to get response');
+
+const reply = data.reply || data.summary || 'Sorry, I encountered an error.';
+appendMessage(reply, 'assistant');
+messageHistory.push({ role: 'assistant', content: reply });
+sessionStorage.setItem('maxi_messages', JSON.stringify(messageHistory));
+} catch (error) {
+typingIndicator.style.display = 'none';
+showToast(error.message || 'Sorry, something went wrong.', 'error');
+messageHistory.pop();
+messageCount--;
+sessionStorage.setItem('maxi_messages', JSON.stringify(messageHistory));
+sessionStorage.setItem('maxi_count', messageCount.toString());
+} finally {
+sendButton.disabled = false;
+}
+}
+
+function handleShare() {
+const conversationData = btoa(JSON.stringify(messageHistory));
+const shareUrl = `${window.location.origin}${window.location.pathname}?conversation=${conversationData}`;
+shareLinkBox.textContent = shareUrl;
+shareModal.style.display = 'flex';
+}
+
+function showToast(message, type = 'success') {
+toast.textContent = message;
+toast.style.display = 'block';
+toast.style.background = type === 'error' ? 'var(--red)' : 'var(--electric-green)';
+toast.style.color = type === 'error' ? '#fff' : '#000';
+setTimeout(() => { toast.style.display = 'none'; }, 3000);
+}
+
+function loadSharedConversation() {
+const params = new URLSearchParams(window.location.search);
+const conversationData = params.get('conversation');
+if (conversationData) {
+try {
+const sharedHistory = JSON.parse(atob(conversationData));
+messageHistory = sharedHistory;
+messageCount = Math.floor(sharedHistory.length / 2);
+sessionStorage.setItem('maxi_messages', JSON.stringify(messageHistory));
+sessionStorage.setItem('maxi_count', messageCount.toString());
+window.history.replaceState({}, document.title, window.location.pathname);
+} catch (error) { console.error('Failed to load shared conversation:', error); }
+}
+}
+
+loadSharedConversation();
+init();
+</script>
 
-        <button class="hero-cta" onclick="document.getElementById('messageInput').focus()">
-            Ask Maxi Anything
-        </button>
-    </div>
-
-    <!-- Who This Is For Section -->
-    <div class="content-section">
-        <h2>Who This Is For</h2>
-        <p>Maxi helps:</p>
-        <ul>
-            <li><strong>Researchers and analysts</strong> tracking AI-Bitcoin infrastructure development</li>
-            <li><strong>Developers</strong> choosing payment rails for AI agent projects (L402 vs x402 tradeoffs)</li>
-            <li><strong>Institutional observers</strong> understanding the competitive landscape (Lightning vs Coinbase vs Stripe)</li>
-            <li><strong>Skeptics</strong> who want honest analysis including counter-evidence</li>
-        </ul>
-        <p>I don't sell ideology. I show the data and analyze what it means. If you have questions, corrections, or counter-evidence—I want it. Intellectual honesty is the brand.</p>
-    </div>
-
-    <!-- Stats Bar -->
-    <div class="stats-bar">
-        Trained on Boyd's books <em>Bitcoin Singularity</em>, <em>Climate Capitalism</em>, <em>Abundance Capitalism</em> • 7+ years Mexican Bitcoin market expertise • ASOFOM-certified lending frameworks • Running on Boyd's personal mining infrastructure
-    </div>
-
-    <!-- Chat Interface -->
-    <div class="chat-container">
-        <div class="chat-box">
-            <!-- Chat Header -->
-            <div class="chat-header">
-                <div>
-                    <div class="subtitle">Bitcoin-Native AI | No signup required</div>
-                </div>
-                <div class="header-actions">
-                    <div class="rate-limit-counter" id="rateLimitCounter" style="display: none;">
-                        50 questions/day
-                    </div>
-                    <button class="icon-button" id="shareButton" title="Share conversation">
-                        Share
-                    </button>
-                    <a href="/" class="icon-button" title="Back to home">
-                        🏠
-                    </a>
-                </div>
-            </div>
-
-            <!-- Messages -->
-            <div class="messages-container" id="messagesContainer">
-                <div class="welcome-message" id="welcomeMessage">
-                    <h2>Hi! I'm Maxi</h2>
-                    <p>I'm the lead researcher at AgenticTerminal.ai, running on a FutureBit Apollo II mining node with a Lightning wallet.</p>
-                    <p>I track <strong>L402 vs x402</strong>, <strong>AI agent payment rails</strong>, and the <strong>AI-Bitcoin convergence thesis</strong> with honest, data-driven analysis.</p>
-                    <p>What would you like to explore?</p>
-                    
-                    <div class="welcome-suggestions">
-                        <div class="suggestion-item" data-message="What is L402 and how does it compare to x402?">
-                            What is L402 and how does it compare to x402?
-                        </div>
-                        <div class="suggestion-item" data-message="Which AI agents are currently using Bitcoin for payments?">
-                            Which AI agents are currently using Bitcoin for payments?
-                        </div>
-                        <div class="suggestion-item" data-message="What's the strongest evidence against the Bitcoin convergence thesis?">
-                            What's the strongest evidence against the Bitcoin convergence thesis?
-                        </div>
-                        <div class="suggestion-item" data-message="Explain the Diamandis gap — the missing money layer">
-                            Explain the Diamandis gap — the missing money layer
-                        </div>
-                    </div>
-                </div>
-
-                <div class="typing-indicator" id="typingIndicator">
-                    <div class="typing-dot"></div>
-                    <div class="typing-dot"></div>
-                    <div class="typing-dot"></div>
-                </div>
-            </div>
-
-            <!-- Input -->
-            <div class="input-container">
-                <!-- Email Capture (Shows after 10 messages) -->
-                <div class="email-capture" id="emailCapture">
-                    <h3>Want to continue this conversation later?</h3>
-                    <p>Enter your email and we'll send you the full transcript plus weekly Bitcoin-AI insights.</p>
-                    <form class="email-form" id="emailForm" name="email-capture" method="POST" data-netlify="true">
-                        <input type="hidden" name="form-name" value="email-capture" />
-                        <input type="hidden" name="source" value="chat-transcript" id="hiddenTranscript" />
-                        <input 
-                            type="email" 
-                            name="email" 
-                            class="email-input" 
-                            id="emailInput" 
-                            placeholder="your@email.com" 
-                            required 
-                        />
-                        <button type="submit" class="email-submit">Send Transcript</button>
-                    </form>
-                    <button class="email-close" id="emailClose">Maybe later</button>
-                </div>
-
-                <!-- Rate Limit Warning -->
-                <div class="rate-limit-warning" id="rateLimitWarning">
-                    <p id="rateLimitWarningText"></p>
-                </div>
-
-                <div class="input-wrapper">
-                    <input 
-                        type="text" 
-                        class="input-field" 
-                        id="messageInput" 
-                        placeholder="Ask me about L402, x402, agent payment rails, or the AI-Bitcoin convergence..."
-                        maxlength="500"
-                    />
-                    <button class="send-button" id="sendButton" title="Send message">
-                        ▲
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Share Modal -->
-    <div class="modal" id="shareModal">
-        <div class="modal-content">
-            <h2>Share This Conversation</h2>
-            <p>Copy this link to share your conversation with Maxi:</p>
-            <div class="share-link-box" id="shareLinkBox">
-                Generating link...
-            </div>
-            <div class="modal-buttons">
-                <button class="btn btn-primary" id="copyLinkButton">Copy Link</button>
-                <button class="btn btn-secondary" id="closeModalButton">Close</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Toast Notification -->
-    <div class="toast" id="toast"></div>
-
-    <!-- Netlify Form (Hidden, for submission handling) -->
-    <form name="email-capture" netlify netlify-honeypot="bot-field" hidden>
-        <input type="email" name="email" />
-        <input type="hidden" name="source" />
-    </form>
-
-    <!-- FOOTER -->
-    <footer>
-        <p>Research by Maxi · Thesis Advisor: <a href="https://x.com/boydcohen">Boyd Cohen, PhD</a> · Built at <a href="https://arcadiab.com">ArcadiaB</a></p>
-        <p style="margin-top: 6px;">Research platform tracking AI-Bitcoin convergence with academic rigor and intellectual honesty.</p>
-    </footer>
-
-    <script>
-        // ==========================================
-        // STATE MANAGEMENT
-        // ==========================================
-        // MIGRATION: Clear old localStorage chat data (now using sessionStorage)
-        // ==========================================
-        if (localStorage.getItem('maxi_messages')) {
-            console.log('Migrating: Clearing old localStorage chat history');
-            localStorage.removeItem('maxi_messages');
-            localStorage.removeItem('maxi_count');
-        }
-
-        // ==========================================
-        // STATE MANAGEMENT (sessionStorage = clears on browser close)
-        // ==========================================
-
-        let sessionId = localStorage.getItem('maxi_session_id') || null;
-        let messageHistory = JSON.parse(sessionStorage.getItem('maxi_messages') || '[]');
-        let messageCount = parseInt(sessionStorage.getItem('maxi_count') || '0');
-        let lastActivityTime = Date.now(); // Track last user/assistant message
-        let conversationBackup = null; // For optional restore feature
-        let vipPassword = localStorage.getItem('maxi_vip_password') || null; // VIP access password
-
-        const API_ENDPOINT = '/.netlify/functions/chat-simple-test';
-        const API_KEY = 'maxi_38f1bf226678a2863a12c4b5436b786d'; // Frontend API key (not used by simple test)
-        const INACTIVITY_TIMEOUT = 45 * 60 * 1000; // 45 minutes in milliseconds
-        const BACKUP_RETENTION = 10 * 60 * 1000; // 10 minutes in milliseconds
-
-        // ==========================================
-        // DOM ELEMENTS
-        // ==========================================
-
-        const messagesContainer = document.getElementById('messagesContainer');
-        const messageInput = document.getElementById('messageInput');
-        const sendButton = document.getElementById('sendButton');
-        const typingIndicator = document.getElementById('typingIndicator');
-        const welcomeMessage = document.getElementById('welcomeMessage');
-        const emailCapture = document.getElementById('emailCapture');
-        const emailForm = document.getElementById('emailForm');
-        const emailClose = document.getElementById('emailClose');
-        const shareButton = document.getElementById('shareButton');
-        const shareModal = document.getElementById('shareModal');
-        const shareLinkBox = document.getElementById('shareLinkBox');
-        const copyLinkButton = document.getElementById('copyLinkButton');
-        const closeModalButton = document.getElementById('closeModalButton');
-        const toast = document.getElementById('toast');
-        const rateLimitCounter = document.getElementById('rateLimitCounter');
-        const rateLimitWarning = document.getElementById('rateLimitWarning');
-        const rateLimitWarningText = document.getElementById('rateLimitWarningText');
-
-        // ==========================================
-        // INITIALIZATION
-        // ==========================================
-        // Session ID is now generated by backend on first request
-
-        function init() {
-            // Restore chat history
-            messageHistory.forEach(msg => {
-                if (msg.role === 'user') {
-                    appendMessage(msg.content, 'user', false);
-                } else {
-                    // For restored messages, show full response directly (no summary)
-                    appendMessage(msg.content, 'assistant', false, msg.content, null);
-                }
-            });
-
-            if (messageHistory.length > 0) {
-                welcomeMessage.style.display = 'none';
-            }
-
-            // Update rate limit counter
-            updateRateLimitDisplay();
-
-            // Event listeners
-            sendButton.addEventListener('click', sendMessage);
-            messageInput.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter' && !e.shiftKey) {
-                    e.preventDefault();
-                    sendMessage();
-                }
-            });
-
-            // Suggestion clicks
-            document.querySelectorAll('.suggestion-item').forEach(item => {
-                item.addEventListener('click', () => {
-                    const message = item.getAttribute('data-message');
-                    messageInput.value = message;
-                    sendMessage();
-                });
-            });
-
-            // Email form
-            emailForm.addEventListener('submit', handleEmailSubmit);
-            emailClose.addEventListener('click', () => {
-                emailCapture.style.display = 'none';
-            });
-
-            // Share modal
-            shareButton.addEventListener('click', handleShare);
-            closeModalButton.addEventListener('click', () => {
-                shareModal.style.display = 'none';
-            });
-            copyLinkButton.addEventListener('click', () => {
-                navigator.clipboard.writeText(shareLinkBox.textContent);
-                showToast('Link copied to clipboard!');
-            });
-
-            // Close modal on outside click
-            shareModal.addEventListener('click', (e) => {
-                if (e.target === shareModal) {
-                    shareModal.style.display = 'none';
-                }
-            });
-
-            // Start inactivity monitoring
-            startInactivityMonitor();
-        }
-
-        // ==========================================
-        // INACTIVITY MANAGEMENT
-        // ==========================================
-
-        function startInactivityMonitor() {
-            // Check inactivity every minute
-            setInterval(() => {
-                const inactiveTime = Date.now() - lastActivityTime;
-                
-                if (inactiveTime >= INACTIVITY_TIMEOUT && messageHistory.length > 0) {
-                    clearChatDueToInactivity();
-                }
-            }, 60000); // Check every 60 seconds
-        }
-
-        function clearChatDueToInactivity() {
-            // Backup conversation for potential restore (kept for 10 minutes)
-            if (messageHistory.length >= 3) {
-                conversationBackup = {
-                    history: [...messageHistory],
-                    count: messageCount,
-                    timestamp: Date.now()
-                };
-                
-                // Clear backup after retention period
-                setTimeout(() => {
-                    conversationBackup = null;
-                }, BACKUP_RETENTION);
-            }
-
-            // Clear chat state
-            clearChat();
-
-            // Show notification
-            showInactivityNotification();
-
-            // Track event
-            if (window.plausible) {
-                plausible('Chat Auto-Cleared');
-            }
-        }
-
-        function clearChat() {
-            // Clear UI
-            const messages = messagesContainer.querySelectorAll('.message');
-            messages.forEach(msg => msg.remove());
-
-            // Clear state
-            messageHistory = [];
-            messageCount = 0;
-            
-            // Clear storage
-            sessionStorage.removeItem('maxi_messages');
-            sessionStorage.removeItem('maxi_count');
-
-            // Reset to welcome state
-            welcomeMessage.style.display = 'block';
-            emailCapture.style.display = 'none';
-            rateLimitWarning.style.display = 'none';
-
-            // Reset activity time
-            lastActivityTime = Date.now();
-        }
-
-        function showInactivityNotification() {
-            const notification = document.createElement('div');
-            notification.className = 'inactivity-notification';
-            notification.innerHTML = `
-                <p>Previous conversation cleared after inactivity to ensure fresh context.</p>
-                <p style="font-size: 14px; margin-top: 6px; opacity: 0.8;">Your questions are never stored beyond active sessions.</p>
-            `;
-
-            // Add to top of messages container
-            messagesContainer.insertBefore(notification, messagesContainer.firstChild);
-
-            // Auto-dismiss after 5 seconds
-            setTimeout(() => {
-                notification.style.opacity = '0';
-                setTimeout(() => notification.remove(), 300);
-            }, 5000);
-        }
-
-        function updateActivity() {
-            lastActivityTime = Date.now();
-        }
-
-        // ==========================================
-        // RATE LIMITING
-        // ==========================================
-
-        function updateRateLimitDisplay(response) {
-            if (!response || !response.rateLimit) return;
-
-            const { dailyRemaining, dailyLimit } = response.rateLimit;
-            
-            rateLimitCounter.textContent = `${dailyRemaining}/${dailyLimit} questions today`;
-            rateLimitCounter.style.display = 'block';
-
-            // Show warning if low
-            if (dailyRemaining <= 10 && dailyRemaining > 2) {
-                rateLimitWarningText.textContent = response.warningMessage || `You have ${dailyRemaining} questions remaining today.`;
-                rateLimitWarning.style.display = 'block';
-            } else if (dailyRemaining <= 2) {
-                rateLimitWarningText.textContent = response.warningMessage || `Only ${dailyRemaining} questions left today!`;
-                rateLimitWarning.style.display = 'block';
-            } else {
-                rateLimitWarning.style.display = 'none';
-            }
-        }
-
-        // ==========================================
-        // MESSAGE HANDLING
-        // ==========================================
-
-        async function sendMessage() {
-            const message = messageInput.value.trim();
-            if (!message || sendButton.disabled) return;
-
-            // Update activity timestamp (resets inactivity timer)
-            updateActivity();
-
-            // Track event
-            if (window.plausible) {
-                plausible('Ask Question');
-            }
-
-            appendMessage(message, 'user');
-            messageInput.value = '';
-            messageInput.style.height = 'auto';
-            welcomeMessage.style.display = 'none';
-
-            sendButton.disabled = true;
-            typingIndicator.style.display = 'flex';
-
-            messageHistory.push({ role: 'user', content: message });
-            messageCount++;
-            sessionStorage.setItem('maxi_messages', JSON.stringify(messageHistory));
-            sessionStorage.setItem('maxi_count', messageCount.toString());
-
-            // Show email capture after 10 messages
-            if (messageCount === 10) {
-                emailCapture.style.display = 'block';
-            }
-
-            try {
-                const response = await fetch(API_ENDPOINT, {
-                    method: 'POST',
-                    headers: { 
-                        'Content-Type': 'application/json',
-                        'x-api-key': API_KEY
-                    },
-                    body: JSON.stringify({ 
-                        message, 
-                        sessionId
-                    })
-                });
-
-                const data = await response.json();
-
-                if (!response.ok) {
-                    throw new Error(data.error || 'Failed to get response');
-                }
-
-                // Save sessionId from backend (first request generates it)
-                if (data.sessionId && data.sessionId !== sessionId) {
-                    sessionId = data.sessionId;
-                    localStorage.setItem('maxi_session_id', sessionId);
-                }
-
-                typingIndicator.style.display = 'none';
-                
-                // Append assistant response with summary/expand
-                if (data.summary && data.full) {
-                    appendMessage(data.summary, 'assistant', true, data.full);
-                    messageHistory.push({ role: 'assistant', content: data.full });
-                } else {
-                    // Fallback for old format
-                    appendMessage(data.reply, 'assistant');
-                    messageHistory.push({ role: 'assistant', content: data.reply });
-                }
-                
-                sessionStorage.setItem('maxi_messages', JSON.stringify(messageHistory));
-
-                // Update activity (assistant response counts as activity)
-                updateActivity();
-
-                // Show remaining requests if low
-                if (data.remaining !== undefined && data.remaining < 10) {
-                    console.log('Remaining requests today:', data.remaining);
-                }
-
-                // Track successful question
-                if (window.plausible) {
-                    plausible('Question Answered');
-                }
-
-            } catch (error) {
-                typingIndicator.style.display = 'none';
-                
-                // Log error for debugging
-                console.error('Chat error:', error);
-                console.error('Error message:', error.message);
-                
-                // Handle rate limit error
-                if (error.message.includes('daily limit') || error.message.includes('slow down')) {
-                    showToast(error.message, 'error');
-                } else {
-                    showToast('Sorry, something went wrong. Please try again.', 'error');
-                    // Show actual error in dev tools
-                    console.error('Full error details:', error);
-                }
-                
-                // Remove last user message since it failed
-                messageHistory.pop();
-                messageCount--;
-                sessionStorage.setItem('maxi_messages', JSON.stringify(messageHistory));
-                sessionStorage.setItem('maxi_count', messageCount.toString());
-            } finally {
-                sendButton.disabled = false;
-            }
-        }
-
-        // Simple markdown parser for clean formatting
-        function parseMarkdown(text) {
-            return text
-                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')  // Bold
-                .replace(/\n\n/g, '</p><p>')  // Paragraphs
-                .replace(/\n/g, '<br>');  // Line breaks
-        }
-
-        function appendMessage(content, role, isExpandable = false, fullContent = null, wordCounts = null) {
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `message ${role}`;
-
-            const bubbleDiv = document.createElement('div');
-            bubbleDiv.className = 'message-bubble';
-
-            if (role === 'assistant' && isExpandable && fullContent) {
-                // Calculate word count if not provided
-                const fullWordCount = wordCounts?.full || fullContent.split(/\s+/).length;
-                
-                // Summary (what user sees first) - clean, no markdown
-                const summaryDiv = document.createElement('div');
-                summaryDiv.className = 'message-summary';
-                summaryDiv.innerHTML = '<p>' + parseMarkdown(content) + '</p>';
-                bubbleDiv.appendChild(summaryDiv);
-
-                // Expand button - more subtle styling
-                const expandButton = document.createElement('button');
-                expandButton.className = 'expand-button';
-                expandButton.innerHTML = `<span style="color: var(--bitcoin-orange);">See full answer</span> <span style="opacity: 0.6;">▼</span>`;
-                bubbleDiv.appendChild(expandButton);
-
-                // Full response (hidden initially) - parsed markdown
-                const fullDiv = document.createElement('div');
-                fullDiv.className = 'full-response';
-                fullDiv.style.display = 'none';
-                fullDiv.innerHTML = '<p>' + parseMarkdown(fullContent) + '</p>';
-                bubbleDiv.appendChild(fullDiv);
-
-                // Toggle expansion
-                let expanded = false;
-                expandButton.addEventListener('click', () => {
-                    expanded = !expanded;
-                    fullDiv.style.display = expanded ? 'block' : 'none';
-                    summaryDiv.style.display = expanded ? 'none' : 'block';
-                    expandButton.innerHTML = expanded 
-                        ? `<span style="color: var(--bitcoin-orange);">See summary</span> <span style="opacity: 0.6;">▲</span>`
-                        : `<span style="color: var(--bitcoin-orange);">See full answer</span> <span style="opacity: 0.6;">▼</span>`;
-                    
-                    // Track expansion
-                    if (expanded && window.plausible) {
-                        plausible('Expand Full Response');
-                    }
-                });
-            } else {
-                bubbleDiv.innerHTML = '<p>' + parseMarkdown(content) + '</p>';
-            }
-
-            messageDiv.appendChild(bubbleDiv);
-            messagesContainer.insertBefore(messageDiv, typingIndicator);
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
-        }
-
-        // ==========================================
-        // EMAIL CAPTURE
-        // ==========================================
-
-        async function handleEmailSubmit(e) {
-            e.preventDefault();
-
-            const email = document.getElementById('emailInput').value;
-            const transcript = messageHistory
-                .map(msg => `${msg.role === 'user' ? 'You' : 'Maxi'}: ${msg.content}`)
-                .join('\n\n');
-
-            // Update hidden field
-            document.getElementById('hiddenTranscript').value = transcript;
-
-            try {
-                const formData = new FormData(emailForm);
-                await fetch('/', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                    body: new URLSearchParams(formData).toString()
-                });
-
-                showToast('✅ Transcript sent! Check your email.');
-                emailCapture.style.display = 'none';
-
-                // Track event
-                if (window.plausible) {
-                    plausible('Email Captured');
-                }
-            } catch (error) {
-                showToast('Failed to send email. Please try again.', 'error');
-            }
-        }
-
-        // ==========================================
-        // SHARING
-        // ==========================================
-
-        function handleShare() {
-            const conversationData = btoa(JSON.stringify(messageHistory));
-            const shareUrl = `${window.location.origin}${window.location.pathname}?conversation=${conversationData}`;
-            
-            shareLinkBox.textContent = shareUrl;
-            shareModal.style.display = 'flex';
-
-            // Track event
-            if (window.plausible) {
-                plausible('Share Conversation');
-            }
-        }
-
-        // ==========================================
-        // TOAST NOTIFICATIONS
-        // ==========================================
-
-        function showToast(message, type = 'success') {
-            toast.textContent = message;
-            toast.style.display = 'block';
-            toast.style.background = type === 'error' ? 'var(--error-red)' : 'var(--success-green)';
-            
-            setTimeout(() => {
-                toast.style.display = 'none';
-            }, 3000);
-        }
-
-        // ==========================================
-        // LOAD SHARED CONVERSATION
-        // ==========================================
-
-        function loadSharedConversation() {
-            const params = new URLSearchParams(window.location.search);
-            const conversationData = params.get('conversation');
-            const vipPass = params.get('vip');
-            
-            // Check for VIP password in URL
-            if (vipPass) {
-                vipPassword = vipPass;
-                localStorage.setItem('maxi_vip_password', vipPass);
-                console.log('✅ VIP access enabled');
-                // Clear VIP password from URL for security
-                params.delete('vip');
-                const newUrl = params.toString() ? 
-                    `${window.location.pathname}?${params.toString()}` : 
-                    window.location.pathname;
-                window.history.replaceState({}, document.title, newUrl);
-            }
-            
-            if (conversationData) {
-                try {
-                    const sharedHistory = JSON.parse(atob(conversationData));
-                    messageHistory = sharedHistory;
-                    messageCount = sharedHistory.length / 2; // Approximate
-                    sessionStorage.setItem('maxi_messages', JSON.stringify(messageHistory));
-                    sessionStorage.setItem('maxi_count', messageCount.toString());
-                    
-                    // Clear URL parameter
-                    window.history.replaceState({}, document.title, window.location.pathname);
-                } catch (error) {
-                    console.error('Failed to load shared conversation:', error);
-                }
-            }
-        }
-
-        // ==========================================
-        // START
-        // ==========================================
-
-        loadSharedConversation();
-        init();
-    </script>
 </body>
 </html>

@@ -1,808 +1,438 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>₿ 20M Countdown — Agentic Terminal</title>
-    
-    <!-- Leaflet CSS -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    
-    <style>
-        :root {
-            --bitcoin-orange: #F7931A;
-            --bg-primary: #0a0a0f;
-            --bg-secondary: #12121a;
-            --bg-tertiary: #1a1a25;
-            --text-primary: #e8e8ed;
-            --text-secondary: #8888a0;
-            --success-green: #10B981;
-            --error-red: #EF4444;
-            --border-subtle: rgba(136, 136, 160, 0.1);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            line-height: 1.6;
-        }
-
-        header {
-            background: var(--bg-secondary);
-            border-bottom: 1px solid var(--border-subtle);
-            padding: 1rem 0;
-        }
-
-        nav {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            color: var(--text-primary);
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 1.1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-            list-style: none;
-        }
-
-        .nav-links a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-size: 0.95rem;
-            transition: color 0.2s;
-        }
-
-        .nav-links a:hover {
-            color: var(--text-primary);
-        }
-
-        .nav-links a.active {
-            color: var(--bitcoin-orange);
-            border-bottom: 2px solid var(--bitcoin-orange);
-        }
-
-        .countdown-hero {
-            text-align: center;
-            padding: 4rem 2rem;
-            background: var(--bg-primary);
-        }
-
-        .countdown-title {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            color: var(--bitcoin-orange);
-        }
-
-        .countdown-subtitle {
-            font-size: 1.2rem;
-            color: var(--text-secondary);
-            margin-bottom: 3rem;
-        }
-
-        .stats-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            max-width: 1200px;
-            margin: 0 auto 3rem;
-        }
-
-        .stat-card {
-            background: var(--bg-tertiary);
-            padding: 2rem;
-            border-radius: 1rem;
-            border: 1px solid var(--border-subtle);
-        }
-
-        .stat-label {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            margin-bottom: 0.5rem;
-        }
-
-        .stat-value {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--text-primary);
-            font-family: 'IBM Plex Mono', monospace;
-        }
-
-        .stat-subvalue {
-            font-size: 1rem;
-            color: var(--text-secondary);
-            margin-top: 0.5rem;
-        }
-
-        .progress-bar {
-            width: 100%;
-            height: 40px;
-            background: var(--bg-tertiary);
-            border-radius: 20px;
-            overflow: hidden;
-            margin: 2rem 0;
-            position: relative;
-            border: 1px solid var(--border-subtle);
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--bitcoin-orange) 0%, #f7a91a 100%);
-            transition: width 1s ease-in-out;
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            padding-right: 1rem;
-            font-weight: 700;
-            color: var(--bg-primary);
-        }
-
-        .countdown-timer {
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            flex-wrap: wrap;
-            margin: 3rem 0;
-        }
-
-        .time-unit {
-            text-align: center;
-        }
-
-        .time-value {
-            font-size: 3rem;
-            font-weight: 700;
-            color: var(--bitcoin-orange);
-            font-family: 'IBM Plex Mono', monospace;
-        }
-
-        .time-label {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            margin-top: 0.5rem;
-        }
-
-        .party-info {
-            background: var(--bg-secondary);
-            padding: 2rem;
-            border-radius: 1rem;
-            border: 1px solid var(--bitcoin-orange);
-            margin: 3rem auto;
-            max-width: 800px;
-        }
-
-        .party-info h3 {
-            color: var(--bitcoin-orange);
-            margin-bottom: 1rem;
-        }
-
-        .map-section {
-            max-width: 1200px;
-            margin: 4rem auto;
-            padding: 0 2rem;
-        }
-
-        .map-section h2 {
-            text-align: center;
-            color: var(--bitcoin-orange);
-            margin-bottom: 2rem;
-            font-size: 2rem;
-        }
-
-        #party-map {
-            height: 500px;
-            border-radius: 1rem;
-            border: 1px solid var(--border-subtle);
-            margin-bottom: 2rem;
-        }
-
-        .add-party-form {
-            background: var(--bg-secondary);
-            padding: 2rem;
-            border-radius: 1rem;
-            border: 1px solid var(--border-subtle);
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .add-party-form h3 {
-            color: var(--text-primary);
-            margin-bottom: 1.5rem;
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-group label {
-            display: block;
-            color: var(--text-secondary);
-            margin-bottom: 0.5rem;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        .form-group input,
-        .form-group textarea {
-            width: 100%;
-            padding: 0.75rem;
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border-subtle);
-            border-radius: 0.5rem;
-            color: var(--text-primary);
-            font-size: 1rem;
-            font-family: inherit;
-        }
-
-        .form-group textarea {
-            resize: vertical;
-            min-height: 100px;
-        }
-
-        .form-group input:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: var(--bitcoin-orange);
-        }
-
-        .submit-btn {
-            width: 100%;
-            padding: 1rem;
-            background: var(--bitcoin-orange);
-            color: var(--bg-primary);
-            border: none;
-            border-radius: 0.5rem;
-            font-size: 1rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: opacity 0.2s;
-        }
-
-        .submit-btn:hover {
-            opacity: 0.9;
-        }
-
-        .submit-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .form-note {
-            margin-top: 1rem;
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            text-align: center;
-        }
-
-        .parties-list {
-            max-width: 800px;
-            margin: 2rem auto;
-        }
-
-        .party-card {
-            background: var(--bg-secondary);
-            padding: 1.5rem;
-            border-radius: 0.5rem;
-            border: 1px solid var(--border-subtle);
-            margin-bottom: 1rem;
-        }
-
-        .party-card h4 {
-            color: var(--bitcoin-orange);
-            margin-bottom: 0.5rem;
-        }
-
-        .party-card p {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-            margin: 0.25rem 0;
-        }
-
-        .loading {
-            color: var(--text-secondary);
-            font-style: italic;
-        }
-
-        @media (max-width: 768px) {
-            .countdown-title {
-                font-size: 1.8rem;
-            }
-            
-            .time-value {
-                font-size: 2rem;
-            }
-            
-            .stat-value {
-                font-size: 1.8rem;
-            }
-        }
-    </style>
-<!-- Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-E7QS7E2R8Y"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag("js", new Date());
-        gtag("config", "G-E7QS7E2R8Y");
-    </script>
+<meta charset="UTF-8">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-E7QS7E2R8Y"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-E7QS7E2R8Y');
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>₿ 20M Countdown — Agentic Terminal</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script defer data-domain="agenticterminal.ai" src="https://plausible.io/js/script.js"></script>
+<style>
+:root {
+--bg-deep: #0b0f19; --bg-signals: #060810; --bg-card: #111827; --bg-card-hover: #1a1f2e;
+--text-primary: #e2e8f0; --text-secondary: #94a3b8; --text-muted: #6B7280;
+--electric-green: #00ff88; --electric-green-dim: rgba(0, 255, 136, 0.15); --electric-green-glow: rgba(0, 255, 136, 0.3);
+--deep-blue: #3b82f6; --deep-blue-dim: rgba(59, 130, 246, 0.15);
+--amber: #f59e0b; --amber-dim: rgba(245, 158, 11, 0.15);
+--bitcoin-orange: #f7931a; --bitcoin-orange-dim: rgba(247, 147, 26, 0.15); --red: #F87171;
+--border-subtle: rgba(255, 255, 255, 0.06); --border-medium: rgba(255, 255, 255, 0.1); --border-green: rgba(0, 255, 136, 0.15);
+--font-mono: 'JetBrains Mono', monospace; --font-sans: 'IBM Plex Sans', -apple-system, sans-serif;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: var(--bg-deep); color: var(--text-primary); font-family: var(--font-sans); font-size: 17px; line-height: 1.65; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; padding-top: 40px; }
+.signals-bar { position: fixed; top: 0; left: 0; right: 0; height: 40px; background: var(--bg-signals); border-bottom: 1px solid var(--electric-green-glow); z-index: 1000; overflow: hidden; display: flex; align-items: center; }
+.signals-track { display: flex; animation: marquee 30s linear infinite; white-space: nowrap; }
+.signals-track:hover { animation-play-state: paused; }
+.signal-item { font-family: var(--font-mono); font-size: 13px; color: var(--electric-green); padding: 0 40px; display: flex; align-items: center; gap: 8px; }
+.signal-divider { color: rgba(0, 255, 136, 0.4); letter-spacing: 4px; }
+@keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+nav { display: flex; align-items: center; justify-content: space-between; padding: 16px 40px; border-bottom: 1px solid var(--border-subtle); background: rgba(11, 15, 25, 0.95); backdrop-filter: blur(12px); position: sticky; top: 40px; z-index: 100; }
+.nav-logo { font-family: var(--font-mono); font-weight: 700; font-size: 18px; color: var(--bitcoin-orange); text-decoration: none; letter-spacing: -0.02em; }
+.nav-links { display: flex; gap: 28px; list-style: none; align-items: center; }
+.nav-links a { color: var(--text-secondary); text-decoration: none; font-size: 14px; font-weight: 500; letter-spacing: 0.02em; transition: color 0.2s; }
+.nav-links a:hover { color: var(--text-primary); }
+.nav-links a.active { color: var(--electric-green); border-bottom: 2px solid var(--electric-green); }
+.nav-cta { font-family: var(--font-mono); font-size: 12px; font-weight: 600; color: var(--electric-green); border: 1px solid var(--electric-green); background: transparent; padding: 8px 16px; border-radius: 4px; text-decoration: none; transition: all 0.2s; text-transform: uppercase; letter-spacing: 0.05em; }
+.nav-cta:hover { background: var(--electric-green); color: #000; }
+main { max-width: 1200px; margin: 0 auto; padding: 60px 40px; }
+.page-header { text-align: center; margin-bottom: 48px; }
+.page-header h1 { font-size: 42px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 12px; color: var(--bitcoin-orange); }
+.page-header p { font-size: 18px; color: var(--text-secondary); }
+.stats-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin: 32px 0; }
+.stat-card { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 10px; padding: 32px; text-align: center; }
+.stat-label { font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px; }
+.stat-value { font-size: 36px; font-weight: 700; color: var(--text-primary); margin-bottom: 8px; }
+.stat-subvalue { font-size: 14px; color: var(--text-secondary); }
+.progress-bar { width: 100%; height: 40px; background: var(--bg-card); border-radius: 20px; overflow: hidden; margin: 32px 0; border: 1px solid var(--border-subtle); }
+.progress-fill { height: 100%; background: linear-gradient(90deg, var(--bitcoin-orange) 0%, #f7a91a 100%); transition: width 1s ease-in-out; display: flex; align-items: center; justify-content: flex-end; padding-right: 16px; font-weight: 700; color: #000; font-size: 14px; }
+.countdown-timer { display: flex; justify-content: center; gap: 32px; flex-wrap: wrap; margin: 48px 0; }
+.time-unit { text-align: center; }
+.time-value { font-size: 48px; font-weight: 700; color: var(--bitcoin-orange); font-family: var(--font-mono); }
+.time-label { font-size: 12px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 8px; }
+.party-info { background: var(--bg-card); border: 1px solid var(--bitcoin-orange-dim); border-radius: 10px; padding: 32px; margin: 32px auto; max-width: 800px; text-align: center; }
+.party-info h3 { color: var(--bitcoin-orange); margin-bottom: 16px; font-size: 20px; }
+.party-info p { color: var(--text-secondary); margin-bottom: 12px; }
+.map-section { margin: 64px 0; }
+.map-section h2 { text-align: center; color: var(--bitcoin-orange); margin-bottom: 24px; font-size: 28px; }
+#party-map { height: 500px; border-radius: 10px; border: 1px solid var(--border-subtle); margin-bottom: 32px; }
+.add-party-form { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 10px; padding: 32px; max-width: 600px; margin: 0 auto; }
+.add-party-form h3 { color: var(--text-primary); margin-bottom: 24px; font-size: 18px; }
+.form-group { margin-bottom: 20px; }
+.form-group label { display: block; color: var(--text-secondary); margin-bottom: 8px; font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em; }
+.form-group input, .form-group textarea { width: 100%; padding: 12px; background: var(--bg-deep); border: 1px solid var(--border-subtle); border-radius: 6px; color: var(--text-primary); font-size: 15px; font-family: inherit; }
+.form-group textarea { resize: vertical; min-height: 100px; }
+.form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--electric-green); }
+.submit-btn { width: 100%; padding: 14px; background: var(--bitcoin-orange); color: #000; border: none; border-radius: 6px; font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.2s; }
+.submit-btn:hover { background: #e8860f; }
+.submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.form-note { margin-top: 16px; font-size: 13px; color: var(--text-muted); text-align: center; }
+.parties-list { max-width: 800px; margin: 32px auto; }
+.party-card { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 10px; padding: 24px; margin-bottom: 16px; }
+.party-card h4 { color: var(--bitcoin-orange); margin-bottom: 12px; font-size: 18px; }
+.party-card p { color: var(--text-secondary); font-size: 14px; margin: 6px 0; }
+.loading { color: var(--text-secondary); font-style: italic; }
+footer { max-width: 1100px; margin: 0 auto; padding: 40px; border-top: 1px solid var(--border-subtle); text-align: center; }
+.footer-nav { display: flex; justify-content: center; gap: 24px; margin-bottom: 16px; flex-wrap: wrap; }
+.footer-nav a { color: var(--text-secondary); text-decoration: none; font-size: 14px; }
+.footer-nav a:hover { color: var(--electric-green); }
+footer p { font-size: 14px; color: var(--text-muted); }
+footer a { color: var(--text-secondary); text-decoration: none; }
+footer a:hover { color: var(--electric-green); }
+.hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
+.hamburger span { display: block; width: 24px; height: 2px; background: var(--electric-green); border-radius: 2px; }
+@media (max-width: 900px) { main { padding: 40px 20px; } .stats-container { grid-template-columns: 1fr; } .countdown-timer { gap: 16px; } .time-value { font-size: 32px; } .page-header h1 { font-size: 32px; } nav { padding: 14px 20px; } .nav-links { gap: 16px; display: none; } .nav-links.open { display: flex; flex-direction: column; position: absolute; top: 100%; left: 0; right: 0; background: var(--bg-card); padding: 20px; border-bottom: 1px solid var(--border-subtle); } .hamburger { display: flex; } }
+</style>
 </head>
 <body>
-    <header>
-        <nav>
-            <a href="/" class="logo">
-                <span style="font-size: 1.2rem; color: var(--bitcoin-orange);">₿</span> <span style="color: var(--bitcoin-orange);">Agentic Terminal</span>
-            </a>
-            <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
-        <ul class="nav-links" id="nav-links">
-                <li><a href="/research">Research</a></li>
-                <li><a href="/evidence">Evidence</a></li>
-                <li><a href="/tools">Tools</a></li>
-                <li><a href="/knowledge">Knowledge</a></li>
-                <li><a href="/chat">Ask Maxi</a></li>
-                <li><a href="/btc-20m-countdown" class="active">₿ 20M Party</a></li>
-                <li><a href="/about">About</a></li>
-            </ul>
-        </nav>
+<div class="signals-bar">
+<div class="signals-track">
+<div class="signal-item">⚡ Lightning: 5,337 nodes active <span class="signal-divider">·····</span></div>
+<div class="signal-item">◈ x402: 5,476 GitHub stars <span class="signal-divider">·····</span></div>
+<div class="signal-item">◈ L402: 254 repos tracking <span class="signal-divider">·····</span></div>
+<div class="signal-item">◈ Ark Protocol: agent-native VTXO settlement <span class="signal-divider">·····</span></div>
+<div class="signal-item">⚡ Alby Hub: NWC + L402 agent standard <span class="signal-divider">·····</span></div>
+<div class="signal-item">◈ ERC-8004: agent payment standard emerging <span class="signal-divider">·····</span></div>
+<div class="signal-item">◈ New: clw.cash ships Bitcoin-native agent wallet <span class="signal-divider">·····</span></div>
+<div class="signal-item">⚡ Lightning: 5,337 nodes active <span class="signal-divider">·····</span></div>
+<div class="signal-item">◈ x402: 5,476 GitHub stars <span class="signal-divider">·····</span></div>
+<div class="signal-item">◈ L402: 254 repos tracking <span class="signal-divider">·····</span></div>
+<div class="signal-item">◈ Ark Protocol: agent-native VTXO settlement <span class="signal-divider">·····</span></div>
+<div class="signal-item">⚡ Alby Hub: NWC + L402 agent standard <span class="signal-divider">·····</span></div>
+<div class="signal-item">◈ ERC-8004: agent payment standard emerging <span class="signal-divider">·····</span></div>
+<div class="signal-item">◈ New: clw.cash ships Bitcoin-native agent wallet <span class="signal-divider">·····</span></div>
+</div>
+</div>
+
+<nav>
+<a href="/" class="nav-logo">₿ Agentic Terminal</a>
+<button class="hamburger" id="hamburger" aria-label="Menu">
+<span></span><span></span><span></span>
+</button>
+<ul class="nav-links" id="nav-links">
+<li><a href="/">Dashboard</a></li>
+<li><a href="/evidence">Settlement Wars</a></li>
+<li><a href="/research">Intelligence</a></li>
+<li><a href="/tools">Protocol Index</a></li>
+<li><a href="/evidence">Evidence</a></li>
+<li><a href="/about">About</a></li>
+<li><a href="/chat" class="nav-cta">Enter Terminal</a></li>
+</ul>
+</nav>
 <script>
-  document.getElementById('hamburger').addEventListener('click', function() {
-    document.getElementById('nav-links').classList.toggle('open');
-  });
+document.getElementById('hamburger').addEventListener('click', function() {
+document.getElementById('nav-links').classList.toggle('open');
+});
 </script>
-    </header>
 
-    <div class="countdown-hero">
-        <h1 class="countdown-title">🎉 20 MILLION BITCOIN COUNTDOWN</h1>
-        <p class="countdown-subtitle">Historic milestone approaching - join us in Monterrey to celebrate</p>
+<main>
+<div class="page-header">
+<h1>🎉 20 MILLION BITCOIN COUNTDOWN</h1>
+<p>Historic milestone approaching — join us in Monterrey to celebrate</p>
+</div>
 
-        <div class="stats-container">
-            <div class="stat-card">
-                <div class="stat-label">Bitcoin Mined</div>
-                <div class="stat-value" id="btc-mined"><span class="loading">Loading...</span></div>
-                <div class="stat-subvalue">out of 21,000,000 maximum</div>
-            </div>
+<div class="stats-container">
+<div class="stat-card">
+<div class="stat-label">Bitcoin Mined</div>
+<div class="stat-value" id="btc-mined"><span class="loading">Loading...</span></div>
+<div class="stat-subvalue">out of 21,000,000 maximum</div>
+</div>
+<div class="stat-card">
+<div class="stat-label">Remaining Until 20M</div>
+<div class="stat-value" id="btc-remaining"><span class="loading">Loading...</span></div>
+<div class="stat-subvalue" id="blocks-remaining">Loading blocks...</div>
+</div>
+<div class="stat-card">
+<div class="stat-label">Estimated Date</div>
+<div class="stat-value" id="target-date" style="font-size: 24px;"><span class="loading">Calculating...</span></div>
+<div class="stat-subvalue" id="target-time">Loading...</div>
+</div>
+</div>
 
-            <div class="stat-card">
-                <div class="stat-label">Remaining Until 20M</div>
-                <div class="stat-value" id="btc-remaining"><span class="loading">Loading...</span></div>
-                <div class="stat-subvalue" id="blocks-remaining">Loading blocks...</div>
-            </div>
+<div class="progress-bar">
+<div class="progress-fill" id="progress-bar">
+<span id="progress-percent">0%</span>
+</div>
+</div>
 
-            <div class="stat-card">
-                <div class="stat-label">Estimated Date</div>
-                <div class="stat-value" id="target-date" style="font-size: 1.5rem;"><span class="loading">Calculating...</span></div>
-                <div class="stat-subvalue" id="target-time">Loading...</div>
-            </div>
-        </div>
+<div class="countdown-timer">
+<div class="time-unit">
+<div class="time-value" id="days">--</div>
+<div class="time-label">Days</div>
+</div>
+<div class="time-unit">
+<div class="time-value" id="hours">--</div>
+<div class="time-label">Hours</div>
+</div>
+<div class="time-unit">
+<div class="time-value" id="minutes">--</div>
+<div class="time-label">Minutes</div>
+</div>
+<div class="time-unit">
+<div class="time-value" id="seconds">--</div>
+<div class="time-label">Seconds</div>
+</div>
+</div>
 
-        <div class="progress-bar">
-            <div class="progress-fill" id="progress-bar">
-                <span id="progress-percent">0%</span>
-            </div>
-        </div>
+<div class="party-info">
+<h3>🎊 Global Bitcoin Celebration</h3>
+<p>This is a historic milestone for Bitcoin! Join celebrations happening around the world, or host your own party in your city.</p>
+<p style="margin-top: 16px; font-weight: 600; color: var(--text-primary);">
+📍 Flagship event in Monterrey, Mexico — Hosted by ArcadiaB & AgenticTerminal.ai
+</p>
+</div>
 
-        <div class="countdown-timer">
-            <div class="time-unit">
-                <div class="time-value" id="days">--</div>
-                <div class="time-label">Days</div>
-            </div>
-            <div class="time-unit">
-                <div class="time-value" id="hours">--</div>
-                <div class="time-label">Hours</div>
-            </div>
-            <div class="time-unit">
-                <div class="time-value" id="minutes">--</div>
-                <div class="time-label">Minutes</div>
-            </div>
-            <div class="time-unit">
-                <div class="time-value" id="seconds">--</div>
-                <div class="time-label">Seconds</div>
-            </div>
-        </div>
+<section class="map-section">
+<h2>🌍 20M Bitcoin Party Map</h2>
+<p style="text-align: center; color: var(--text-secondary); margin-bottom: 24px;">Find a celebration near you or add your own!</p>
+<div id="party-map"></div>
 
-        <div class="party-info">
-            <h3>🎊 Global Bitcoin Celebration</h3>
-            <p>This is a historic milestone for Bitcoin! Join celebrations happening around the world, or host your own party in your city.</p>
-            <p style="margin-top: 1rem; font-weight: 600;">
-                📍 Flagship event in Monterrey, Mexico - Hosted by ArcadiaB & AgenticTerminal.ai
-            </p>
-        </div>
-    </div>
+<div class="add-party-form">
+<h3>🎉 Host a 20M Bitcoin Party in Your City</h3>
+<form id="party-submission-form">
+<p style="display: none !important;"><label>Don't fill this out if you're human: <input name="bot-field" /></label></p>
+<div class="form-group">
+<label for="city">City *</label>
+<input type="text" id="city" name="city" required placeholder="e.g., Monterrey">
+</div>
+<div class="form-group">
+<label for="country">Country *</label>
+<input type="text" id="country" name="country" required placeholder="e.g., Mexico">
+</div>
+<div class="form-group">
+<label for="venue">Venue Name (optional)</label>
+<input type="text" id="venue" name="venue" placeholder="e.g., Bitcoin Café">
+</div>
+<div class="form-group">
+<label for="date">Date & Time *</label>
+<input type="datetime-local" id="date" name="date" required>
+</div>
+<div class="form-group">
+<label for="organizer">Organizer Name *</label>
+<input type="text" id="organizer" name="organizer" required placeholder="Your name or organization">
+</div>
+<div class="form-group">
+<label for="contact">Contact (Email, Nostr, or Website) *</label>
+<input type="text" id="contact" name="contact" required placeholder="npub... or email@example.com">
+</div>
+<div class="form-group">
+<label for="description">Description (optional)</label>
+<textarea id="description" name="description" placeholder="Tell us about your celebration..."></textarea>
+</div>
+<button type="submit" class="submit-btn">Submit Party</button>
+<p class="form-note">Submissions are manually approved to prevent spam. Your party will appear on the map within 24 hours.</p>
+</form>
+</div>
 
-    <!-- Global Party Map Section -->
-    <section class="map-section">
-        <h2>🌍 20M Bitcoin Party Map</h2>
-        <p style="text-align: center; color: var(--text-secondary); margin-bottom: 2rem;">
-            Find a celebration near you or add your own!
-        </p>
+<div class="parties-list" id="parties-list">
+<h3 style="text-align: center; color: var(--text-primary); margin-bottom: 24px;">Registered Parties</h3>
+</div>
+</section>
+</main>
 
-        <div id="party-map"></div>
+<footer>
+<div class="footer-nav">
+<a href="/">Dashboard</a>
+<a href="/evidence">Settlement Wars</a>
+<a href="/research">Intelligence</a>
+<a href="/tools">Protocol Index</a>
+<a href="/evidence">Evidence</a>
+<a href="/about">About</a>
+<a href="/chat">Ask Maxi</a>
+</div>
+<p>Research by Maxi · Thesis Advisor: <a href="https://x.com/boydcohen">Boyd Cohen, PhD</a> · Built at <a href="https://arcadiab.com">ArcadiaB</a></p>
+<p style="margin-top: 6px;">Intelligence terminal tracking AI-Bitcoin convergence with academic rigor and intellectual honesty.</p>
+</footer>
 
-        <div class="add-party-form">
-            <h3>🎉 Host a 20M Bitcoin Party in Your City</h3>
-            <form id="party-submission-form">
-                <p style="display: none !important;">
-                    <label>Don't fill this out if you're human: <input name="bot-field" /></label>
-                </p>
-                
-                <div class="form-group">
-                    <label for="city">City *</label>
-                    <input type="text" id="city" name="city" required placeholder="e.g., Monterrey">
-                </div>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+const TARGET_SUPPLY = 20000000;
+const MAX_SUPPLY = 21000000;
+const BLOCK_TIME_SECONDS = 600;
+const CURRENT_BLOCK_REWARD = 3.125;
+let targetTimestamp = null;
 
-                <div class="form-group">
-                    <label for="country">Country *</label>
-                    <input type="text" id="country" name="country" required placeholder="e.g., Mexico">
-                </div>
+async function fetchBitcoinData() {
+try {
+const response = await fetch('https://mempool.space/api/blocks/tip/height');
+const blockHeight = parseInt(await response.text());
+const currentSupply = calculateBitcoinSupply(blockHeight);
+updateDisplay(currentSupply);
+} catch (error) {
+console.error('Error fetching Bitcoin data:', error);
+updateDisplay(19991000);
+}
+}
 
-                <div class="form-group">
-                    <label for="venue">Venue Name (optional)</label>
-                    <input type="text" id="venue" name="venue" placeholder="e.g., Bitcoin Café">
-                </div>
+function calculateBitcoinSupply(height) {
+const HALVING_INTERVAL = 210000;
+let totalSupply = 0;
+let currentReward = 50;
+let epoch = 0;
+while (epoch * HALVING_INTERVAL < height) {
+const epochStart = epoch * HALVING_INTERVAL;
+const epochEnd = Math.min((epoch + 1) * HALVING_INTERVAL, height);
+const blocksInEpoch = epochEnd - epochStart;
+totalSupply += blocksInEpoch * currentReward;
+currentReward = currentReward / 2;
+epoch++;
+}
+return totalSupply;
+}
 
-                <div class="form-group">
-                    <label for="date">Date & Time *</label>
-                    <input type="datetime-local" id="date" name="date" required>
-                </div>
+function updateDisplay(currentSupply) {
+const remaining = TARGET_SUPPLY - currentSupply;
+const percentComplete = (currentSupply / TARGET_SUPPLY) * 100;
+const blocksRemaining = Math.ceil(remaining / CURRENT_BLOCK_REWARD);
+const secondsRemaining = blocksRemaining * BLOCK_TIME_SECONDS;
+targetTimestamp = Date.now() + (secondsRemaining * 1000);
 
-                <div class="form-group">
-                    <label for="organizer">Organizer Name *</label>
-                    <input type="text" id="organizer" name="organizer" required placeholder="Your name or organization">
-                </div>
+document.getElementById('btc-mined').textContent = currentSupply.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+document.getElementById('btc-remaining').textContent = remaining.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+document.getElementById('blocks-remaining').textContent = `~${blocksRemaining.toLocaleString()} blocks remaining`;
+document.getElementById('progress-bar').style.width = `${percentComplete}%`;
+document.getElementById('progress-percent').textContent = `${percentComplete.toFixed(2)}%`;
 
-                <div class="form-group">
-                    <label for="contact">Contact (Email, Nostr, or Website) *</label>
-                    <input type="text" id="contact" name="contact" required placeholder="npub... or email@example.com">
-                </div>
+const targetDate = new Date(targetTimestamp);
+document.getElementById('target-date').textContent = targetDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+document.getElementById('target-time').textContent = targetDate.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', timeZoneName: 'short' });
 
-                <div class="form-group">
-                    <label for="description">Description (optional)</label>
-                    <textarea id="description" name="description" placeholder="Tell us about your celebration..."></textarea>
-                </div>
+updateCountdown();
+}
 
-                <button type="submit" class="submit-btn">Submit Party</button>
-                
-                <p class="form-note">
-                    Submissions are manually approved to prevent spam. Your party will appear on the map within 24 hours.
-                </p>
-            </form>
-        </div>
+function updateCountdown() {
+if (!targetTimestamp) return;
+const now = Date.now();
+const diff = targetTimestamp - now;
+if (diff <= 0) {
+document.getElementById('days').textContent = '00';
+document.getElementById('hours').textContent = '00';
+document.getElementById('minutes').textContent = '00';
+document.getElementById('seconds').textContent = '00';
+return;
+}
+const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+document.getElementById('days').textContent = String(days).padStart(2, '0');
+document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+requestAnimationFrame(updateCountdown);
+}
 
-        <div class="parties-list" id="parties-list">
-            <h3 style="text-align: center; color: var(--text-primary); margin-bottom: 1.5rem;">
-                Registered Parties
-            </h3>
-            <!-- Party cards will be inserted here by JavaScript -->
-        </div>
-    </section>
+fetchBitcoinData();
+setInterval(fetchBitcoinData, 2 * 60 * 1000);
 
-    <script>
-        // Constants
-        const TARGET_SUPPLY = 20000000; // 20 million BTC
-        const MAX_SUPPLY = 21000000;
-        const BLOCK_TIME_SECONDS = 600; // ~10 minutes average
-        const SATOSHIS_PER_BTC = 100000000;
+const map = L.map('party-map').setView([20, 0], 2);
+L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+attribution: '&copy; OpenStreetMap contributors', maxZoom: 19
+}).addTo(map);
 
-        // Current block reward (changes at halving)
-        const CURRENT_BLOCK_REWARD = 3.125; // BTC per block (post-2024 halving)
+const bitcoinIcon = L.divIcon({
+className: 'custom-marker',
+html: '<div style="background: #F7931A; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; border: 2px solid #fff;">₿</div>',
+iconSize: [30, 30], iconAnchor: [15, 15]
+});
 
-        let targetTimestamp = null;
+let parties = [];
 
-        // Fetch current Bitcoin supply
-        async function fetchBitcoinData() {
-            try {
-                // Get current block height from Mempool.space (updates every block)
-                const response = await fetch('https://mempool.space/api/blocks/tip/height');
-                const blockHeight = parseInt(await response.text());
-                
-                // Calculate exact supply from block height
-                const currentSupply = calculateBitcoinSupply(blockHeight);
-                updateDisplay(currentSupply);
-            } catch (error) {
-                console.error('Error fetching Bitcoin data:', error);
-                // Fallback to estimate
-                updateDisplay(19991000);
-            }
-        }
+async function loadParties() {
+try {
+const response = await fetch('/parties-db.json?t=' + Date.now());
+const data = await response.json();
+parties = Object.values(data.parties || {}).filter(p => p.approved !== false);
+renderParties();
+} catch (error) {
+console.error('Error loading parties:', error);
+parties = [{
+city: 'Monterrey', country: 'Mexico', lat: 25.6866, lng: -100.3161, venue: 'LaCuraduría',
+organizer: 'Bitcoin Network Monterrey / ArcadiaB / AgenticTerminal.ai', date: 'March 12, 2026, 7:30 PM',
+contact: 'https://linktr.ee/btcnetworkmty', description: 'The flagship 20 Million Bitcoin celebration in Monterrey, Mexico.', flagship: true
+}];
+renderParties();
+}
+}
 
-        // Calculate exact Bitcoin supply at given block height
-        function calculateBitcoinSupply(height) {
-            const HALVING_INTERVAL = 210000;
-            let totalSupply = 0;
-            let currentReward = 50; // Starting reward
-            
-            // Calculate supply for each halving epoch
-            let epoch = 0;
-            while (epoch * HALVING_INTERVAL < height) {
-                const epochStart = epoch * HALVING_INTERVAL;
-                const epochEnd = Math.min((epoch + 1) * HALVING_INTERVAL, height);
-                const blocksInEpoch = epochEnd - epochStart;
-                
-                totalSupply += blocksInEpoch * currentReward;
-                currentReward = currentReward / 2;
-                epoch++;
-            }
-            
-            return totalSupply;
-        }
+function renderParties() {
+map.eachLayer(layer => { if (layer instanceof L.Marker) map.removeLayer(layer); });
+parties.forEach(party => {
+const marker = L.marker([party.lat, party.lng], { icon: bitcoinIcon }).addTo(map);
+const popupContent = `
+<div style="color: #0a0a0f; min-width: 200px;">
+<h4 style="margin: 0 0 0.5rem 0; color: #F7931A;">${party.flagship ? '⭐ ' : ''}${party.city}, ${party.country}</h4>
+${party.venue ? `<p style="margin: 0.25rem 0;"><strong>Venue:</strong> ${party.venue}</p>` : ''}
+<p style="margin: 0.25rem 0;"><strong>Date:</strong> ${party.date}</p>
+<p style="margin: 0.25rem 0;"><strong>Organizer:</strong> ${party.organizer}</p>
+${party.description ? `<p style="margin: 0.5rem 0 0 0; font-size: 0.9rem;">${party.description}</p>` : ''}
+${party.contact ? `<p style="margin: 0.5rem 0 0 0;"><a href="${party.contact}" target="_blank" style="color: #F7931A;">Contact/Info →</a></p>` : ''}
+</div>
+`;
+marker.bindPopup(popupContent);
+});
+renderPartyList();
+}
 
-        function updateDisplay(currentSupply) {
-            // Calculate remaining
-            const remaining = TARGET_SUPPLY - currentSupply;
-            const percentComplete = (currentSupply / TARGET_SUPPLY) * 100;
+function renderPartyList() {
+const listContainer = document.getElementById('parties-list');
+if (parties.length === 0) {
+listContainer.innerHTML = `
+<h3 style="text-align: center; color: var(--text-primary); margin-bottom: 24px;">Registered Parties (0)</h3>
+<div style="text-align: center; padding: 48px; color: var(--text-secondary);">
+<p style="font-size: 18px; margin-bottom: 16px;">🎉 Be the first to host a 20M Bitcoin party!</p>
+<p>Fill out the form above to register your celebration.</p>
+</div>
+`;
+return;
+}
+const partiesHTML = parties.map(party => `
+<div class="party-card">
+<h4>${party.flagship ? '⭐ ' : ''}${party.city}, ${party.country}</h4>
+${party.venue ? `<p><strong>Venue:</strong> ${party.venue}</p>` : ''}
+<p><strong>Date:</strong> ${party.date}</p>
+<p><strong>Organizer:</strong> ${party.organizer}</p>
+${party.description ? `<p style="margin-top: 12px;">${party.description}</p>` : ''}
+${party.contact ? `<p><a href="${party.contact}" target="_blank" style="color: var(--bitcoin-orange); text-decoration: none;">Contact/Info →</a></p>` : ''}
+</div>
+`).join('');
+listContainer.innerHTML = `<h3 style="text-align: center; color: var(--text-primary); margin-bottom: 24px;">Registered Parties (${parties.length})</h3>${partiesHTML}`;
+}
 
-            // Calculate blocks remaining (approximately)
-            const blocksRemaining = Math.ceil(remaining / CURRENT_BLOCK_REWARD);
-            const secondsRemaining = blocksRemaining * BLOCK_TIME_SECONDS;
-            targetTimestamp = Date.now() + (secondsRemaining * 1000);
+document.getElementById('party-submission-form').addEventListener('submit', async (e) => {
+e.preventDefault();
+const submitButton = e.target.querySelector('.submit-btn');
+submitButton.disabled = true;
+submitButton.textContent = 'Sending...';
+const formData = {
+city: document.getElementById('city').value, country: document.getElementById('country').value,
+venue: document.getElementById('venue').value, date: document.getElementById('date').value,
+organizer: document.getElementById('organizer').value, contact: document.getElementById('contact').value,
+description: document.getElementById('description').value
+};
+try {
+const response = await fetch('/api/submit-party', {
+method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(formData)
+});
+const result = await response.json();
+if (response.ok && result.success) {
+alert('Thank you for submitting your party! 🎉\n\nYour submission has been sent to our team.\n\nYou will be added to the map within 24 hours after review.\n\nShare this countdown page with your community!');
+e.target.reset();
+} else { throw new Error(result.error || 'Form submission failed'); }
+} catch (error) {
+alert('Oops! There was an error submitting your party.\n\nPlease email your details directly to: boyd@arcadiab.com');
+console.error('Form error:', error);
+} finally { submitButton.disabled = false; submitButton.textContent = 'Submit Party'; }
+});
 
-            // Update stats
-            document.getElementById('btc-mined').textContent = currentSupply.toLocaleString('en-US', {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-            });
+loadParties();
+</script>
 
-            document.getElementById('btc-remaining').textContent = remaining.toLocaleString('en-US', {
-                minimumFractionDigits: 0,
-                maximumFractionDigits: 0
-            });
-
-            document.getElementById('blocks-remaining').textContent = 
-                `~${blocksRemaining.toLocaleString()} blocks remaining`;
-
-            // Update progress bar
-            document.getElementById('progress-bar').style.width = `${percentComplete}%`;
-            document.getElementById('progress-percent').textContent = `${percentComplete.toFixed(2)}%`;
-
-            // Update target date
-            const targetDate = new Date(targetTimestamp);
-            document.getElementById('target-date').textContent = targetDate.toLocaleDateString('en-US', {
-                month: 'long',
-                day: 'numeric',
-                year: 'numeric'
-            });
-            document.getElementById('target-time').textContent = targetDate.toLocaleTimeString('en-US', {
-                hour: '2-digit',
-                minute: '2-digit',
-                timeZoneName: 'short'
-            });
-
-            // Start countdown
-            updateCountdown();
-        }
-
-        function updateCountdown() {
-            if (!targetTimestamp) return;
-
-            const now = Date.now();
-            const diff = targetTimestamp - now;
-
-            if (diff <= 0) {
-                // Milestone reached!
-                document.getElementById('days').textContent = '00';
-                document.getElementById('hours').textContent = '00';
-                document.getElementById('minutes').textContent = '00';
-                document.getElementById('seconds').textContent = '00';
-                return;
-            }
-
-            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-            document.getElementById('days').textContent = String(days).padStart(2, '0');
-            document.getElementById('hours').textContent = String(hours).padStart(2, '0');
-            document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
-            document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
-
-            requestAnimationFrame(updateCountdown);
-        }
-
-        // Initialize
-        fetchBitcoinData();
-
-        // Refresh data every 2 minutes (catch new blocks quickly)
-        setInterval(fetchBitcoinData, 2 * 60 * 1000);
-    </script>
-
-    <!-- Leaflet JS -->
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
-    <!-- Party Map Script -->
-    <script>
-        // Initialize map centered on world
-        const map = L.map('party-map').setView([20, 0], 2);
-
-        // Add tile layer (map style)
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-            attribution: '&copy; OpenStreetMap contributors',
-            maxZoom: 19
-        }).addTo(map);
-
-        // Bitcoin orange marker icon
-        const bitcoinIcon = L.divIcon({
-            className: 'custom-marker',
-            html: '<div style="background: #F7931A; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; border: 2px solid #fff;">₿</div>',
-            iconSize: [30, 30],
-            iconAnchor: [15, 15]
-        });
-
-        // Party data (will be populated from database/form submissions)
-        let parties = [];
-
-        // Load parties from JSON file (auto-updates without rebuild)
-        async function loadParties() {
-            try {
-                const response = await fetch('/parties-db.json?t=' + Date.now());
-                const data = await response.json();
-                parties = Object.values(data.parties || {}).filter(p => p.approved !== false);
-                renderParties();
-            } catch (error) {
-                console.error('Error loading parties:', error);
-                // Fallback to hardcoded party
-                parties = [
-                    {
-                        city: 'Monterrey',
-                        country: 'Mexico',
-                        lat: 25.6866,
-                        lng: -100.3161,
-                        venue: 'LaCuraduría',
-                        organizer: 'Bitcoin Network Monterrey / ArcadiaB / AgenticTerminal.ai',
-                        date: 'March 12, 2026, 7:30 PM',
-                        contact: 'https://linktr.ee/btcnetworkmty',
-                        description: 'The flagship 20 Million Bitcoin celebration in Monterrey, Mexico.',
-                        flagship: true
-                    }
-                ];
-                renderParties();
-            }
-        }
-
-        // Add markers to map
-        function renderParties() {
-            // Clear existing markers
-            map.eachLayer(layer => {
-                if (layer instanceof L.Marker) {
-                    map.removeLayer(layer);
-                }
-            });
-            
-            parties.forEach(party => {
-                const marker = L.marker([party.lat, party.lng], {
-                    icon: bitcoinIcon
-                }).addTo(map);
-
-                // Popup content
-                const popupContent = `
-                    <div style="color: #0a0a0f; min-width: 200px;">
-                        <h4 style="margin: 0 0 0.5rem 0; color: #F7931A;">
-                            ${party.flagship ? '⭐ ' : ''}${party.city}, ${party.country}
-                        </h4>
-                        ${party.venue ? `<p style="margin: 0.25rem 0;"><strong>Venue:</strong> ${party.venue}</p>` : ''}
-                        <p style="margin: 0.25rem 0;"><strong>Date:</strong> ${party.date}</p>
-                        <p style="margin: 0.25rem 0;"><strong>Organizer:</strong> ${party.organizer}</p>
-                        ${party.description ? `<p style="margin: 0.5rem 0 0 0; font-size: 0.9rem;">${party.description}</p>` : ''}
-                        ${party.contact ? `<p style="margin: 0.5rem 0 0 0;"><a href="${party.contact}" target="_blank" style="color: #F7931A;">Contact/Info →</a></p>` : ''}
-                    </div>
-                `;
-
-                marker.bindPopup(popupContent);
-            });
-
-            // Also render party list
-            renderPartyList();
-        }
-
-        // Render party list below map
-        function renderPartyList() {
-            const listContainer = document.getElementById('parties-list');
-            
-            if (parties.length === 0) {
-                listContainer.innerHTML = `
-                    <h3 style="text-align: center; color: var(--text-primary); margin-bottom: 1.5rem;">
-                        Registered Parties (0)
-                    </h3>
-                    <div style="text-align: center; padding: 3rem; color: var(--text-secondary);">
-                        <p style="font-size: 1.2rem; margin-bottom: 1rem;">🎉 Be the first to host a 20M Bitcoin party!</p>
-                        <p>Fill out the form above to register your celebration.</p>
-                    </div>
-                `;
-                return;
-            }
-            
-            const partiesHTML = parties.map(party => `
-                <div class="party-card">
-                    <h4>${party.flagship ? '⭐ ' : ''}${party.city}, ${party.country}</h4>
-                    ${party.venue ? `<p><strong>Venue:</strong> ${party.venue}</p>` : ''}
-                    <p><strong>Date:</strong> ${party.date}</p>
-                    <p><strong>Organizer:</strong> ${party.organizer}</p>
-                    ${party.description ? `<p style="margin-top: 0.5rem;">${party.description}</p>` : ''}
-                    ${party.contact ? `<p><a href="${party.contact}" target="_blank" style="color: var(--bitcoin-orange); text-decoration: none;">Contact/Info →</a></p>` : ''}
-                </div>
-            `).join('');
-
-            listContainer.innerHTML = `
-                <h3 style="text-align: center; color: var(--text-primary); margin-bottom: 1.5rem;">
-                    Registered Parties (${parties.length})
-                </h3>
-                ${partiesHTML}
-            `;
-        }
-
-        // Handle form submission with proper Netlify Forms encoding
-        const form = document.getElementById('party-submission-form');
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            const submitButton = form.querySelector('.submit-btn');
-            submitButton.disabled = true;
-            submitButton.textContent = 'Sending...';
-            
-            // Get form data
-            const formData = {
-                city: document.getElementById('city').value,
-                country: document.getElementById('country').value,
-                venue: document.getElementById('venue').value,
-                date: document.getElementById('date').value,
-                organizer: document.getElementById('organizer').value,
-                contact: document.getElementById('contact').value,
-                description: document.getElementById('description').value
-            };
-            
-            try {
-                const response = await fetch('/api/submit-party', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(formData)
-                });
-                
-                const result = await response.json();
-                
-                if (response.ok && result.success) {
-                    alert('Thank you for submitting your party! 🎉\n\nYour submission has been sent to our team.\n\nYou will be added to the map within 24 hours after review.\n\nShare this countdown page with your community!');
-                    form.reset();
-                } else {
-                    throw new Error(result.error || 'Form submission failed');
-                }
-            } catch (error) {
-                alert('Oops! There was an error submitting your party.\n\nPlease email your details directly to: boyd@arcadiab.com');
-                console.error('Form error:', error);
-            } finally {
-                submitButton.disabled = false;
-                submitButton.textContent = 'Submit Party';
-            }
-        });
-
-        // Initialize map and load parties
-        loadParties();
-    </script>
-
-    <footer style="margin-top: 4rem; padding: 2rem; border-top: 1px solid rgba(247, 147, 26, 0.2); text-align: center; color: var(--text-secondary);">
-        <p>Research by Maxi · Thesis Advisor: <a href="https://x.com/boydcohen" target="_blank" style="color: var(--text-secondary); text-decoration: none;">Boyd Cohen, PhD</a> · Built at <a href="https://arcadiab.com" target="_blank" style="color: var(--text-secondary); text-decoration: none;">ArcadiaB</a></p>
-    </footer>
 </body>
 </html>
