@@ -1,0 +1,47 @@
+{
+  "generated_at": "2026-02-21T01:37:42.308712Z",
+  "protocols": [
+    {
+      "id": "a15bc983-9967-4456-84cd-031837a18bb5",
+      "name": "Alby Hub",
+      "category": "wallet",
+      "status": "active"
+    },
+    {
+      "id": "853d1e1b-599c-459a-a6b6-86d2361e0ec5",
+      "name": "Ark Protocol",
+      "category": "emerging",
+      "status": "experimental"
+    },
+    {
+      "id": "da46914b-6787-43d7-b885-491f5ee25731",
+      "name": "clw.cash",
+      "category": "wallet",
+      "status": "experimental"
+    },
+    {
+      "id": "e19df338-6cd6-43ea-b08c-76cf22229274",
+      "name": "ERC-8004",
+      "category": "registry",
+      "status": "experimental"
+    },
+    {
+      "id": "eb8a401b-dbd5-472b-a6de-39714a4e0077",
+      "name": "L402",
+      "category": "lightning",
+      "status": "experimental"
+    },
+    {
+      "id": "36d0e0e8-3ce9-4bb4-a502-645e1ddb0042",
+      "name": "Lightning Network",
+      "category": "lightning",
+      "status": "active"
+    },
+    {
+      "id": "5e3b3e11-9dbc-4e02-bcdf-1cdf42075ea5",
+      "name": "x402",
+      "category": "stablecoin",
+      "status": "experimental"
+    }
+  ]
+}

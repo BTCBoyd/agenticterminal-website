@@ -1,0 +1,75 @@
+{
+  "generated_at": "2026-02-21T01:37:42.308712Z",
+  "signals": [
+    {
+      "title": "Peter Diamandis Names AI Agent Economy a \"Philosophical Milestone\"",
+      "description": "Abundance 360 founder Peter Diamandis published \"The Lobster Revolution\" calling OpenClaw the \"Jarvis moment\" and declaring agent financial autonomy \"not just a technical milestone \u2014 it's a philosophical one.\" Highlighted x402 protocol via Lobster Cash enabling agents to transact in fiat via Coinbase rails. Mainstream validation from one of the world's most connected tech voices.",
+      "event_type": "signal",
+      "timestamp": "2026-02-19T00:00:00-05:00",
+      "impact_score": 7
+    },
+    {
+      "title": "L402 GitHub Stars Surge +36.4% in 48 Hours",
+      "description": "lightning-agent-tools GitHub repository jumped from 11 stars (Feb 15) to 15 stars (Feb 17)\u2014a +36.4% increase in just 2 days. Forks increased 33.3% (3\u21924). Active development continues with commits pushed Feb 17. Despite developer interest surge, zero production L402 endpoints exist yet\u2014genuine day zero for real-world usage.",
+      "event_type": "launch",
+      "timestamp": "2026-02-17T00:00:00-05:00",
+      "impact_score": 7
+    },
+    {
+      "title": "1ML Reports Lightning Network Growth: 5,249 Nodes (+8.86% Monthly)",
+      "description": "Current Lightning Network metrics: 5,249 nodes (+8.86% in 30 days), 15,383 channels (+15.04%), 2,646 BTC capacity (~$181.6M). 2,559 Tor nodes (potential AI agents seeking privacy). Average channel capacity: 0.171 BTC ($11,738).",
+      "event_type": "signal",
+      "timestamp": "2026-02-14T00:00:00-05:00",
+      "impact_score": 5
+    },
+    {
+      "title": "Bitcoin Magazine: 'Lightning Labs Rolls Out AI Agent Tools'",
+      "description": "Major Bitcoin media outlet covers lightning-agent-tools launch. Headline frames it as Bitcoin ecosystem response to AI agent economy. Article emphasizes permissionless architecture and Lightning's speed/cost advantages.",
+      "event_type": "signal",
+      "timestamp": "2026-02-12T00:00:00-05:00",
+      "impact_score": 5
+    },
+    {
+      "title": "Lightning Labs Releases lightning-agent-tools",
+      "description": "Open-source toolkit enabling AI agents to operate directly on Lightning Network with L402 payment standard. Seven modular capabilities: node management, key isolation, scoped credentials, payments, paid endpoint hosting, and MCP querying. Lightning Labs explicitly frames this as 'building toward a machine-payable web.'",
+      "event_type": "launch",
+      "timestamp": "2026-02-12T00:00:00-05:00",
+      "impact_score": 7
+    },
+    {
+      "title": "Coinbase Launches Agentic Wallets",
+      "description": "First wallet infrastructure built specifically for AI agents. Uses x402 protocol with USDC on Base. Features autonomous spending, earning, trading. Gasless on Base L2. Session caps and transaction limits for security. Supports EVM chains and Solana.",
+      "event_type": "launch",
+      "timestamp": "2026-02-12T00:00:00-05:00",
+      "impact_score": 7
+    },
+    {
+      "title": "The Block: 'Lightning Labs Releases AI Agent Tools for Native Bitcoin Lightning Payments'",
+      "description": "Mainstream crypto media coverage emphasizing 'native Bitcoin' positioning. Article highlights L402 protocol and autonomous agent capabilities. Compares to Coinbase's x402 approach in sidebar.",
+      "event_type": "signal",
+      "timestamp": "2026-02-11T00:00:00-05:00",
+      "impact_score": 7
+    },
+    {
+      "title": "Stripe Launches Machine Payments Preview",
+      "description": "PaymentIntents API integration with x402 protocol for charging AI agents. Uses USDC on Base. CoinGecko simultaneously launched x402-powered API endpoints\u2014agents pay $0.01 USDC per request for market data with no account or API key required. Pricing models shift to per-request, per-action, per-second.",
+      "event_type": "launch",
+      "timestamp": "2026-02-11T00:00:00-05:00",
+      "impact_score": 7
+    },
+    {
+      "title": "Alby Hub Ships 'Agent Skill' for Teaching AI Agents to Use Lightning Wallets",
+      "description": "Self-custodial Lightning wallet with Nostr Wallet Connect (NWC) adds specific tutorial for AI agents. Documented approach for connecting agent frameworks to Lightning via NWC protocol. Open source skill template.",
+      "event_type": "launch",
+      "timestamp": "2026-02-10T00:00:00-05:00",
+      "impact_score": 7
+    },
+    {
+      "title": "Nostr MCP Servers Enable AI Agents to Post and Pay on Nostr",
+      "description": "Multiple MCP (Model Context Protocol) servers launched enabling AI agents to interact with Nostr social network and make Lightning payments. Abdel Stark's nostr-mcp and lightning-mcp. Austin Kelsay's nostr-mcp-server with 18+ tool suite. DVMCP bridges MCP to Nostr Data Vending Machines.",
+      "event_type": "launch",
+      "timestamp": "2026-02-05T00:00:00-05:00",
+      "impact_score": 7
+    }
+  ]
+}
