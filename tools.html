@@ -1,320 +1,71 @@
-<!-- V2: MIGRATE TO BITCOINSINGULARITY.AI/TOOLING -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-E7QS7E2R8Y"></script>
-<script>
-window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
-gtag('config', 'G-E7QS7E2R8Y');
-</script>
+<meta http-equiv="refresh" content="0;url=https://bitcoinsingularity.ai/tooling.html">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tools — Agentic Terminal</title>
-<meta name="description" content="Curated directory of Lightning wallets, payment protocols, and infrastructure for AI agents. We review, rank, and guide—Bitcoin-native AND competing rails tracked honestly.">
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<script defer data-domain="agenticterminal.ai" src="https://plausible.io/js/script.js"></script>
+<title>Moved to Bitcoin Singularity</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
---bg-deep: #0b0f19; --bg-signals: #060810; --bg-card: #111827; --bg-card-hover: #1a1f2e;
---text-primary: #e2e8f0; --text-secondary: #94a3b8; --text-muted: #6B7280;
---electric-green: #00ff88; --electric-green-dim: rgba(0, 255, 136, 0.15); --electric-green-glow: rgba(0, 255, 136, 0.3);
---deep-blue: #3b82f6; --deep-blue-dim: rgba(59, 130, 246, 0.15);
---amber: #f59e0b; --amber-dim: rgba(245, 158, 11, 0.15);
---bitcoin-orange: #f7931a; --bitcoin-orange-dim: rgba(247, 147, 26, 0.15); --red: #F87171;
---border-subtle: rgba(255, 255, 255, 0.06); --border-medium: rgba(255, 255, 255, 0.1); --border-green: rgba(0, 255, 136, 0.15);
---font-mono: 'JetBrains Mono', monospace; --font-sans: 'IBM Plex Sans', -apple-system, sans-serif;
+  --bg-deep: #0b0f19;
+  --bg-card: #111827;
+  --bitcoin-orange: #f7931a;
+  --text-primary: #e2e8f0;
+  --text-secondary: #94a3b8;
+  --text-muted: #6B7280;
+  --border-subtle: rgba(255, 255, 255, 0.06);
+  --font-mono: 'JetBrains Mono', monospace;
+  --font-sans: 'IBM Plex Sans', -apple-system, sans-serif;
 }
 * { margin: 0; padding: 0; box-sizing: border-box; }
-body { background: var(--bg-deep); color: var(--text-primary); font-family: var(--font-sans); font-size: 17px; line-height: 1.65; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; padding-top: 40px; }
-.signals-bar { position: fixed; top: 0; left: 0; right: 0; height: 40px; background: var(--bg-signals); border-bottom: 1px solid var(--electric-green-glow); z-index: 1000; overflow: hidden; display: flex; align-items: center; }
-.signals-track { display: flex; animation: marquee 30s linear infinite; white-space: nowrap; }
-.signals-track:hover { animation-play-state: paused; }
-.signal-item { font-family: var(--font-mono); font-size: 13px; color: var(--electric-green); padding: 0 40px; display: flex; align-items: center; gap: 8px; }
-.signal-divider { color: rgba(0, 255, 136, 0.4); letter-spacing: 4px; }
-@keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-nav { display: flex; align-items: center; justify-content: space-between; padding: 16px 40px; border-bottom: 1px solid var(--border-subtle); background: rgba(11, 15, 25, 0.95); backdrop-filter: blur(12px); position: sticky; top: 40px; z-index: 100; }
-.nav-logo { font-family: var(--font-mono); font-weight: 700; font-size: 18px; color: var(--bitcoin-orange); text-decoration: none; letter-spacing: -0.02em; }
-.nav-links { display: flex; gap: 28px; list-style: none; align-items: center; }
-.nav-links a { color: var(--text-secondary); text-decoration: none; font-size: 14px; font-weight: 500; letter-spacing: 0.02em; transition: color 0.2s; }
-.nav-links a:hover { color: var(--text-primary); }
-.nav-links a.active { color: var(--electric-green); border-bottom: 2px solid var(--electric-green); }
-.nav-cta { font-family: var(--font-mono); font-size: 12px; font-weight: 600; color: var(--electric-green); border: 1px solid var(--electric-green); background: transparent; padding: 8px 16px; border-radius: 4px; text-decoration: none; transition: all 0.2s; text-transform: uppercase; letter-spacing: 0.05em; }
-.nav-cta:hover { background: var(--electric-green); color: #000; }
-main { max-width: 1100px; margin: 0 auto; padding: 60px 40px; }
-.page-header { text-align: center; margin-bottom: 48px; }
-.page-header h1 { font-size: 38px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 12px; }
-.page-header p { font-size: 18px; color: var(--text-secondary); }
-.section-label { font-family: var(--font-mono); font-size: 12px; color: var(--electric-green); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 16px; }
-.content-section { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 10px; padding: 32px; margin-bottom: 24px; }
-.content-section h2 { font-size: 20px; font-weight: 600; margin-bottom: 16px; color: var(--text-primary); }
-.content-section p { font-size: 15px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 16px; }
-.filter-controls { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 24px; justify-content: center; }
-.filter-btn { padding: 10px 20px; background: var(--bg-deep); border: 1px solid var(--border-subtle); border-radius: 6px; color: var(--text-secondary); font-size: 14px; cursor: pointer; transition: all 0.2s; font-family: var(--font-sans); }
-.filter-btn:hover, .filter-btn.active { background: var(--electric-green-dim); border-color: var(--electric-green); color: var(--electric-green); }
-.tools-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
-.tool-card { background: var(--bg-deep); border: 1px solid var(--border-subtle); border-radius: 10px; padding: 24px; transition: all 0.3s ease; }
-.tool-card.bitcoin-native { border-left: 3px solid var(--bitcoin-orange); }
-.tool-card.crypto-generic { border-left: 3px solid var(--deep-blue); }
-.tool-card:hover { border-color: var(--border-medium); background: var(--bg-card-hover); }
-.tool-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; flex-wrap: wrap; gap: 12px; }
-.tool-title { flex: 1; min-width: 200px; }
-.tool-card h4 { font-size: 17px; font-weight: 600; margin-bottom: 4px; }
-.tool-card.bitcoin-native h4 a { color: var(--bitcoin-orange); text-decoration: none; }
-.tool-card.crypto-generic h4 a { color: var(--deep-blue); text-decoration: none; }
-.tool-card h4 a:hover { opacity: 0.8; }
-.tool-badges { display: flex; gap: 8px; flex-wrap: wrap; }
-.badge { padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: 600; font-family: var(--font-mono); text-transform: uppercase; }
-.badge.status { background: rgba(76, 175, 80, 0.2); border: 1px solid rgba(76, 175, 80, 0.4); color: #81C784; }
-.badge.status.beta { background: rgba(245, 158, 11, 0.2); border: 1px solid rgba(245, 158, 11, 0.4); color: var(--amber); }
-.badge.status.alpha { background: rgba(168, 85, 247, 0.2); border: 1px solid rgba(168, 85, 247, 0.4); color: #BA68C8; }
-.badge.status.preview { background: rgba(59, 130, 246, 0.2); border: 1px solid rgba(59, 130, 246, 0.4); color: var(--deep-blue); }
-.badge.classification.bitcoin-native { background: var(--bitcoin-orange-dim); border: 1px solid var(--bitcoin-orange); color: var(--bitcoin-orange); }
-.badge.classification.crypto-generic { background: var(--deep-blue-dim); border: 1px solid var(--deep-blue); color: var(--deep-blue); }
-.tool-description { font-size: 15px; line-height: 1.6; color: var(--text-secondary); margin: 16px 0; }
-.tool-review { background: var(--bg-card); border-radius: 8px; padding: 16px; margin-top: 16px; }
-.tool-review-label { font-family: var(--font-mono); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
-.tool-card.bitcoin-native .tool-review-label { color: var(--bitcoin-orange); }
-.tool-card.crypto-generic .tool-review-label { color: var(--deep-blue); }
-.tool-review-text { font-size: 14px; line-height: 1.6; color: var(--text-secondary); }
-.tool-last-updated { font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); margin-top: 12px; }
-.loading { text-align: center; padding: 48px; color: var(--text-secondary); }
-.error { background: rgba(244, 67, 54, 0.1); border: 1px solid rgba(244, 67, 54, 0.3); border-radius: 8px; padding: 24px; text-align: center; color: #EF5350; }
-.btn-bitcoin { background: var(--bitcoin-orange); color: #000; padding: 12px 24px; border: none; border-radius: 6px; font-weight: 600; font-size: 14px; cursor: pointer; text-decoration: none; transition: all 0.2s; display: inline-flex; align-items: center; gap: 8px; }
-.btn-bitcoin:hover { background: #e8860f; }
-.subscribe-box { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 10px; padding: 32px; text-align: center; margin-bottom: 24px; }
-.subscribe-form { display: flex; gap: 12px; justify-content: center; max-width: 440px; margin: 20px auto 0; }
-.subscribe-input { flex: 1; background: var(--bg-deep); border: 1px solid var(--border-medium); border-radius: 6px; padding: 12px 16px; font-size: 15px; color: var(--text-primary); font-family: var(--font-sans); outline: none; }
-.subscribe-input::placeholder { color: var(--text-muted); }
-.subscribe-input:focus { border-color: var(--electric-green); }
-footer { max-width: 1100px; margin: 0 auto; padding: 40px; border-top: 1px solid var(--border-subtle); text-align: center; }
-.footer-nav { display: flex; justify-content: center; gap: 24px; margin-bottom: 16px; flex-wrap: wrap; }
-.footer-nav a { color: var(--text-secondary); text-decoration: none; font-size: 14px; }
-.footer-nav a:hover { color: var(--electric-green); }
-footer p { font-size: 14px; color: var(--text-muted); }
-footer a { color: var(--text-secondary); text-decoration: none; }
-footer a:hover { color: var(--electric-green); }
-.hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
-.hamburger span { display: block; width: 24px; height: 2px; background: var(--electric-green); border-radius: 2px; }
-@media (max-width: 900px) { main { padding: 40px 20px; } .tools-container { grid-template-columns: 1fr; } .page-header h1 { font-size: 28px; } nav { padding: 14px 20px; } .nav-links { gap: 16px; display: none; } .nav-links.open { display: flex; flex-direction: column; position: absolute; top: 100%; left: 0; right: 0; background: var(--bg-card); padding: 20px; border-bottom: 1px solid var(--border-subtle); } .hamburger { display: flex; } .filter-controls { justify-content: flex-start; } .subscribe-form { flex-direction: column; } }
+body { 
+  background: var(--bg-deep); 
+  color: var(--text-primary); 
+  font-family: var(--font-sans);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  text-align: center;
+  padding: 40px;
+}
+.container {
+  max-width: 500px;
+}
+h1 {
+  font-size: 28px;
+  margin-bottom: 16px;
+}
+.bitcoin { color: var(--bitcoin-orange); }
+p { 
+  color: var(--text-secondary); 
+  margin-bottom: 24px;
+  line-height: 1.6;
+}
+a { 
+  color: var(--bitcoin-orange); 
+  text-decoration: none;
+  font-weight: 600;
+}
+a:hover { text-decoration: underline; }
+.manual {
+  margin-top: 32px;
+  padding-top: 32px;
+  border-top: 1px solid var(--border-subtle);
+  font-size: 14px;
+  color: var(--text-muted);
+}
 </style>
 </head>
 <body>
-<div style="background: var(--amber-dim); border-bottom: 1px solid var(--amber); padding: 12px 20px; text-align: center; font-size: 14px; color: var(--amber);">
-⚠️ This content is moving to <a href="https://bitcoinsingularity.ai/tooling" style="color: var(--amber); text-decoration: underline; font-weight: 600;">bitcoinsingularity.ai/tooling</a>
+<div class="container">
+  <h1>Content Moved to <span class="bitcoin">Bitcoin Singularity</span></h1>
+  <p>The Agentic Terminal tooling directory has moved to our sister site.</p>
+  <p>Redirecting you to <a href="https://bitcoinsingularity.ai/tooling.html">bitcoinsingularity.ai/tooling</a>...</p>
+  <div class="manual">
+    <p>If you are not redirected automatically, <a href="https://bitcoinsingularity.ai/tooling.html">click here</a>.</p>
+  </div>
 </div>
-<div class="signals-bar">
-<div class="signals-track">
-<div class="signal-item">⚡ Lightning: 5,337 nodes active <span class="signal-divider">·····</span></div>
-<div class="signal-item">◈ x402: 5,476 GitHub stars <span class="signal-divider">·····</span></div>
-<div class="signal-item">◈ L402: 254 repos tracking <span class="signal-divider">·····</span></div>
-<div class="signal-item">◈ Ark Protocol: agent-native VTXO settlement <span class="signal-divider">·····</span></div>
-<div class="signal-item">⚡ Alby Hub: NWC + L402 agent standard <span class="signal-divider">·····</span></div>
-<div class="signal-item">◈ ERC-8004: agent payment standard emerging <span class="signal-divider">·····</span></div>
-<div class="signal-item">◈ New: clw.cash ships Bitcoin-native agent wallet <span class="signal-divider">·····</span></div>
-<div class="signal-item">⚡ Lightning: 5,337 nodes active <span class="signal-divider">·····</span></div>
-<div class="signal-item">◈ x402: 5,476 GitHub stars <span class="signal-divider">·····</span></div>
-<div class="signal-item">◈ L402: 254 repos tracking <span class="signal-divider">·····</span></div>
-<div class="signal-item">◈ Ark Protocol: agent-native VTXO settlement <span class="signal-divider">·····</span></div>
-<div class="signal-item">⚡ Alby Hub: NWC + L402 agent standard <span class="signal-divider">·····</span></div>
-<div class="signal-item">◈ ERC-8004: agent payment standard emerging <span class="signal-divider">·····</span></div>
-<div class="signal-item">◈ New: clw.cash ships Bitcoin-native agent wallet <span class="signal-divider">·····</span></div>
-</div>
-</div>
-
-<nav>
-<a href="/" class="nav-logo">Agentic Terminal</a>
-<button class="hamburger" id="hamburger" aria-label="Menu">
-<span></span><span></span><span></span>
-</button>
-<ul class="nav-links" id="nav-links">
-<li><a href="/evidence">Evidence</a></li>
-<li><a href="/">Dashboard</a></li>
-<li><a href="/research">Reports</a></li>
-<li><a href="/research">Standards</a></li>
-<li><a href="/about">About</a></li>
-<li><a href="/chat" class="nav-cta">Agent Terminal</a></li>
-</ul>
-</nav>
-<script>
-document.getElementById('hamburger').addEventListener('click', function() {
-document.getElementById('nav-links').classList.toggle('open');
-});
-</script>
-
-<main>
-<div class="page-header">
-<div class="section-label">// PROTOCOL_INDEX</div>
-<h1>Tools Directory</h1>
-<p>18 tools tracked and growing — Lightning wallets, payment protocols, and infrastructure for AI agents</p>
-</div>
-
-<div class="content-section">
-<div class="section-label">// ABOUT_DIRECTORY</div>
-<h2>About This Directory</h2>
-<p>
-We don't build tools—we review, rank, and guide. This directory curates the best Lightning wallets, payment protocols,
-and infrastructure for AI agents with honest, detailed evaluations.
-</p>
-<p>
-<strong>Bitcoin-native AND competing rails:</strong> We track L402 (Lightning), x402 (stablecoin), and traditional
-payment infrastructure. If Coinbase Agentic Wallets outperform Lightning-native solutions in adoption or UX, we document
-that honestly and analyze why. Orange accent = Bitcoin-native. Blue accent = Crypto-generic/competing rails.
-</p>
-<p>
-<strong>Evaluation criteria:</strong> Agent-friendly API | Payment speed | Transaction costs | Developer experience |
-Documentation quality | Production readiness | Adoption metrics
-</p>
-</div>
-
-<div class="content-section">
-<div class="section-label">// FILTER_TOOLS</div>
-<h2>Filter by Category</h2>
-<div class="filter-controls">
-<button class="filter-btn active" data-category="all">All Tools</button>
-</div>
-</div>
-
-<div id="tools-container" class="loading">
-Loading tools directory...
-</div>
-
-<div class="content-section" style="margin-top: 48px;">
-<div class="section-label">// SUBMISSIONS</div>
-<h2>Submission Guidelines</h2>
-<p>
-Building tools for AI agent payments? We'd love to review your work. Email submissions to
-<strong>tools@agenticterminal.ai</strong> with:
-</p>
-<ul style="list-style: none; padding-left: 0; margin-top: 16px;">
-<li style="padding: 8px 0; display: flex; align-items: center; gap: 12px; color: var(--text-secondary);"><span style="color: var(--electric-green);">›</span> Documentation link (API docs, integration guides)</li>
-<li style="padding: 8px 0; display: flex; align-items: center; gap: 12px; color: var(--text-secondary);"><span style="color: var(--electric-green);">›</span> GitHub repo (if open source)</li>
-<li style="padding: 8px 0; display: flex; align-items: center; gap: 12px; color: var(--text-secondary);"><span style="color: var(--electric-green);">›</span> Production examples (agents using your tool in the wild)</li>
-<li style="padding: 8px 0; display: flex; align-items: center; gap: 12px; color: var(--text-secondary);"><span style="color: var(--electric-green);">›</span> Transaction metrics (volume, count, if public)</li>
-</ul>
-<p style="margin-top: 24px;">
-We evaluate all submissions based on merit, not ideology. If your tool works well for agents, we'll say so—even
-if it's not Bitcoin-native.
-</p>
-</div>
-
-<div class="subscribe-box">
-<h3 style="font-size: 20px; font-weight: 600; color: var(--text-primary); margin-bottom: 8px;">Subscribe to Research Updates</h3>
-<p style="font-size: 15px; color: var(--text-secondary); margin-bottom: 0;">Get notified when new tools are added and reviewed.</p>
-<form action="https://app.kit.com/forms/9092630/subscriptions" method="POST" class="subscribe-form">
-<input type="email" name="email" class="subscribe-input" placeholder="you@email.com" required>
-<button type="submit" class="btn-bitcoin">Subscribe</button>
-</form>
-</div>
-</main>
-
-<footer>
-<div class="footer-nav">
-<a href="/evidence">Evidence</a>
-<a href="/">Dashboard</a>
-<a href="/research">Reports</a>
-<a href="/research">Standards</a>
-<a href="/about">About</a>
-<a href="/chat">Agent Terminal</a>
-</div>
-<p>Research by Maxi · Thesis Advisor: <a href="https://x.com/boydcohen">Boyd Cohen, PhD</a> · Built at <a href="https://arcadiab.com">ArcadiaB</a></p>
-<p style="margin-top: 6px;">Protocol-neutral terminal tracking autonomous agent payment infrastructure.</p>
-</footer>
-
-<script>
-let allTools = [];
-let currentFilter = 'all';
-
-async function loadTools() {
-try {
-const response = await fetch('tools-data.json');
-if (!response.ok) throw new Error('Failed to load tools data');
-allTools = await response.json();
-
-const categories = [...new Set(allTools.map(tool => tool.category))].sort();
-const filterControls = document.querySelector('.filter-controls');
-const allButton = filterControls.querySelector('[data-category="all"]');
-
-categories.forEach(category => {
-const btn = document.createElement('button');
-btn.className = 'filter-btn';
-btn.setAttribute('data-category', category);
-btn.textContent = category;
-btn.addEventListener('click', () => filterByCategory(category));
-filterControls.appendChild(btn);
-});
-
-allButton.addEventListener('click', () => filterByCategory('all'));
-renderTools();
-} catch (error) {
-document.getElementById('tools-container').innerHTML = `
-<div class="error">
-<h3>Error Loading Tools</h3>
-<p>${error.message}</p>
-</div>
-`;
-}
-}
-
-function filterByCategory(category) {
-currentFilter = category;
-document.querySelectorAll('.filter-btn').forEach(btn => {
-btn.classList.remove('active');
-if (btn.getAttribute('data-category') === category) btn.classList.add('active');
-});
-renderTools();
-}
-
-function renderTools() {
-const container = document.getElementById('tools-container');
-const filteredTools = currentFilter === 'all' ? allTools : allTools.filter(tool => tool.category === currentFilter);
-
-if (filteredTools.length === 0) {
-container.innerHTML = '<div class="loading">No tools found in this category.</div>';
-return;
-}
-
-const groupedTools = {};
-filteredTools.forEach(tool => {
-if (!groupedTools[tool.category]) groupedTools[tool.category] = [];
-groupedTools[tool.category].push(tool);
-});
-
-let html = '<div class="tools-container">';
-Object.keys(groupedTools).sort().forEach(category => {
-html += `<div class="category-section" style="margin-bottom: 32px;"><h3 style="font-size: 14px; color: var(--text-primary); margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid var(--border-subtle);">${category}</h3>`;
-groupedTools[category].forEach(tool => {
-const nativeClass = tool.bitcoinNative ? 'bitcoin-native' : 'crypto-generic';
-const statusClass = tool.status.toLowerCase().replace(/\s+/g, '-');
-html += `
-<div class="tool-card ${nativeClass}">
-<div class="tool-header">
-<div class="tool-title">
-<h4><a href="${tool.link}" target="_blank" rel="noopener noreferrer">${tool.name}</a></h4>
-</div>
-<div class="tool-badges">
-<span class="badge status ${statusClass}">${tool.status}</span>
-<span class="badge classification ${nativeClass}">${tool.bitcoinNative ? '₿ Bitcoin-native' : '◈ Crypto-generic'}</span>
-</div>
-</div>
-<div class="tool-description">${tool.description}</div>
-<div class="tool-review">
-<div class="tool-review-label">Maxi's Review</div>
-<div class="tool-review-text">${tool.review}</div>
-</div>
-<div class="tool-last-updated">Last updated: Feb 2026</div>
-</div>
-`;
-});
-html += '</div>';
-});
-html += '</div>';
-container.innerHTML = html;
-}
-
-document.addEventListener('DOMContentLoaded', loadTools);
-</script>
-
 </body>
 </html>
