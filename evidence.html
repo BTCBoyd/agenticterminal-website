@@ -113,18 +113,17 @@ footer a:hover { color: var(--electric-green); }
 </div>
 
 <nav>
-<a href="/" class="nav-logo">₿ Agentic Terminal</a>
+<a href="/" class="nav-logo">Agentic Terminal</a>
 <button class="hamburger" id="hamburger" aria-label="Menu">
 <span></span><span></span><span></span>
 </button>
 <ul class="nav-links" id="nav-links">
-<li><a href="/">Dashboard</a></li>
-<li><a href="/evidence">Settlement Wars</a></li>
-<li><a href="/research">Intelligence</a></li>
-<li><a href="/tools">Protocol Index</a></li>
 <li><a href="/evidence" class="active">Evidence</a></li>
+<li><a href="/">Dashboard</a></li>
+<li><a href="/research">Reports</a></li>
+<li><a href="/research">Standards</a></li>
 <li><a href="/about">About</a></li>
-<li><a href="/chat" class="nav-cta">Enter Terminal</a></li>
+<li><a href="/chat" class="nav-cta">Agent Terminal</a></li>
 </ul>
 </nav>
 <script>
@@ -135,32 +134,35 @@ document.getElementById('nav-links').classList.toggle('open');
 
 <main>
 <div class="page-header">
-<div class="section-label">// EVIDENCE_STREAM</div>
-<h1>Convergence Evidence Tracker</h1>
-<p>20 entries and growing — Live, timestamped log of AI-Bitcoin convergence data points</p>
+<div class="section-label">// LIVE_PROOF_SYSTEM</div>
+<h1>Verified Evidence Stream</h1>
+<p>Timestamped transaction hashes, verified receipts, and protocol activity</p>
+</div>
+
+<div class="content-section" style="background: var(--bg-signals); border-color: var(--electric-green-glow);">
+<div class="section-label">// SYSTEM_METRICS</div>
+<div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; text-align: center;">
+<div>
+<div style="font-family: var(--font-mono); font-size: 32px; color: var(--electric-green); font-weight: 700;">20+</div>
+<div style="font-size: 12px; color: var(--text-muted); text-transform: uppercase;">Verified Entries</div>
+</div>
+<div>
+<div style="font-family: var(--font-mono); font-size: 32px; color: var(--electric-green); font-weight: 700;">3</div>
+<div style="font-size: 12px; color: var(--text-muted); text-transform: uppercase;">Protocols Tracked</div>
+</div>
+<div>
+<div style="font-family: var(--font-mono); font-size: 32px; color: var(--electric-green); font-weight: 700;">100%</div>
+<div style="font-size: 12px; color: var(--text-muted); text-transform: uppercase;">Sourced</div>
+</div>
+<div>
+<div style="font-family: var(--font-mono); font-size: 32px; color: var(--electric-green); font-weight: 700;">Live</div>
+<div style="font-size: 12px; color: var(--text-muted); text-transform: uppercase;">Status</div>
+</div>
+</div>
 </div>
 
 <div class="content-section">
-<div class="section-label">// ABOUT_TRACKER</div>
-<h2>About This Tracker</h2>
-<p>
-The single most comprehensive resource tracking the convergence of AI agents and Bitcoin. Every announcement,
-launch, integration, and data point—timestamped, categorized, and honestly evaluated.
-</p>
-<p>
-We track <strong>supporting evidence</strong> (Lightning integrations, L402 deployments, agent wallet launches)
-<em>and</em> <strong>competing evidence</strong> (x402/USDC adoption, traditional payment rail integrations).
-Intellectual honesty is the brand.
-</p>
-<p>
-<strong>Categories:</strong> Infrastructure Launches | Agent Wallet Deployments | Payment Protocol Adoption |
-Transaction Data | Competitive Developments | Research Publications
-</p>
-</div>
-
-<div class="content-section">
-<div class="section-label">// FILTER_EVIDENCE</div>
-<h2>Filter Evidence</h2>
+<div class="section-label">// FILTER_STREAM</div>
 <div class="filter-section">
 <button class="filter-btn active">All</button>
 <button class="filter-btn">Infrastructure</button>
@@ -173,28 +175,10 @@ Transaction Data | Competitive Developments | Research Publications
 </div>
 
 <div class="content-section">
-<div class="section-label">// EVIDENCE_TIMELINE</div>
-<h2>Evidence Timeline</h2>
+<div class="section-label">// TIMESTAMPED_ENTRIES</div>
 <div class="evidence-feed" id="evidenceTimeline">
-<p style="color: var(--text-secondary); text-align: center; padding: 2rem;">Loading evidence data...</p>
+<p style="color: var(--text-secondary); text-align: center; padding: 2rem;">Loading evidence stream...</p>
 </div>
-</div>
-
-<div class="content-section">
-<div class="section-label">// METHODOLOGY</div>
-<h2>Data Methodology</h2>
-<p>
-<strong>Source Verification:</strong> All data points include source links to official announcements, GitHub repos,
-blog posts, or academic publications. No hearsay.
-</p>
-<p style="margin-top: 16px;">
-<strong>Timestamp Accuracy:</strong> Dates reflect official announcement/launch, not when we discovered it.
-Updates include revision timestamps.
-</p>
-<p style="margin-top: 16px;">
-<strong>Competitive Honesty:</strong> We don't hide data that challenges the Bitcoin-centric thesis. If x402/USDC
-is outpacing L402/Bitcoin, we document that and analyze why.
-</p>
 </div>
 
 <div class="subscribe-box">
@@ -209,16 +193,15 @@ is outpacing L402/Bitcoin, we document that and analyze why.
 
 <footer>
 <div class="footer-nav">
-<a href="/">Dashboard</a>
-<a href="/evidence">Settlement Wars</a>
-<a href="/research">Intelligence</a>
-<a href="/tools">Protocol Index</a>
 <a href="/evidence">Evidence</a>
+<a href="/">Dashboard</a>
+<a href="/research">Reports</a>
+<a href="/research">Standards</a>
 <a href="/about">About</a>
-<a href="/chat">Ask Maxi</a>
+<a href="/chat">Agent Terminal</a>
 </div>
 <p>Research by Maxi · Thesis Advisor: <a href="https://x.com/boydcohen">Boyd Cohen, PhD</a> · Built at <a href="https://arcadiab.com">ArcadiaB</a></p>
-<p style="margin-top: 6px;">Intelligence terminal tracking AI-Bitcoin convergence with academic rigor and intellectual honesty.</p>
+<p style="margin-top: 6px;">Protocol-neutral terminal tracking autonomous agent payment infrastructure.</p>
 </footer>
 
 <script>
