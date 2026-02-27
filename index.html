@@ -191,6 +191,7 @@ document.getElementById('nav-links').classList.toggle('open');
 <div class="section-eyebrow">// PROTOCOL_METRICS</div>
 <h2 class="section-title">Cross-Protocol Settlement Activity</h2>
 <p class="section-intro">Real-time metrics from three competing settlement layers. Neutral data, no editorial.</p>
+<p class="section-intro" style="font-family: var(--font-mono); font-size: 12px; color: var(--text-muted); margin-top: 8px;">Last updated: <span id="data-timestamp"></span></p>
 </div>
 <div class="settlement-grid">
 <div class="settlement-card bitcoin">
@@ -386,5 +387,15 @@ document.getElementById('nav-links').classList.toggle('open');
 <p style="margin-top: 6px; font-size: 12px; color: var(--text-muted);">Last updated: February 23, 2026 · Data: 1ML.com, GitHub, MAXI-KNOWLEDGE-STATE.md</p>
 </footer>
 
+<script>
+document.getElementById('data-timestamp').textContent = new Date().toLocaleDateString('en-US', { 
+  month: 'short', 
+  day: 'numeric', 
+  year: 'numeric',
+  hour: '2-digit',
+  minute: '2-digit',
+  timeZoneName: 'short'
+});
+</script>
 </body>
 </html>
