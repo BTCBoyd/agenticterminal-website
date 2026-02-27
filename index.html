@@ -39,7 +39,8 @@ nav { display: flex; align-items: center; justify-content: space-between; paddin
 .nav-links a.active { color: var(--electric-green); border-bottom: 2px solid var(--electric-green); }
 .nav-cta { font-family: var(--font-mono); font-size: 12px; font-weight: 600; color: var(--electric-green); border: 1px solid var(--electric-green); background: transparent; padding: 8px 16px; border-radius: 4px; text-decoration: none; transition: all 0.2s; text-transform: uppercase; letter-spacing: 0.05em; }
 .nav-cta:hover { background: var(--electric-green); color: #000; }
-.hero { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; padding: 80px 40px 60px; max-width: 1200px; margin: 0 auto; align-items: center; }
+.hero { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 100px 40px 80px; max-width: 1200px; margin: 0 auto; text-align: center; }
+.hero-content { width: 100%; }
 .hero-eyebrow { font-family: var(--font-mono); font-size: 13px; color: var(--electric-green); letter-spacing: 0.1em; margin-bottom: 20px; display: flex; align-items: center; gap: 8px; }
 .hero-eyebrow::before { content: ''; width: 8px; height: 8px; background: var(--electric-green); border-radius: 50%; animation: pulse 2s ease-in-out infinite; }
 @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
@@ -174,54 +175,13 @@ document.getElementById('nav-links').classList.toggle('open');
 </script>
 
 <section class="hero">
-<div class="hero-left">
-<div class="hero-eyebrow">// LIVE_MARKET_DATA</div>
+<div class="hero-content" style="max-width: 900px; margin: 0 auto; text-align: center;">
+<div class="hero-eyebrow" style="justify-content: center;">// LIVE_MARKET_DATA</div>
 <h1>Bloomberg Terminal for Agentic Payments</h1>
-<p>Real-time verification of autonomous agent transactions. Cross-protocol evidence from Lightning, x402, Ark, and emerging settlement rails. Data over ideology.</p>
-<div class="hero-actions">
+<p style="max-width: 700px; margin-left: auto; margin-right: auto;">Real-time verification of autonomous agent transactions. Cross-protocol evidence from Lightning, x402, Ark, and emerging settlement rails. Data over ideology.</p>
+<div class="hero-actions" style="justify-content: center;">
 <a href="/chat" class="btn-primary">ENTER TERMINAL →</a>
-<a href="#modules" class="btn-secondary">View Live Signals ↓</a>
-</div>
-</div>
-<div class="terminal-panel">
-<div class="terminal-header">// SIGNAL MONITOR</div>
-<hr class="terminal-divider">
-<div class="terminal-metric">
-<span class="terminal-metric-label">ACTIVE PROTOCOL SIGNALS</span>
-<span class="terminal-metric-value">34</span>
-</div>
-<div class="terminal-metric">
-<span class="terminal-metric-label">AGENT WALLET DEPLOYMENTS</span>
-<span class="terminal-metric-value">12</span>
-</div>
-<div class="terminal-metric">
-<span class="terminal-metric-label">SETTLEMENT STANDARDS</span>
-<span class="terminal-metric-value">3</span>
-</div>
-<div class="terminal-metric">
-<span class="terminal-metric-label">LIGHTNING NODES</span>
-<span class="terminal-metric-value">5,392</span>
-</div>
-<div class="terminal-metric">
-<span class="terminal-metric-label">LN CHANNELS</span>
-<span class="terminal-metric-value">15,879</span>
-</div>
-<div class="terminal-metric">
-<span class="terminal-metric-label">LN CAPACITY</span>
-<span class="terminal-metric-value">2,608 BTC</span>
-</div>
-<div class="terminal-metric">
-<span class="terminal-metric-label">L402 STARS</span>
-<span class="terminal-metric-value">19</span>
-</div>
-<div class="terminal-metric">
-<span class="terminal-metric-label">X402 STARS</span>
-<span class="terminal-metric-value">5,507</span>
-</div>
-<hr class="terminal-divider">
-<div class="terminal-status">
-<span>STATUS: MONITORING</span>
-<div class="terminal-cursor"></div>
+<a href="#protocols" class="btn-secondary">View Cross-Protocol Data ↓</a>
 </div>
 </div>
 </section>
@@ -255,7 +215,7 @@ document.getElementById('nav-links').classList.toggle('open');
 </div>
 </section>
 
-<section class="settlement-section">
+<section class="settlement-section" id="protocols">
 <div class="section-header">
 <div class="section-eyebrow">// PROTOCOL_METRICS</div>
 <h2 class="section-title">Cross-Protocol Settlement Activity</h2>
