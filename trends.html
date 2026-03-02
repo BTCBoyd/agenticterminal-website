@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trends | Agentic Terminal - Cross-Protocol AI Settlement Metrics</title>
+  <meta name="description" content="Real-time metrics across Lightning/L402, x402/ERC-8004, and emerging protocols. Interest-to-usage gap analysis for AI agent infrastructure.">
+  
+  <style>
+    :root {
+      --bg-primary: #0a0a0f;
+      --bg-secondary: #111827;
+      --bg-card: #1f2937;
+      --border: #374151;
+      --text-primary: #f9fafb;
+      --text-secondary: #9ca3af;
+      --accent-bitcoin: #f59e0b;
+      --accent-stablecoin: #34d399;
+      --accent-emerging: #a78bfa;
+      --accent-info: #60a5fa;
+      --danger: #ef4444;
+      --success: #22c55e;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    
+    /* Header */
+    header {
+      background: var(--bg-secondary);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 0;
+    }
+    
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--text-primary);
+    }
+    
+    .logo-icon {
+      font-size: 1.5rem;
+    }
+    
+    .logo-text {
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
+    
+    .logo-tagline {
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+    
+    nav a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      margin-left: 2rem;
+      font-size: 0.9rem;
+      transition: color 0.2s;
+    }
+    
+    nav a:hover, nav a.active {
+      color: var(--text-primary);
+    }
+    
+    /* Hero */
+    .hero {
+      padding: 3rem 0;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+    }
+    
+    .hero h1 {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(135deg, var(--accent-bitcoin), var(--accent-stablecoin));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .hero p {
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    
+    /* Tabs */
+    .tabs {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 2rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    
+    .tab {
+      padding: 0.75rem 1.5rem;
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      cursor: pointer;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      transition: all 0.2s;
+    }
+    
+    .tab:hover {
+      border-color: var(--text-secondary);
+      color: var(--text-primary);
+    }
+    
+    .tab.active {
+      background: var(--bg-card);
+      border-color: var(--accent-bitcoin);
+      color: var(--text-primary);
+    }
+    
+    /* Tab Content */
+    .tab-content {
+      display: none;
+      padding: 2rem 0;
+    }
+    
+    .tab-content.active {
+      display: block;
+    }
+    
+    /* Cards Grid */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    
+    .card:hover {
+      transform: translateY(-2px);
+      border-color: var(--border);
+    }
+    
+    .card.bitcoin {
+      border-left: 4px solid var(--accent-bitcoin);
+    }
+    
+    .card.stablecoin {
+      border-left: 4px solid var(--accent-stablecoin);
+    }
+    
+    .card.emerging {
+      border-left: 4px solid var(--accent-emerging);
+    }
+    
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1rem;
+    }
+    
+    .card-title {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    
+    .card-badge {
+      font-size: 0.75rem;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+    
+    .card-badge.bitcoin {
+      background: var(--accent-bitcoin);
+      color: #000;
+    }
+    
+    .card-badge.stablecoin {
+      background: var(--accent-stablecoin);
+      color: #000;
+    }
+    
+    .card-badge.emerging {
+      background: var(--accent-emerging);
+      color: #000;
+    }
+    
+    .card-value {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    
+    .card-change {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.9rem;
+    }
+    
+    .change-positive {
+      color: var(--success);
+    }
+    
+    .change-negative {
+      color: var(--danger);
+    }
+    
+    .card-sparkline {
+      margin-top: 1rem;
+      height: 60px;
+      background: var(--bg-secondary);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    
+    .card-sparkline img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    /* Chart Container */
+    .chart-container {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    
+    .chart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+    
+    .chart-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+    
+    .chart-subtitle {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+    }
+    
+    .chart-image {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+      background: var(--bg-secondary);
+    }
+    
+    /* Gap Analysis Section */
+    .gap-analysis {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+    
+    .gap-metric {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+    }
+    
+    .gap-value {
+      font-size: 3rem;
+      font-weight: 700;
+      text-align: center;
+      margin: 1rem 0;
+    }
+    
+    .gap-label {
+      text-align: center;
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+    
+    .gap-positive {
+      color: var(--accent-bitcoin);
+    }
+    
+    .gap-negative {
+      color: var(--accent-stablecoin);
+    }
+    
+    /* Insights Box */
+    .insights {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-top: 2rem;
+    }
+    
+    .insights h3 {
+      margin-bottom: 1rem;
+      color: var(--accent-info);
+    }
+    
+    .insights ul {
+      list-style: none;
+    }
+    
+    .insights li {
+      padding: 0.5rem 0;
+      padding-left: 1.5rem;
+      position: relative;
+    }
+    
+    .insights li::before {
+      content: "→";
+      position: absolute;
+      left: 0;
+      color: var(--accent-info);
+    }
+    
+    /* Footer */
+    footer {
+      background: var(--bg-secondary);
+      border-top: 1px solid var(--border);
+      padding: 2rem 0;
+      margin-top: 3rem;
+      text-align: center;
+    }
+    
+    .last-updated {
+      color: var(--text-secondary);
+      font-size: 0.875rem;
+      margin-bottom: 1rem;
+    }
+    
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin-bottom: 1rem;
+    }
+    
+    .footer-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.875rem;
+    }
+    
+    .footer-links a:hover {
+      color: var(--text-primary);
+    }
+    
+    /* Loading State */
+    .loading {
+      text-align: center;
+      padding: 3rem;
+      color: var(--text-secondary);
+    }
+    
+    .error {
+      text-align: center;
+      padding: 3rem;
+      color: var(--danger);
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 1.75rem;
+      }
+      
+      .tabs {
+        flex-wrap: wrap;
+      }
+      
+      .tab {
+        padding: 0.5rem 1rem;
+        font-size: 0.8rem;
+      }
+      
+      .cards-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .gap-analysis {
+        grid-template-columns: 1fr;
+      }
+      
+      .footer-links {
+        flex-direction: column;
+        gap: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="header-content">
+        <a href="/" class="logo">
+          <span class="logo-icon">📡</span>
+          <div>
+            <div class="logo-text">Agentic Terminal</div>
+            <div class="logo-tagline">AI Settlement Infrastructure</div>
+          </div>
+        </a>
+        <nav>
+          <a href="/">Home</a>
+          <a href="/research.html">Research</a>
+          <a href="/trends.html" class="active">Trends</a>
+          <a href="/chat.html">Chat</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container">
+      <h1>Agentic Terminal Trends</h1>
+      <p>Cross-protocol metrics for AI agent settlement infrastructure. Interest-to-usage gap analysis across Bitcoin/Lightning, stablecoin rails, and emerging protocols.</p>
+    </div>
+  </section>
+
+  <div class="container">
+    <div class="tabs">
+      <button class="tab active" data-tab="overview">Overview</button>
+      <button class="tab" data-tab="cross-protocol">Cross-Protocol</button>
+      <button class="tab" data-tab="gap">Interest ↔ Usage Gap</button>
+    </div>
+
+    <!-- Overview Tab -->
+    <div id="overview" class="tab-content active">
+      <div class="cards-grid" id="overview-cards">
+        <div class="loading">Loading metrics...</div>
+      </div>
+    </div>
+
+    <!-- Cross-Protocol Tab -->
+    <div id="cross-protocol" class="tab-content">
+      <div class="chart-container">
+        <div class="chart-header">
+          <div>
+            <div class="chart-title">Cross-Protocol Normalized Growth Comparison</div>
+            <div class="chart-subtitle">All metrics normalized to 0-100 scale for comparison</div>
+          </div>
+        </div>
+        <img id="cross-protocol-chart" class="chart-image" alt="Cross-protocol comparison" src="">
+      </div>
+      
+      <div class="insights">
+        <h3>🎯 Key Insights</h3>
+        <ul id="cross-protocol-insights">
+          <li>Loading insights...</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Interest ↔ Usage Gap Tab -->
+    <div id="gap" class="tab-content">
+      <div class="chart-container">
+        <div class="chart-header">
+          <div>
+            <div class="chart-title">Interest ↔ Usage Gap</div>
+            <div class="chart-subtitle">Developer interest (L402 stars) vs Live deployments (ERC-8004 agents)</div>
+          </div>
+        </div>
+        <img id="gap-chart" class="chart-image" alt="Interest-usage gap" src="">
+      </div>
+      
+      <div class="gap-analysis" id="gap-metrics">
+        <div class="gap-metric">
+          <div class="gap-label">Interest Growth (L402)</div>
+          <div class="gap-value gap-positive" id="interest-growth">--</div>
+          <div class="gap-label">Week-over-week</div>
+        </div>
+        <div class="gap-metric">
+          <div class="gap-label">Usage Growth (Agents)</div>
+          <div class="gap-value gap-negative" id="usage-growth">--</div>
+          <div class="gap-label">Week-over-week</div>
+        </div>
+      </div>
+      
+      <div class="insights">
+        <h3>📊 Gap Analysis</h3>
+        <p id="gap-explanation">Loading gap analysis...</p>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">
+      <div class="last-updated" id="last-updated">Last updated: Loading...</div>
+      <div class="footer-links">
+        <a href="/">Home</a>
+        <a href="/research.html">Research</a>
+        <a href="/about.html">About</a>
+        <a href="https://github.com" target="_blank">GitHub</a>
+      </div>
+      <p style="color: var(--text-secondary); font-size: 0.8rem;">
+        Data sources: 1ML.com, GitHub API, on-chain metrics. Updated weekly.
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    // Configuration
+    const CONFIG = {
+      dataUrl: '/agentic-terminal-data/metrics-history.json',
+      chartsBaseUrl: '/agentic-terminal-data/charts'
+    };
+
+    // State
+    let metricsData = null;
+    let currentChartsDate = null;
+
+    // Format helpers
+    const formatNumber = (num) => {
+      if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+      if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
+      return num.toString();
+    };
+
+    const formatPercent = (num) => {
+      if (num === null || num === undefined) return 'N/A';
+      const sign = num > 0 ? '+' : '';
+      return `${sign}${num.toFixed(1)}%`;
+    };
+
+    // Load metrics data
+    async function loadMetrics() {
+      try {
+        const response = await fetch(CONFIG.dataUrl);
+        if (!response.ok) throw new Error('Failed to load metrics');
+        metricsData = await response.json();
+        
+        // Find most recent charts directory
+        const latestWeek = metricsData.weeks[metricsData.weeks.length - 1];
+        currentChartsDate = latestWeek.snapshot_date;
+        
+        updateOverview();
+        updateCrossProtocol();
+        updateGapAnalysis();
+        updateFooter();
+      } catch (error) {
+        console.error('Error loading metrics:', error);
+        document.getElementById('overview-cards').innerHTML = 
+          '<div class="error">Failed to load metrics data. Please try again later.</div>';
+      }
+    }
+
+    // Update Overview Cards
+    function updateOverview() {
+      const weeks = metricsData.weeks;
+      const current = weeks[weeks.length - 1];
+      const previous = weeks[weeks.length - 2];
+      
+      const cards = [
+        {
+          title: 'L402 GitHub Stars',
+          value: current.metrics.bitcoin_lightning.l402_github_stars,
+          change: current.wow_changes?.bitcoin_lightning?.l402_github_stars_pct,
+          category: 'bitcoin',
+          sparkline: 'metrics-bitcoin_lightning-l402_github_stars'
+        },
+        {
+          title: 'Lightning Nodes',
+          value: current.metrics.bitcoin_lightning.lightning_nodes,
+          change: current.wow_changes?.bitcoin_lightning?.lightning_nodes_pct,
+          category: 'bitcoin',
+          sparkline: 'metrics-bitcoin_lightning-lightning_nodes'
+        },
+        {
+          title: 'Lightning Capacity',
+          value: current.metrics.bitcoin_lightning.lightning_capacity_btc.toFixed(0) + ' BTC',
+          change: current.wow_changes?.bitcoin_lightning?.lightning_capacity_btc_pct,
+          category: 'bitcoin',
+          sparkline: 'metrics-bitcoin_lightning-lightning_capacity_btc'
+        },
+        {
+          title: 'x402 GitHub Stars',
+          value: formatNumber(current.metrics.stablecoin_api_rails.x402_github_stars),
+          change: current.wow_changes?.stablecoin_api_rails?.x402_github_stars_pct,
+          category: 'stablecoin',
+          sparkline: 'metrics-stablecoin_api_rails-x402_github_stars'
+        },
+        {
+          title: 'ERC-8004 Agents',
+          value: formatNumber(current.metrics.stablecoin_api_rails.erc8004_agents_registered),
+          change: current.wow_changes?.stablecoin_api_rails?.erc8004_agents_registered_pct,
+          category: 'stablecoin',
+          sparkline: 'metrics-stablecoin_api_rails-erc8004_agents_registered'
+        },
+        {
+          title: 'Ark Protocol Stars',
+          value: current.metrics.emerging_protocols.ark_github_stars,
+          change: null,
+          category: 'emerging',
+          sparkline: 'metrics-emerging_protocols-ark_github_stars'
+        }
+      ];
+      
+      const cardsHtml = cards.map(card => {
+        const changeClass = card.change > 0 ? 'change-positive' : card.change < 0 ? 'change-negative' : '';
+        const changeSymbol = card.change > 0 ? '↑' : card.change < 0 ? '↓' : '→';
+        const sparklineUrl = `${CONFIG.chartsBaseUrl}/${currentChartsDate}/sparkline-${card.sparkline}.png`;
+        
+        return `
+          <div class="card ${card.category}">
+            <div class="card-header">
+              <div class="card-title">${card.title}</div>
+              <div class="card-badge ${card.category}">${card.category}</div>
+            </div>
+            <div class="card-value">${card.value}</div>
+            <div class="card-change ${changeClass}">
+              ${card.change !== null ? `${changeSymbol} ${formatPercent(card.change)} vs last week` : 'No change data'}
+            </div>
+            <div class="card-sparkline">
+              <img src="${sparklineUrl}" alt="${card.title} trend" 
+                   onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=\\'color:var(--text-secondary)\\'>Trend data</span>'">
+            </div>
+          </div>
+        `;
+      }).join('');
+      
+      document.getElementById('overview-cards').innerHTML = cardsHtml;
+    }
+
+    // Update Cross-Protocol Chart
+    function updateCrossProtocol() {
+      const chartUrl = `${CONFIG.chartsBaseUrl}/${currentChartsDate}/cross-protocol-comparison.png`;
+      document.getElementById('cross-protocol-chart').src = chartUrl;
+      
+      // Generate insights
+      const weeks = metricsData.weeks;
+      const current = weeks[weeks.length - 1];
+      const previous = weeks[weeks.length - 2];
+      
+      const l402Change = current.wow_changes?.bitcoin_lightning?.l402_github_stars_pct;
+      const x402Change = current.wow_changes?.stablecoin_api_rails?.x402_github_stars_pct;
+      const lnNodesChange = current.wow_changes?.bitcoin_lightning?.lightning_nodes_pct;
+      
+      const insights = [];
+      
+      if (l402Change > 20) {
+        insights.push(`<li><strong>L402 accelerating:</strong> Interest surged ${l402Change.toFixed(1)}% this week. Developer attention on Bitcoin-native agent protocols is spiking.</li>`);
+      } else if (l402Change > 10) {
+        insights.push(`<li><strong>L402 momentum building:</strong> ${l402Change.toFixed(1)}% growth in developer interest signals tooling maturation.</li>`);
+      }
+      
+      if (x402Change > l402Change) {
+        insights.push(`<li><strong>x402 leading:</strong> Stablecoin rails showing stronger growth (${x402Change.toFixed(1)}%) vs L402 (${l402Change.toFixed(1)}%).</li>`);
+      }
+      
+      if (lnNodesChange > 1) {
+        insights.push(`<li><strong>Lightning infrastructure expanding:</strong> Node count up ${lnNodesChange.toFixed(1)}%, capacity following.</li>`);
+      } else if (lnNodesChange < 0) {
+        insights.push(`<li><strong>Network consolidation:</strong> Node count declined ${Math.abs(lnNodesChange).toFixed(1)}% - potential cost optimization phase.</li>`);
+      }
+      
+      if (insights.length === 0) {
+        insights.push('<li>Markets in steady state. No significant cross-protocol movements this week.</li>');
+      }
+      
+      document.getElementById('cross-protocol-insights').innerHTML = insights.join('');
+    }
+
+    // Update Gap Analysis
+    function updateGapAnalysis() {
+      const chartUrl = `${CONFIG.chartsBaseUrl}/${currentChartsDate}/interest-usage-gap.png`;
+      document.getElementById('gap-chart').src = chartUrl;
+      
+      const weeks = metricsData.weeks;
+      const current = weeks[weeks.length - 1];
+      const previous = weeks[weeks.length - 2];
+      
+      const interestGrowth = current.wow_changes?.bitcoin_lightning?.l402_github_stars_pct || 0;
+      const usageGrowth = current.wow_changes?.stablecoin_api_rails?.erc8004_agents_registered_pct || 0;
+      const gap = interestGrowth - usageGrowth;
+      
+      document.getElementById('interest-growth').textContent = formatPercent(interestGrowth);
+      document.getElementById('usage-growth').textContent = formatPercent(usageGrowth);
+      
+      let explanation;
+      if (gap > 10) {
+        explanation = `<strong>Massive interest gap:</strong> Developer interest (${interestGrowth.toFixed(1)}%) is massively outpacing deployment (${usageGrowth.toFixed(1)}%). This suggests infrastructure is being built ahead of product launches. <strong>Opportunity signal:</strong> The gap represents unrealized potential - tooling exists, products are coming.`;
+      } else if (gap > 5) {
+        explanation = `<strong>Interest leads usage:</strong> Classic early-stage pattern where developer tooling (${interestGrowth.toFixed(1)}%) precedes deployment (${usageGrowth.toFixed(1)}%). This is healthy ecosystem development.`;
+      } else if (gap < -5) {
+        explanation = `<strong>Usage catching up:</strong> Agent deployment (${usageGrowth.toFixed(1)}%) now outpacing interest growth (${interestGrowth.toFixed(1)}%). Silent builders are shipping. The infrastructure gap is closing.`;
+      } else {
+        explanation = `<strong>Convergence:</strong> Interest and usage are aligned (${gap.toFixed(1)} point gap). The ecosystem is maturing - what developers are exploring, they are deploying.`;
+      }
+      
+      document.getElementById('gap-explanation').innerHTML = explanation;
+    }
+
+    // Update Footer
+    function updateFooter() {
+      const lastUpdated = metricsData.last_updated;
+      const date = new Date(lastUpdated);
+      document.getElementById('last-updated').textContent = 
+        `Last updated: ${date.toLocaleDateString('en-US', { 
+          weekday: 'long', 
+          year: 'numeric', 
+          month: 'long', 
+          day: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit'
+        })}`;
+    }
+
+    // Tab switching
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        // Update tab states
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        
+        // Update content
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        document.getElementById(tab.dataset.tab).classList.add('active');
+      });
+    });
+
+    // Initialize
+    loadMetrics();
+  </script>
+</body>
+</html>
