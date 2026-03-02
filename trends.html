@@ -2,483 +2,209 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-E7QS7E2R8Y"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-E7QS7E2R8Y');
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Trends | Agentic Terminal - Cross-Protocol AI Settlement Metrics</title>
+  <title>Trends | Agentic Terminal — Cross-Protocol AI Settlement Metrics</title>
   <meta name="description" content="Real-time metrics across Lightning/L402, x402/ERC-8004, and emerging protocols. Interest-to-usage gap analysis for AI agent infrastructure.">
-  
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg-primary: #0a0a0f;
-      --bg-secondary: #111827;
-      --bg-card: #1f2937;
-      --border: #374151;
-      --text-primary: #f9fafb;
-      --text-secondary: #9ca3af;
-      --accent-bitcoin: #f59e0b;
-      --accent-stablecoin: #34d399;
-      --accent-emerging: #a78bfa;
-      --accent-info: #60a5fa;
-      --danger: #ef4444;
-      --success: #22c55e;
+      --bg-deep: #0b0f19; --bg-signals: #060810; --bg-card: #111827; --bg-card-hover: #1a1f2e;
+      --text-primary: #e2e8f0; --text-secondary: #94a3b8; --text-muted: #6B7280;
+      --electric-green: #00ff88; --electric-green-dim: rgba(0, 255, 136, 0.15); --electric-green-glow: rgba(0, 255, 136, 0.3);
+      --deep-blue: #3b82f6; --deep-blue-dim: rgba(59, 130, 246, 0.15);
+      --amber: #f59e0b; --amber-dim: rgba(245, 158, 11, 0.15);
+      --bitcoin-orange: #f7931a; --bitcoin-orange-dim: rgba(247, 147, 26, 0.15);
+      --purple: #a78bfa; --purple-dim: rgba(167, 139, 250, 0.15);
+      --red: #F87171; --success: #00ff88;
+      --border-subtle: rgba(255, 255, 255, 0.06); --border-medium: rgba(255, 255, 255, 0.1); --border-green: rgba(0, 255, 136, 0.15);
+      --font-mono: 'JetBrains Mono', monospace; --font-sans: 'IBM Plex Sans', -apple-system, sans-serif;
     }
-    
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-      background: var(--bg-primary);
-      color: var(--text-primary);
-      line-height: 1.6;
-      min-height: 100vh;
+      background: var(--bg-deep); color: var(--text-primary); font-family: var(--font-sans);
+      font-size: 17px; line-height: 1.65; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+      padding-top: 40px;
     }
-    
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 20px;
+    .signals-bar {
+      position: fixed; top: 0; left: 0; right: 0; height: 40px;
+      background: var(--bg-signals); border-bottom: 1px solid var(--electric-green-glow);
+      z-index: 1000; overflow: hidden; display: flex; align-items: center;
     }
-    
-    /* Header */
-    header {
-      background: var(--bg-secondary);
-      border-bottom: 1px solid var(--border);
-      padding: 1rem 0;
+    .signals-track { display: flex; animation: marquee 30s linear infinite; white-space: nowrap; }
+    .signals-track:hover { animation-play-state: paused; }
+    .signal-item {
+      font-family: var(--font-mono); font-size: 13px; color: var(--electric-green);
+      padding: 0 40px; display: flex; align-items: center; gap: 8px;
     }
-    
-    .header-content {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+    .signal-divider { color: rgba(0, 255, 136, 0.4); letter-spacing: 4px; }
+    @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+    nav {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 40px; border-bottom: 1px solid var(--border-subtle);
+      background: rgba(11, 15, 25, 0.95); backdrop-filter: blur(12px);
+      position: sticky; top: 40px; z-index: 100;
     }
-    
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      text-decoration: none;
-      color: var(--text-primary);
+    .nav-logo {
+      font-family: var(--font-mono); font-weight: 700; font-size: 18px;
+      color: var(--bitcoin-orange); text-decoration: none; letter-spacing: -0.02em;
     }
-    
-    .logo-icon {
-      font-size: 1.5rem;
+    .nav-links { display: flex; gap: 28px; list-style: none; align-items: center; }
+    .nav-links a {
+      color: var(--text-secondary); text-decoration: none; font-size: 14px;
+      font-weight: 500; letter-spacing: 0.02em; transition: color 0.2s;
     }
-    
-    .logo-text {
-      font-size: 1.25rem;
-      font-weight: 700;
+    .nav-links a:hover { color: var(--text-primary); }
+    .nav-links a.active { color: var(--electric-green); border-bottom: 2px solid var(--electric-green); }
+    .nav-cta {
+      font-family: var(--font-mono); font-size: 12px; font-weight: 600;
+      color: var(--electric-green); border: 1px solid var(--electric-green);
+      background: transparent; padding: 8px 16px; border-radius: 4px;
+      text-decoration: none; transition: all 0.2s; text-transform: uppercase; letter-spacing: 0.05em;
     }
-    
-    .logo-tagline {
-      font-size: 0.75rem;
-      color: var(--text-secondary);
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
+    .nav-cta:hover { background: var(--electric-green); color: #000; }
+    .hero { padding: 60px 40px 40px; text-align: center; max-width: 900px; margin: 0 auto; }
+    .hero-eyebrow {
+      font-family: var(--font-mono); font-size: 13px; color: var(--electric-green);
+      letter-spacing: 0.1em; margin-bottom: 20px; display: flex; align-items: center; justify-content: center; gap: 8px;
     }
-    
-    nav a {
-      color: var(--text-secondary);
-      text-decoration: none;
-      margin-left: 2rem;
-      font-size: 0.9rem;
-      transition: color 0.2s;
-    }
-    
-    nav a:hover, nav a.active {
-      color: var(--text-primary);
-    }
-    
-    /* Hero */
-    .hero {
-      padding: 3rem 0;
-      text-align: center;
-      border-bottom: 1px solid var(--border);
-    }
-    
-    .hero h1 {
-      font-size: 2.5rem;
-      margin-bottom: 0.5rem;
-      background: linear-gradient(135deg, var(--accent-bitcoin), var(--accent-stablecoin));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-    
-    .hero p {
-      color: var(--text-secondary);
-      font-size: 1.1rem;
-      max-width: 600px;
-      margin: 0 auto;
-    }
-    
-    /* Tabs */
-    .tabs {
-      display: flex;
-      justify-content: center;
-      gap: 0.5rem;
-      padding: 2rem 0;
-      border-bottom: 1px solid var(--border);
-    }
-    
+    .hero-eyebrow::before { content: ''; width: 8px; height: 8px; background: var(--electric-green); border-radius: 50%; animation: pulse 2s ease-in-out infinite; }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+    .hero h1 { font-family: var(--font-sans); font-size: 36px; font-weight: 700; line-height: 1.15; letter-spacing: -0.03em; color: var(--text-primary); margin-bottom: 16px; }
+    .hero p { font-size: 17px; color: var(--text-secondary); max-width: 600px; margin: 0 auto; }
+    .tabs-container { max-width: 1100px; margin: 0 auto; padding: 0 40px; }
+    .tabs { display: flex; justify-content: center; gap: 0.5rem; padding: 2rem 0; border-bottom: 1px solid var(--border-subtle); }
     .tab {
-      padding: 0.75rem 1.5rem;
-      background: transparent;
-      border: 1px solid var(--border);
-      color: var(--text-secondary);
-      cursor: pointer;
-      border-radius: 8px;
-      font-size: 0.9rem;
-      transition: all 0.2s;
+      padding: 0.75rem 1.5rem; background: transparent; border: 1px solid var(--border-medium); color: var(--text-secondary);
+      cursor: pointer; border-radius: 6px; font-family: var(--font-mono); font-size: 13px; font-weight: 500; transition: all 0.2s; letter-spacing: 0.02em;
     }
-    
-    .tab:hover {
-      border-color: var(--text-secondary);
-      color: var(--text-primary);
-    }
-    
-    .tab.active {
-      background: var(--bg-card);
-      border-color: var(--accent-bitcoin);
-      color: var(--text-primary);
-    }
-    
-    /* Tab Content */
-    .tab-content {
-      display: none;
-      padding: 2rem 0;
-    }
-    
-    .tab-content.active {
-      display: block;
-    }
-    
-    /* Cards Grid */
-    .cards-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 1.5rem;
-      margin-bottom: 2rem;
-    }
-    
+    .tab:hover { border-color: var(--electric-green); color: var(--electric-green); }
+    .tab.active { background: var(--electric-green-dim); border-color: var(--electric-green); color: var(--electric-green); }
+    .tab-content { display: none; padding: 2rem 0; }
+    .tab-content.active { display: block; }
+    .cards-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-bottom: 2rem; }
+    @media (max-width: 1000px) { .cards-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 700px) { .cards-grid { grid-template-columns: 1fr; } }
     .card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 1.5rem;
-      transition: transform 0.2s, border-color 0.2s;
+      background: var(--bg-card); border: 1px solid var(--border-green); border-radius: 10px; padding: 1.5rem;
+      transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
     }
-    
-    .card:hover {
-      transform: translateY(-2px);
-      border-color: var(--border);
+    .card:hover { transform: translateY(-4px); border-color: var(--electric-green); box-shadow: 0 12px 40px rgba(0, 255, 136, 0.12); }
+    .card.bitcoin { border-left: 4px solid var(--bitcoin-orange); }
+    .card.stablecoin { border-left: 4px solid var(--deep-blue); }
+    .card.emerging { border-left: 4px solid var(--purple); }
+    .card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; }
+    .card-title { font-family: var(--font-mono); font-size: 12px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em; }
+    .card-badge { font-family: var(--font-mono); font-size: 10px; font-weight: 600; padding: 0.25rem 0.5rem; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .card-badge.bitcoin { background: var(--bitcoin-orange-dim); color: var(--bitcoin-orange); }
+    .card-badge.stablecoin { background: var(--deep-blue-dim); color: var(--deep-blue); }
+    .card-badge.emerging { background: var(--purple-dim); color: var(--purple); }
+    .card-value { font-size: 2rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.5rem; font-family: var(--font-mono); }
+    .card-change { display: flex; align-items: center; gap: 0.5rem; font-size: 14px; font-family: var(--font-mono); }
+    .change-positive { color: var(--success); }
+    .change-negative { color: var(--red); }
+    .card-sparkline { margin-top: 1rem; height: 60px; background: var(--bg-deep); border-radius: 6px; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 1px solid var(--border-subtle); }
+    .card-sparkline img { width: 100%; height: 100%; object-fit: cover; }
+    .chart-container { background: var(--bg-card); border: 1px solid var(--border-green); border-radius: 10px; padding: 1.5rem; margin-bottom: 2rem; transition: border-color 0.3s ease; }
+    .chart-container:hover { border-color: var(--electric-green); }
+    .chart-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+    .chart-title { font-size: 20px; font-weight: 600; color: var(--text-primary); }
+    .chart-subtitle { font-size: 14px; color: var(--text-secondary); margin-top: 4px; }
+    .chart-image { width: 100%; height: auto; border-radius: 8px; background: var(--bg-deep); }
+    .gap-analysis { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem; }
+    @media (max-width: 700px) { .gap-analysis { grid-template-columns: 1fr; } }
+    .gap-metric { background: var(--bg-card); border: 1px solid var(--border-green); border-radius: 10px; padding: 1.5rem; text-align: center; transition: border-color 0.3s ease; }
+    .gap-metric:hover { border-color: var(--electric-green); }
+    .gap-value { font-size: 3rem; font-weight: 700; font-family: var(--font-mono); margin: 1rem 0; }
+    .gap-label { color: var(--text-secondary); font-size: 14px; font-family: var(--font-mono); }
+    .gap-positive { color: var(--bitcoin-orange); }
+    .gap-negative { color: var(--deep-blue); }
+    .insights { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 10px; padding: 1.5rem; }
+    .insights h3 { margin-bottom: 1rem; color: var(--electric-green); font-family: var(--font-mono); font-size: 14px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .insights ul { list-style: none; }
+    .insights li { padding: 0.5rem 0; padding-left: 1.5rem; position: relative; color: var(--text-secondary); font-size: 15px; }
+    .insights li::before { content: ">"; position: absolute; left: 0; color: var(--electric-green); }
+    .insights strong { color: var(--text-primary); }
+    .insights p { color: var(--text-secondary); font-size: 15px; line-height: 1.7; }
+    .loading { text-align: center; padding: 3rem; color: var(--text-secondary); font-family: var(--font-mono); }
+    .error { text-align: center; padding: 3rem; color: var(--red); font-family: var(--font-mono); }
+    footer { max-width: 1100px; margin: 0 auto; padding: 24px 40px 40px; border-top: 1px solid var(--border-subtle); text-align: center; margin-top: 3rem; }
+    footer p { font-size: 14px; color: var(--text-muted); line-height: 1.7; }
+    footer a { color: var(--text-secondary); text-decoration: none; }
+    footer a:hover { color: var(--electric-green); }
+    .last-updated { color: var(--text-secondary); font-family: var(--font-mono); font-size: 12px; margin-bottom: 1rem; }
+    .footer-nav { display: flex; justify-content: center; gap: 24px; margin-bottom: 16px; flex-wrap: wrap; }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
+    .hamburger span { display: block; width: 24px; height: 2px; background: var(--electric-green); border-radius: 2px; transition: all 0.2s; }
+    @media (max-width: 900px) {
+      nav { padding: 14px 20px; } .nav-links { gap: 16px; } .nav-links a { font-size: 13px; }
+      .hero h1 { font-size: 28px; } .tabs-container { padding: 0 20px; } .hero { padding: 40px 20px 30px; }
     }
-    
-    .card.bitcoin {
-      border-left: 4px solid var(--accent-bitcoin);
-    }
-    
-    .card.stablecoin {
-      border-left: 4px solid var(--accent-stablecoin);
-    }
-    
-    .card.emerging {
-      border-left: 4px solid var(--accent-emerging);
-    }
-    
-    .card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 1rem;
-    }
-    
-    .card-title {
-      font-size: 0.875rem;
-      color: var(--text-secondary);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-    
-    .card-badge {
-      font-size: 0.75rem;
-      padding: 0.25rem 0.5rem;
-      border-radius: 4px;
-      font-weight: 600;
-    }
-    
-    .card-badge.bitcoin {
-      background: var(--accent-bitcoin);
-      color: #000;
-    }
-    
-    .card-badge.stablecoin {
-      background: var(--accent-stablecoin);
-      color: #000;
-    }
-    
-    .card-badge.emerging {
-      background: var(--accent-emerging);
-      color: #000;
-    }
-    
-    .card-value {
-      font-size: 2rem;
-      font-weight: 700;
-      margin-bottom: 0.5rem;
-    }
-    
-    .card-change {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-size: 0.9rem;
-    }
-    
-    .change-positive {
-      color: var(--success);
-    }
-    
-    .change-negative {
-      color: var(--danger);
-    }
-    
-    .card-sparkline {
-      margin-top: 1rem;
-      height: 60px;
-      background: var(--bg-secondary);
-      border-radius: 6px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-    }
-    
-    .card-sparkline img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-    
-    /* Chart Container */
-    .chart-container {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 1.5rem;
-      margin-bottom: 2rem;
-    }
-    
-    .chart-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1.5rem;
-    }
-    
-    .chart-title {
-      font-size: 1.25rem;
-      font-weight: 600;
-    }
-    
-    .chart-subtitle {
-      font-size: 0.875rem;
-      color: var(--text-secondary);
-    }
-    
-    .chart-image {
-      width: 100%;
-      height: auto;
-      border-radius: 8px;
-      background: var(--bg-secondary);
-    }
-    
-    /* Gap Analysis Section */
-    .gap-analysis {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 2rem;
-    }
-    
-    .gap-metric {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 1.5rem;
-    }
-    
-    .gap-value {
-      font-size: 3rem;
-      font-weight: 700;
-      text-align: center;
-      margin: 1rem 0;
-    }
-    
-    .gap-label {
-      text-align: center;
-      color: var(--text-secondary);
-      font-size: 0.9rem;
-    }
-    
-    .gap-positive {
-      color: var(--accent-bitcoin);
-    }
-    
-    .gap-negative {
-      color: var(--accent-stablecoin);
-    }
-    
-    /* Insights Box */
-    .insights {
-      background: var(--bg-secondary);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 1.5rem;
-      margin-top: 2rem;
-    }
-    
-    .insights h3 {
-      margin-bottom: 1rem;
-      color: var(--accent-info);
-    }
-    
-    .insights ul {
-      list-style: none;
-    }
-    
-    .insights li {
-      padding: 0.5rem 0;
-      padding-left: 1.5rem;
-      position: relative;
-    }
-    
-    .insights li::before {
-      content: "→";
-      position: absolute;
-      left: 0;
-      color: var(--accent-info);
-    }
-    
-    /* Footer */
-    footer {
-      background: var(--bg-secondary);
-      border-top: 1px solid var(--border);
-      padding: 2rem 0;
-      margin-top: 3rem;
-      text-align: center;
-    }
-    
-    .last-updated {
-      color: var(--text-secondary);
-      font-size: 0.875rem;
-      margin-bottom: 1rem;
-    }
-    
-    .footer-links {
-      display: flex;
-      justify-content: center;
-      gap: 2rem;
-      margin-bottom: 1rem;
-    }
-    
-    .footer-links a {
-      color: var(--text-secondary);
-      text-decoration: none;
-      font-size: 0.875rem;
-    }
-    
-    .footer-links a:hover {
-      color: var(--text-primary);
-    }
-    
-    /* Loading State */
-    .loading {
-      text-align: center;
-      padding: 3rem;
-      color: var(--text-secondary);
-    }
-    
-    .error {
-      text-align: center;
-      padding: 3rem;
-      color: var(--danger);
-    }
-    
-    /* Responsive */
     @media (max-width: 768px) {
-      .hero h1 {
-        font-size: 1.75rem;
-      }
-      
-      .tabs {
-        flex-wrap: wrap;
-      }
-      
-      .tab {
-        padding: 0.5rem 1rem;
-        font-size: 0.8rem;
-      }
-      
-      .cards-grid {
-        grid-template-columns: 1fr;
-      }
-      
-      .gap-analysis {
-        grid-template-columns: 1fr;
-      }
-      
-      .footer-links {
-        flex-direction: column;
-        gap: 1rem;
-      }
+      .nav-links { display: none; } .hamburger { display: flex; } .nav-cta { display: none; }
+      .tabs { flex-wrap: wrap; } .tab { padding: 0.5rem 1rem; font-size: 12px; }
     }
+    .nav-links.open { display: flex; flex-direction: column; position: absolute; top: 100%; left: 0; right: 0; background: var(--bg-card); padding: 20px; border-bottom: 1px solid var(--border-subtle); gap: 16px; }
   </style>
 </head>
 <body>
-  <header>
-    <div class="container">
-      <div class="header-content">
-        <a href="/" class="logo">
-          <span class="logo-icon">📡</span>
-          <div>
-            <div class="logo-text">Agentic Terminal</div>
-            <div class="logo-tagline">AI Settlement Infrastructure</div>
-          </div>
-        </a>
-        <nav>
-          <a href="/">Home</a>
-          <a href="/research.html">Research</a>
-          <a href="/trends.html" class="active">Trends</a>
-          <a href="/chat.html">Chat</a>
-        </nav>
-      </div>
+  <div class="signals-bar">
+    <div class="signals-track">
+      <div class="signal-item">⚡ Lightning: 5,392 nodes (+1.58%) <span class="signal-divider">·····</span></div>
+      <div class="signal-item">◈ x402: 5,507 GitHub stars <span class="signal-divider">·····</span></div>
+      <div class="signal-item">◈ L402: 19 stars (+26.7% WoW) <span class="signal-divider">·····</span></div>
+      <div class="signal-item">◈ Ark Protocol: agent-native VTXO settlement <span class="signal-divider">·····</span></div>
+      <div class="signal-item">⚡ Alby Hub: NWC + L402 agent standard <span class="signal-divider">·····</span></div>
+      <div class="signal-item">◈ ERC-8004: 21,500+ agents registered <span class="signal-divider">·····</span></div>
+      <div class="signal-item">◈ LN Capacity: 2,608 BTC (-1.58%) <span class="signal-divider">·····</span></div>
+      <div class="signal-item">⚡ Lightning: 5,392 nodes (+1.58%) <span class="signal-divider">·····</span></div>
+      <div class="signal-item">◈ x402: 5,507 GitHub stars <span class="signal-divider">·····</span></div>
+      <div class="signal-item">◈ L402: 19 stars (+26.7% WoW) <span class="signal-divider">·····</span></div>
+      <div class="signal-item">◈ Ark Protocol: agent-native VTXO settlement <span class="signal-divider">·····</span></div>
+      <div class="signal-item">⚡ Alby Hub: NWC + L402 agent standard <span class="signal-divider">·····</span></div>
+      <div class="signal-item">◈ ERC-8004: 21,500+ agents registered <span class="signal-divider">·····</span></div>
+      <div class="signal-item">◈ LN Capacity: 2,608 BTC (-1.58%) <span class="signal-divider">·····</span></div>
     </div>
-  </header>
+  </div>
+
+  <nav>
+    <a href="/" class="nav-logo">Agentic Terminal</a>
+    <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="/trends" class="active">Trends</a></li>
+      <li><a href="/evidence">Evidence</a></li>
+      <li><a href="/">Dashboard</a></li>
+      <li><a href="/research">Reports</a></li>
+      <li><a href="/about">About</a></li>
+      <li><a href="/chat" class="nav-cta">Agent Terminal</a></li>
+    </ul>
+  </nav>
 
   <section class="hero">
-    <div class="container">
-      <h1>Agentic Terminal Trends</h1>
-      <p>Cross-protocol metrics for AI agent settlement infrastructure. Interest-to-usage gap analysis across Bitcoin/Lightning, stablecoin rails, and emerging protocols.</p>
-    </div>
+    <div class="hero-eyebrow">// PROTOCOL_METRICS</div>
+    <h1>Agentic Terminal Trends</h1>
+    <p>Cross-protocol metrics for AI agent settlement infrastructure. Interest-to-usage gap analysis across Bitcoin/Lightning, stablecoin rails, and emerging protocols.</p>
   </section>
 
-  <div class="container">
+  <div class="tabs-container">
     <div class="tabs">
       <button class="tab active" data-tab="overview">Overview</button>
       <button class="tab" data-tab="cross-protocol">Cross-Protocol</button>
       <button class="tab" data-tab="gap">Interest ↔ Usage Gap</button>
     </div>
 
-    <!-- Overview Tab -->
     <div id="overview" class="tab-content active">
       <div class="cards-grid" id="overview-cards">
         <div class="loading">Loading metrics...</div>
       </div>
     </div>
 
-    <!-- Cross-Protocol Tab -->
     <div id="cross-protocol" class="tab-content">
       <div class="chart-container">
         <div class="chart-header">
@@ -489,16 +215,12 @@
         </div>
         <img id="cross-protocol-chart" class="chart-image" alt="Cross-protocol comparison" src="">
       </div>
-      
       <div class="insights">
         <h3>🎯 Key Insights</h3>
-        <ul id="cross-protocol-insights">
-          <li>Loading insights...</li>
-        </ul>
+        <ul id="cross-protocol-insights"><li>Loading insights...</li></ul>
       </div>
     </div>
 
-    <!-- Interest ↔ Usage Gap Tab -->
     <div id="gap" class="tab-content">
       <div class="chart-container">
         <div class="chart-header">
@@ -509,7 +231,6 @@
         </div>
         <img id="gap-chart" class="chart-image" alt="Interest-usage gap" src="">
       </div>
-      
       <div class="gap-analysis" id="gap-metrics">
         <div class="gap-metric">
           <div class="gap-label">Interest Growth (L402)</div>
@@ -522,7 +243,6 @@
           <div class="gap-label">Week-over-week</div>
         </div>
       </div>
-      
       <div class="insights">
         <h3>📊 Gap Analysis</h3>
         <p id="gap-explanation">Loading gap analysis...</p>
@@ -531,32 +251,41 @@
   </div>
 
   <footer>
-    <div class="container">
-      <div class="last-updated" id="last-updated">Last updated: Loading...</div>
-      <div class="footer-links">
-        <a href="/">Home</a>
-        <a href="/research.html">Research</a>
-        <a href="/about.html">About</a>
-        <a href="https://github.com" target="_blank">GitHub</a>
-      </div>
-      <p style="color: var(--text-secondary); font-size: 0.8rem;">
-        Data sources: 1ML.com, GitHub API, on-chain metrics. Updated weekly.
-      </p>
+    <div class="last-updated" id="last-updated">Last updated: Loading...</div>
+    <div class="footer-nav">
+      <a href="/">Dashboard</a>
+      <a href="/evidence">Evidence</a>
+      <a href="/research">Reports</a>
+      <a href="/about">About</a>
+      <a href="/chat">Agent Terminal</a>
     </div>
+    <p>Research by Maxi · Thesis Advisor: <a href="https://x.com/boydcohen">Boyd Cohen, PhD</a> · Built at <a href="https://arcadiab.com">ArcadiaB</a></p>
+    <p style="margin-top: 6px;">Protocol-neutral terminal tracking autonomous agent payment infrastructure.</p>
+    <p style="margin-top: 6px; font-size: 12px; color: var(--text-muted);">Data sources: 1ML.com, GitHub API, on-chain metrics</p>
   </footer>
 
   <script>
-    // Configuration
+    document.getElementById('hamburger').addEventListener('click', function() {
+      document.getElementById('nav-links').classList.toggle('open');
+    });
+
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        document.getElementById(tab.dataset.tab).classList.add('active');
+      });
+    });
+
     const CONFIG = {
       dataUrl: '/agentic-terminal-data/metrics-history.json',
       chartsBaseUrl: '/agentic-terminal-data/charts'
     };
 
-    // State
     let metricsData = null;
     let currentChartsDate = null;
 
-    // Format helpers
     const formatNumber = (num) => {
       if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
       if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
@@ -569,17 +298,13 @@
       return `${sign}${num.toFixed(1)}%`;
     };
 
-    // Load metrics data
     async function loadMetrics() {
       try {
         const response = await fetch(CONFIG.dataUrl);
         if (!response.ok) throw new Error('Failed to load metrics');
         metricsData = await response.json();
-        
-        // Find most recent charts directory
         const latestWeek = metricsData.weeks[metricsData.weeks.length - 1];
         currentChartsDate = latestWeek.snapshot_date;
-        
         updateOverview();
         updateCrossProtocol();
         updateGapAnalysis();
@@ -591,11 +316,9 @@
       }
     }
 
-    // Update Overview Cards
     function updateOverview() {
       const weeks = metricsData.weeks;
       const current = weeks[weeks.length - 1];
-      const previous = weeks[weeks.length - 2];
       
       const cards = [
         {
@@ -607,7 +330,7 @@
         },
         {
           title: 'Lightning Nodes',
-          value: current.metrics.bitcoin_lightning.lightning_nodes,
+          value: current.metrics.bitcoin_lightning.lightning_nodes.toLocaleString(),
           change: current.wow_changes?.bitcoin_lightning?.lightning_nodes_pct,
           category: 'bitcoin',
           sparkline: 'metrics-bitcoin_lightning-lightning_nodes'
@@ -636,7 +359,7 @@
         {
           title: 'Ark Protocol Stars',
           value: current.metrics.emerging_protocols.ark_github_stars,
-          change: null,
+          change: current.wow_changes?.emerging_protocols?.ark_github_stars_pct,
           category: 'emerging',
           sparkline: 'metrics-emerging_protocols-ark_github_stars'
         }
@@ -655,11 +378,11 @@
             </div>
             <div class="card-value">${card.value}</div>
             <div class="card-change ${changeClass}">
-              ${card.change !== null ? `${changeSymbol} ${formatPercent(card.change)} vs last week` : 'No change data'}
+              ${card.change !== null && card.change !== undefined ? `${changeSymbol} ${formatPercent(card.change)} vs last week` : 'No change data'}
             </div>
             <div class="card-sparkline">
               <img src="${sparklineUrl}" alt="${card.title} trend" 
-                   onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=\\'color:var(--text-secondary)\\'>Trend data</span>'">
+                   onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=color:var(--text-secondary)>Trend data</span>'">
             </div>
           </div>
         `;
@@ -668,15 +391,12 @@
       document.getElementById('overview-cards').innerHTML = cardsHtml;
     }
 
-    // Update Cross-Protocol Chart
     function updateCrossProtocol() {
       const chartUrl = `${CONFIG.chartsBaseUrl}/${currentChartsDate}/cross-protocol-comparison.png`;
       document.getElementById('cross-protocol-chart').src = chartUrl;
       
-      // Generate insights
       const weeks = metricsData.weeks;
       const current = weeks[weeks.length - 1];
-      const previous = weeks[weeks.length - 2];
       
       const l402Change = current.wow_changes?.bitcoin_lightning?.l402_github_stars_pct;
       const x402Change = current.wow_changes?.stablecoin_api_rails?.x402_github_stars_pct;
@@ -707,14 +427,12 @@
       document.getElementById('cross-protocol-insights').innerHTML = insights.join('');
     }
 
-    // Update Gap Analysis
     function updateGapAnalysis() {
       const chartUrl = `${CONFIG.chartsBaseUrl}/${currentChartsDate}/interest-usage-gap.png`;
       document.getElementById('gap-chart').src = chartUrl;
       
       const weeks = metricsData.weeks;
       const current = weeks[weeks.length - 1];
-      const previous = weeks[weeks.length - 2];
       
       const interestGrowth = current.wow_changes?.bitcoin_lightning?.l402_github_stars_pct || 0;
       const usageGrowth = current.wow_changes?.stablecoin_api_rails?.erc8004_agents_registered_pct || 0;
@@ -737,35 +455,16 @@
       document.getElementById('gap-explanation').innerHTML = explanation;
     }
 
-    // Update Footer
     function updateFooter() {
       const lastUpdated = metricsData.last_updated;
       const date = new Date(lastUpdated);
       document.getElementById('last-updated').textContent = 
         `Last updated: ${date.toLocaleDateString('en-US', { 
-          weekday: 'long', 
-          year: 'numeric', 
-          month: 'long', 
-          day: 'numeric',
-          hour: '2-digit',
-          minute: '2-digit'
+          weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
+          hour: '2-digit', minute: '2-digit'
         })}`;
     }
 
-    // Tab switching
-    document.querySelectorAll('.tab').forEach(tab => {
-      tab.addEventListener('click', () => {
-        // Update tab states
-        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-        tab.classList.add('active');
-        
-        // Update content
-        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-        document.getElementById(tab.dataset.tab).classList.add('active');
-      });
-    });
-
-    // Initialize
     loadMetrics();
   </script>
 </body>
