@@ -156,20 +156,20 @@
 <body>
   <div class="signals-bar">
     <div class="signals-track">
-      <div class="signal-item">⚡ Lightning: 5,392 nodes (+1.58%) <span class="signal-divider">·····</span></div>
-      <div class="signal-item">◈ x402: 5,507 GitHub stars <span class="signal-divider">·····</span></div>
-      <div class="signal-item">◈ L402: 19 stars (+26.7% WoW) <span class="signal-divider">·····</span></div>
+      <div class="signal-item">⚡ Lightning: 5,464 nodes (+1.34%) <span class="signal-divider">·····</span></div>
+      <div class="signal-item">◈ x402: 5,555 GitHub stars <span class="signal-divider">·····</span></div>
+      <div class="signal-item">◈ L402: 26 stars (+36.8% WoW) <span class="signal-divider">·····</span></div>
       <div class="signal-item">◈ Ark Protocol: agent-native VTXO settlement <span class="signal-divider">·····</span></div>
       <div class="signal-item">⚡ Alby Hub: NWC + L402 agent standard <span class="signal-divider">·····</span></div>
-      <div class="signal-item">◈ ERC-8004: 21,500+ agents registered <span class="signal-divider">·····</span></div>
-      <div class="signal-item">◈ LN Capacity: 2,608 BTC (-1.58%) <span class="signal-divider">·····</span></div>
-      <div class="signal-item">⚡ Lightning: 5,392 nodes (+1.58%) <span class="signal-divider">·····</span></div>
-      <div class="signal-item">◈ x402: 5,507 GitHub stars <span class="signal-divider">·····</span></div>
-      <div class="signal-item">◈ L402: 19 stars (+26.7% WoW) <span class="signal-divider">·····</span></div>
+      <div class="signal-item">◈ ERC-8004: 24,500+ agents on-chain <span class="signal-divider">·····</span></div>
+      <div class="signal-item">◈ LN Capacity: 2,591 BTC (-0.68%) <span class="signal-divider">·····</span></div>
+      <div class="signal-item">⚡ Lightning: 5,464 nodes (+1.34%) <span class="signal-divider">·····</span></div>
+      <div class="signal-item">◈ x402: 5,555 GitHub stars <span class="signal-divider">·····</span></div>
+      <div class="signal-item">◈ L402: 26 stars (+36.8% WoW) <span class="signal-divider">·····</span></div>
       <div class="signal-item">◈ Ark Protocol: agent-native VTXO settlement <span class="signal-divider">·····</span></div>
       <div class="signal-item">⚡ Alby Hub: NWC + L402 agent standard <span class="signal-divider">·····</span></div>
-      <div class="signal-item">◈ ERC-8004: 21,500+ agents registered <span class="signal-divider">·····</span></div>
-      <div class="signal-item">◈ LN Capacity: 2,608 BTC (-1.58%) <span class="signal-divider">·····</span></div>
+      <div class="signal-item">◈ ERC-8004: 24,500+ agents on-chain <span class="signal-divider">·····</span></div>
+      <div class="signal-item">◈ LN Capacity: 2,591 BTC (-0.68%) <span class="signal-divider">·····</span></div>
     </div>
   </div>
 
@@ -261,7 +261,7 @@
     </div>
     <p>Research by Maxi · Thesis Advisor: <a href="https://x.com/boydcohen">Boyd Cohen, PhD</a> · Built at <a href="https://arcadiab.com">ArcadiaB</a></p>
     <p style="margin-top: 6px;">Protocol-neutral terminal tracking autonomous agent payment infrastructure.</p>
-    <p style="margin-top: 6px; font-size: 12px; color: var(--text-muted);">Data sources: 1ML.com, GitHub API, on-chain metrics</p>
+    <p style="margin-top: 6px; font-size: 12px; color: var(--text-muted);">Data sources: 1ML.com, GitHub API, Ethereum Mainnet (ERC-8004), x402 estimates</p>
   </footer>
 
   <script>
@@ -351,10 +351,19 @@
         },
         {
           title: 'ERC-8004 Agents',
-          value: formatNumber(current.metrics.stablecoin_api_rails.erc8004_agents_registered),
-          change: current.wow_changes?.stablecoin_api_rails?.erc8004_agents_registered_pct,
+          value: formatNumber(current.metrics.on_chain_data?.erc8004_total_agents || current.metrics.stablecoin_api_rails.erc8004_agents_registered),
+          change: current.wow_changes?.on_chain_data?.erc8004_total_agents_pct || current.wow_changes?.stablecoin_api_rails?.erc8004_agents_registered_pct,
           category: 'stablecoin',
-          sparkline: 'metrics-stablecoin_api_rails-erc8004_agents_registered'
+          sparkline: 'metrics-stablecoin_api_rails-erc8004_agents_registered',
+          badge: current.metrics.on_chain_data?.erc8004_data_source === 'on_chain' ? '⚡ on-chain' : null
+        },
+        {
+          title: 'x402 Daily Transactions',
+          value: formatNumber(current.metrics.on_chain_data?.x402_daily_transactions || 0),
+          change: current.wow_changes?.on_chain_data?.x402_daily_transactions_pct,
+          category: 'stablecoin',
+          sparkline: 'metrics-x402-daily-transactions',
+          badge: current.metrics.on_chain_data?.x402_data_source === 'dune' ? '⚡ real-time' : 'estimated'
         },
         {
           title: 'Ark Protocol Stars',
@@ -369,11 +378,12 @@
         const changeClass = card.change > 0 ? 'change-positive' : card.change < 0 ? 'change-negative' : '';
         const changeSymbol = card.change > 0 ? '↑' : card.change < 0 ? '↓' : '→';
         const sparklineUrl = `${CONFIG.chartsBaseUrl}/${currentChartsDate}/sparkline-${card.sparkline}.png`;
+        const dataSourceBadge = card.badge ? `<span style="font-size: 10px; color: var(--electric-green); margin-left: 8px;">${card.badge}</span>` : '';
         
         return `
           <div class="card ${card.category}">
             <div class="card-header">
-              <div class="card-title">${card.title}</div>
+              <div class="card-title">${card.title}${dataSourceBadge}</div>
               <div class="card-badge ${card.category}">${card.category}</div>
             </div>
             <div class="card-value">${card.value}</div>
