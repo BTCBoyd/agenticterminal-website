@@ -1,0 +1,29 @@
+{
+  "chart_type": "sparkline",
+  "metric_path": "metrics.emerging_protocols.ark_github_stars",
+  "label": "Ark GitHub Stars",
+  "generated_at": "2026-03-09T17:44:24.761Z",
+  "date_range": {
+    "start": "2026-01-06",
+    "end": "2026-03-02"
+  },
+  "values": [
+    148,
+    150,
+    152,
+    154,
+    155,
+    156,
+    156,
+    156
+  ],
+  "current_value": 156,
+  "previous_value": 156,
+  "change_percent": 0,
+  "change_direction": "→",
+  "image_path": "/home/futurebit/.openclaw/workspace/agentic-terminal-data/charts/2026-03-09/sparkline-metrics-emerging_protocols-ark_github_stars.png",
+  "dimensions": {
+    "width": 1200,
+    "height": 675
+  }
+}
