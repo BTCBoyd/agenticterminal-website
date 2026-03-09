@@ -2,7 +2,7 @@
   "chart_type": "sparkline",
   "metric_path": "metrics.stablecoin_api_rails.x402_daily_transactions",
   "label": "x402 Daily Transactions",
-  "generated_at": "2026-03-09T20:19:38.450Z",
+  "generated_at": "2026-03-09T20:28:58.133Z",
   "date_range": {
     "start": "2026-02-17",
     "end": "2026-03-09"

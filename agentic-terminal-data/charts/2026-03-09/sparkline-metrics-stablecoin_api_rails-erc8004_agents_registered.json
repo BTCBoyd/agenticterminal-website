@@ -2,18 +2,18 @@
   "chart_type": "sparkline",
   "metric_path": "metrics.stablecoin_api_rails.erc8004_agents_registered",
   "label": "ERC-8004 Agents",
-  "generated_at": "2026-03-09T20:19:38.910Z",
+  "generated_at": "2026-03-09T20:28:58.607Z",
   "date_range": {
     "start": "2026-02-17",
     "end": "2026-03-09"
   },
   "values": [
-    null,
-    null,
-    null
+    71,
+    71,
+    71
   ],
-  "current_value": null,
-  "previous_value": null,
+  "current_value": 71,
+  "previous_value": 71,
   "change_percent": 0,
   "change_direction": "→",
   "image_path": "/home/futurebit/.openclaw/workspace/agentic-terminal-data/charts/2026-03-09/sparkline-metrics-stablecoin_api_rails-erc8004_agents_registered.png",
