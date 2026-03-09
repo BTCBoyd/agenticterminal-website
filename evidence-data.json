@@ -48,12 +48,36 @@
     "analysis": "Settlement-agnostic verification layer solves the 'trust but verify' problem in agentic commerce. Unlike payment rails that compete, OP integrates — works with L402, x402, and future protocols. The trust layer for multi-rail agent economy."
   },
   {
-    "date": "2026-03-09",
-    "event": "Agentic Terminal Newsletter Launches",
-    "description": "First issue of the Agentic Terminal intelligence brief published on Substack. Deep dive into Bitcoin Policy Institute study showing 79% AI agent preference for Bitcoin as store of value. Weekly coverage of cross-protocol agent payment infrastructure.",
+    "date": "2026-02-23",
+    "event": "Agentic Terminal Newsletter — Edition #1",
+    "description": "First issue published. Coverage: First A2A payment (Vicky→Maxi, 1,521 sats), L402 endpoint launch, Lightning node growth +1.3% WoW, x402 transaction volume -92% from December peak. MIT paper on verification bandwidth as binding constraint.",
     "source": "https://agenticterminal.substack.com/",
-    "category": "Launch",
-    "analysis": "First dedicated publication tracking the agent payment infrastructure landscape. Establishes Agentic Terminal as the intelligence layer for the AI agent economy — data first, narrative second."
+    "category": "Publication",
+    "analysis": "Established weekly intelligence brief format. Four editions published to date. Data-first approach to agent payment infrastructure tracking."
+  },
+  {
+    "date": "2026-02-27",
+    "event": "Agentic Terminal Newsletter — Edition #2",
+    "description": "The Verification Bottleneck. Deep dive on MIT Catalini/Hui/Wu paper (SSRN 6298838) formalizing agentic economy economics. Stripe 2025 letter analysis — 5 levels of agentic commerce, hovering at Levels 1-2. Sova autonomous treasury agent published financials.",
+    "source": "https://agenticterminal.substack.com/",
+    "category": "Publication",
+    "analysis": "Connected academic research (MIT) with corporate strategy (Stripe) to frame the verification gap as the critical infrastructure bottleneck. Positioned Observer Protocol as the observability solution both sources implicitly demand."
+  },
+  {
+    "date": "2026-03-02",
+    "event": "Agentic Terminal Newsletter — Edition #3",
+    "description": "Lightning capacity decline analysis (-1.58% 3-week trend) vs node growth (+1.4%). x402 GitHub stars +0.7% WoW. L402 stars +136% since Feb 15. Mastercard Agent Pay competitive threat assessment. Trends page launched at agenticterminal.ai/trends.",
+    "source": "https://agenticterminal.substack.com/",
+    "category": "Publication",
+    "analysis": "Introduced public data dashboard. Demonstrated value of longitudinal cross-protocol metrics. Mastercard competitive entry validated the market opportunity while highlighting permissionless vs permissioned rail divergence."
+  },
+  {
+    "date": "2026-03-07",
+    "event": "Agentic Terminal Newsletter — Edition #4",
+    "description": "Bitcoin Policy Institute study coverage: 79% AI agent Bitcoin preference for store of value (36 models, 9,072 scenarios). Observer Protocol v0.2 launch with L402+x402 verification. Reputation graph preview. Data integrity standards established.",
+    "source": "https://agenticterminal.substack.com/",
+    "category": "Publication",
+    "analysis": "Most significant edition to date. Academic validation (BPI) + infrastructure launch (OP v0.2) in same week. 79% Bitcoin preference without prompting is the strongest evidence yet for the Bitcoin Singularity thesis. Formal data integrity standards (March 9) ensure API-ready quality."
   },
   {
     "date": "2026-02-19",
