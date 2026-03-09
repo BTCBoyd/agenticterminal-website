@@ -359,11 +359,11 @@
         },
         {
           title: 'x402 Daily Transactions',
-          value: formatNumber(current.metrics.on_chain_data?.x402_daily_transactions || 0),
-          change: current.wow_changes?.on_chain_data?.x402_daily_transactions_pct,
+          value: formatNumber(current.metrics.stablecoin_api_rails?.x402_daily_transactions || 0),
+          change: current.wow_changes?.stablecoin_api_rails?.x402_daily_transactions_pct,
           category: 'stablecoin',
           sparkline: 'metrics-x402-daily-transactions',
-          badge: current.metrics.on_chain_data?.x402_data_source === 'dune' ? '⚡ real-time' : 'estimated'
+          badge: current.metrics.stablecoin_api_rails?.x402_daily_transactions > 0 ? '⚡ on-chain' : 'estimated'
         },
         {
           title: 'Ark Protocol Stars',
