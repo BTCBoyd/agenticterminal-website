@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0.0",
   "description": "Agentic Terminal time-series metrics history - Cross-protocol AI agent settlement data",
-  "last_updated": "2026-03-09T17:14:16.017Z",
+  "last_updated": "2026-03-09T17:56:02.325Z",
   "weeks": [
     {
       "week_start": "2026-02-17",
@@ -24,9 +24,9 @@
           "x402_github_forks": 0,
           "x402_github_issues": 0,
           "x402_contributors": 30,
-          "x402_daily_transactions": 60000,
-          "x402_cumulative_transactions": 49800000,
-          "x402_cumulative_volume_usd": 598000000,
+          "x402_daily_transactions": 0,
+          "x402_cumulative_transactions": 0,
+          "x402_cumulative_volume_usd": 0,
           "erc8004_agents_registered": 24500
         },
         "emerging_protocols": {
@@ -72,9 +72,9 @@
           "x402_github_forks": 1192,
           "x402_github_issues": 0,
           "x402_contributors": 30,
-          "x402_daily_transactions": 60000,
-          "x402_cumulative_transactions": 49800000,
-          "x402_cumulative_volume_usd": 598000000,
+          "x402_daily_transactions": 0,
+          "x402_cumulative_transactions": 0,
+          "x402_cumulative_volume_usd": 0,
           "erc8004_agents_registered": 24500
         },
         "emerging_protocols": {
@@ -120,9 +120,9 @@
           "x402_github_forks": 1238,
           "x402_github_issues": 317,
           "x402_contributors": 30,
-          "x402_daily_transactions": 60000,
-          "x402_cumulative_transactions": 49800000,
-          "x402_cumulative_volume_usd": 598000000,
+          "x402_daily_transactions": 8474,
+          "x402_cumulative_transactions": 76450615,
+          "x402_cumulative_volume_usd": 26309580.22,
           "erc8004_agents_registered": 24500
         },
         "emerging_protocols": {
