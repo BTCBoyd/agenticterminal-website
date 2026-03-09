@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-03-09T19:24:58.299Z",
+  "generated_at": "2026-03-09T20:19:39.713Z",
   "date": "2026-03-09",
   "charts": {
     "cross_protocol_comparison": {
       "chart_type": "cross-protocol-comparison",
       "status": "insufficient_data",
-      "generated_at": "2026-03-09T19:24:53.515Z",
+      "generated_at": "2026-03-09T20:19:34.590Z",
       "weeks_needed": 5,
       "image_path": "/home/futurebit/.openclaw/workspace/agentic-terminal-data/charts/2026-03-09/cross-protocol-comparison.png",
       "message": "Need 5 more weeks of data for meaningful visualization"
@@ -13,7 +13,7 @@
     "interest_usage_gap": {
       "chart_type": "interest-usage-gap",
       "status": "insufficient_data",
-      "generated_at": "2026-03-09T19:24:54.036Z",
+      "generated_at": "2026-03-09T20:19:35.162Z",
       "weeks_needed": 5,
       "image_path": "/home/futurebit/.openclaw/workspace/agentic-terminal-data/charts/2026-03-09/interest-usage-gap.png",
       "message": "Need 5 more weeks of data for meaningful visualization"
@@ -23,7 +23,7 @@
         "chart_type": "sparkline",
         "metric_path": "metrics.bitcoin_lightning.l402_github_stars",
         "label": "L402 GitHub Stars",
-        "generated_at": "2026-03-09T19:24:54.480Z",
+        "generated_at": "2026-03-09T20:19:35.851Z",
         "date_range": {
           "start": "2026-02-17",
           "end": "2026-03-09"
@@ -47,7 +47,7 @@
         "chart_type": "sparkline",
         "metric_path": "metrics.bitcoin_lightning.lightning_nodes",
         "label": "Lightning Nodes",
-        "generated_at": "2026-03-09T19:24:55.112Z",
+        "generated_at": "2026-03-09T20:19:36.561Z",
         "date_range": {
           "start": "2026-02-17",
           "end": "2026-03-09"
@@ -71,7 +71,7 @@
         "chart_type": "sparkline",
         "metric_path": "metrics.bitcoin_lightning.lightning_capacity_btc",
         "label": "Lightning Capacity (BTC)",
-        "generated_at": "2026-03-09T19:24:55.779Z",
+        "generated_at": "2026-03-09T20:19:37.279Z",
         "date_range": {
           "start": "2026-02-17",
           "end": "2026-03-09"
@@ -95,7 +95,7 @@
         "chart_type": "sparkline",
         "metric_path": "metrics.stablecoin_api_rails.x402_github_stars",
         "label": "x402 GitHub Stars",
-        "generated_at": "2026-03-09T19:24:56.420Z",
+        "generated_at": "2026-03-09T20:19:37.887Z",
         "date_range": {
           "start": "2026-02-17",
           "end": "2026-03-09"
@@ -119,7 +119,7 @@
         "chart_type": "sparkline",
         "metric_path": "metrics.stablecoin_api_rails.x402_daily_transactions",
         "label": "x402 Daily Transactions",
-        "generated_at": "2026-03-09T19:24:57.072Z",
+        "generated_at": "2026-03-09T20:19:38.450Z",
         "date_range": {
           "start": "2026-02-17",
           "end": "2026-03-09"
@@ -143,18 +143,18 @@
         "chart_type": "sparkline",
         "metric_path": "metrics.stablecoin_api_rails.erc8004_agents_registered",
         "label": "ERC-8004 Agents",
-        "generated_at": "2026-03-09T19:24:57.558Z",
+        "generated_at": "2026-03-09T20:19:38.910Z",
         "date_range": {
           "start": "2026-02-17",
           "end": "2026-03-09"
         },
         "values": [
-          24500,
-          24500,
-          24500
+          null,
+          null,
+          null
         ],
-        "current_value": 24500,
-        "previous_value": 24500,
+        "current_value": null,
+        "previous_value": null,
         "change_percent": 0,
         "change_direction": "→",
         "image_path": "/home/futurebit/.openclaw/workspace/agentic-terminal-data/charts/2026-03-09/sparkline-metrics-stablecoin_api_rails-erc8004_agents_registered.png",
@@ -167,7 +167,7 @@
         "chart_type": "sparkline",
         "metric_path": "metrics.emerging_protocols.ark_github_stars",
         "label": "Ark GitHub Stars",
-        "generated_at": "2026-03-09T19:24:58.298Z",
+        "generated_at": "2026-03-09T20:19:39.708Z",
         "date_range": {
           "start": "2026-02-17",
           "end": "2026-03-09"
