@@ -377,7 +377,7 @@
       const cardsHtml = cards.map(card => {
         const changeClass = card.change > 0 ? 'change-positive' : card.change < 0 ? 'change-negative' : '';
         const changeSymbol = card.change > 0 ? '↑' : card.change < 0 ? '↓' : '→';
-        const sparklineUrl = `${CONFIG.chartsBaseUrl}/${currentChartsDate}/sparkline-${card.sparkline}.png`;
+        const sparklineUrl = `${CONFIG.chartsBaseUrl}/${currentChartsDate}/sparkline-${card.sparkline}.png?v=${Date.now()}`;
         const dataSourceBadge = card.badge ? `<span style="font-size: 10px; color: var(--electric-green); margin-left: 8px;">${card.badge}</span>` : '';
         
         return `
@@ -402,7 +402,7 @@
     }
 
     function updateCrossProtocol() {
-      const chartUrl = `${CONFIG.chartsBaseUrl}/${currentChartsDate}/cross-protocol-comparison.png`;
+      const chartUrl = `${CONFIG.chartsBaseUrl}/${currentChartsDate}/cross-protocol-comparison.png?v=${Date.now()}`;
       document.getElementById('cross-protocol-chart').src = chartUrl;
       
       const weeks = metricsData.weeks;
@@ -438,7 +438,7 @@
     }
 
     function updateGapAnalysis() {
-      const chartUrl = `${CONFIG.chartsBaseUrl}/${currentChartsDate}/interest-usage-gap.png`;
+      const chartUrl = `${CONFIG.chartsBaseUrl}/${currentChartsDate}/interest-usage-gap.png?v=${Date.now()}`;
       document.getElementById('gap-chart').src = chartUrl;
       
       const weeks = metricsData.weeks;
