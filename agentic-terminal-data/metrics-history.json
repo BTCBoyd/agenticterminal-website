@@ -1,1 +1,122 @@
-{"force_refresh": "2026-03-09-18-30", "data": []}
+{
+  "schema_version": "1.0.0",
+  "description": "Agentic Terminal time-series metrics history - Cross-protocol AI agent settlement data",
+  "last_updated": "2026-03-09T23:45:00Z",
+  "data_integrity_note": "ERC-8004 value restored on 2026-03-09 after cron overwrite with zero value. See weeks[0].metrics.stablecoin_api_rails.erc8004_restoration_note for details.",
+  "weeks": [
+    {
+      "week_start": "2026-03-03",
+      "week_end": "2026-03-09",
+      "snapshot_date": "2026-03-09",
+      "metrics": {
+        "bitcoin_lightning": {
+          "l402_github_stars": 255,
+          "l402_github_forks": 66,
+          "l402_github_issues": 35,
+          "l402_contributors": 2,
+          "lightning_nodes": 5563,
+          "lightning_channels": 16754,
+          "lightning_capacity_btc": 2638.06,
+          "lightning_capacity_usd": 178796050.85,
+          "lightning_tor_nodes": 2787,
+          "known_l402_endpoints": 0
+        },
+        "stablecoin_api_rails": {
+          "x402_github_stars": 5611,
+          "x402_github_forks": 1238,
+          "x402_github_issues": 317,
+          "x402_contributors": 30,
+          "x402_daily_transactions": 8474,
+          "x402_cumulative_transactions": 76450615,
+          "x402_cumulative_volume_usd": 26309580.22,
+          "erc8004_agents_registered": 68208,
+          "erc8004_data_source": "8004agents.ai (RESTORED)",
+          "erc8004_data_quality": "authoritative_restored_after_overwrite",
+          "erc8004_restoration_note": "Value was 68208 at 18:00 on 2026-03-09 per authoritative-data.json. Cron job at 20:45 returned 0 from API and overwrote the file with empty data. This value manually restored with audit trail.",
+          "erc8004_original_collection_time": "2026-03-09T18:00:00Z",
+          "erc8004_overwrite_time": "2026-03-09T20:45:38Z",
+          "erc8004_restoration_time": "2026-03-09T23:45:00Z",
+          "erc8004_by_chain": {
+            "ethereum": 16848,
+            "base": 32537,
+            "bnb": 8765,
+            "avalanche": 4234,
+            "polygon": 5824
+          }
+        },
+        "emerging_protocols": {
+          "ark_github_stars": 156,
+          "ark_github_forks": 56,
+          "ark_skill_stars": 4,
+          "ark_skill_forks": 3,
+          "ark_status": "active_development"
+        },
+        "on_chain_data": {
+          "erc8004_total_agents": 68208,
+          "erc8004_data_source": "8004agents.ai (RESTORED)",
+          "erc8004_contract_address": "0x8004A169FB4a3325136EB29fA0ceB6D2e539a432",
+          "x402_daily_transactions": 8474,
+          "x402_daily_volume_usd": 1984,
+          "x402_cumulative_transactions": 76450615,
+          "x402_cumulative_volume_usd": 26309580.22,
+          "x402_avg_transaction_size": 1.74,
+          "x402_data_source": "dune_api",
+          "x402_trend_direction": "declining",
+          "lightning_gossip_channels": 16754,
+          "lightning_gossip_nodes": 5563,
+          "lightning_gossip_source": "1ml_api"
+        },
+        "data_quality": {
+          "erc8004_quality": "authoritative_restored_after_overwrite",
+          "x402_quality": "verified_onchain_dune",
+          "lightning_quality": "verified_1ml_api",
+          "overall": "verified_with_restoration_audit_trail"
+        }
+      },
+      "wow_changes": {
+        "bitcoin_lightning": {
+          "l402_github_stars_pct": null,
+          "lightning_nodes_pct": null,
+          "lightning_channels_pct": null,
+          "lightning_capacity_btc_pct": null
+        },
+        "stablecoin_api_rails": {
+          "x402_github_stars_pct": null,
+          "x402_daily_transactions_pct": null,
+          "erc8004_agents_registered_pct": null
+        },
+        "on_chain_data": {
+          "erc8004_total_agents_pct": null,
+          "x402_daily_transactions_pct": null
+        }
+      },
+      "notes": "Week of March 3-9, 2026. ERC-8004 data restored after cron overwrite incident. Data integrity safeguard now implemented in collect-erc8004-multichain.mjs.",
+      "data_quality": "verified_with_restoration_audit_trail"
+    }
+  ],
+  "metadata": {
+    "total_weeks": 1,
+    "weeks_with_verified_data": 1,
+    "earliest_week": "2026-03-03",
+    "latest_week": "2026-03-09",
+    "sources": [
+      "1ML.com - Lightning Network statistics",
+      "GitHub API - Repository metrics",
+      "Ethereum Mainnet - ERC-8004 Identity Registry (on-chain)",
+      "x402 Estimates - Historical pattern analysis",
+      "Daily collection files"
+    ],
+    "update_schedule": "Weekly (Mondays 9:00 AM EST)",
+    "data_integrity_incidents": [
+      {
+        "date": "2026-03-09",
+        "incident": "ERC-8004 value overwritten with zero",
+        "cause": "collect-erc8004-multichain.mjs cron job returned 0 from API and wrote empty result",
+        "original_value": 68208,
+        "overwritten_value": 0,
+        "restored_value": 68208,
+        "resolution": "Manual restoration with audit trail + safeguard implemented in script"
+      }
+    ]
+  }
+}

@@ -330,7 +330,9 @@
 
     async function loadMetrics() {
       try {
-        const response = await fetch(CONFIG.dataUrl);
+        // Cache-busting: add timestamp to URL to bypass CDN cache
+        const cacheBuster = `?t=${Date.now()}`;
+        const response = await fetch(CONFIG.dataUrl + cacheBuster);
         if (!response.ok) throw new Error('Failed to load metrics');
         metricsData = await response.json();
         const latestWeek = metricsData.weeks[metricsData.weeks.length - 1];
