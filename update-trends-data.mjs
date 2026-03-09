@@ -79,8 +79,76 @@ function getWeekEnd(date) {
   return new Date(start.getTime() + 6 * 24 * 60 * 60 * 1000);
 }
 
+// Data integrity: Load existing metrics to validate against
+function loadExistingMetrics() {
+  try {
+    if (existsSync(TRENDS_DATA_FILE)) {
+      const existing = JSON.parse(readFileSync(TRENDS_DATA_FILE, 'utf-8'));
+      const latestWeek = existing.weeks?.[existing.weeks.length - 1];
+      return latestWeek?.metrics || null;
+    }
+  } catch (err) {
+    console.log('[DATA INTEGRITY] Could not load existing metrics:', err.message);
+  }
+  return null;
+}
+
+// Data integrity: Validate extracted metrics against previous values
+function validateMetrics(extracted, previous) {
+  const warnings = [];
+  const validated = JSON.parse(JSON.stringify(extracted)); // Deep copy
+  
+  if (!previous) {
+    console.log('[DATA INTEGRITY] No previous metrics to validate against');
+    return { validated, warnings };
+  }
+  
+  // Helper to check for suspicious values
+  const checkMetric = (category, metric, newValue, oldValue) => {
+    // Rule 1: Never propagate zero if previous was non-zero
+    if ((newValue === 0 || newValue === null || newValue === undefined) && oldValue > 0) {
+      warnings.push(`[DATA INTEGRITY] ${category}.${metric}: Rejecting zero (would overwrite ${oldValue})`);
+      return oldValue; // Preserve previous value
+    }
+    
+    // Rule 2: Flag >50% variance
+    if (oldValue > 0) {
+      const variance = Math.abs(newValue - oldValue) / oldValue;
+      if (variance > 0.5) {
+        warnings.push(`[DATA INTEGRITY WARNING] ${category}.${metric}: ${(variance * 100).toFixed(1)}% change (${oldValue} -> ${newValue})`);
+      }
+    }
+    
+    // Rule 3: Reject negative values for counts
+    const countMetrics = ['stars', 'forks', 'nodes', 'channels', 'issues', 'agents'];
+    if (countMetrics.some(m => metric.includes(m)) && newValue < 0) {
+      warnings.push(`[DATA INTEGRITY] ${category}.${metric}: Rejecting negative value ${newValue}`);
+      return oldValue;
+    }
+    
+    return newValue;
+  };
+  
+  // Validate each category
+  for (const category of Object.keys(extracted)) {
+    if (previous[category]) {
+      for (const metric of Object.keys(extracted[category])) {
+        const newValue = extracted[category][metric];
+        const oldValue = previous[category][metric];
+        
+        // Only validate numeric metrics
+        if (typeof newValue === 'number' && typeof oldValue === 'number') {
+          validated[category][metric] = checkMetric(category, metric, newValue, oldValue);
+        }
+      }
+    }
+  }
+  
+  return { validated, warnings };
+}
+
 function extractMetrics(dayData) {
-  return {
+  const extracted = {
     bitcoin_lightning: {
       l402_github_stars: dayData.github_metrics?.l402_aperture?.stars || 0,
       l402_github_forks: dayData.github_metrics?.l402_aperture?.forks || 0,
@@ -100,7 +168,7 @@ function extractMetrics(dayData) {
       x402_daily_transactions: dayData.x402_transactions?.daily_transactions || 0,
       x402_cumulative_transactions: dayData.x402_transactions?.cumulative_transactions || 0,
       x402_cumulative_volume_usd: dayData.x402_transactions?.cumulative_volume_usd || 0,
-      erc8004_agents_registered: 24500
+      erc8004_agents_registered: dayData.erc8004_multichain?.total_agents || 24500
     },
     emerging_protocols: {
       ark_github_stars: dayData.github_metrics?.ark_protocol?.arkd?.stars || 0,
@@ -110,6 +178,18 @@ function extractMetrics(dayData) {
       ark_status: 'active_development'
     }
   };
+  
+  // Data integrity validation
+  const previousMetrics = loadExistingMetrics();
+  const { validated, warnings } = validateMetrics(extracted, previousMetrics);
+  
+  if (warnings.length > 0) {
+    console.log('\n[DATA INTEGRITY WARNINGS]');
+    warnings.forEach(w => console.log('  ' + w));
+    console.log('');
+  }
+  
+  return validated;
 }
 
 function calculateWoWChanges(weekDays) {
