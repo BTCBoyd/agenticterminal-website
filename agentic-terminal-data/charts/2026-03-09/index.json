@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-03-09T20:35:34.460Z",
+  "generated_at": "2026-03-09T20:52:30.908Z",
   "date": "2026-03-09",
   "charts": {
     "cross_protocol_comparison": {
       "chart_type": "cross-protocol-comparison",
       "status": "insufficient_data",
-      "generated_at": "2026-03-09T20:35:30.316Z",
+      "generated_at": "2026-03-09T20:52:25.815Z",
       "weeks_needed": 5,
       "image_path": "/home/futurebit/.openclaw/workspace/agentic-terminal-data/charts/2026-03-09/cross-protocol-comparison.png",
       "message": "Need 5 more weeks of data for meaningful visualization"
@@ -13,7 +13,7 @@
     "interest_usage_gap": {
       "chart_type": "interest-usage-gap",
       "status": "insufficient_data",
-      "generated_at": "2026-03-09T20:35:30.676Z",
+      "generated_at": "2026-03-09T20:52:26.291Z",
       "weeks_needed": 5,
       "image_path": "/home/futurebit/.openclaw/workspace/agentic-terminal-data/charts/2026-03-09/interest-usage-gap.png",
       "message": "Need 5 more weeks of data for meaningful visualization"
@@ -23,7 +23,7 @@
         "chart_type": "sparkline",
         "metric_path": "metrics.bitcoin_lightning.l402_github_stars",
         "label": "L402 GitHub Stars",
-        "generated_at": "2026-03-09T20:35:31.228Z",
+        "generated_at": "2026-03-09T20:52:27.124Z",
         "date_range": {
           "start": "2026-02-17",
           "end": "2026-03-09"
@@ -47,7 +47,7 @@
         "chart_type": "sparkline",
         "metric_path": "metrics.bitcoin_lightning.lightning_nodes",
         "label": "Lightning Nodes",
-        "generated_at": "2026-03-09T20:35:31.625Z",
+        "generated_at": "2026-03-09T20:52:27.821Z",
         "date_range": {
           "start": "2026-02-17",
           "end": "2026-03-09"
@@ -71,7 +71,7 @@
         "chart_type": "sparkline",
         "metric_path": "metrics.bitcoin_lightning.lightning_capacity_btc",
         "label": "Lightning Capacity (BTC)",
-        "generated_at": "2026-03-09T20:35:32.064Z",
+        "generated_at": "2026-03-09T20:52:28.403Z",
         "date_range": {
           "start": "2026-02-17",
           "end": "2026-03-09"
@@ -95,7 +95,7 @@
         "chart_type": "sparkline",
         "metric_path": "metrics.stablecoin_api_rails.x402_github_stars",
         "label": "x402 GitHub Stars",
-        "generated_at": "2026-03-09T20:35:32.679Z",
+        "generated_at": "2026-03-09T20:52:29.087Z",
         "date_range": {
           "start": "2026-02-17",
           "end": "2026-03-09"
@@ -119,7 +119,7 @@
         "chart_type": "sparkline",
         "metric_path": "metrics.stablecoin_api_rails.x402_daily_transactions",
         "label": "x402 Daily Transactions",
-        "generated_at": "2026-03-09T20:35:33.459Z",
+        "generated_at": "2026-03-09T20:52:29.519Z",
         "date_range": {
           "start": "2026-02-17",
           "end": "2026-03-09"
@@ -143,7 +143,7 @@
         "chart_type": "sparkline",
         "metric_path": "metrics.stablecoin_api_rails.erc8004_agents_registered",
         "label": "ERC-8004 Agents",
-        "generated_at": "2026-03-09T20:35:33.922Z",
+        "generated_at": "2026-03-09T20:52:30.136Z",
         "date_range": {
           "start": "2026-02-17",
           "end": "2026-03-09"
@@ -151,12 +151,12 @@
         "values": [
           68208,
           68208,
-          68208
+          0
         ],
-        "current_value": 68208,
+        "current_value": 0,
         "previous_value": 68208,
-        "change_percent": 0,
-        "change_direction": "→",
+        "change_percent": -100,
+        "change_direction": "↓",
         "image_path": "/home/futurebit/.openclaw/workspace/agentic-terminal-data/charts/2026-03-09/sparkline-metrics-stablecoin_api_rails-erc8004_agents_registered.png",
         "dimensions": {
           "width": 1200,
@@ -167,7 +167,7 @@
         "chart_type": "sparkline",
         "metric_path": "metrics.emerging_protocols.ark_github_stars",
         "label": "Ark GitHub Stars",
-        "generated_at": "2026-03-09T20:35:34.459Z",
+        "generated_at": "2026-03-09T20:52:30.906Z",
         "date_range": {
           "start": "2026-02-17",
           "end": "2026-03-09"

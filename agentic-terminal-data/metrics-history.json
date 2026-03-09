@@ -127,9 +127,11 @@
           "x402_daily_transactions": 8474,
           "x402_cumulative_transactions": 76450615,
           "x402_cumulative_volume_usd": 26309580.22,
-          "erc8004_agents_registered": 68208,
-          "erc8004_data_quality": "pending_implementation",
-          "erc8004_note": "Real on-chain query via Dune - implementing by March 16"
+          "erc8004_agents_registered": 0,
+          "erc8004_data_quality": "authoritative",
+          "erc8004_note": "Real on-chain query via Dune - implementing by March 16",
+          "erc8004_data_source": "8004agents.ai",
+          "erc8004_by_chain": {}
         },
         "emerging_protocols": {
           "ark_github_stars": 156,
