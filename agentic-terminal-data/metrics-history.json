@@ -27,9 +27,9 @@
           "x402_daily_transactions": 0,
           "x402_cumulative_transactions": 0,
           "x402_cumulative_volume_usd": 0,
-          "erc8004_agents_registered": 24500,
-          "erc8004_data_quality": "estimated",
-          "erc8004_note": "On-chain query not yet implemented"
+          "erc8004_agents_registered": null,
+          "erc8004_data_quality": "pending_implementation",
+          "erc8004_note": "Real on-chain query via Dune - implementing by March 16"
         },
         "emerging_protocols": {
           "ark_github_stars": 0,
@@ -77,9 +77,9 @@
           "x402_daily_transactions": 0,
           "x402_cumulative_transactions": 0,
           "x402_cumulative_volume_usd": 0,
-          "erc8004_agents_registered": 24500,
-          "erc8004_data_quality": "estimated",
-          "erc8004_note": "On-chain query not yet implemented"
+          "erc8004_agents_registered": null,
+          "erc8004_data_quality": "pending_implementation",
+          "erc8004_note": "Real on-chain query via Dune - implementing by March 16"
         },
         "emerging_protocols": {
           "ark_github_stars": 156,
@@ -127,9 +127,9 @@
           "x402_daily_transactions": 8474,
           "x402_cumulative_transactions": 76450615,
           "x402_cumulative_volume_usd": 26309580.22,
-          "erc8004_agents_registered": 24500,
-          "erc8004_data_quality": "estimated",
-          "erc8004_note": "On-chain query not yet implemented"
+          "erc8004_agents_registered": null,
+          "erc8004_data_quality": "pending_implementation",
+          "erc8004_note": "Real on-chain query via Dune - implementing by March 16"
         },
         "emerging_protocols": {
           "ark_github_stars": 156,
