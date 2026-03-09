@@ -1,108 +1,29 @@
 {
-  "generated_at": "2026-03-09T18:34:34.836Z",
+  "generated_at": "2026-03-09T19:24:58.299Z",
   "date": "2026-03-09",
   "charts": {
     "cross_protocol_comparison": {
       "chart_type": "cross-protocol-comparison",
-      "title": "Cross-Protocol Normalized Growth Comparison",
-      "generated_at": "2026-03-09T18:34:29.960Z",
-      "date_range": {
-        "start": "2026-02-17",
-        "end": "2026-03-09"
-      },
-      "metrics": {
-        "l402_stars": {
-          "raw": [
-            0,
-            254,
-            255
-          ],
-          "normalized": [
-            0,
-            99.6078431372549,
-            100
-          ]
-        },
-        "x402_stars": {
-          "raw": [
-            0,
-            5555,
-            5611
-          ],
-          "normalized": [
-            0,
-            99.0019604348601,
-            100
-          ]
-        },
-        "lightning_nodes": {
-          "raw": [
-            0,
-            5463,
-            5563
-          ],
-          "normalized": [
-            0,
-            98.20240877224519,
-            100
-          ]
-        },
-        "ark_stars": {
-          "raw": [
-            0,
-            156,
-            156
-          ],
-          "normalized": [
-            0,
-            100,
-            100
-          ]
-        }
-      },
+      "status": "insufficient_data",
+      "generated_at": "2026-03-09T19:24:53.515Z",
+      "weeks_needed": 5,
       "image_path": "/home/futurebit/.openclaw/workspace/agentic-terminal-data/charts/2026-03-09/cross-protocol-comparison.png",
-      "dimensions": {
-        "width": 1200,
-        "height": 675
-      }
+      "message": "Need 5 more weeks of data for meaningful visualization"
     },
     "interest_usage_gap": {
       "chart_type": "interest-usage-gap",
-      "title": "Interest ↔ Usage Gap",
-      "generated_at": "2026-03-09T18:34:30.426Z",
-      "date_range": {
-        "start": "2026-02-17",
-        "end": "2026-03-09"
-      },
-      "metrics": {
-        "l402_stars": [
-          0,
-          254,
-          255
-        ],
-        "erc8004_agents": [
-          24500,
-          24500,
-          24500
-        ],
-        "gap_values": [
-          -100,
-          -0.39215686274509665,
-          0
-        ]
-      },
+      "status": "insufficient_data",
+      "generated_at": "2026-03-09T19:24:54.036Z",
+      "weeks_needed": 5,
       "image_path": "/home/futurebit/.openclaw/workspace/agentic-terminal-data/charts/2026-03-09/interest-usage-gap.png",
-      "dimensions": {
-        "width": 1200,
-        "height": 675
-      }
+      "message": "Need 5 more weeks of data for meaningful visualization"
     },
     "sparklines": {
       "metrics.bitcoin_lightning.l402_github_stars": {
         "chart_type": "sparkline",
         "metric_path": "metrics.bitcoin_lightning.l402_github_stars",
         "label": "L402 GitHub Stars",
-        "generated_at": "2026-03-09T18:34:31.158Z",
+        "generated_at": "2026-03-09T19:24:54.480Z",
         "date_range": {
           "start": "2026-02-17",
           "end": "2026-03-09"
@@ -126,7 +47,7 @@
         "chart_type": "sparkline",
         "metric_path": "metrics.bitcoin_lightning.lightning_nodes",
         "label": "Lightning Nodes",
-        "generated_at": "2026-03-09T18:34:31.685Z",
+        "generated_at": "2026-03-09T19:24:55.112Z",
         "date_range": {
           "start": "2026-02-17",
           "end": "2026-03-09"
@@ -150,7 +71,7 @@
         "chart_type": "sparkline",
         "metric_path": "metrics.bitcoin_lightning.lightning_capacity_btc",
         "label": "Lightning Capacity (BTC)",
-        "generated_at": "2026-03-09T18:34:32.184Z",
+        "generated_at": "2026-03-09T19:24:55.779Z",
         "date_range": {
           "start": "2026-02-17",
           "end": "2026-03-09"
@@ -174,7 +95,7 @@
         "chart_type": "sparkline",
         "metric_path": "metrics.stablecoin_api_rails.x402_github_stars",
         "label": "x402 GitHub Stars",
-        "generated_at": "2026-03-09T18:34:33.348Z",
+        "generated_at": "2026-03-09T19:24:56.420Z",
         "date_range": {
           "start": "2026-02-17",
           "end": "2026-03-09"
@@ -198,7 +119,7 @@
         "chart_type": "sparkline",
         "metric_path": "metrics.stablecoin_api_rails.x402_daily_transactions",
         "label": "x402 Daily Transactions",
-        "generated_at": "2026-03-09T18:34:33.939Z",
+        "generated_at": "2026-03-09T19:24:57.072Z",
         "date_range": {
           "start": "2026-02-17",
           "end": "2026-03-09"
@@ -222,7 +143,7 @@
         "chart_type": "sparkline",
         "metric_path": "metrics.stablecoin_api_rails.erc8004_agents_registered",
         "label": "ERC-8004 Agents",
-        "generated_at": "2026-03-09T18:34:34.401Z",
+        "generated_at": "2026-03-09T19:24:57.558Z",
         "date_range": {
           "start": "2026-02-17",
           "end": "2026-03-09"
@@ -246,7 +167,7 @@
         "chart_type": "sparkline",
         "metric_path": "metrics.emerging_protocols.ark_github_stars",
         "label": "Ark GitHub Stars",
-        "generated_at": "2026-03-09T18:34:34.835Z",
+        "generated_at": "2026-03-09T19:24:58.298Z",
         "date_range": {
           "start": "2026-02-17",
           "end": "2026-03-09"

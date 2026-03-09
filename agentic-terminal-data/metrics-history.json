@@ -27,7 +27,9 @@
           "x402_daily_transactions": 0,
           "x402_cumulative_transactions": 0,
           "x402_cumulative_volume_usd": 0,
-          "erc8004_agents_registered": 24500
+          "erc8004_agents_registered": 24500,
+          "erc8004_data_quality": "estimated",
+          "erc8004_note": "On-chain query not yet implemented"
         },
         "emerging_protocols": {
           "ark_github_stars": 0,
@@ -75,7 +77,9 @@
           "x402_daily_transactions": 0,
           "x402_cumulative_transactions": 0,
           "x402_cumulative_volume_usd": 0,
-          "erc8004_agents_registered": 24500
+          "erc8004_agents_registered": 24500,
+          "erc8004_data_quality": "estimated",
+          "erc8004_note": "On-chain query not yet implemented"
         },
         "emerging_protocols": {
           "ark_github_stars": 156,
@@ -123,7 +127,9 @@
           "x402_daily_transactions": 8474,
           "x402_cumulative_transactions": 76450615,
           "x402_cumulative_volume_usd": 26309580.22,
-          "erc8004_agents_registered": 24500
+          "erc8004_agents_registered": 24500,
+          "erc8004_data_quality": "estimated",
+          "erc8004_note": "On-chain query not yet implemented"
         },
         "emerging_protocols": {
           "ark_github_stars": 156,
@@ -135,12 +141,12 @@
       },
       "wow_changes": {
         "bitcoin_lightning": {
-          "l402_github_stars_pct": 0.39370078740157477,
-          "lightning_nodes_pct": 1.3850920357207945,
+          "l402_github_stars_pct": 0.39,
+          "lightning_nodes_pct": 1.83,
           "lightning_capacity_btc_pct": 0.1514766122388464
         },
         "stablecoin_api_rails": {
-          "x402_github_stars_pct": 0.7180039490217196
+          "x402_github_stars_pct": 1.01
         },
         "emerging_protocols": {
           "ark_github_stars_pct": 0
