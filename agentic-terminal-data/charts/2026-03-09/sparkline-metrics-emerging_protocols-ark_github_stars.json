@@ -2,18 +2,13 @@
   "chart_type": "sparkline",
   "metric_path": "metrics.emerging_protocols.ark_github_stars",
   "label": "Ark GitHub Stars",
-  "generated_at": "2026-03-09T18:15:03.282Z",
+  "generated_at": "2026-03-09T18:34:34.835Z",
   "date_range": {
-    "start": "2026-01-06",
-    "end": "2026-03-02"
+    "start": "2026-02-17",
+    "end": "2026-03-09"
   },
   "values": [
-    148,
-    150,
-    152,
-    154,
-    155,
-    156,
+    0,
     156,
     156
   ],

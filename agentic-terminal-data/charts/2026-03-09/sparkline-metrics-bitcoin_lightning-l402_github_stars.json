@@ -2,24 +2,19 @@
   "chart_type": "sparkline",
   "metric_path": "metrics.bitcoin_lightning.l402_github_stars",
   "label": "L402 GitHub Stars",
-  "generated_at": "2026-03-09T18:14:57.604Z",
+  "generated_at": "2026-03-09T18:34:31.158Z",
   "date_range": {
-    "start": "2026-01-06",
-    "end": "2026-03-02"
+    "start": "2026-02-17",
+    "end": "2026-03-09"
   },
   "values": [
-    8,
-    10,
-    12,
-    14,
-    19,
-    15,
-    19,
-    26
+    0,
+    254,
+    255
   ],
-  "current_value": 26,
-  "previous_value": 19,
-  "change_percent": 36.8,
+  "current_value": 255,
+  "previous_value": 254,
+  "change_percent": 0.4,
   "change_direction": "↑",
   "image_path": "/home/futurebit/.openclaw/workspace/agentic-terminal-data/charts/2026-03-09/sparkline-metrics-bitcoin_lightning-l402_github_stars.png",
   "dimensions": {
