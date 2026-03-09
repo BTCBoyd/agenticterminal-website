@@ -2,7 +2,7 @@
   "chart_type": "sparkline",
   "metric_path": "metrics.stablecoin_api_rails.x402_github_stars",
   "label": "x402 GitHub Stars",
-  "generated_at": "2026-03-09T17:44:23.564Z",
+  "generated_at": "2026-03-09T18:15:01.281Z",
   "date_range": {
     "start": "2026-01-06",
     "end": "2026-03-02"
