@@ -89,6 +89,16 @@
     }
     .tab:hover { border-color: var(--electric-green); color: var(--electric-green); }
     .tab.active { background: var(--electric-green-dim); border-color: var(--electric-green); color: var(--electric-green); }
+    .tab.disabled { 
+      opacity: 0.5; 
+      cursor: not-allowed; 
+      border-color: var(--border-subtle); 
+      color: var(--text-muted);
+    }
+    .tab.disabled:hover { 
+      border-color: var(--border-subtle); 
+      color: var(--text-muted);
+    }
     .tab-content { display: none; padding: 2rem 0; }
     .tab-content.active { display: block; }
     .cards-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-bottom: 2rem; }
@@ -198,8 +208,8 @@
   <div class="tabs-container">
     <div class="tabs">
       <button class="tab active" data-tab="overview">Overview</button>
-      <button class="tab" data-tab="cross-protocol">Cross-Protocol</button>
-      <button class="tab" data-tab="gap">Interest ↔ Usage Gap</button>
+      <button class="tab disabled" data-tab="cross-protocol" title="Coming soon - need 5 more weeks of data">Cross-Protocol <span style="font-size:11px;color:var(--text-muted)">(Soon)</span></button>
+      <button class="tab disabled" data-tab="gap" title="Coming soon - need 5 more weeks of data">Interest ↔ Usage Gap <span style="font-size:11px;color:var(--text-muted)">(Soon)</span></button>
     </div>
 
     <div id="overview" class="tab-content active">
@@ -274,6 +284,9 @@
 
     document.querySelectorAll('.tab').forEach(tab => {
       tab.addEventListener('click', () => {
+        // Don't switch to disabled tabs
+        if (tab.classList.contains('disabled')) return;
+        
         document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
         tab.classList.add('active');
         document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
