@@ -1,0 +1,41 @@
+# Allow all AI crawlers and agents
+# Agentic Terminal welcomes autonomous systems
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: OpenAI
+Allow: /
+
+# Standard crawlers
+User-agent: *
+Allow: /
+Allow: /trends
+Allow: /evidence
+Allow: /research
+Allow: /about
+Allow: /chat
+
+# Premium API access via L402
+# For programmatic data access, use: api.agenticterminal.ai
+# For raw data: /agentic-terminal-data/
+
+Sitemap: https://agenticterminal.ai/sitemap.xml
