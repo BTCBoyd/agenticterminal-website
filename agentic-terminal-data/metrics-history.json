@@ -1,9 +1,46 @@
 {
   "schema_version": "1.0.0",
   "description": "Agentic Terminal time-series metrics history - Cross-protocol AI agent settlement data",
-  "last_updated": "2026-03-09T23:45:00Z",
+  "last_updated": "2026-03-10T01:32:19.103Z",
   "data_integrity_note": "ERC-8004 value restored on 2026-03-09 after cron overwrite with zero value. See weeks[0].metrics.stablecoin_api_rails.erc8004_restoration_note for details.",
   "weeks": [
+    {
+      "week_start": "2026-02-24",
+      "week_end": "2026-03-06",
+      "snapshot_date": "2026-03-06",
+      "metrics": {
+        "bitcoin_lightning": {
+          "l402_github_stars": 254,
+          "l402_github_forks": 65,
+          "l402_github_issues": 34,
+          "l402_contributors": 2,
+          "lightning_nodes": 5514,
+          "lightning_channels": 16528,
+          "lightning_capacity_btc": 2612.08,
+          "lightning_capacity_usd": 182902855.69,
+          "known_l402_endpoints": 1
+        },
+        "stablecoin_api_rails": {
+          "x402_github_stars": 5586,
+          "x402_github_forks": 1212,
+          "x402_github_issues": 0,
+          "x402_contributors": 30,
+          "x402_daily_transactions": null,
+          "x402_cumulative_transactions": null,
+          "x402_cumulative_volume_usd": null,
+          "erc8004_agents_registered": null,
+          "erc8004_data_quality": "not_yet_collected"
+        },
+        "emerging_protocols": {
+          "ark_github_stars": 156,
+          "ark_github_forks": 56,
+          "ark_status": "active_development"
+        }
+      },
+      "wow_changes": null,
+      "notes": "Week of Feb 24 - Mar 6, 2026. Backfilled from daily/2026-03-06.json. ERC-8004 and x402 transaction data not yet collected this week.",
+      "data_quality": "verified_partial"
+    },
     {
       "week_start": "2026-03-03",
       "week_end": "2026-03-09",
@@ -75,19 +112,16 @@
       },
       "wow_changes": {
         "bitcoin_lightning": {
-          "l402_github_stars_pct": null,
-          "lightning_nodes_pct": null,
-          "lightning_channels_pct": null,
-          "lightning_capacity_btc_pct": null
+          "l402_github_stars_pct": 0.4,
+          "l402_github_forks_pct": 1.5,
+          "lightning_nodes_pct": 0.9,
+          "lightning_channels_pct": 1.4,
+          "lightning_capacity_btc_pct": 1
         },
         "stablecoin_api_rails": {
-          "x402_github_stars_pct": null,
-          "x402_daily_transactions_pct": null,
+          "x402_github_stars_pct": 0.4,
+          "x402_github_forks_pct": 2.1,
           "erc8004_agents_registered_pct": null
-        },
-        "on_chain_data": {
-          "erc8004_total_agents_pct": null,
-          "x402_daily_transactions_pct": null
         }
       },
       "notes": "Week of March 3-9, 2026. ERC-8004 data restored after cron overwrite incident. Data integrity safeguard now implemented in collect-erc8004-multichain.mjs.",
@@ -95,9 +129,9 @@
     }
   ],
   "metadata": {
-    "total_weeks": 1,
+    "total_weeks": 2,
     "weeks_with_verified_data": 1,
-    "earliest_week": "2026-03-03",
+    "earliest_week": "2026-02-24",
     "latest_week": "2026-03-09",
     "sources": [
       "1ML.com - Lightning Network statistics",
