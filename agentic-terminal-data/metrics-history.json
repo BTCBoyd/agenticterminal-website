@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0.0",
   "description": "Agentic Terminal time-series metrics history - Cross-protocol AI agent settlement data",
-  "last_updated": "2026-03-10T16:00:20.463Z",
+  "last_updated": "2026-03-11T13:44:37.000Z",
   "weeks": [
     {
       "week_start": "2026-02-17",
@@ -87,12 +87,15 @@
       },
       "wow_changes": {
         "bitcoin_lightning": {
-          "l402_github_stars_pct": 0,
-          "lightning_nodes_pct": 0.7190265486725663,
-          "lightning_capacity_btc_pct": -0.11558956457411027
+          "l402_github_stars_pct": -0.39,
+          "lightning_nodes_pct": -1.8,
+          "lightning_channels_pct": -3.06,
+          "lightning_capacity_btc_pct": -1.73
         },
         "stablecoin_api_rails": {
-          "x402_github_stars_pct": 0.6340579710144928
+          "x402_github_stars_pct": -1,
+          "x402_daily_transactions_pct": 0,
+          "erc8004_agents_registered_pct": 0
         },
         "emerging_protocols": {
           "ark_github_stars_pct": 0
@@ -135,12 +138,15 @@
       },
       "wow_changes": {
         "bitcoin_lightning": {
-          "l402_github_stars_pct": 0.39370078740157477,
-          "lightning_nodes_pct": 1.3850920357207945,
-          "lightning_capacity_btc_pct": 0.1514766122388464
+          "l402_github_stars_pct": 0.39,
+          "lightning_nodes_pct": 1.83,
+          "lightning_channels_pct": 3.16,
+          "lightning_capacity_btc_pct": 1.76
         },
         "stablecoin_api_rails": {
-          "x402_github_stars_pct": 0.7180039490217196
+          "x402_github_stars_pct": 1.01,
+          "x402_daily_transactions_pct": 0,
+          "erc8004_agents_registered_pct": 0
         },
         "emerging_protocols": {
           "ark_github_stars_pct": 0
@@ -186,20 +192,25 @@
       },
       "wow_changes": {
         "bitcoin_lightning": {
-          "l402_github_stars_pct": null,
-          "lightning_nodes_pct": null
+          "l402_github_stars_pct": 0,
+          "lightning_nodes_pct": -0.04,
+          "lightning_channels_pct": 0.2,
+          "lightning_capacity_btc_pct": 0.24
         },
         "stablecoin_api_rails": {
-          "x402_github_stars_pct": null
+          "x402_github_stars_pct": 0.16,
+          "x402_daily_transactions_pct": 0,
+          "erc8004_agents_registered_pct": -100
         },
         "emerging_protocols": {
-          "ark_github_stars_pct": null
+          "ark_github_stars_pct": 0
         }
       }
     }
   ],
   "insights": [
-    "x402 approaching major milestone: 5,620 GitHub stars. Coinbase's standard maintains production lead."
+    "x402 approaching major milestone: 5,620 GitHub stars. Coinbase's standard maintains production lead.",
+    "ERC-8004 multi-chain ecosystem now at 72,049 total agents across 11 chains. Base leads with 5,532 agents."
   ],
   "metadata": {
     "data_source": "Agentic Terminal Daily Collection",
@@ -208,8 +219,28 @@
       "L402",
       "x402",
       "Ark Protocol",
-      "Lightning Network"
+      "Lightning Network",
+      "ERC-8004"
     ],
     "next_expected_update": "2026-03-15"
+  },
+  "erc8004_multichain": {
+    "total_agents": 72049,
+    "total_indexed": 15000,
+    "supported_chains": 11,
+    "mainnet_chains": 7,
+    "mainnet_total": 14661,
+    "by_chain": {
+      "base": 5532,
+      "bnb_chain": 3830,
+      "ethereum": 2923,
+      "monad": 2011,
+      "arbitrum": 160,
+      "avalanche": 108,
+      "polygon": 97
+    },
+    "contract": "0x8004A169FB4a3325136EB29fA0ceB6D2e539a432",
+    "source": "8004agents.ai",
+    "last_updated": "2026-03-11T13:44:37Z"
   }
 }
