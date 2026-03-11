@@ -177,7 +177,7 @@
           "x402_daily_transactions": 8474,
           "x402_cumulative_transactions": 76450615,
           "x402_cumulative_volume_usd": 26309580.22,
-          "erc8004_agents_registered": 0,
+          "erc8004_agents_registered": 68200,
           "erc8004_data_source": "8004agents.ai",
           "erc8004_data_quality": "authoritative",
           "erc8004_by_chain": {}
@@ -200,7 +200,7 @@
         "stablecoin_api_rails": {
           "x402_github_stars_pct": 0.16,
           "x402_daily_transactions_pct": 0,
-          "erc8004_agents_registered_pct": -100
+          "erc8004_agents_registered_pct": 178.37
         },
         "emerging_protocols": {
           "ark_github_stars_pct": 0
