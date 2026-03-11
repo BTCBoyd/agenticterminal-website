@@ -1,0 +1,25 @@
+{
+  "chart_type": "sparkline",
+  "metric_path": "metrics.bitcoin_lightning.lightning_capacity_btc",
+  "label": "Lightning Capacity (BTC)",
+  "generated_at": "2026-03-11T13:45:16.468Z",
+  "date_range": {
+    "start": "2026-02-17",
+    "end": "2026-03-16"
+  },
+  "values": [
+    2638.06,
+    2592.39,
+    2638.06,
+    2644.50362773
+  ],
+  "current_value": 2644.50362773,
+  "previous_value": 2638.06,
+  "change_percent": 0.2,
+  "change_direction": "↑",
+  "image_path": "/home/futurebit/.openclaw/workspace/agentic-terminal-data/charts/2026-03-11/sparkline-metrics-bitcoin_lightning-lightning_capacity_btc.png",
+  "dimensions": {
+    "width": 1200,
+    "height": 675
+  }
+}
