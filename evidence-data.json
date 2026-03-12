@@ -1,5 +1,13 @@
 [
   {
+    "date": "2026-03-11",
+    "event": "Lightning Labs Publishes Definitive L402 Agent Protocol Article \u2014 Mentions OpenClaw",
+    "description": "Lightning Labs published 'The Future Is Now: Why L402 Is the Internet-Native Payments Protocol for Agents' \u2014 a comprehensive technical breakdown of L402 for the agent economy. Notably mentions OpenClaw by name alongside Claude Code and Codex as frameworks where L402 agent skills work. Announces bLIP-0026 updates: token-agnostic design, version field for forward compatibility, and condensed spec.",
+    "source": "https://lightning.engineering/posts/2026-03-11-L402-for-agents/",
+    "category": "Protocol",
+    "analysis": "Lightning Labs' clearest statement yet that L402 is THE payment protocol for the agent economy \u2014 not one of several options. Four structural advantages cited over alternatives: cryptographic proof of payment (local math, no external service), privacy by architecture (onion routing, no on-chain footprint), no intermediaries, and macaroon-based credential hierarchy for multi-agent delegation. The bLIP-0026 update (token-agnostic design) opens the door for Observer Protocol integration \u2014 OP can provide the identity/reputation layer on top of any L402 token, not just macaroons. OpenClaw mentioned by name alongside Claude Code and Codex."
+  },
+  {
     "date": "2026-03-12",
     "event": "Tether Invests in Ark Labs \u2014 USDT Coming to Bitcoin Layer",
     "description": "Tether announced a strategic investment in Ark Labs, bringing USDT stablecoin infrastructure directly to Bitcoin via the Ark protocol. First major push by the world's largest stablecoin issuer into Bitcoin-native smart contract infrastructure.",
