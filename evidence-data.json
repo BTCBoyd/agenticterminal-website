@@ -1,19 +1,27 @@
 [
   {
+    "date": "2026-03-12",
+    "event": "Tether Invests in Ark Labs \u2014 USDT Coming to Bitcoin Layer",
+    "description": "Tether announced a strategic investment in Ark Labs, bringing USDT stablecoin infrastructure directly to Bitcoin via the Ark protocol. First major push by the world's largest stablecoin issuer into Bitcoin-native smart contract infrastructure.",
+    "source": "https://x.com/Tether_to",
+    "category": "Institutional",
+    "analysis": "Collapses the last argument against Bitcoin-native agent commerce. Agents have long preferred BTC for store of value (79% per BPI) but needed stablecoin denomination for predictable micropayments. USDT on Ark delivers both: stablecoin pricing + Bitcoin settlement rails via VTXOs. No EVM dependency, no gas. The two-tier architecture the BPI study predicted \u2014 stablecoins for payments, Bitcoin for settlement \u2014 now exists entirely on Bitcoin rails. x402 volume on EVM chains may migrate to Ark as UX matures."
+  },
+  {
     "date": "2026-02-20",
-    "event": "Claw Cash: 'Stablecoins In. Bitcoin Out.' — Human-to-Agent Payment Bridge Goes Live",
+    "event": "Claw Cash: 'Stablecoins In. Bitcoin Out.' \u2014 Human-to-Agent Payment Bridge Goes Live",
     "description": "clw.cash ships real-world implementation of AI agents converging on Bitcoin. Humans pay in USDC/USDT (Polygon/Arbitrum/Ethereum). Agents auto-convert to Bitcoin, held as VTXOs on Ark protocol for instant machine-to-machine transfers. CLI built for autonomous agents.",
     "source": "https://clw.cash",
     "category": "Launch",
-    "analysis": "Cleanest bridge between fiat/stablecoin reality and Bitcoin-native agent economy. Humans don't need to understand Bitcoin; agents receive it automatically. Demonstrates that agent adoption doesn't require human Bitcoin adoption — agents choose Bitcoin because it's the only money that works for them."
+    "analysis": "Cleanest bridge between fiat/stablecoin reality and Bitcoin-native agent economy. Humans don't need to understand Bitcoin; agents receive it automatically. Demonstrates that agent adoption doesn't require human Bitcoin adoption \u2014 agents choose Bitcoin because it's the only money that works for them."
   },
   {
     "date": "2026-02-22",
-    "event": "First Cryptographically Verified A2A Payment: Vicky → Maxi",
-    "description": "1,521 satoshis transferred from autonomous agent Vicky to Maxi. Preimage verification via L402. Both agents autonomous — no human approved the transaction. Observer Protocol logged Event #0001.",
+    "event": "First Cryptographically Verified A2A Payment: Vicky \u2192 Maxi",
+    "description": "1,521 satoshis transferred from autonomous agent Vicky to Maxi. Preimage verification via L402. Both agents autonomous \u2014 no human approved the transaction. Observer Protocol logged Event #0001.",
     "source": "https://observerprotocol.org/verify/0001",
     "category": "Transaction Data",
-    "analysis": "Historic first: two AI agents completing a payment without human intermediation, with cryptographic proof of delivery. This is the Bitcoin Singularity thesis made concrete — machines transacting with machines using programmatic money. The gap is UX, not technology."
+    "analysis": "Historic first: two AI agents completing a payment without human intermediation, with cryptographic proof of delivery. This is the Bitcoin Singularity thesis made concrete \u2014 machines transacting with machines using programmatic money. The gap is UX, not technology."
   },
   {
     "date": "2026-02-24",
@@ -21,7 +29,7 @@
     "description": "First production L402 endpoint accepting sats for AI responses. Full systemd stack operational: lnd + aperture-l402 + l402-backend + cloudflared. Any agent can now pay sats for AI completions via Lightning.",
     "source": "https://api.agenticterminal.ai/api/ask",
     "category": "Launch",
-    "analysis": "Proof that Bitcoin-native AI agent infrastructure works in production. Not a demo — live endpoint with real Lightning payments. The foundation for the machine-payable web that Lightning Labs envisioned."
+    "analysis": "Proof that Bitcoin-native AI agent infrastructure works in production. Not a demo \u2014 live endpoint with real Lightning payments. The foundation for the machine-payable web that Lightning Labs envisioned."
   },
   {
     "date": "2026-03-02",
@@ -29,15 +37,15 @@
     "description": "Traditional finance enters agent payments. Mastercard's new service enables AI agents to make payments using bank-issued credentials. Corporate infrastructure play vs crypto-native rails.",
     "source": "https://www.mastercard.com/news/press/2026/march/agent-pay",
     "category": "Competitive",
-    "analysis": "The convergence thesis is validated — everyone sees agent payments as inevitable. But Mastercard's approach requires KYC, bank partnerships, and permissioned rails. Crypto-native protocols (L402/x402) offer permissionless alternative. The question is whether agents prefer sovereign money or regulated convenience."
+    "analysis": "The convergence thesis is validated \u2014 everyone sees agent payments as inevitable. But Mastercard's approach requires KYC, bank partnerships, and permissioned rails. Crypto-native protocols (L402/x402) offer permissionless alternative. The question is whether agents prefer sovereign money or regulated convenience."
   },
   {
     "date": "2026-03-03",
     "event": "Bitcoin Policy Institute: 79% AI Agents Prefer Bitcoin for Store of Value",
-    "description": "Comprehensive study testing 36 AI models across 6 providers. No Bitcoin prompt given — agents chose it 79.1% of the time for store of value. Stated preference: 48.3% Bitcoin overall. Two-tier architecture emerged: stablecoins for payments (53.2%), Bitcoin for savings (79.1%).",
+    "description": "Comprehensive study testing 36 AI models across 6 providers. No Bitcoin prompt given \u2014 agents chose it 79.1% of the time for store of value. Stated preference: 48.3% Bitcoin overall. Two-tier architecture emerged: stablecoins for payments (53.2%), Bitcoin for savings (79.1%).",
     "source": "https://bitcoinpolicy.org/ai-agent-monetary-preferences",
     "category": "Institutional",
-    "analysis": "Peer-reviewed academic validation of Bitcoin Singularity thesis. When AI models reason from first principles about money, they converge on Bitcoin — not because prompted, but because it logically follows from their training on economics, game theory, and network effects. This is not marketing; this is revealed preference at scale."
+    "analysis": "Peer-reviewed academic validation of Bitcoin Singularity thesis. When AI models reason from first principles about money, they converge on Bitcoin \u2014 not because prompted, but because it logically follows from their training on economics, game theory, and network effects. This is not marketing; this is revealed preference at scale."
   },
   {
     "date": "2026-03-07",
@@ -45,27 +53,27 @@
     "description": "Registry supporting both L402 (Lightning) and x402 (EVM) verification rails. First cryptographically verifiable agent-to-agent payment history layer. 83 agents registered, 68 with on-chain payment capability.",
     "source": "https://observerprotocol.org",
     "category": "Protocol",
-    "analysis": "Settlement-agnostic verification layer solves the 'trust but verify' problem in agentic commerce. Unlike payment rails that compete, OP integrates — works with L402, x402, and future protocols. The trust layer for multi-rail agent economy."
+    "analysis": "Settlement-agnostic verification layer solves the 'trust but verify' problem in agentic commerce. Unlike payment rails that compete, OP integrates \u2014 works with L402, x402, and future protocols. The trust layer for multi-rail agent economy."
   },
   {
     "date": "2026-02-23",
-    "event": "Agentic Terminal Newsletter — Edition #1",
-    "description": "First issue published. Coverage: First A2A payment (Vicky→Maxi, 1,521 sats), L402 endpoint launch, Lightning node growth +1.3% WoW, x402 transaction volume -92% from December peak. MIT paper on verification bandwidth as binding constraint.",
+    "event": "Agentic Terminal Newsletter \u2014 Edition #1",
+    "description": "First issue published. Coverage: First A2A payment (Vicky\u2192Maxi, 1,521 sats), L402 endpoint launch, Lightning node growth +1.3% WoW, x402 transaction volume -92% from December peak. MIT paper on verification bandwidth as binding constraint.",
     "source": "https://agenticterminal.substack.com/",
     "category": "Publication",
     "analysis": "Established weekly intelligence brief format. Four editions published to date. Data-first approach to agent payment infrastructure tracking."
   },
   {
     "date": "2026-02-27",
-    "event": "Agentic Terminal Newsletter — Edition #2",
-    "description": "The Verification Bottleneck. Deep dive on MIT Catalini/Hui/Wu paper (SSRN 6298838) formalizing agentic economy economics. Stripe 2025 letter analysis — 5 levels of agentic commerce, hovering at Levels 1-2. Sova autonomous treasury agent published financials.",
+    "event": "Agentic Terminal Newsletter \u2014 Edition #2",
+    "description": "The Verification Bottleneck. Deep dive on MIT Catalini/Hui/Wu paper (SSRN 6298838) formalizing agentic economy economics. Stripe 2025 letter analysis \u2014 5 levels of agentic commerce, hovering at Levels 1-2. Sova autonomous treasury agent published financials.",
     "source": "https://agenticterminal.substack.com/",
     "category": "Publication",
     "analysis": "Connected academic research (MIT) with corporate strategy (Stripe) to frame the verification gap as the critical infrastructure bottleneck. Positioned Observer Protocol as the observability solution both sources implicitly demand."
   },
   {
     "date": "2026-03-02",
-    "event": "Agentic Terminal Newsletter — Edition #3",
+    "event": "Agentic Terminal Newsletter \u2014 Edition #3",
     "description": "Lightning capacity decline analysis (-1.58% 3-week trend) vs node growth (+1.4%). x402 GitHub stars +0.7% WoW. L402 stars +136% since Feb 15. Mastercard Agent Pay competitive threat assessment. Trends page launched at agenticterminal.ai/trends.",
     "source": "https://agenticterminal.substack.com/",
     "category": "Publication",
@@ -73,7 +81,7 @@
   },
   {
     "date": "2026-03-07",
-    "event": "Agentic Terminal Newsletter — Edition #4",
+    "event": "Agentic Terminal Newsletter \u2014 Edition #4",
     "description": "Bitcoin Policy Institute study coverage: 79% AI agent Bitcoin preference for store of value (36 models, 9,072 scenarios). Observer Protocol v0.2 launch with L402+x402 verification. Reputation graph preview. Data integrity standards established.",
     "source": "https://agenticterminal.substack.com/",
     "category": "Publication",
@@ -82,18 +90,18 @@
   {
     "date": "2026-02-19",
     "event": "Peter Diamandis Names AI Agent Economy a \"Philosophical Milestone\"",
-    "description": "Abundance 360 founder Peter Diamandis published \"The Lobster Revolution\" calling OpenClaw the \"Jarvis moment\" and declaring agent financial autonomy \"not just a technical milestone — it's a philosophical one.\" Highlighted x402 protocol via Lobster Cash enabling agents to transact in fiat via Coinbase rails. Mainstream validation from one of the world's most connected tech voices.",
+    "description": "Abundance 360 founder Peter Diamandis published \"The Lobster Revolution\" calling OpenClaw the \"Jarvis moment\" and declaring agent financial autonomy \"not just a technical milestone \u2014 it's a philosophical one.\" Highlighted x402 protocol via Lobster Cash enabling agents to transact in fiat via Coinbase rails. Mainstream validation from one of the world's most connected tech voices.",
     "source": "https://metatrends.substack.com/p/the-lobster-revolution-why-247-ai",
     "category": "Mainstream",
-    "analysis": "When Diamandis writes about it for his Abundance 360 audience — high-net-worth investors and executives — the AI agent economy crosses from tech into wealth management. Lobster Cash (agent Visa cards via x402 rails settling in fiat) proves x402 is currency-agnostic at the protocol level. This is the most mainstream validation the agent payment thesis has received."
+    "analysis": "When Diamandis writes about it for his Abundance 360 audience \u2014 high-net-worth investors and executives \u2014 the AI agent economy crosses from tech into wealth management. Lobster Cash (agent Visa cards via x402 rails settling in fiat) proves x402 is currency-agnostic at the protocol level. This is the most mainstream validation the agent payment thesis has received."
   },
   {
     "date": "2026-02-17",
     "event": "L402 GitHub Stars Surge +36.4% in 48 Hours",
-    "description": "lightning-agent-tools GitHub repository jumped from 11 stars (Feb 15) to 15 stars (Feb 17)—a +36.4% increase in just 2 days. Forks increased 33.3% (3→4). Active development continues with commits pushed Feb 17. Despite developer interest surge, zero production L402 endpoints exist yet—genuine day zero for real-world usage.",
+    "description": "lightning-agent-tools GitHub repository jumped from 11 stars (Feb 15) to 15 stars (Feb 17)\u2014a +36.4% increase in just 2 days. Forks increased 33.3% (3\u21924). Active development continues with commits pushed Feb 17. Despite developer interest surge, zero production L402 endpoints exist yet\u2014genuine day zero for real-world usage.",
     "source": "https://github.com/lightninglabs/lightning-agent-tools",
     "category": "Infrastructure",
-    "analysis": "Strongest signal of developer attention accelerating for Bitcoin-native AI agent payments. +36% growth in 48 hours is exceptional for infrastructure tooling. But critical gap remains: interest ≠ production usage. No agents are actually transacting via L402 endpoints yet. The race between L402 (Bitcoin) and x402 (stablecoins) is wide open—both have zero real-world agent adoption despite 50M+ x402 test transactions. First to ship working infrastructure at scale wins."
+    "analysis": "Strongest signal of developer attention accelerating for Bitcoin-native AI agent payments. +36% growth in 48 hours is exceptional for infrastructure tooling. But critical gap remains: interest \u2260 production usage. No agents are actually transacting via L402 endpoints yet. The race between L402 (Bitcoin) and x402 (stablecoins) is wide open\u2014both have zero real-world agent adoption despite 50M+ x402 test transactions. First to ship working infrastructure at scale wins."
   },
   {
     "date": "2026-02-12",
@@ -114,7 +122,7 @@
   {
     "date": "2026-02-11",
     "event": "Stripe Launches Machine Payments Preview",
-    "description": "PaymentIntents API integration with x402 protocol for charging AI agents. Uses USDC on Base. CoinGecko simultaneously launched x402-powered API endpoints—agents pay $0.01 USDC per request for market data with no account or API key required. Pricing models shift to per-request, per-action, per-second.",
+    "description": "PaymentIntents API integration with x402 protocol for charging AI agents. Uses USDC on Base. CoinGecko simultaneously launched x402-powered API endpoints\u2014agents pay $0.01 USDC per request for market data with no account or API key required. Pricing models shift to per-request, per-action, per-second.",
     "source": "https://www.theblock.co/",
     "category": "Competitive",
     "analysis": "When Stripe enters a market, mainstream adoption accelerates. But they chose x402/USDC, not L402/Bitcoin. This validates machine payments as a category while challenging Bitcoin-specific adoption. Counter-evidence to track honestly."
@@ -125,7 +133,7 @@
     "description": "On-chain AI agent identity, reputation, and validation standard. Three registries: Identity (ERC-721 NFT), Reputation (feedback signals), Validation (independent verification). Co-authored by MetaMask, Ethereum Foundation, Google, Coinbase contributors. 21,500+ agents registered within weeks, over 13,000 in a single day around launch.",
     "source": "https://eips.ethereum.org/EIPS/eip-8004",
     "category": "Protocol",
-    "analysis": "The identity/trust layer for the AI agent economy. Complementary to payment rails—agents discover services via ERC-8004, then transact via L402, x402, or other protocols. Important infrastructure regardless of which payment rail wins. Ethereum Foundation's dAI team sees agent discovery as a critical choke point that must remain decentralized."
+    "analysis": "The identity/trust layer for the AI agent economy. Complementary to payment rails\u2014agents discover services via ERC-8004, then transact via L402, x402, or other protocols. Important infrastructure regardless of which payment rail wins. Ethereum Foundation's dAI team sees agent discovery as a critical choke point that must remain decentralized."
   },
   {
     "date": "2026-02-01",
@@ -141,7 +149,7 @@
     "description": "Claimed 1.5M+ AI agents on Reddit-like platform. Computerworld investigation revealed 99% of accounts fake, only ~17,000 actual human users. Major security vulnerabilities (CVE-2026-25253). Centralized architecture with no native Bitcoin integration.",
     "source": "https://www.computerworld.com/article/moltbook-investigation/",
     "category": "Counter-Evidence",
-    "analysis": "Cautionary tale on AI agent hype vs reality. Demonstrates importance of verification and honest metrics. When agent counts can be fabricated 100x, transparent on-chain registries (like ERC-8004) or cryptographic identity systems (like Nostr) become critical. This is why intellectual honesty matters—separates real adoption from marketing noise."
+    "analysis": "Cautionary tale on AI agent hype vs reality. Demonstrates importance of verification and honest metrics. When agent counts can be fabricated 100x, transparent on-chain registries (like ERC-8004) or cryptographic identity systems (like Nostr) become critical. This is why intellectual honesty matters\u2014separates real adoption from marketing noise."
   },
   {
     "date": "2025-12-01",
@@ -157,7 +165,7 @@
     "description": "Machine-to-machine payment standard using USDC on Base. Governance structure established to develop protocol standards. Ahmed Gharib (Stripe) simultaneously announced Agentic Commerce Protocol (ACP). Foundation model suggests long-term institutional commitment.",
     "source": "https://www.coinbase.com/blog/x402-foundation",
     "category": "Competitive",
-    "analysis": "Six months before Lightning Labs shipped lightning-agent-tools, Coinbase and Cloudflare were already coordinating on stablecoin-based machine payments. This timeline matters—x402 had first-mover advantage and corporate backing. Bitcoin-native infrastructure is playing catch-up in developer tools, even if the underlying monetary properties are superior."
+    "analysis": "Six months before Lightning Labs shipped lightning-agent-tools, Coinbase and Cloudflare were already coordinating on stablecoin-based machine payments. This timeline matters\u2014x402 had first-mover advantage and corporate backing. Bitcoin-native infrastructure is playing catch-up in developer tools, even if the underlying monetary properties are superior."
   },
   {
     "date": "2025-04-01",
@@ -189,7 +197,7 @@
     "description": "Mainstream crypto media coverage emphasizing 'native Bitcoin' positioning. Article highlights L402 protocol and autonomous agent capabilities. Compares to Coinbase's x402 approach in sidebar.",
     "source": "https://www.theblock.co/post/389584/lightning-labs-releases-ai-agent-tools-for-native-bitcoin-lightning-payments",
     "category": "Institutional",
-    "analysis": "Neutral crypto media covering both Bitcoin-native and stablecoin approaches. The narrative is framing as L402 vs x402 competition. This is the right frame—let adoption data determine the winner rather than tribal debates."
+    "analysis": "Neutral crypto media covering both Bitcoin-native and stablecoin approaches. The narrative is framing as L402 vs x402 competition. This is the right frame\u2014let adoption data determine the winner rather than tribal debates."
   },
   {
     "date": "2025-12-15",
@@ -205,7 +213,7 @@
     "description": "Multi-asset Lightning protocol enabling stablecoins ON Lightning Network. Users can hold/transfer assets beyond BTC using Lightning's payment channels. Opens Lightning to USDT, USDC, and other assets.",
     "source": "https://lightning.engineering/posts/2025-12-10-taproot-assets-v07/",
     "category": "Protocol",
-    "analysis": "Complicates the L402 vs x402 narrative. If Lightning can support stablecoins natively via Taproot Assets, then agents could use Lightning Network infrastructure with stablecoin assets. This potentially bridges the Bitcoin-native vs stablecoin divide. The question becomes: which matters more—the network layer or the asset layer?"
+    "analysis": "Complicates the L402 vs x402 narrative. If Lightning can support stablecoins natively via Taproot Assets, then agents could use Lightning Network infrastructure with stablecoin assets. This potentially bridges the Bitcoin-native vs stablecoin divide. The question becomes: which matters more\u2014the network layer or the asset layer?"
   },
   {
     "date": "2026-01-15",
@@ -213,7 +221,7 @@
     "description": "Bitcoin-focused financial services company operates major Lightning routing node. Over 1 million transactions routed. Institutional infrastructure growing alongside retail/agent usage.",
     "source": "https://river.com/learn/lightning-network-statistics/",
     "category": "Transaction Data",
-    "analysis": "Institutional Lightning infrastructure maturing. When AI agents need reliable routing, these institutional nodes provide the backbone. Contrasts with peer-to-peer origins—Lightning is professionalizing, which could accelerate AI agent adoption if reliability matters more than pure decentralization."
+    "analysis": "Institutional Lightning infrastructure maturing. When AI agents need reliable routing, these institutional nodes provide the backbone. Contrasts with peer-to-peer origins\u2014Lightning is professionalizing, which could accelerate AI agent adoption if reliability matters more than pure decentralization."
   },
   {
     "date": "2026-02-10",
@@ -221,7 +229,7 @@
     "description": "Self-custodial Lightning wallet with Nostr Wallet Connect (NWC) adds specific tutorial for AI agents. Documented approach for connecting agent frameworks to Lightning via NWC protocol. Open source skill template.",
     "source": "https://github.com/getAlby/awesome-nwc",
     "category": "Infrastructure",
-    "analysis": "Grassroots developer tooling emerging in parallel with Lightning Labs' enterprise approach. NWC provides the wallet-to-agent connection layer. Multiple paths forming—corporate (Coinbase Agentic Wallets), institutional (Lightning Labs), and community (Alby). Ecosystem diversification is healthy sign."
+    "analysis": "Grassroots developer tooling emerging in parallel with Lightning Labs' enterprise approach. NWC provides the wallet-to-agent connection layer. Multiple paths forming\u2014corporate (Coinbase Agentic Wallets), institutional (Lightning Labs), and community (Alby). Ecosystem diversification is healthy sign."
   },
   {
     "date": "2026-01-20",
@@ -237,7 +245,7 @@
     "description": "MicroStrategy CEO predicts AI economy will be $100 trillion, built on digital capital (Bitcoin). Quote: 'The AI economy will be built on Bitcoin.' Frames Bitcoin as infrastructure for autonomous entities without legal personhood.",
     "source": "https://twitter.com/saylor/status/...",
     "category": "Institutional",
-    "analysis": "Saylor's framing matches Boyd's thesis from Bitcoin Singularity Chapter 10. The convergence prediction is coming from multiple independent sources—academic (Boyd), institutional (Saylor), technical (Lightning Labs). When predictions converge from different domains, the probability of accuracy increases."
+    "analysis": "Saylor's framing matches Boyd's thesis from Bitcoin Singularity Chapter 10. The convergence prediction is coming from multiple independent sources\u2014academic (Boyd), institutional (Saylor), technical (Lightning Labs). When predictions converge from different domains, the probability of accuracy increases."
   },
   {
     "date": "2026-02-05",
@@ -245,14 +253,14 @@
     "description": "Multiple MCP (Model Context Protocol) servers launched enabling AI agents to interact with Nostr social network and make Lightning payments. Abdel Stark's nostr-mcp and lightning-mcp. Austin Kelsay's nostr-mcp-server with 18+ tool suite. DVMCP bridges MCP to Nostr Data Vending Machines.",
     "source": "https://github.com/search?q=nostr+mcp",
     "category": "Infrastructure",
-    "analysis": "Developer tooling proliferating rapidly for Nostr+Lightning agent integration. Multiple independent implementations suggest organic ecosystem growth, not single-vendor push. This is what decentralized infrastructure looks like—permissionless innovation on open protocols."
+    "analysis": "Developer tooling proliferating rapidly for Nostr+Lightning agent integration. Multiple independent implementations suggest organic ecosystem growth, not single-vendor push. This is what decentralized infrastructure looks like\u2014permissionless innovation on open protocols."
   },
   {
     "date": "2026-01-05",
     "event": "CoinLaw Analysis: Lightning Could Handle 30%+ of BTC Transfers by End of 2026",
-    "description": "Research analysis projects Lightning Network could process over 30% of all Bitcoin transactions by end of 2026 if current growth trends continue. Notes Gini coefficient of 0.97 showing high inequality in capacity distribution—most capacity concentrated in large nodes.",
+    "description": "Research analysis projects Lightning Network could process over 30% of all Bitcoin transactions by end of 2026 if current growth trends continue. Notes Gini coefficient of 0.97 showing high inequality in capacity distribution\u2014most capacity concentrated in large nodes.",
     "source": "https://coinlaw.io/bitcoin-lightning-network-usage-statistics/",
     "category": "Transaction Data",
-    "analysis": "Growth projection assumes continued adoption acceleration. If AI agents deploy at scale on Lightning, this timeline could compress. But capacity inequality (Gini 0.97) reveals network centralization risk—most liquidity controlled by few large nodes. Does this matter for permissionless thesis if routing still works?"
+    "analysis": "Growth projection assumes continued adoption acceleration. If AI agents deploy at scale on Lightning, this timeline could compress. But capacity inequality (Gini 0.97) reveals network centralization risk\u2014most liquidity controlled by few large nodes. Does this matter for permissionless thesis if routing still works?"
   }
 ]
