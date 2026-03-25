@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0.0",
   "description": "Agentic Terminal time-series metrics history - Cross-protocol AI agent settlement data",
-  "last_updated": "2026-03-24T16:00:04.327Z",
+  "last_updated": "2026-03-25T16:00:07.110Z",
   "weeks": [
     {
       "week_start": "2026-02-17",
@@ -11,22 +11,22 @@
         "bitcoin_lightning": {
           "l402_github_stars": 258,
           "l402_github_forks": 66,
-          "l402_github_issues": 38,
+          "l402_github_issues": 36,
           "l402_contributors": 2,
-          "lightning_nodes": 5709,
-          "lightning_channels": 17635,
-          "lightning_capacity_btc": 2722.82,
-          "lightning_capacity_usd": 185743885.73,
+          "lightning_nodes": 5715,
+          "lightning_channels": 17714,
+          "lightning_capacity_btc": 2719.68,
+          "lightning_capacity_usd": 191550346.89,
           "known_l402_endpoints": 1
         },
         "stablecoin_api_rails": {
-          "x402_github_stars": 5762,
-          "x402_github_forks": 1326,
-          "x402_github_issues": 364,
+          "x402_github_stars": 5776,
+          "x402_github_forks": 1339,
+          "x402_github_issues": 387,
           "x402_contributors": 30,
           "x402_daily_transactions": 37969,
           "x402_cumulative_transactions": 79856021,
-          "x402_cumulative_volume_usd": 27542576.13,
+          "x402_cumulative_volume_usd": 27542576.134259865,
           "erc8004_agents_registered": 24500
         },
         "emerging_protocols": {
@@ -59,7 +59,7 @@
         "bitcoin_lightning": {
           "l402_github_stars": 254,
           "l402_github_forks": 63,
-          "l402_github_issues": 38,
+          "l402_github_issues": 36,
           "l402_contributors": 2,
           "lightning_nodes": 5463,
           "lightning_channels": 16241,
@@ -70,11 +70,11 @@
         "stablecoin_api_rails": {
           "x402_github_stars": 5555,
           "x402_github_forks": 1192,
-          "x402_github_issues": 364,
+          "x402_github_issues": 387,
           "x402_contributors": 30,
           "x402_daily_transactions": 37969,
           "x402_cumulative_transactions": 79856021,
-          "x402_cumulative_volume_usd": 27542576.13,
+          "x402_cumulative_volume_usd": 27542576.134259865,
           "erc8004_agents_registered": 24500
         },
         "emerging_protocols": {
@@ -122,7 +122,7 @@
           "x402_contributors": 30,
           "x402_daily_transactions": 178731,
           "x402_cumulative_transactions": 79856021,
-          "x402_cumulative_volume_usd": 27542576.13,
+          "x402_cumulative_volume_usd": 27542576.134259865,
           "erc8004_agents_registered": 67000
         },
         "emerging_protocols": {
@@ -246,27 +246,27 @@
     {
       "week_start": "2026-03-24",
       "week_end": "2026-03-30",
-      "snapshot_date": "2026-03-24",
+      "snapshot_date": "2026-03-25",
       "metrics": {
         "bitcoin_lightning": {
           "l402_github_stars": 258,
-          "l402_github_forks": 66,
-          "l402_github_issues": 36,
+          "l402_github_forks": 67,
+          "l402_github_issues": 29,
           "l402_contributors": 2,
-          "lightning_nodes": 5715,
-          "lightning_channels": 17714,
-          "lightning_capacity_btc": 2719.68,
-          "lightning_capacity_usd": 191550346.89,
+          "lightning_nodes": 5737,
+          "lightning_channels": 17870,
+          "lightning_capacity_btc": 2706.88,
+          "lightning_capacity_usd": 193997596.96,
           "known_l402_endpoints": 1
         },
         "stablecoin_api_rails": {
-          "x402_github_stars": 5776,
-          "x402_github_forks": 1339,
-          "x402_github_issues": 387,
+          "x402_github_stars": 5789,
+          "x402_github_forks": 1352,
+          "x402_github_issues": 404,
           "x402_contributors": 30,
-          "x402_daily_transactions": 37969,
-          "x402_cumulative_transactions": 79856021,
-          "x402_cumulative_volume_usd": 27542576.134259865,
+          "x402_daily_transactions": 3601,
+          "x402_cumulative_transactions": 79905432,
+          "x402_cumulative_volume_usd": 27545817.48,
           "erc8004_agents_registered": 83431
         },
         "emerging_protocols": {
@@ -279,11 +279,12 @@
       },
       "wow_changes": {
         "bitcoin_lightning": {
-          "l402_github_stars_pct": null,
-          "lightning_nodes_pct": null
+          "l402_github_stars_pct": 0,
+          "lightning_nodes_pct": 0.3849518810148731,
+          "lightning_capacity_btc_pct": -0.4706436051300053
         },
         "stablecoin_api_rails": {
-          "x402_github_stars_pct": null
+          "x402_github_stars_pct": 0.22506925207756234
         },
         "emerging_protocols": {
           "ark_github_stars_pct": null
@@ -292,7 +293,7 @@
     }
   ],
   "insights": [
-    "x402 approaching major milestone: 5,776 GitHub stars. Coinbase's standard maintains production lead."
+    "x402 approaching major milestone: 5,789 GitHub stars. Coinbase's standard maintains production lead."
   ],
   "metadata": {
     "data_source": "Agentic Terminal Daily Collection",
