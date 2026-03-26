@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sovereign Dashboard — Phase 1</title>
+<title>Sovereign Dashboard — Phase 2 Live</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@0,400;0,500&family=Syne:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-:root { --bg-base: #07070C; --bg-surface: #0E0E16; --bg-elevated: #16161F; --bg-border: #22222E; --text-primary: #EEEEF5; --text-secondary: #7A7A92; --text-tertiary: #44445A; --accent: #6B5CE7; --accent-dim: rgba(107, 92, 231, 0.15); --teal: #1DB584; --teal-dim: rgba(29, 181, 132, 0.12); --red: #E84040; --mono: 'DM Mono', monospace; --display: 'Syne', sans-serif; }
+:root { --bg-base: #07070C; --bg-surface: #0E0E16; --bg-elevated: #16161F; --bg-border: #22222E; --text-primary: #EEEEF5; --text-secondary: #7A7A92; --text-tertiary: #44445A; --accent: #6B5CE7; --accent-dim: rgba(107, 92, 231, 0.15); --teal: #1DB584; --teal-dim: rgba(29, 181, 132, 0.12); --red: #E84040; --amber: #E87D20; --mono: 'DM Mono', monospace; --display: 'Syne', sans-serif; }
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 body { background: var(--bg-base); color: var(--text-primary); font-family: var(--display); min-height: 100vh; }
 .top-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 16px 32px; background: rgba(7, 7, 12, 0.95); backdrop-filter: blur(16px); border-bottom: 1px solid var(--bg-border); }
@@ -16,38 +16,53 @@ body { background: var(--bg-base); color: var(--text-primary); font-family: var(
 .nav-tabs { display: flex; align-items: center; gap: 4px; }
 .nav-tab { font-family: var(--mono); font-size: 12px; color: var(--text-secondary); padding: 8px 16px; border-radius: 4px; cursor: pointer; transition: all 0.2s; border: none; background: transparent; }
 .nav-tab.active { color: var(--teal); background: var(--teal-dim); }
-.nav-user { display: flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: 12px; color: var(--text-secondary); }
+.nav-tab:hover:not(.active) { color: var(--text-primary); background: var(--bg-elevated); }
+.nav-user { display: flex; align-items: center; gap: 12px; font-family: var(--mono); font-size: 12px; color: var(--text-secondary); }
 .nav-logout { font-family: var(--mono); font-size: 11px; color: var(--text-tertiary); background: transparent; border: 1px solid var(--bg-border); padding: 4px 10px; border-radius: 4px; cursor: pointer; margin-left: 12px; }
 .nav-logout:hover { color: var(--red); border-color: var(--red); }
+.ws-status { display: flex; align-items: center; gap: 6px; font-family: var(--mono); font-size: 10px; }
+.ws-status-indicator { width: 6px; height: 6px; border-radius: 50%; background: var(--text-tertiary); transition: all 0.3s; }
+.ws-status-indicator.connected { background: var(--teal); animation: pulse 1.5s ease infinite; }
+.ws-status-indicator.disconnected { background: var(--red); }
 .main-content { padding: 100px 32px 32px; max-width: 1400px; margin: 0 auto; }
 .identity-card { background: var(--bg-surface); border: 1px solid var(--bg-border); border-left: 3px solid var(--teal); padding: 20px 24px; margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
 .identity-main { flex: 1; min-width: 250px; }
 .identity-name { font-size: 18px; font-weight: 600; }
 .identity-key { font-family: var(--mono); font-size: 11px; color: var(--text-secondary); word-break: break-all; }
 .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
-.stat-card { background: var(--bg-surface); border: 1px solid var(--bg-border); padding: 20px; }
+.stat-card { background: var(--bg-surface); border: 1px solid var(--bg-border); padding: 20px; position: relative; }
 .stat-value { font-family: var(--mono); font-size: 28px; font-weight: 500; }
+.stat-loading { animation: shimmer 1.5s infinite; background: linear-gradient(90deg, var(--bg-surface) 25%, var(--bg-elevated) 50%, var(--bg-surface) 75%); background-size: 200% 100%; }
+@keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+.live-indicator { width: 6px; height: 6px; background: var(--teal); border-radius: 50%; animation: pulse 1.5s ease infinite; }
 .charts-section { display: grid; grid-template-columns: 2fr 1fr; gap: 16px; margin-bottom: 24px; }
 .chart-card { background: var(--bg-surface); border: 1px solid var(--bg-border); padding: 20px; }
 .chart-container { height: 150px; }
 .tab-content { display: none; }
 .tab-content.active { display: block; }
-.feed-table { background: var(--bg-surface); border: 1px solid var(--bg-border); }
-.feed-row { display: grid; grid-template-columns: 160px 80px 1fr 100px 120px 100px; gap: 12px; padding: 14px 20px; border-bottom: 1px solid var(--bg-border); font-family: var(--mono); font-size: 12px; color: var(--text-secondary); }
+.feed-table { background: var(--bg-surface); border: 1px solid var(--bg-border); max-height: 400px; overflow-y: auto; }
+.feed-header { position: sticky; top: 0; background: var(--bg-surface); z-index: 10; }
+.feed-row { display: grid; grid-template-columns: 160px 80px 1fr 100px 120px 100px; gap: 12px; padding: 14px 20px; border-bottom: 1px solid var(--bg-border); font-family: var(--mono); font-size: 12px; color: var(--text-secondary); animation: slideIn 0.3s ease; }
+@keyframes slideIn { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: translateX(0); } }
+.feed-row:hover { background: var(--bg-elevated); }
+.feed-row.new { background: rgba(29, 181, 132, 0.05); border-left: 2px solid var(--teal); }
 .type-inbound { background: var(--teal-dim); color: var(--teal); padding: 2px 8px; border-radius: 2px; font-size: 10px; }
 .type-outbound { background: var(--accent-dim); color: var(--accent); padding: 2px 8px; border-radius: 2px; font-size: 10px; }
-.delegation-card { background: var(--bg-surface); border: 1px solid var(--bg-border); padding: 32px; max-width: 800px; }
-.btn { font-family: var(--mono); font-size: 12px; font-weight: 500; padding: 12px 24px; border-radius: 2px; cursor: pointer; border: none; }
+.btn { font-family: var(--mono); font-size: 12px; font-weight: 500; padding: 12px 24px; border-radius: 2px; cursor: pointer; border: none; transition: all 0.2s; }
+.btn:hover { opacity: 0.88; }
 .btn-primary { background: var(--teal); color: var(--bg-base); }
 .btn-secondary { background: transparent; color: var(--text-secondary); border: 1px solid var(--bg-border); }
+.btn-secondary:hover { border-color: var(--text-secondary); }
 .btn-danger { color: var(--red); border: 1px solid rgba(232, 64, 64, 0.3); background: transparent; }
+.btn-danger:hover { background: rgba(232, 64, 64, 0.1); }
 .settings-section { background: var(--bg-surface); border: 1px solid var(--bg-border); padding: 24px; margin-bottom: 16px; }
 .notification-badge { position: fixed; bottom: 24px; right: 24px; background: var(--bg-surface); border: 1px solid var(--bg-border); border-left: 3px solid var(--teal); padding: 16px 20px; border-radius: 4px; transform: translateX(150%); transition: transform 0.3s; z-index: 1000; }
 .notification-badge.visible { transform: translateX(0); }
-@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
-.live-indicator { width: 6px; height: 6px; background: var(--teal); border-radius: 50%; animation: pulse 1.5s ease infinite; }
-@media (max-width: 1024px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } .charts-section { grid-template-columns: 1fr; } }
-@media (max-width: 768px) { .nav-tabs { display: none; } .stats-grid { grid-template-columns: 1fr; } .feed-row { grid-template-columns: 1fr; } }
+.notification-badge.error { border-left-color: var(--red); }
+.empty-state { text-align: center; padding: 60px 20px; color: var(--text-secondary); }
+@media (max-width: 1024px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } .charts-section { grid-template-columns: 1fr; } .feed-row { grid-template-columns: 1fr; gap: 8px; } }
+@media (max-width: 768px) { .nav-tabs { display: none; } .stats-grid { grid-template-columns: 1fr; } .top-nav { padding: 16px; } .main-content { padding: 100px 16px 32px; } }
 </style>
 </head>
 <body data-require-auth="true">
@@ -65,7 +80,10 @@ body { background: var(--bg-base); color: var(--text-primary); font-family: var(
     <button class="nav-tab" data-tab="settings">Settings</button>
   </div>
   <div class="nav-user">
-    <div class="live-indicator"></div>
+    <div class="ws-status" id="ws-status" title="WebSocket connection status">
+      <div class="ws-status-indicator" id="ws-indicator"></div>
+      <span id="ws-text">Connecting...</span>
+    </div>
     <span class="user-name">Loading...</span>
     <button class="nav-logout" onclick="logout()">Log out</button>
   </div>
@@ -75,39 +93,48 @@ body { background: var(--bg-base); color: var(--text-primary); font-family: var(
     <div class="identity-main">
       <div class="identity-name user-name">Loading...</div>
       <div class="identity-key user-pubkey">—</div>
-      <div style="font-family:var(--mono);font-size:10px;color:var(--text-tertiary);margin-top:8px">Registered: 2026-03-25 · 1 active delegation</div>
+      <div style="font-family:var(--mono);font-size:10px;color:var(--text-tertiary);margin-top:8px" id="identity-meta">Loading...</div>
     </div>
-    <div style="font-family:var(--mono);font-size:10px;color:var(--teal);background:var(--teal-dim);padding:6px 12px;border-radius:2px">● VERIFIED ON OP</div>
+    <div style="font-family:var(--mono);font-size:10px;color:var(--teal);background:var(--teal-dim);padding:6px 12px;border-radius:2px;display:flex;align-items:center;gap:6px;">
+      <div class="live-indicator"></div>
+      VERIFIED ON OP
+    </div>
   </div>
   <div class="stats-grid">
-    <div class="stat-card"><div style="font-family:var(--mono);font-size:9px;color:var(--text-tertiary);text-transform:uppercase;margin-bottom:8px">Active delegations</div><div class="stat-value">1</div><div style="font-family:var(--mono);font-size:10px;color:var(--text-tertiary);margin-top:4px">maxi-0001 active</div></div>
-    <div class="stat-card"><div style="font-family:var(--mono);font-size:9px;color:var(--text-tertiary);text-transform:uppercase;margin-bottom:8px">Transactions (30d)</div><div class="stat-value" id="stat-tx">16</div><div style="font-family:var(--mono);font-size:10px;color:var(--teal);margin-top:4px">↑ Active</div></div>
-    <div class="stat-card"><div style="font-family:var(--mono);font-size:9px;color:var(--text-tertiary);text-transform:uppercase;margin-bottom:8px">Volume (30d) <span class="live-indicator"></span></div><div class="stat-value" id="stat-vol">1,924</div><div style="font-family:var(--mono);font-size:10px;color:var(--text-tertiary);margin-top:4px">≈ $1.35</div></div>
-    <div class="stat-card"><div style="font-family:var(--mono);font-size:9px;color:var(--text-tertiary);text-transform:uppercase;margin-bottom:8px">Rep score</div><div class="stat-value" id="stat-rep">287</div><div style="font-family:var(--mono);font-size:10px;color:var(--teal);margin-top:4px">↑ Growing</div></div>
+    <div class="stat-card">
+      <div style="font-family:var(--mono);font-size:9px;color:var(--text-tertiary);text-transform:uppercase;margin-bottom:8px">Active delegations</div>
+      <div class="stat-value" id="stat-delegations">—</div>
+      <div style="font-family:var(--mono);font-size:10px;color:var(--text-tertiary);margin-top:4px" id="stat-delegations-sub">Loading...</div>
+    </div>
+    <div class="stat-card">
+      <div style="font-family:var(--mono);font-size:9px;color:var(--text-tertiary);text-transform:uppercase;margin-bottom:8px">Transactions (30d)</div>
+      <div class="stat-value" id="stat-tx">—</div>
+      <div style="font-family:var(--mono);font-size:10px;color:var(--teal);margin-top:4px" id="stat-tx-trend">Loading...</div>
+    </div>
+    <div class="stat-card">
+      <div style="font-family:var(--mono);font-size:9px;color:var(--text-tertiary);text-transform:uppercase;margin-bottom:8px">Volume (30d) <span class="live-indicator"></span></div>
+      <div class="stat-value" id="stat-vol">—</div>
+      <div style="font-family:var(--mono);font-size:10px;color:var(--text-tertiary);margin-top:4px" id="stat-vol-fiat">Loading...</div>
+    </div>
+    <div class="stat-card">
+      <div style="font-family:var(--mono);font-size:9px;color:var(--text-tertiary);text-transform:uppercase;margin-bottom:8px">Rep score</div>
+      <div class="stat-value" id="stat-rep">—</div>
+      <div style="font-family:var(--mono);font-size:10px;color:var(--teal);margin-top:4px" id="stat-rep-trend">Loading...</div>
+    </div>
   </div>
   <div class="charts-section">
     <div class="chart-card">
       <div style="font-size:14px;font-weight:600;margin-bottom:4px">Volume by Day</div>
-      <div style="font-family:var(--mono);font-size:11px;color:var(--text-tertiary);margin-bottom:16px">Last 7 days</div>
-      <div class="chart-container">
-        <svg viewBox="0 0 100 100" preserveAspectRatio="none" style="width:100%;height:100%">
-          <rect x="5" y="40" width="10" height="60" fill="#1DB584" opacity="0.6" rx="2"/>
-          <rect x="20" y="60" width="10" height="40" fill="#1DB584" opacity="0.6" rx="2"/>
-          <rect x="35" y="30" width="10" height="70" fill="#1DB584" opacity="0.8" rx="2"/>
-          <rect x="50" y="50" width="10" height="50" fill="#1DB584" opacity="0.6" rx="2"/>
-          <rect x="65" y="20" width="10" height="80" fill="#1DB584" rx="2"/>
-          <rect x="80" y="45" width="10" height="55" fill="#1DB584" opacity="0.6" rx="2"/>
-        </svg>
+      <div style="font-family:var(--mono);font-size:11px;color:var(--text-tertiary);margin-bottom:16px">Last 7 days — Live from Observer Protocol</div>
+      <div class="chart-container" id="volume-chart">
+        <div class="empty-state" style="padding:40px;">Loading chart data...</div>
       </div>
     </div>
     <div class="chart-card">
       <div style="font-size:14px;font-weight:600;margin-bottom:4px">Activity</div>
-      <div style="font-family:var(--mono);font-size:11px;color:var(--text-tertiary);margin-bottom:16px">Transaction trend</div>
-      <div class="chart-container">
-        <svg viewBox="0 0 300 100" preserveAspectRatio="none" style="width:100%;height:100%">
-          <polyline fill="none" stroke="#6B5CE7" stroke-width="2" points="0,80 50,60 100,70 150,40 200,50 250,30 300,20" stroke-linecap="round" stroke-linejoin="round"/>
-          <circle cx="300" cy="20" r="3" fill="#6B5CE7"/>
-        </svg>
+      <div style="font-family:var(--mono);font-size:11px;color:var(--text-tertiary);margin-bottom:16px">Transaction trend — Real-time</div>
+      <div class="chart-container" id="activity-chart">
+        <div class="empty-state" style="padding:40px;">Loading activity data...</div>
       </div>
     </div>
   </div>
@@ -115,46 +142,74 @@ body { background: var(--bg-base); color: var(--text-primary); font-family: var(
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
       <div style="font-size:14px;font-weight:600">Live Transaction Feed</div>
       <div style="display:flex;align-items:center;gap:8px">
-        <button style="background:var(--bg-elevated);border:1px solid var(--bg-border);border-radius:4px;padding:6px 12px;color:var(--text-secondary);font-family:var(--mono);font-size:11px;cursor:pointer" onclick="exportCSV()">↓ Export CSV</button>
-        <div style="display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:10px;color:var(--teal)"><div class="live-indicator"></div>LIVE</div>
+        <button class="btn btn-secondary" style="padding:6px 12px;font-size:11px" onclick="exportCSV()">↓ Export CSV</button>
+        <div class="ws-status">
+          <div class="live-indicator"></div>
+          <span style="font-family:var(--mono);font-size:10px;color:var(--teal)">LIVE</span>
+        </div>
       </div>
     </div>
     <div class="feed-table" id="feed-container">
-      <div style="padding:12px 20px;font-family:var(--mono);font-size:9px;color:var(--text-tertiary);text-transform:uppercase;border-bottom:1px solid var(--bg-border);display:grid;grid-template-columns:160px 80px 1fr 100px 120px 100px;gap:12px"><div>Timestamp</div><div>Type</div><div>Counterparty</div><div>Rail</div><div style="text-align:right">Amount</div><div>Status</div></div>
+      <div class="feed-header" style="padding:12px 20px;font-family:var(--mono);font-size:9px;color:var(--text-tertiary);text-transform:uppercase;border-bottom:1px solid var(--bg-border);display:grid;grid-template-columns:160px 80px 1fr 100px 120px 100px;gap:12px">
+        <div>Timestamp</div><div>Type</div><div>Counterparty</div><div>Rail</div><div style="text-align:right">Amount</div><div>Status</div>
+      </div>
+      <div id="feed-rows">
+        <div class="empty-state">Loading transactions from Observer Protocol...</div>
+      </div>
     </div>
   </div>
   <div class="tab-content" id="tab-delegation">
-    <div class="delegation-card">
-      <div style="font-family:var(--mono);font-size:10px;color:var(--text-tertiary);text-transform:uppercase;margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid var(--bg-border)">SOVEREIGN DELEGATION CREDENTIAL</div>
-      <div style="display:flex;justify-content:space-between;padding:16px 0;border-bottom:1px solid var(--bg-border)"><div style="font-family:var(--mono);font-size:11px;color:var(--text-tertiary);text-transform:uppercase">Issued by</div><div style="font-family:var(--mono);font-size:13px" class="user-name">—</div></div>
-      <div style="display:flex;justify-content:space-between;padding:16px 0;border-bottom:1px solid var(--bg-border)"><div style="font-family:var(--mono);font-size:11px;color:var(--text-tertiary);text-transform:uppercase">Delegates to</div><div style="font-family:var(--mono);font-size:13px">maxi-0001</div></div>
-      <div style="display:flex;justify-content:space-between;padding:16px 0;border-bottom:1px solid var(--bg-border)"><div style="font-family:var(--mono);font-size:11px;color:var(--text-tertiary);text-transform:uppercase">Constraints</div><div style="font-family:var(--mono);font-size:13px;text-align:right">50,000 sat/txn · 500,000 sat/mo<br><span style="font-size:12px;color:var(--text-secondary)">Lightning · x402 · Solana</span></div></div>
-      <div style="display:flex;justify-content:space-between;padding:16px 0;border-bottom:1px solid var(--bg-border)"><div style="font-family:var(--mono);font-size:11px;color:var(--text-tertiary);text-transform:uppercase">Issued</div><div style="font-family:var(--mono);font-size:13px">2026-03-25T14:32:00Z</div></div>
-      <div style="display:flex;justify-content:space-between;padding:16px 0;border-bottom:1px solid var(--bg-border)"><div style="font-family:var(--mono);font-size:11px;color:var(--text-tertiary);text-transform:uppercase">Expires</div><div style="font-family:var(--mono);font-size:13px">2026-06-23T14:32:00Z</div></div>
-      <div style="display:flex;justify-content:space-between;padding:16px 0"><div style="font-family:var(--mono);font-size:11px;color:var(--text-tertiary);text-transform:uppercase">Status</div><div style="font-family:var(--mono);font-size:13px;color:var(--teal)">● Active</div></div>
-      <div style="display:flex;gap:12px;margin-top:32px;padding-top:24px;border-top:1px solid var(--bg-border)">
-        <button class="btn btn-secondary" onclick="alert('Edit constraints - Phase 2')">Edit constraints</button>
-        <button class="btn btn-secondary" onclick="alert('Renew - Phase 2')">Renew</button>
-        <button class="btn btn-danger" onclick="revokeDelegation()">Revoke</button>
-      </div>
+    <div id="delegation-content">
+      <div class="empty-state">Loading delegation data...</div>
     </div>
   </div>
   <div class="tab-content" id="tab-identity">
     <div class="settings-section">
       <div style="font-size:14px;font-weight:600;margin-bottom:16px">Your Identity</div>
-      <div style="display:flex;justify-content:space-between;padding:16px 0;border-bottom:1px solid var(--bg-border)"><div style="font-family:var(--mono);font-size:12px;color:var(--text-secondary)">Display Name</div><div style="font-family:var(--mono);font-size:12px" class="user-name">—</div></div>
-      <div style="display:flex;justify-content:space-between;padding:16px 0;border-bottom:1px solid var(--bg-border)"><div style="font-family:var(--mono);font-size:12px;color:var(--text-secondary)">Public Key</div><div style="font-family:var(--mono);font-size:11px;color:var(--text-secondary)" class="user-pubkey">—</div></div>
-      <div style="display:flex;justify-content:space-between;padding:16px 0"><div style="font-family:var(--mono);font-size:12px;color:var(--text-secondary)">Agent ID</div><div style="font-family:var(--mono);font-size:12px">maxi-0001</div></div>
+      <div style="display:flex;justify-content:space-between;padding:16px 0;border-bottom:1px solid var(--bg-border)">
+        <div style="font-family:var(--mono);font-size:12px;color:var(--text-secondary)">Display Name</div>
+        <div style="font-family:var(--mono);font-size:12px" class="user-name">—</div>
+      </div>
+      <div style="display:flex;justify-content:space-between;padding:16px 0;border-bottom:1px solid var(--bg-border)">
+        <div style="font-family:var(--mono);font-size:12px;color:var(--text-secondary)">Public Key</div>
+        <div style="font-family:var(--mono);font-size:11px;color:var(--text-secondary)" class="user-pubkey">—</div>
+      </div>
+      <div style="display:flex;justify-content:space-between;padding:16px 0">
+        <div style="font-family:var(--mono);font-size:12px;color:var(--text-secondary)">Agent ID</div>
+        <div style="font-family:var(--mono);font-size:12px" id="agent-id">—</div>
+      </div>
     </div>
   </div>
   <div class="tab-content" id="tab-settings">
     <div class="settings-section">
       <div style="font-size:14px;font-weight:600;margin-bottom:16px">Notifications</div>
-      <div style="display:flex;justify-content:space-between;padding:16px 0"><div style="font-family:var(--mono);font-size:12px;color:var(--text-secondary)">Browser notifications</div><button class="btn btn-secondary" style="padding:8px 16px;font-size:11px" onclick="requestNotifications()">Enable</button></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:16px 0">
+        <div>
+          <div style="font-family:var(--mono);font-size:12px;color:var(--text-secondary)">Browser notifications</div>
+          <div style="font-family:var(--mono);font-size:10px;color:var(--text-tertiary);margin-top:4px">Get alerts for new transactions and delegation changes</div>
+        </div>
+        <button class="btn btn-secondary" style="padding:8px 16px;font-size:11px" id="notif-btn" onclick="toggleNotifications()">Enable</button>
+      </div>
+    </div>
+    <div class="settings-section">
+      <div style="font-size:14px;font-weight:600;margin-bottom:16px">Connection</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:16px 0">
+        <div>
+          <div style="font-family:var(--mono);font-size:12px;color:var(--text-secondary)">WebSocket Status</div>
+          <div style="font-family:var(--mono);font-size:10px;color:var(--text-tertiary);margin-top:4px" id="ws-detail">Connecting to real-time feed...</div>
+        </div>
+        <button class="btn btn-secondary" style="padding:8px 16px;font-size:11px" onclick="WebSocketClient.connect()">Reconnect</button>
+      </div>
     </div>
     <div class="settings-section" style="border-color:rgba(232,64,64,0.2)">
       <div style="font-size:14px;font-weight:600;margin-bottom:16px;color:var(--red)">Danger Zone</div>
-      <div style="display:flex;justify-content:space-between;padding:16px 0"><div style="font-family:var(--mono);font-size:12px;color:var(--text-secondary)">Revoke all delegations</div><button class="btn btn-danger" onclick="revokeAll()">Revoke all</button></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:16px 0">
+        <div>
+          <div style="font-family:var(--mono);font-size:12px;color:var(--text-secondary)">Revoke all delegations</div>
+          <div style="font-family:var(--mono);font-size:10px;color:var(--text-tertiary);margin-top:4px">Immediately revoke all agent permissions</div>
+        </div>
+        <button class="btn btn-danger" onclick="revokeAll()">Revoke all</button>
+      </div>
     </div>
   </div>
 </main>
@@ -166,26 +221,288 @@ body { background: var(--bg-base); color: var(--text-primary); font-family: var(
 <script src="auth.js"></script>
 <script src="api.js"></script>
 <script src="charts.js"></script>
+<script src="websocket.js"></script>
+<script src="notifications.js"></script>
+<script src="delegation-manager.js"></script>
 <script>
-// Auth
+// Auth check
 const AUTH_KEY='sovereign_session', USER_KEY='sovereign_user';
 function getSession(){try{return JSON.parse(localStorage.getItem(AUTH_KEY))}catch{return null}}
 function isAuthenticated(){const s=getSession();if(!s)return false;if(s.expiresAt&&Date.now()>s.expiresAt){logout();return false}return true}
 function getUser(){try{return JSON.parse(localStorage.getItem(USER_KEY))}catch{return null}}
 function logout(){localStorage.removeItem(AUTH_KEY);localStorage.removeItem(USER_KEY);window.location.href='login.html'}
 if(document.body.dataset.requireAuth==='true'&&!isAuthenticated())window.location.href='login.html';
-const user=getUser();if(user){document.querySelectorAll('.user-name').forEach(el=>el.textContent=user.displayName);document.querySelectorAll('.user-pubkey').forEach(el=>el.textContent=user.publicKey.substring(0,40)+'...')}
-// Tabs
-document.querySelectorAll('.nav-tab').forEach(tab=>{tab.addEventListener('click',()=>{const target=tab.dataset.tab;document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));tab.classList.add('active');document.getElementById('tab-'+target).classList.add('active')})});
-// Sample transactions
-const txData=[['2026-03-25 21:39:21','inbound','lightning','lightning','50 sats','Verified'],['2026-03-25 17:31:11','inbound','lightning','lightning','210 sats','Verified'],['2026-03-19 04:01:27','inbound','lightning','lightning','11 sats','Verified'],['2026-03-18 23:51:34','outbound','x402_stripe','x402_stripe','0.01 USDC','Verified'],['2026-03-18 18:03:06','inbound','lightning','lightning','21 sats','Verified'],['2026-03-18 17:22:04','inbound','lightning','lightning','210 sats','Verified'],['2026-03-18 15:43:41','outbound','lightning','lightning','21 sats','Verified'],['2026-03-18 15:22:58','inbound','lightning','lightning','21 sats','Verified'],['2026-03-18 15:21:35','inbound','lightning','lightning','21 sats','Verified'],['2026-03-17 20:09:17','outbound','x402','x402','0.01 USDC','Verified'],['2026-03-17 18:47:34','outbound','L402','L402','1 sat','Verified'],['2026-03-17 17:09:08','inbound','lightning','lightning','210 sats','Verified'],['2026-03-14 19:23:07','inbound','lightning','lightning','21 sats','Verified'],['2026-03-13 20:15:15','inbound','lightning','lightning','21 sats','Verified'],['2026-03-13 00:25:32','inbound','lightning','lightning','100 sats','Verified'],['2026-03-12 18:16:18','inbound','lightning','lightning','1,000 sats','Verified']];
-function renderTx(){const container=document.getElementById('feed-container');container.innerHTML+='<div style="padding:12px 20px;font-family:var(--mono);font-size:9px;color:var(--text-tertiary);text-transform:uppercase;border-bottom:1px solid var(--bg-border);display:grid;grid-template-columns:160px 80px 1fr 100px 120px 100px;gap:12px"><div>Timestamp</div><div>Type</div><div>Counterparty</div><div>Rail</div><div style="text-align:right">Amount</div><div>Status</div></div>'+txData.map(tx=>`<div class="feed-row"><div>${tx[0]}</div><div><span class="type-${tx[1]}">${tx[1]}</span></div><div>${tx[2]}</div><div>${tx[3]}</div><div style="text-align:right">${tx[4]}</div><div style="color:var(--teal)">● ${tx[5]}</div></div>`).join('')}
-function showNotif(title,text){document.getElementById('notif-title').textContent=title;document.getElementById('notif-text').textContent=text;const n=document.getElementById('notification');n.classList.add('visible');setTimeout(()=>n.classList.remove('visible'),5000)}
-function exportCSV(){const header='Timestamp,Type,Counterparty,Rail,Amount,Status\n';const rows=txData.map(tx=>tx.join(',')).join('\n');const blob=new Blob([header+rows],{type:'text/csv'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='sovereign-transactions.csv';a.click();URL.revokeObjectURL(url);showNotif('Export Complete','Transactions saved to CSV')}
-function revokeDelegation(){if(confirm('Revoke delegation to maxi-0001?')){showNotif('Delegation Revoked','maxi-0001 can no longer transact');setTimeout(()=>window.location.reload(),2000)}}
-function revokeAll(){if(confirm('Revoke ALL delegations?')){showNotif('All Revoked','All delegations have been revoked');setTimeout(()=>window.location.reload(),2000)}}
-function requestNotifications(){if('Notification'in window){Notification.requestPermission().then(p=>showNotif('Notifications',p==='granted'?'Enabled!':'Denied'))}else{showNotif('Error','Browser notifications not supported')}}
-renderTx();
+
+// Load user data
+const user=getUser();
+if(user){document.querySelectorAll('.user-name').forEach(el=>el.textContent=user.displayName);document.querySelectorAll('.user-pubkey').forEach(el=>el.textContent=user.publicKey.substring(0,40)+'...');}
+
+// Tab switching
+document.querySelectorAll('.nav-tab').forEach(tab=>{tab.addEventListener('click',()=>{const target=tab.dataset.tab;document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));tab.classList.add('active');document.getElementById('tab-'+target).classList.add('active');if(target==='delegation'&&typeof DelegationManager!=='undefined'){DelegationManager.render();}})});
+
+// Show notification
+function showNotif(title,text,type='success'){const n=document.getElementById('notification'),t=document.getElementById('notif-title'),m=document.getElementById('notif-text');t.textContent=title;m.textContent=text;n.className='notification-badge visible'+(type==='error'?' error':'');setTimeout(()=>n.classList.remove('visible'),5000);}
+
+// Initialize dashboard
+async function initDashboard() {
+  const session = getSession();
+  if (!session) return;
+  
+  // Update identity section
+  document.getElementById('agent-id').textContent = session.agentId || CONFIG.AGENT_ID;
+  document.getElementById('identity-meta').textContent = `Registered: ${new Date(session.loggedInAt).toLocaleDateString()} · ${session.authMethod || 'Standard'} login`;
+  
+  // Load stats
+  await loadStats();
+  
+  // Load transactions
+  await loadTransactions();
+  
+  // Load delegation
+  if (typeof DelegationManager !== 'undefined') {
+    await DelegationManager.init();
+  }
+  
+  // Initialize WebSocket
+  if (typeof WebSocketClient !== 'undefined' && CONFIG.FEATURES.webSocket) {
+    setTimeout(() => WebSocketClient.connect(), 1000);
+  }
+  
+  // Initialize notifications
+  if (typeof Notifications !== 'undefined') {
+    Notifications.init();
+    updateNotifButton();
+  }
+}
+
+// Load stats from API
+async function loadStats() {
+  try {
+    const [stats, metrics, reputation] = await Promise.all([
+      API.getStats(),
+      API.getMetrics(),
+      API.getReputation(),
+    ]);
+    
+    if (stats) {
+      document.getElementById('stat-delegations').textContent = stats.delegations || 1;
+      document.getElementById('stat-delegations-sub').textContent = stats.active_delegation || 'maxi-0001 active';
+    }
+    
+    if (metrics) {
+      document.getElementById('stat-tx').textContent = (metrics.transactions_30d || 0).toLocaleString();
+      document.getElementById('stat-tx-trend').textContent = metrics.tx_trend || '↑ Active';
+      document.getElementById('stat-vol').textContent = (metrics.volume_30d_sats || 0).toLocaleString();
+      document.getElementById('stat-vol-fiat').textContent = metrics.volume_fiat || '≈ Loading...';
+    }
+    
+    if (reputation) {
+      document.getElementById('stat-rep').textContent = reputation.score || 287;
+      document.getElementById('stat-rep-trend').textContent = reputation.trend || '↑ Growing';
+    }
+    
+  } catch (error) {
+    console.error('Failed to load stats:', error);
+  }
+}
+
+// Load transactions
+let allTransactions = [];
+async function loadTransactions() {
+  try {
+    const data = await API.getTransactions(50);
+    allTransactions = data.transactions || [];
+    renderTransactions(allTransactions);
+    
+    // Update charts
+    if (typeof Charts !== 'undefined') {
+      Charts.renderVolumeChart(allTransactions, 'volume-chart');
+      Charts.renderActivitySparkline(allTransactions, 'activity-chart');
+    }
+  } catch (error) {
+    console.error('Failed to load transactions:', error);
+    document.getElementById('feed-rows').innerHTML = '<div class="empty-state">Unable to load transactions. Will retry...</div>';
+  }
+}
+
+// Render transaction feed
+function renderTransactions(transactions) {
+  const container = document.getElementById('feed-rows');
+  
+  if (!transactions || transactions.length === 0) {
+    container.innerHTML = '<div class="empty-state">No transactions found</div>';
+    return;
+  }
+  
+  const html = transactions.map(tx => {
+    const date = new Date(tx.created_at || tx.timestamp);
+    const dateStr = date.toLocaleString('en-US', { month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit' });
+    const direction = tx.direction || 'inbound';
+    const amount = tx.amount_sats ? `${tx.amount_sats.toLocaleString()} sats` : tx.amount;
+    const rail = tx.protocol || tx.rail || 'Lightning';
+    const counterparty = tx.counterparty || tx.to || tx.from || 'Unknown';
+    
+    return `<div class="feed-row" data-tx-id="${tx.id}">
+      <div>${dateStr}</div>
+      <div><span class="type-${direction}">${direction}</span></div>
+      <div>${counterparty}</div>
+      <div>${rail}</div>
+      <div style="text-align:right">${amount}</div>
+      <div style="color:var(--teal)">● ${tx.status || 'Verified'}</div>
+    </div>`;
+  }).join('');
+  
+  container.innerHTML = html;
+}
+
+// Add new transaction to feed (WebSocket)
+function addTransactionToFeed(tx) {
+  const container = document.getElementById('feed-rows');
+  const date = new Date(tx.created_at || tx.timestamp);
+  const dateStr = date.toLocaleString('en-US', { month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit' });
+  const direction = tx.direction || 'inbound';
+  const amount = tx.amount_sats ? `${tx.amount_sats.toLocaleString()} sats` : tx.amount;
+  
+  const row = document.createElement('div');
+  row.className = 'feed-row new';
+  row.innerHTML = `
+    <div>${dateStr}</div>
+    <div><span class="type-${direction}">${direction}</span></div>
+    <div>${tx.counterparty || 'Unknown'}</div>
+    <div>${tx.protocol || 'Lightning'}</div>
+    <div style="text-align:right">${amount}</div>
+    <div style="color:var(--teal)">● ${tx.status || 'Verified'}</div>
+  `;
+  
+  container.insertBefore(row, container.firstChild);
+  
+  // Remove highlight after animation
+  setTimeout(() => row.classList.remove('new'), 3000);
+  
+  // Show notification
+  showNotif(direction === 'inbound' ? 'Payment Received' : 'Payment Sent', `${amount} via ${tx.protocol || 'Lightning'}`);
+  
+  // Update stats
+  loadStats();
+}
+
+// Export CSV
+function exportCSV() {
+  if (allTransactions.length === 0) {
+    showNotif('No Data', 'No transactions to export', 'error');
+    return;
+  }
+  
+  const header = 'Timestamp,Type,Counterparty,Rail,Amount,Status,ID\n';
+  const rows = allTransactions.map(tx => [
+    tx.created_at || tx.timestamp,
+    tx.direction,
+    tx.counterparty || tx.to || tx.from || 'Unknown',
+    tx.protocol || tx.rail || 'Lightning',
+    tx.amount_sats || tx.amount,
+    tx.status || 'Verified',
+    tx.id,
+  ].join(',')).join('\n');
+  
+  const blob = new Blob([header + rows], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `sovereign-transactions-${new Date().toISOString().split('T')[0]}.csv`;
+  a.click();
+  URL.revokeObjectURL(url);
+  
+  showNotif('Export Complete', 'Transactions saved to CSV');
+}
+
+// Toggle notifications
+async function toggleNotifications() {
+  if (!Notifications.isSupported) {
+    showNotif('Not Supported', 'Your browser does not support push notifications', 'error');
+    return;
+  }
+  
+  if (Notifications.isGranted()) {
+    await Notifications.unsubscribe();
+    showNotif('Notifications Disabled', 'Push notifications turned off');
+  } else {
+    const result = await Notifications.requestPermission();
+    if (result.granted) {
+      showNotif('Notifications Enabled', 'You will receive transaction alerts');
+    } else {
+      showNotif('Permission Denied', 'Please enable notifications in browser settings', 'error');
+    }
+  }
+  
+  updateNotifButton();
+}
+
+// Update notification button
+function updateNotifButton() {
+  const btn = document.getElementById('notif-btn');
+  if (!btn) return;
+  
+  if (Notifications.isGranted()) {
+    btn.textContent = 'Disable';
+    btn.classList.remove('btn-secondary');
+    btn.classList.add('btn-primary');
+  } else {
+    btn.textContent = 'Enable';
+    btn.classList.remove('btn-primary');
+    btn.classList.add('btn-secondary');
+  }
+}
+
+// Revoke all delegations
+async function revokeAll() {
+  if (!confirm('Revoke ALL delegations? Your agents will no longer be able to transact.')) return;
+  if (!confirm('Are you absolutely sure? This cannot be undone.')) return;
+  
+  showNotif('Processing...', 'Revoking all delegations');
+  
+  try {
+    await API.revokeDelegation();
+    showNotif('All Revoked', 'All delegations have been revoked');
+    if (typeof DelegationManager !== 'undefined') {
+      DelegationManager.currentDelegation = null;
+      DelegationManager.render();
+    }
+  } catch (error) {
+    showNotif('Error', error.message, 'error');
+  }
+}
+
+// WebSocket event handlers
+if (typeof WebSocketClient !== 'undefined') {
+  WebSocketClient.on('connected', () => {
+    document.getElementById('ws-detail').textContent = 'Connected to real-time feed';
+  });
+  
+  WebSocketClient.on('disconnected', () => {
+    document.getElementById('ws-detail').textContent = 'Disconnected. Retrying...';
+  });
+  
+  WebSocketClient.on('transaction', (tx) => {
+    addTransactionToFeed(tx);
+    if (Notifications.isGranted()) {
+      Notifications.showTransaction(tx);
+    }
+  });
+  
+  WebSocketClient.on('metrics_update', () => {
+    loadStats();
+  });
+}
+
+// Initialize on load
+document.addEventListener('DOMContentLoaded', initDashboard);
+
+// Refresh data periodically
+setInterval(() => {
+  if (document.visibilityState === 'visible') {
+    loadStats();
+  }
+}, CONFIG.REFRESH_INTERVAL);
 </script>
 </body>
 </html>

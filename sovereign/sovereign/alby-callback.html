@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Connecting to Alby...</title>
+<style>
+:root { --bg-base: #07070C; --teal: #1DB584; --text-primary: #EEEEF5; --text-secondary: #7A7A92; }
+body {
+  background: var(--bg-base);
+  color: var(--text-primary);
+  font-family: system-ui, -apple-system, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  margin: 0;
+  text-align: center;
+  padding: 24px;
+}
+.spinner {
+  width: 48px;
+  height: 48px;
+  border: 3px solid rgba(29, 181, 132, 0.2);
+  border-top-color: var(--teal);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 24px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+h1 { font-size: 20px; font-weight: 600; margin-bottom: 8px; }
+p { color: var(--text-secondary); font-size: 14px; margin: 0; }
+.error { color: #E84040; margin-top: 16px; }
+</style>
+</head>
+<body>
+<div class="spinner"></div>
+<h1>Connecting to Alby...</h1>
+<p>Completing authentication</p>
+<div id="error" class="error"></div>
+
+<script src="config.js"></script>
+<script src="auth.js"></script>
+<script src="alby-auth.js"></script>
+<script>
+async function handleCallback() {
+  const params = new URLSearchParams(window.location.search);
+  const code = params.get('code');
+  const state = params.get('state');
+  const error = params.get('error');
+  const errorDiv = document.getElementById('error');
+  
+  if (error) {
+    errorDiv.textContent = 'Authentication failed: ' + error;
+    setTimeout(() => {
+      window.location.href = '/sovereign/login.html?error=alby_denied';
+    }, 2000);
+    return;
+  }
+  
+  if (!code || !state) {
+    errorDiv.textContent = 'Invalid callback parameters';
+    setTimeout(() => {
+      window.location.href = '/sovereign/login.html?error=callback_failed';
+    }, 2000);
+    return;
+  }
+  
+  try {
+    if (typeof AlbyAuth !== 'undefined') {
+      await AlbyAuth.handleCallback(code, state);
+    } else {
+      // Fallback: verify state and create session
+      const savedState = localStorage.getItem('alby_oauth_state');
+      if (state !== savedState) {
+        throw new Error('Invalid state');
+      }
+      localStorage.removeItem('alby_oauth_state');
+      
+      // Create basic session (in production, exchange code for token)
+      Auth.loginWithOAuth('alby', {
+        displayName: 'Alby User',
+        id: 'alby_' + Date.now(),
+      }, {
+        accessToken: code,
+        expiresIn: 3600,
+      });
+    }
+    
+    window.location.href = '/sovereign/';
+  } catch (error) {
+    console.error('Callback handling failed:', error);
+    errorDiv.textContent = 'Authentication failed: ' + error.message;
+    setTimeout(() => {
+      window.location.href = '/sovereign/login.html?error=callback_failed';
+    }, 2000);
+  }
+}
+
+handleCallback();
+</script>
+</body>
+</html>
