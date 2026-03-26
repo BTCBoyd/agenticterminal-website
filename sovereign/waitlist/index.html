@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sovereign — Join the Waitlist | Agentic Terminal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-base: #07070C;
+    --bg-surface: #0E0E16;
+    --bg-elevated: #16161F;
+    --bg-border: #22222E;
+    --text-primary: #EEEEF5;
+    --text-secondary: #7A7A92;
+    --text-tertiary: #44445A;
+    --accent: #6B5CE7;
+    --accent-dim: rgba(107, 92, 231, 0.15);
+    --teal: #1DB584;
+    --teal-dim: rgba(29, 181, 132, 0.12);
+    --mono: 'DM Mono', monospace;
+    --display: 'Syne', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg-base);
+    color: var(--text-primary);
+    font-family: var(--display);
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* Grain overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.4;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 48px;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.3s, background 0.3s;
+  }
+
+  nav.scrolled {
+    background: rgba(7, 7, 12, 0.92);
+    backdrop-filter: blur(16px);
+    border-color: var(--bg-border);
+  }
+
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+  }
+
+  .nav-shield {
+    width: 32px;
+    height: 36px;
+  }
+
+  .nav-wordmark {
+    font-family: var(--display);
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: -0.3px;
+  }
+
+  .nav-by {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-tertiary);
+    letter-spacing: 0.05em;
+    margin-left: 2px;
+  }
+
+  .nav-home {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    letter-spacing: 0.04em;
+    transition: color 0.2s;
+  }
+
+  .nav-home:hover { color: var(--text-primary); }
+
+  /* MAIN */
+  main {
+    padding: 120px 48px 80px;
+    max-width: 720px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .hero {
+    text-align: center;
+    margin-bottom: 64px;
+  }
+
+  .hero-eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--teal);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .hero-eyebrow::before {
+    content: '';
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    background: var(--teal);
+    border-radius: 50%;
+    animation: pulse 2s ease infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.85); }
+  }
+
+  .hero-headline {
+    font-family: var(--display);
+    font-size: clamp(36px, 5vw, 56px);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -1.5px;
+    margin-bottom: 24px;
+  }
+
+  .hero-headline em {
+    font-style: normal;
+    color: var(--teal);
+  }
+
+  .hero-sub {
+    font-family: var(--mono);
+    font-size: 15px;
+    color: var(--text-secondary);
+    max-width: 560px;
+    margin: 0 auto 32px;
+    line-height: 1.7;
+  }
+
+  /* Trust Statement */
+  .trust-box {
+    background: var(--teal-dim);
+    border: 1px solid rgba(29, 181, 132, 0.2);
+    border-radius: 8px;
+    padding: 24px;
+    margin-bottom: 48px;
+    text-align: left;
+  }
+
+  .trust-box p {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.8;
+    margin: 0;
+  }
+
+  .trust-box strong {
+    color: var(--teal);
+    font-weight: 500;
+  }
+
+  /* Form */
+  .form-section {
+    background: var(--bg-surface);
+    border: 1px solid var(--bg-border);
+    border-radius: 12px;
+    padding: 40px;
+  }
+
+  .form-title {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  .form-subtitle {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-bottom: 32px;
+  }
+
+  .form-group {
+    margin-bottom: 24px;
+  }
+
+  .form-label {
+    display: block;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-tertiary);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .form-label .required {
+    color: var(--teal);
+  }
+
+  input[type="text"],
+  input[type="email"],
+  select,
+  textarea {
+    width: 100%;
+    background: var(--bg-elevated);
+    border: 1px solid var(--bg-border);
+    border-radius: 6px;
+    padding: 12px 16px;
+    font-family: var(--mono);
+    font-size: 14px;
+    color: var(--text-primary);
+    transition: border-color 0.2s;
+  }
+
+  input:focus,
+  select:focus,
+  textarea:focus {
+    outline: none;
+    border-color: var(--teal);
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    color: var(--text-tertiary);
+  }
+
+  select {
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%237A7A92' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+  }
+
+  textarea {
+    min-height: 100px;
+    resize: vertical;
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .checkbox-group {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-top: 8px;
+  }
+
+  .checkbox-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    background: var(--bg-elevated);
+    border: 1px solid var(--bg-border);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .checkbox-item:hover {
+    border-color: var(--teal);
+  }
+
+  .checkbox-item input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--teal);
+    cursor: pointer;
+  }
+
+  .checkbox-item label {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--text-primary);
+    cursor: pointer;
+    margin: 0;
+    text-transform: none;
+    letter-spacing: normal;
+  }
+
+  .checkbox-other {
+    grid-column: 1 / -1;
+  }
+
+  .checkbox-other input[type="text"] {
+    margin-top: 8px;
+    width: 100%;
+  }
+
+  @media (max-width: 600px) {
+    .form-row { grid-template-columns: 1fr; }
+    main { padding: 100px 24px 60px; }
+    .form-section { padding: 24px; }
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-family: var(--mono);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--bg-base);
+    background: var(--teal);
+    padding: 14px 32px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    letter-spacing: 0.04em;
+    transition: opacity 0.2s;
+    width: 100%;
+  }
+
+  .btn-primary:hover { opacity: 0.9; }
+
+  .btn-primary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  /* Success State */
+  .success-message {
+    display: none;
+    text-align: center;
+    padding: 48px 0;
+  }
+
+  .success-message.active {
+    display: block;
+  }
+
+  .success-icon {
+    width: 64px;
+    height: 64px;
+    background: var(--teal-dim);
+    border: 2px solid var(--teal);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 24px;
+    font-size: 32px;
+  }
+
+  .success-title {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+
+  .success-text {
+    font-family: var(--mono);
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 32px;
+  }
+
+  .back-link {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--teal);
+    text-decoration: none;
+  }
+
+  .back-link:hover { text-decoration: underline; }
+
+  /* Footer */
+  footer {
+    text-align: center;
+    padding: 48px;
+    border-top: 1px solid var(--bg-border);
+    margin-top: 64px;
+  }
+
+  footer p {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text-tertiary);
+  }
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <a href="https://agenticterminal.io" class="nav-logo">
+    <svg class="nav-shield" viewBox="0 0 32 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M16 1L2 6.5V18C2 25.5 8.5 32.5 16 35C23.5 32.5 30 25.5 30 18V6.5L16 1Z" fill="rgba(29,181,132,0.1)" stroke="#1DB584" stroke-width="1.5"/>
+      <path d="M11 18L14.5 21.5L21 14" stroke="#1DB584" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <div>
+      <div class="nav-wordmark">Sovereign</div>
+      <div class="nav-by">by Agentic Terminal</div>
+    </div>
+  </a>
+  <a href="https://agenticterminal.io" class="nav-home">← Back to home</a>
+</nav>
+
+<main>
+  <div class="hero">
+    <div class="hero-eyebrow">Coming Soon</div>
+    <h1 class="hero-headline">
+      Your agent.<br>Your keys.<br><em>Your rules.</em>
+    </h1>
+    <p class="hero-sub">
+      Sovereign gives you cryptographic sovereignty over your AI agents — 
+      real-time visibility into every transaction, delegation with constraints, 
+      and one-click revocation. We're building this carefully.
+    </p>
+  </div>
+
+  <div class="trust-box">
+    <p>
+      <strong>Privacy by architecture:</strong> Sovereign stores your identity and agent 
+      transaction data exclusively in your browser. Your private key never leaves your device 
+      and is never transmitted to Agentic Terminal's servers. We have no ability to access, 
+      read, or share your agent data. We are taking the time to build this right before 
+      opening access — because that promise deserves to be backed by code, not just words.
+    </p>
+  </div>
+
+  <div class="form-section" id="waitlist-form">
+    <h2 class="form-title">Join the waitlist</h2>
+    <p class="form-subtitle">Be among the first to get access when we launch</p>
+
+    <form id="signup-form" action="https://api.web3forms.com/submit" method="POST">
+      <input type="hidden" name="access_key" value="05b183a4-c7f5-41b0-b2b4-4d0388327d0f">
+      <input type="hidden" name="subject" value="New Sovereign Waitlist Signup">
+      <input type="hidden" name="from_name" value="Sovereign Waitlist">
+      <input type="hidden" name="to" value="boyd@agenticterminal.io">
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Full name <span class="required">*</span></label>
+          <input type="text" name="name" placeholder="Satoshi Nakamoto" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email address <span class="required">*</span></label>
+          <input type="email" name="email" placeholder="satoshi@example.com" required>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Are you using Alby Hub?</label>
+          <select name="alby_hub">
+            <option value="">Select an option</option>
+            <option value="yes">Yes, actively using</option>
+            <option value="no">No, not yet</option>
+            <option value="planning">Planning to set up</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Do you have agents transacting?</label>
+          <select name="agent_status">
+            <option value="">Select an option</option>
+            <option value="yes">Yes, live today</option>
+            <option value="building">Building one now</option>
+            <option value="no">Not yet</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Which payment rails is your agent using? <span style="color:var(--text-tertiary);font-size:11px;">(Select all that apply)</span></label>
+        <div class="checkbox-group">
+          <div class="checkbox-item">
+            <input type="checkbox" name="payment_rails[]" value="Lightning" id="rail-lightning">
+            <label for="rail-lightning">Lightning</label>
+          </div>
+          <div class="checkbox-item">
+            <input type="checkbox" name="payment_rails[]" value="x402" id="rail-x402">
+            <label for="rail-x402">x402</label>
+          </div>
+          <div class="checkbox-item">
+            <input type="checkbox" name="payment_rails[]" value="L402" id="rail-l402">
+            <label for="rail-l402">L402</label>
+          </div>
+          <div class="checkbox-item">
+            <input type="checkbox" name="payment_rails[]" value="Solana" id="rail-solana">
+            <label for="rail-solana">Solana</label>
+          </div>
+          <div class="checkbox-item checkbox-other">
+            <input type="checkbox" name="payment_rails[]" value="Other" id="rail-other" onchange="document.getElementById('other-rail-text').style.display = this.checked ? 'block' : 'none'">
+            <label for="rail-other">Other</label>
+            <input type="text" name="payment_rails_other" id="other-rail-text" placeholder="Please specify..." style="display:none;">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Which wallets or infrastructure does your agent use? <span style="color:var(--text-tertiary);font-size:11px;">(Select all that apply)</span></label>
+        <div class="checkbox-group">
+          <div class="checkbox-item">
+            <input type="checkbox" name="wallets[]" value="Alby Hub" id="wallet-alby">
+            <label for="wallet-alby">Alby Hub</label>
+          </div>
+          <div class="checkbox-item">
+            <input type="checkbox" name="wallets[]" value="LND (self-hosted)" id="wallet-lnd">
+            <label for="wallet-lnd">LND (self-hosted)</label>
+          </div>
+          <div class="checkbox-item">
+            <input type="checkbox" name="wallets[]" value="Moonpay / OWS" id="wallet-moonpay">
+            <label for="wallet-moonpay">Moonpay / OWS</label>
+          </div>
+          <div class="checkbox-item">
+            <input type="checkbox" name="wallets[]" value="Stripe" id="wallet-stripe">
+            <label for="wallet-stripe">Stripe</label>
+          </div>
+          <div class="checkbox-item checkbox-other">
+            <input type="checkbox" name="wallets[]" value="Other" id="wallet-other" onchange="document.getElementById('other-wallet-text').style.display = this.checked ? 'block' : 'none'">
+            <label for="wallet-other">Other</label>
+            <input type="text" name="wallets_other" id="other-wallet-text" placeholder="Please specify..." style="display:none;">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Anything else we should know?</label>
+        <textarea name="message" placeholder="Tell us about your use case, what you're building, or any questions you have..."></textarea>
+      </div>
+
+      <button type="submit" class="btn-primary">Join the waitlist →</button>
+    </form>
+  </div>
+
+  <div class="success-message" id="success-message">
+    <div class="success-icon">✓</div>
+    <h2 class="success-title">You're on the list</h2>
+    <p class="success-text">
+      Thanks for your interest in Sovereign. We'll be in touch when early access opens.<br>
+      Expected: Q2 2026
+    </p>
+    <a href="https://agenticterminal.io" class="back-link">← Back to Agentic Terminal</a>
+  </div>
+</main>
+
+<footer>
+  <p>© 2026 Agentic Terminal. Built for the sovereign agent economy.</p>
+</footer>
+
+<script>
+  // Nav scroll effect
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 40);
+  });
+
+  // Form submission handling
+  const form = document.getElementById('signup-form');
+  const formSection = document.getElementById('waitlist-form');
+  const successMessage = document.getElementById('success-message');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const submitBtn = form.querySelector('button[type="submit"]');
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Submitting...';
+
+    // For now, just show success (replace with actual form handler)
+    // To make this work, you need to:
+    // 1. Set up Web3Forms (free, no backend needed): https://web3forms.com/
+    // 2. Replace YOUR_ACCESS_KEY with your actual key
+    // 3. Or use Tally: https://tally.so/ and embed the form
+    
+    // Simulating success for now:
+    setTimeout(() => {
+      formSection.style.display = 'none';
+      successMessage.classList.add('active');
+      
+      // Actually submit the form data
+      const formData = new FormData(form);
+      fetch(form.action, {
+        method: 'POST',
+        body: formData
+      }).catch(err => console.log('Form submission error:', err));
+    }, 500);
+  });
+</script>
+
+</body>
+</html>

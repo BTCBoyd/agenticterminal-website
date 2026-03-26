@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Enterprise — Agentic Terminal</title>
+<style>
+:root {
+  --bg: #0a0c0a;
+  --bg-card: #141614;
+  --bg-card2: #1a1d1a;
+  --border: rgba(255,255,255,0.08);
+  --border-hover: rgba(255,255,255,0.15);
+  --text-primary: #e8ede9;
+  --text-secondary: #a8b8aa;
+  --text-muted: #6e8571;
+  --accent: #6B5CE7;
+  --accent-dim: rgba(107,92,231,0.15);
+  --green: #22c55e;
+  --green-dim: #16a34a;
+  --green-bg: rgba(34,197,94,0.10);
+  --red: #f87171;
+  --red-bg: rgba(248,113,113,0.10);
+  --amber: #fbbf24;
+  --amber-bg: rgba(251,191,36,0.10);
+  --nav-h: 56px;
+  --font-mono: 'JetBrains Mono', 'Fira Mono', monospace;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text-primary); font-family: 'Inter', system-ui, sans-serif; font-size: 13px; min-height: 100vh; }
+
+nav { position: sticky; top: 0; z-index: 100; height: var(--nav-h); background: rgba(10,12,10,0.95); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); display: flex; align-items: center; padding: 0 24px; gap: 0; }
+.nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); padding-right: 32px; flex-shrink: 0; }
+.brand-icon { width: 32px; height: 32px; background: var(--accent-dim); border: 1px solid var(--accent); border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+.brand-name { font-size: 16px; font-weight: 600; }
+.brand-sub { font-size: 11px; color: var(--text-muted); }
+
+.nav-tabs { display: flex; align-items: center; gap: 2px; flex: 1; }
+.nav-tab { padding: 6px 14px; border-radius: 6px; font-size: 12px; font-weight: 500; color: var(--text-secondary); cursor: pointer; border: none; background: none; transition: all 0.15s; }
+.nav-tab:hover { color: var(--text-primary); background: rgba(255,255,255,0.05); }
+.nav-tab.active { color: var(--accent); background: var(--accent-dim); }
+
+.nav-right { display: flex; align-items: center; gap: 12px; }
+.nav-user { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text-secondary); }
+.nav-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); }
+.nav-org { font-size: 11px; color: var(--text-muted); background: var(--bg-card2); padding: 3px 8px; border-radius: 4px; border: 1px solid var(--border); }
+.nav-logout { font-size: 12px; color: var(--text-muted); cursor: pointer; border: 1px solid var(--border); background: none; padding: 5px 12px; border-radius: 5px; transition: all 0.15s; }
+.nav-logout:hover { color: var(--red); background: var(--red-bg); border-color: rgba(248,113,113,0.3); }
+
+.page { display: none; padding: 24px 28px; max-width: 1400px; margin: 0 auto; }
+.page.active { display: block; }
+
+.stats-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; margin-bottom: 24px; }
+.stat-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; }
+.stat-label { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 10px; }
+.stat-value { font-size: 32px; font-weight: 700; color: var(--text-primary); font-family: var(--font-mono); }
+.stat-sub { font-size: 13px; color: var(--text-secondary); margin-top: 6px; }
+.stat-alert { color: var(--amber); }
+
+.section-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; margin-bottom: 20px; }
+.section-head { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid var(--border); }
+.section-title { font-size: 14px; font-weight: 600; display: flex; align-items: center; gap: 10px; }
+.section-actions { display: flex; gap: 8px; }
+
+.alert-badge { background: var(--red-bg); color: var(--red); padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+
+.tbl-toolbar { display: flex; align-items: center; gap: 12px; padding: 12px 20px; border-bottom: 1px solid var(--border); flex-wrap: wrap; background: var(--bg-card2); }
+.tbl-toolbar label { font-size: 12px; color: var(--text-muted); }
+.tbl-toolbar select, .tbl-toolbar input { background: var(--bg-card); border: 1px solid var(--border); color: var(--text-primary); border-radius: 6px; padding: 6px 12px; font-size: 12px; }
+.btn { padding: 6px 14px; border-radius: 6px; font-size: 12px; font-weight: 500; cursor: pointer; border: 1px solid var(--border); background: var(--bg-card2); color: var(--text-secondary); transition: all 0.15s; }
+.btn:hover { border-color: var(--border-hover); color: var(--text-primary); }
+.btn-primary { color: var(--accent); border-color: var(--accent); background: var(--accent-dim); }
+.btn-danger { color: var(--red); border-color: rgba(248,113,113,0.3); background: var(--red-bg); }
+.btn-amber { color: var(--amber); border-color: rgba(251,191,36,0.3); background: var(--amber-bg); }
+
+.tbl-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; }
+thead th { padding: 12px 16px; text-align: left; font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-muted); border-bottom: 1px solid var(--border); cursor: pointer; user-select: none; }
+thead th:hover { color: var(--text-secondary); }
+thead th .sort { margin-left: 4px; opacity: 0.5; }
+thead th.sorted .sort { opacity: 1; color: var(--accent); }
+tbody tr { border-bottom: 1px solid rgba(255,255,255,0.04); transition: background 0.1s; }
+tbody tr:hover { background: rgba(255,255,255,0.02); }
+tbody td { padding: 14px 16px; font-size: 13px; color: var(--text-primary); vertical-align: middle; }
+td.mono { font-family: var(--font-mono); font-size: 12px; color: var(--text-secondary); }
+.status-badge { display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+.status-active { background: var(--green-bg); color: var(--green); }
+.status-pending { background: var(--amber-bg); color: var(--amber); }
+.status-expired { background: var(--red-bg); color: var(--red); }
+
+.alert-item { display: flex; align-items: center; justify-content: space-between; padding: 14px 20px; border-bottom: 1px solid var(--border); background: var(--bg-card2); }
+.alert-item:last-child { border-bottom: none; }
+.alert-info { display: flex; align-items: center; gap: 12px; }
+.alert-icon { font-size: 18px; }
+.alert-text { font-size: 13px; color: var(--text-primary); }
+.alert-meta { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+.alert-actions { display: flex; gap: 8px; }
+
+.deleg-card { background: var(--bg-card2); border: 1px solid var(--border); border-radius: 10px; padding: 20px; margin-bottom: 16px; }
+.deleg-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; }
+.deleg-title { font-size: 15px; font-weight: 600; }
+.deleg-status { font-size: 11px; padding: 3px 10px; border-radius: 4px; }
+.deleg-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 13px; }
+.deleg-row:last-child { border-bottom: none; }
+.deleg-label { color: var(--text-muted); font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; }
+.deleg-actions { display: flex; gap: 8px; margin-top: 16px; }
+
+.agent-detail-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 200; padding: 40px; overflow-y: auto; }
+.agent-detail-modal.active { display: block; }
+.modal-content { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; max-width: 900px; margin: 0 auto; padding: 24px; }
+.modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+.modal-close { font-size: 24px; color: var(--text-muted); cursor: pointer; background: none; border: none; }
+.modal-close:hover { color: var(--text-primary); }
+
+.settings-section { padding: 20px; border-bottom: 1px solid var(--border); }
+.settings-section:last-child { border-bottom: none; }
+.settings-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; }
+.settings-label { font-size: 13px; color: var(--text-secondary); }
+.save-bar { padding: 16px 20px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 12px; }
+
+.sso-btn { display: flex; align-items: center; gap: 10px; background: var(--bg-card2); border: 1px solid var(--border); border-radius: 8px; padding: 12px 20px; cursor: pointer; transition: all 0.15s; width: 100%; margin-bottom: 12px; }
+.sso-btn:hover { border-color: var(--border-hover); }
+.sso-icon { font-size: 20px; }
+
+@media (max-width: 900px) {
+  .stats-grid { grid-template-columns: repeat(2,1fr); }
+  .nav-tabs { display: none; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="https://agenticterminal.io">
+    <div class="brand-icon">⚡</div>
+    <div>
+      <div class="brand-name">Enterprise</div>
+      <div class="brand-sub">Agentic Terminal Enterprise — early access preview</div>
+    </div>
+  </a>
+
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="showPage('dashboard',this)">Dashboard</button>
+    <button class="nav-tab" onclick="showPage('fleet',this)">Agent Fleet</button>
+    <button class="nav-tab" onclick="showPage('transactions',this)">Transactions</button>
+    <button class="nav-tab" onclick="showPage('delegations',this)">Delegations</button>
+    <button class="nav-tab" onclick="showPage('alerts',this)">Alerts <span class="alert-badge">4</span></button>
+    <button class="nav-tab" onclick="showPage('settings',this)">Settings</button>
+  </div>
+
+  <div class="nav-right">
+    <div class="nav-user">
+      <span class="nav-dot"></span>
+      <div>
+        <div>admin@acme.com</div>
+        <div class="nav-org">Acme Corp</div>
+      </div>
+    </div>
+    <button class="nav-logout" onclick="if(confirm('Log out of Enterprise?')) window.location.href='https://agenticterminal.io'">Log out</button>
+  </div>
+</nav>
+
+<!-- DASHBOARD -->
+<div class="page active" id="page-dashboard">
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-label">Total Agents</div>
+      <div class="stat-value">47</div>
+      <div class="stat-sub">12 active today</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Transactions (24h)</div>
+      <div class="stat-value">1,284</div>
+      <div class="stat-sub">↑ 23% from yesterday</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Volume (30d)</div>
+      <div class="stat-value">$42.8K</div>
+      <div class="stat-sub">across all rails</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Active Alerts</div>
+      <div class="stat-value" style="color:var(--amber)">4</div>
+      <div class="stat-sub stat-alert">Action required</div>
+    </div>
+  </div>
+
+  <div class="section-card">
+    <div class="section-head">
+      <div class="section-title">Critical Alerts</div>
+      <button class="btn" onclick="showPage('alerts', document.querySelectorAll('.nav-tab')[4])">View all alerts</button>
+    </div>
+    <div class="alert-item">
+      <div class="alert-info">
+        <span class="alert-icon">⚠️</span>
+        <div>
+          <div class="alert-text">Delegation Expired: agent-0247</div>
+          <div class="alert-meta">Expired 2 hours ago · Revenue impact: $1,200/hr</div>
+        </div>
+      </div>
+      <div class="alert-actions">
+        <button class="btn btn-primary" onclick="alert('Renew delegation...')">Renew Delegation</button>
+      </div>
+    </div>
+    <div class="alert-item">
+      <div class="alert-info">
+        <span class="alert-icon">💳</span>
+        <div>
+          <div class="alert-text">Insufficient Balance: agent-0189</div>
+          <div class="alert-meta">Balance: 0 sats · Unable to process payments</div>
+        </div>
+      </div>
+      <div class="alert-actions">
+        <button class="btn btn-primary" onclick="alert('Top up balance...')">Top Up Balance</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-card">
+    <div class="section-head">
+      <div class="section-title">Recent Activity</div>
+    </div>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr><th>Agent</th><th>Action</th><th>Amount</th><th>Time</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>agent-0001</td><td>Payment executed</td><td>2,100 sats</td><td>2m ago</td></tr>
+          <tr><td>agent-0042</td><td>Delegation renewed</td><td>—</td><td>15m ago</td></tr>
+          <tr><td>agent-0018</td><td>Vac issued</td><td>—</td><td>1h ago</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- AGENT FLEET -->
+<div class="page" id="page-fleet">
+  <div class="section-card">
+    <div class="section-head">
+      <div class="section-title">Agent Fleet</div>
+      <div class="section-actions">
+        <button class="btn btn-primary" onclick="alert('Register new agent...')">+ New Agent</button>
+      </div>
+    </div>
+    <div class="tbl-toolbar">
+      <label>Filter:</label>
+      <select id="fleet-filter-col">
+        <option value="all">All columns</option>
+        <option value="0">Agent ID</option>
+        <option value="1">Status</option>
+        <option value="2">Rail</option>
+      </select>
+      <input type="text" id="fleet-filter-val" placeholder="Search..." style="width:180px"/>
+      <button class="btn" onclick="alert('Exporting CSV...')">↓ Export CSV</button>
+    </div>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th onclick="alert('Sort by ID')">Agent ID ↕</th>
+            <th onclick="alert('Sort by Status')">Status ↕</th>
+            <th onclick="alert('Sort by Rail')">Rail ↕</th>
+            <th onclick="alert('Sort by Txns')">Transactions ↕</th>
+            <th onclick="alert('Sort by Volume')">Volume (30d) ↕</th>
+            <th onclick="alert('Sort by Success')">Success Rate ↕</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="mono">agent-0001</td>
+            <td><span class="status-badge status-active">● Active</span></td>
+            <td>Lightning</td>
+            <td class="mono">28</td>
+            <td class="mono">847K sats</td>
+            <td class="mono">100%</td>
+            <td><button class="btn" onclick="alert('View agent details')">View</button></td>
+          </tr>
+          <tr>
+            <td class="mono">agent-0042</td>
+            <td><span class="status-badge status-active">● Active</span></td>
+            <td>x402</td>
+            <td class="mono">156</td>
+            <td class="mono">$12.4K</td>
+            <td class="mono">99.2%</td>
+            <td><button class="btn" onclick="alert('View agent details')">View</button></td>
+          </tr>
+          <tr>
+            <td class="mono">agent-0247</td>
+            <td><span class="status-badge status-expired">● Expired</span></td>
+            <td>Lightning</td>
+            <td class="mono">89</td>
+            <td class="mono">$8.2K</td>
+            <td class="mono">—</td>
+            <td><button class="btn" onclick="alert('View agent details')">View</button> <button class="btn btn-amber" onclick="alert('Renew delegation')">Renew</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- TRANSACTIONS -->
+<div class="page" id="page-transactions">
+  <div class="section-card">
+    <div class="section-head">
+      <div class="section-title">Transaction History</div>
+      <div class="section-actions">
+        <button class="btn" onclick="alert('Exporting CSV...')">↓ Export CSV</button>
+        <button class="btn" onclick="alert('Exporting XLSX...')">↓ Export XLSX</button>
+      </div>
+    </div>
+    <div class="tbl-toolbar">
+      <label>Filter:</label>
+      <select id="txn-filter-col">
+        <option value="all">All columns</option>
+        <option value="0">Agent</option>
+        <option value="1">Type</option>
+        <option value="2">Rail</option>
+        <option value="5">Status</option>
+      </select>
+      <input type="text" id="txn-filter-val" placeholder="Search..." style="width:180px"/>
+    </div>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th onclick="alert('Sort by Agent')">Agent ↕</th>
+            <th onclick="alert('Sort by Type')">Type ↕</th>
+            <th onclick="alert('Sort by Rail')">Rail ↕</th>
+            <th onclick="alert('Sort by Amount')">Amount ↕</th>
+            <th onclick="alert('Sort by Time')">Time ↕</th>
+            <th onclick="alert('Sort by Status')">Status ↕</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="mono">agent-0001</td><td>Inbound</td><td>Lightning</td><td class="mono">210 sats</td><td>5m ago</td><td><span class="status-badge status-active">✓ Verified</span></td></tr>
+          <tr><td class="mono">agent-0042</td><td>Outbound</td><td>x402</td><td class="mono">$45.00</td><td>12m ago</td><td><span class="status-badge status-active">✓ Verified</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- DELEGATIONS -->
+<div class="page" id="page-delegations">
+  <div class="section-card">
+    <div class="section-head">
+      <div class="section-title">Active Delegations</div>
+      <button class="btn btn-primary" onclick="alert('Create new delegation...')">+ New Delegation</button>
+    </div>
+    <div style="padding: 20px;">
+      <div class="deleg-card">
+        <div class="deleg-header">
+          <div class="deleg-title">agent-0001 → maxi-0001</div>
+          <span class="status-badge status-active">● Active</span>
+        </div>
+        <div class="deleg-row"><span class="deleg-label">Constraints</span><span>50K sat/txn · 500K sat/mo</span></div>
+        <div class="deleg-row"><span class="deleg-label">Rails</span><span>Lightning · x402 · Solana</span></div>
+        <div class="deleg-row"><span class="deleg-label">Expires</span><span>2026-06-23</span></div>
+        <div class="deleg-actions">
+          <button class="btn" onclick="alert('Edit delegation')">Edit</button>
+          <button class="btn btn-primary" onclick="alert('Renew delegation')">Renew</button>
+          <button class="btn btn-danger" onclick="alert('Revoke delegation')">Revoke</button>
+        </div>
+      </div>
+      <div class="deleg-card" style="border-color: rgba(251,191,36,0.3);">
+        <div class="deleg-header">
+          <div class="deleg-title">agent-0247 → sales-bot-01</div>
+          <span class="status-badge status-expired">● Expired</span>
+        </div>
+        <div class="deleg-row"><span class="deleg-label">Constraints</span><span>100K sat/txn · 1M sat/mo</span></div>
+        <div class="deleg-row"><span class="deleg-label">Rails</span><span>Lightning</span></div>
+        <div class="deleg-row"><span class="deleg-label">Expired</span><span>2026-03-25 18:30</span></div>
+        <div class="deleg-actions">
+          <button class="btn btn-amber" onclick="alert('Renew delegation')">Renew Now</button>
+          <button class="btn btn-danger" onclick="alert('Revoke delegation')">Revoke</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ALERTS -->
+<div class="page" id="page-alerts">
+  <div class="section-card">
+    <div class="section-head">
+      <div class="section-title">All Alerts (4)</div>
+    </div>
+    <div class="alert-item">
+      <div class="alert-info">
+        <span class="alert-icon">⚠️</span>
+        <div>
+          <div class="alert-text">Delegation Expired: agent-0247</div>
+          <div class="alert-meta">Expired 2 hours ago</div>
+        </div>
+      </div>
+      <button class="btn btn-primary" onclick="alert('Renew delegation')">Renew Delegation</button>
+    </div>
+    <div class="alert-item">
+      <div class="alert-info">
+        <span class="alert-icon">📜</span>
+        <div>
+          <div class="alert-text">VAC Expired: agent-0183</div>
+          <div class="alert-meta">Expired 5 hours ago</div>
+        </div>
+      </div>
+      <button class="btn btn-primary" onclick="alert('Renew VAC')">Renew VAC</button>
+    </div>
+    <div class="alert-item">
+      <div class="alert-info">
+        <span class="alert-icon">💳</span>
+        <div>
+          <div class="alert-text">Insufficient Balance: agent-0189</div>
+          <div class="alert-meta">Balance: 0 sats</div>
+        </div>
+      </div>
+      <button class="btn btn-primary" onclick="alert('Top up balance')">Top Up Balance</button>
+    </div>
+    <div class="alert-item">
+      <div class="alert-info">
+        <span class="alert-icon">🚫</span>
+        <div>
+          <div class="alert-text">Spend Limit Exceeded: agent-0034</div>
+          <div class="alert-meta">Limit: 50K sats · Attempted: 78K sats</div>
+        </div>
+      </div>
+      <button class="btn btn-primary" onclick="alert('Adjust spend limit')">Adjust Spend Limit</button>
+    </div>
+  </div>
+</div>
+
+<!-- SETTINGS -->
+<div class="page" id="page-settings">
+  <div class="section-card">
+    <div class="section-head"><div class="section-title">Organization Settings</div></div>
+    <div class="settings-section">
+      <div class="settings-row">
+        <span class="settings-label">Organization Name</span>
+        <input type="text" value="Acme Corp" style="background:var(--bg-card2);border:1px solid var(--border);color:var(--text-primary);padding:6px 12px;border-radius:6px;width:240px;" id="org-name"/>
+      </div>
+      <div class="settings-row">
+        <span class="settings-label">Default Spend Limit</span>
+        <input type="text" value="50,000 sats" style="background:var(--bg-card2);border:1px solid var(--border);color:var(--text-primary);padding:6px 12px;border-radius:6px;width:180px;" id="default-limit"/>
+      </div>
+    </div>
+    <div class="save-bar">
+      <button class="btn" onclick="alert('Changes discarded')">Cancel</button>
+      <button class="btn btn-primary" onclick="alert('Settings saved')">Save Changes</button>
+    </div>
+  </div>
+  <div class="section-card">
+    <div class="section-head"><div class="section-title">Authentication</div></div>
+    <div style="padding: 20px;">
+      <p style="color:var(--text-secondary);font-size:13px;margin-bottom:16px;">Sign in with your corporate identity provider</p>
+      <button class="sso-btn" onclick="alert('Microsoft SSO')">
+        <span class="sso-icon">🪟</span>
+        <div><div style="font-weight:600;">Microsoft</div><div style="font-size:12px;color:var(--text-muted);">Sign in with Microsoft Entra ID</div></div>
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+function showPage(id, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  if (btn) btn.classList.add('active');
+}
+</script>
+
+</body>
+</html>

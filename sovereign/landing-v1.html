@@ -1,0 +1,1683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sovereign — Your agent. Your keys. Your rules.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --bg-base: #07070C;
+    --bg-surface: #0E0E16;
+    --bg-elevated: #16161F;
+    --bg-border: #22222E;
+    --text-primary: #EEEEF5;
+    --text-secondary: #7A7A92;
+    --text-tertiary: #44445A;
+    --accent: #6B5CE7;
+    --accent-dim: rgba(107, 92, 231, 0.15);
+    --teal: #1DB584;
+    --teal-dim: rgba(29, 181, 132, 0.12);
+    --amber: #E87D20;
+    --red: #E84040;
+    --mono: 'DM Mono', monospace;
+    --display: 'Syne', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg-base);
+    color: var(--text-primary);
+    font-family: var(--display);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* Grain overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.4;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 48px;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.3s, background 0.3s;
+  }
+
+  nav.scrolled {
+    background: rgba(7, 7, 12, 0.92);
+    backdrop-filter: blur(16px);
+    border-color: var(--bg-border);
+  }
+
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+  }
+
+  .nav-shield {
+    width: 32px;
+    height: 36px;
+  }
+
+  .nav-wordmark {
+    font-family: var(--display);
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: -0.3px;
+  }
+
+  .nav-by {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-tertiary);
+    letter-spacing: 0.05em;
+    margin-left: 2px;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    letter-spacing: 0.04em;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--text-primary); }
+
+  .nav-cta {
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--bg-base) !important;
+    background: var(--teal);
+    padding: 8px 20px;
+    border-radius: 4px;
+    letter-spacing: 0.04em;
+    transition: opacity 0.2s !important;
+  }
+
+  .nav-cta:hover { opacity: 0.85; }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 120px 48px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Subtle grid background */
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(var(--bg-border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--bg-border) 1px, transparent 1px);
+    background-size: 64px 64px;
+    opacity: 0.3;
+    mask-image: radial-gradient(ellipse 80% 60% at 20% 50%, black 0%, transparent 100%);
+  }
+
+  /* Glow orb */
+  .hero::after {
+    content: '';
+    position: absolute;
+    top: 20%;
+    right: -10%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(107, 92, 231, 0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--teal);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease 0.1s forwards;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .hero-eyebrow::before {
+    content: '';
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    background: var(--teal);
+    border-radius: 50%;
+    animation: pulse 2s ease infinite;
+  }
+
+  .hero-headline {
+    font-family: var(--display);
+    font-size: clamp(48px, 7vw, 96px);
+    font-weight: 800;
+    line-height: 1.0;
+    letter-spacing: -2px;
+    max-width: 900px;
+    margin-bottom: 32px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease 0.2s forwards;
+  }
+
+  .hero-headline em {
+    font-style: normal;
+    color: var(--teal);
+  }
+
+  .hero-sub {
+    font-family: var(--mono);
+    font-size: 15px;
+    color: var(--text-secondary);
+    max-width: 560px;
+    line-height: 1.7;
+    margin-bottom: 48px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease 0.35s forwards;
+  }
+
+  .hero-actions {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease 0.5s forwards;
+  }
+
+  .btn-primary {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--bg-base);
+    background: var(--teal);
+    padding: 14px 32px;
+    border-radius: 4px;
+    text-decoration: none;
+    letter-spacing: 0.04em;
+    transition: opacity 0.2s, transform 0.2s;
+  }
+
+  .btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
+
+  .btn-secondary {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    letter-spacing: 0.04em;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: color 0.2s;
+  }
+
+  .btn-secondary:hover { color: var(--text-primary); }
+
+  .hero-note {
+    margin-top: 20px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-tertiary);
+    letter-spacing: 0.04em;
+    opacity: 0;
+    animation: fadeUp 0.6s ease 0.65s forwards;
+  }
+
+  /* LIVE TICKER */
+  .live-ticker {
+    position: absolute;
+    bottom: 48px;
+    left: 48px;
+    right: 48px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease 0.8s forwards;
+  }
+
+  .ticker-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--teal);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .ticker-dot {
+    width: 5px;
+    height: 5px;
+    background: var(--teal);
+    border-radius: 50%;
+    animation: pulse 1.5s ease infinite;
+  }
+
+  .ticker-track {
+    flex: 1;
+    overflow: hidden;
+    border-left: 1px solid var(--bg-border);
+    padding-left: 16px;
+  }
+
+  .ticker-items {
+    display: flex;
+    gap: 48px;
+    animation: ticker 20s linear infinite;
+    white-space: nowrap;
+  }
+
+  .ticker-item {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-tertiary);
+    letter-spacing: 0.03em;
+  }
+
+  .ticker-item span {
+    color: var(--teal);
+  }
+
+  @keyframes ticker {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* PROBLEM SECTION */
+  .section {
+    padding: 120px 48px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-tertiary);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 48px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    max-width: 60px;
+    height: 1px;
+    background: var(--bg-border);
+  }
+
+  .problem-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    margin-bottom: 80px;
+  }
+
+  .problem-card {
+    background: var(--bg-surface);
+    padding: 40px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .problem-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 3px;
+    height: 100%;
+    background: var(--red);
+    opacity: 0.6;
+  }
+
+  .problem-card h3 {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--red);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    opacity: 0.8;
+  }
+
+  .problem-card p {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text-primary);
+    line-height: 1.5;
+  }
+
+  .problem-card p em {
+    font-style: normal;
+    color: var(--text-secondary);
+    font-weight: 400;
+  }
+
+  .solution-statement {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 64px;
+    align-items: start;
+    padding: 64px;
+    background: var(--teal-dim);
+    border: 1px solid rgba(29, 181, 132, 0.2);
+    border-radius: 2px;
+  }
+
+  .solution-statement h2 {
+    font-size: clamp(28px, 3vw, 40px);
+    font-weight: 700;
+    letter-spacing: -0.8px;
+    line-height: 1.1;
+    color: var(--teal);
+  }
+
+  .solution-statement p {
+    font-family: var(--mono);
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.8;
+  }
+
+  .solution-statement p strong {
+    color: var(--text-primary);
+    font-weight: 500;
+  }
+
+  /* HOW IT WORKS */
+  .how-section {
+    padding: 120px 48px;
+    background: var(--bg-surface);
+  }
+
+  .how-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .how-headline {
+    font-size: clamp(32px, 4vw, 52px);
+    font-weight: 700;
+    letter-spacing: -1px;
+    margin-bottom: 80px;
+    max-width: 600px;
+  }
+
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+  }
+
+  .step {
+    background: var(--bg-base);
+    padding: 48px 40px;
+    position: relative;
+  }
+
+  .step-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+    margin-bottom: 24px;
+    display: block;
+  }
+
+  .step-icon {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 24px;
+  }
+
+  .step h3 {
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+    margin-bottom: 12px;
+  }
+
+  .step p {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+  }
+
+  .step-detail {
+    margin-top: 24px;
+    padding: 16px;
+    background: var(--bg-surface);
+    border-radius: 2px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-tertiary);
+    line-height: 1.6;
+  }
+
+  .step-detail code {
+    color: var(--teal);
+  }
+
+  /* DASHBOARD PREVIEW */
+  .preview-section {
+    padding: 120px 48px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .preview-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+    align-items: end;
+    margin-bottom: 64px;
+  }
+
+  .preview-header h2 {
+    font-size: clamp(32px, 4vw, 52px);
+    font-weight: 700;
+    letter-spacing: -1px;
+    line-height: 1.1;
+  }
+
+  .preview-header p {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.8;
+  }
+
+  /* Mock dashboard */
+  .dashboard-mock {
+    background: var(--bg-surface);
+    border: 1px solid var(--bg-border);
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 40px 120px rgba(0,0,0,0.6);
+  }
+
+  .dash-nav {
+    background: var(--bg-elevated);
+    border-bottom: 1px solid var(--bg-border);
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    gap: 0;
+    height: 48px;
+  }
+
+  .dash-nav-logo {
+    font-family: var(--display);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-right: 32px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .dash-tab {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-tertiary);
+    padding: 0 16px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    letter-spacing: 0.04em;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+  }
+
+  .dash-tab.active {
+    color: var(--text-primary);
+    border-color: var(--teal);
+  }
+
+  .dash-user {
+    margin-left: auto;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .dash-user-dot {
+    width: 6px;
+    height: 6px;
+    background: var(--teal);
+    border-radius: 50%;
+  }
+
+  .dash-body {
+    padding: 24px;
+  }
+
+  .dash-identity {
+    background: var(--bg-elevated);
+    border: 1px solid var(--bg-border);
+    border-left: 3px solid var(--teal);
+    padding: 16px 20px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .dash-identity-name {
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .dash-identity-key {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-secondary);
+    margin-top: 4px;
+  }
+
+  .dash-identity-badge {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--teal);
+    background: var(--teal-dim);
+    padding: 4px 10px;
+    border-radius: 2px;
+    letter-spacing: 0.06em;
+  }
+
+  .dash-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .dash-stat {
+    background: var(--bg-elevated);
+    border: 1px solid var(--bg-border);
+    padding: 16px;
+  }
+
+  .dash-stat-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--text-tertiary);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .dash-stat-value {
+    font-family: var(--mono);
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--text-primary);
+  }
+
+  .dash-stat-sub {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-tertiary);
+    margin-top: 4px;
+  }
+
+  .dash-stat-sub.up { color: var(--teal); }
+
+  .dash-table-header {
+    display: grid;
+    grid-template-columns: 140px 80px 1fr 80px 100px 80px;
+    gap: 12px;
+    padding: 8px 16px;
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--text-tertiary);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--bg-border);
+  }
+
+  .dash-row {
+    display: grid;
+    grid-template-columns: 140px 80px 1fr 80px 100px 80px;
+    gap: 12px;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--bg-border);
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-secondary);
+    transition: background 0.15s;
+    cursor: pointer;
+    align-items: center;
+  }
+
+  .dash-row:hover { background: var(--bg-elevated); }
+
+  .dash-row-time { color: var(--text-tertiary); }
+
+  .dash-row-type {
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 2px;
+  }
+
+  .type-out {
+    background: rgba(107,92,231,0.15);
+    color: #9E91EF;
+  }
+
+  .type-in {
+    background: var(--teal-dim);
+    color: var(--teal);
+  }
+
+  .dash-row-counterparty { color: var(--text-primary); }
+
+  .dash-row-amount {
+    text-align: right;
+    color: var(--text-primary);
+  }
+
+  .dash-row-verified {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--teal);
+    font-size: 10px;
+  }
+
+  .dash-live-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--teal);
+    letter-spacing: 0.08em;
+    margin-bottom: 12px;
+  }
+
+  /* COMPARISON */
+  .compare-section {
+    padding: 120px 48px;
+    background: var(--bg-surface);
+  }
+
+  .compare-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .compare-headline {
+    font-size: clamp(28px, 3.5vw, 48px);
+    font-weight: 700;
+    letter-spacing: -0.8px;
+    margin-bottom: 64px;
+    max-width: 700px;
+  }
+
+  .compare-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .compare-table th {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+    text-align: left;
+    padding: 12px 24px;
+    border-bottom: 1px solid var(--bg-border);
+  }
+
+  .compare-table th.highlight {
+    color: var(--teal);
+    background: var(--teal-dim);
+  }
+
+  .compare-table td {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text-secondary);
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--bg-border);
+    vertical-align: top;
+  }
+
+  .compare-table td.feature-name {
+    color: var(--text-primary);
+    font-weight: 500;
+  }
+
+  .compare-table td.highlight {
+    background: rgba(29, 181, 132, 0.04);
+    color: var(--teal);
+  }
+
+  .check { color: var(--teal); }
+  .cross { color: var(--text-tertiary); }
+  .partial { color: var(--amber); }
+
+  /* PRICING */
+  .pricing-section {
+    padding: 120px 48px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .pricing-eyebrow {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-tertiary);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+
+  .pricing-headline {
+    font-size: clamp(32px, 4vw, 52px);
+    font-weight: 700;
+    letter-spacing: -1px;
+    margin-bottom: 16px;
+  }
+
+  .pricing-sub {
+    font-family: var(--mono);
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 64px;
+    max-width: 500px;
+  }
+
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+  }
+
+  .pricing-card {
+    background: var(--bg-surface);
+    padding: 48px 40px;
+    position: relative;
+  }
+
+  .pricing-card.featured {
+    background: var(--bg-elevated);
+    border: 1px solid rgba(29, 181, 132, 0.3);
+  }
+
+  .pricing-card.featured::before {
+    content: 'FEATURED';
+    position: absolute;
+    top: -1px;
+    left: 40px;
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    color: var(--bg-base);
+    background: var(--teal);
+    padding: 4px 10px;
+  }
+
+  .price-tier {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-tertiary);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  .pricing-card.featured .price-tier { color: var(--teal); }
+
+  .price-amount {
+    font-family: var(--mono);
+    font-size: 40px;
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+    letter-spacing: -1px;
+  }
+
+  .price-period {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text-tertiary);
+    margin-bottom: 32px;
+  }
+
+  .price-desc {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 32px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid var(--bg-border);
+  }
+
+  .price-features {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 40px;
+  }
+
+  .price-features li {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    line-height: 1.5;
+  }
+
+  .price-features li::before {
+    content: '→';
+    color: var(--text-tertiary);
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .pricing-card.featured .price-features li::before { color: var(--teal); }
+
+  .price-btn {
+    display: block;
+    text-align: center;
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    padding: 14px 24px;
+    border-radius: 2px;
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+
+  .price-btn:hover { opacity: 0.85; }
+
+  .price-btn-free {
+    color: var(--teal);
+    border: 1px solid rgba(29, 181, 132, 0.4);
+    background: var(--teal-dim);
+  }
+
+  .price-btn-operator {
+    color: var(--bg-base);
+    background: var(--teal);
+  }
+
+  .price-btn-enterprise {
+    color: var(--text-secondary);
+    border: 1px solid var(--bg-border);
+    background: transparent;
+  }
+
+  /* WHO ITS FOR */
+  .who-section {
+    padding: 120px 48px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .who-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-top: 64px;
+  }
+
+  .who-card {
+    padding: 40px;
+    background: var(--bg-surface);
+    border: 1px solid var(--bg-border);
+    position: relative;
+  }
+
+  .who-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .who-card:hover::after { opacity: 1; }
+
+  .who-avatar {
+    font-family: var(--mono);
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+
+  .who-card h3 {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    letter-spacing: -0.3px;
+  }
+
+  .who-card p {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+  }
+
+  .who-quote {
+    margin-top: 20px;
+    padding: 16px;
+    background: var(--bg-elevated);
+    border-left: 2px solid var(--accent);
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-tertiary);
+    font-style: italic;
+    line-height: 1.6;
+  }
+
+  /* BUILT ON */
+  .builton-section {
+    padding: 80px 48px;
+    border-top: 1px solid var(--bg-border);
+    border-bottom: 1px solid var(--bg-border);
+    text-align: center;
+  }
+
+  .builton-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-tertiary);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 40px;
+  }
+
+  .builton-logos {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 64px;
+    flex-wrap: wrap;
+  }
+
+  .builton-item {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--text-tertiary);
+    letter-spacing: 0.06em;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .builton-item span {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--text-tertiary);
+    flex-shrink: 0;
+  }
+
+  /* CTA SECTION */
+  .cta-section {
+    padding: 160px 48px;
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .cta-section h2 {
+    font-size: clamp(36px, 5vw, 64px);
+    font-weight: 800;
+    letter-spacing: -1.5px;
+    line-height: 1.0;
+    margin-bottom: 24px;
+  }
+
+  .cta-section h2 em {
+    font-style: normal;
+    color: var(--teal);
+  }
+
+  .cta-section p {
+    font-family: var(--mono);
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 48px;
+    line-height: 1.7;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .cta-actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+  }
+
+  /* FOOTER */
+  footer {
+    padding: 48px;
+    border-top: 1px solid var(--bg-border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .footer-left {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-tertiary);
+    line-height: 1.7;
+  }
+
+  .footer-left strong {
+    color: var(--text-secondary);
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 24px;
+  }
+
+  .footer-links a {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-tertiary);
+    text-decoration: none;
+    letter-spacing: 0.04em;
+    transition: color 0.2s;
+  }
+
+  .footer-links a:hover { color: var(--text-secondary); }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.85); }
+  }
+
+  .fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @media (max-width: 900px) {
+    nav { padding: 16px 24px; }
+    .nav-links { display: none; }
+    .hero { padding: 100px 24px 60px; }
+    .section { padding: 80px 24px; }
+    .problem-grid { grid-template-columns: 1fr; }
+    .solution-statement { grid-template-columns: 1fr; gap: 32px; padding: 40px 24px; }
+    .steps { grid-template-columns: 1fr; }
+    .pricing-grid { grid-template-columns: 1fr; }
+    .who-grid { grid-template-columns: 1fr; }
+    .how-section { padding: 80px 24px; }
+    .compare-section { padding: 80px 24px; }
+    footer { flex-direction: column; gap: 24px; text-align: center; }
+    .footer-links { justify-content: center; }
+    .dash-stats { grid-template-columns: repeat(2, 1fr); }
+    .preview-header { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#" class="nav-logo">
+    <svg class="nav-shield" viewBox="0 0 32 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M16 1L2 6.5V18C2 25.5 8.5 32.5 16 35C23.5 32.5 30 25.5 30 18V6.5L16 1Z" fill="rgba(29,181,132,0.1)" stroke="#1DB584" stroke-width="1.5"/>
+      <path d="M11 18L14.5 21.5L21 14" stroke="#1DB584" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <div>
+      <div class="nav-wordmark">Sovereign</div>
+      <div class="nav-by">by Agentic Terminal</div>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="/sovereign/">Sovereign ↗</a></li>
+    <li><a href="/enterprise/">Enterprise ↗</a></li>
+    <li><a href="#how">How it works</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="https://observerprotocol.org" target="_blank">Observer Protocol ↗</a></li>
+    <li><a href="mailto:boyd@agenticterminal.io?subject=Early%20Access%20Request%20-%20Agentic%20Terminal&body=Hi%20Boyd,%0A%0AI'm%20interested%20in%20early%20access%20to%20Agentic%20Terminal.%0A%0AName:%0ACompany:%0AEmail:%0A%0AThanks!" class="nav-cta">Get early access</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-eyebrow">Now live on Observer Protocol mainnet</div>
+  <h1 class="hero-headline">
+    Your agent has<br>
+    an economic life.<br>
+    <em>See all of it.</em>
+  </h1>
+  <p class="hero-sub">
+    Sovereign gives individuals cryptographic sovereignty over their AI agents — real-time visibility into every transaction, delegation with constraints, and one-click revocation. Forever free.
+  </p>
+  <div class="hero-actions">
+    <a href="#" class="btn-primary">Start for free →</a>
+    <a href="#how" class="btn-secondary">See how it works ↓</a>
+  </div>
+  <div class="hero-note">No credit card · No enterprise contract · Powered by Observer Protocol</div>
+
+  <!-- Live ticker -->
+  <div class="live-ticker">
+    <div class="ticker-label">
+      <div class="ticker-dot"></div>
+      Live attestations
+    </div>
+    <div class="ticker-track">
+      <div class="ticker-items">
+        <span class="ticker-item">maxi-0001 → openai-api-001 &nbsp;<span>2,100 sats</span>&nbsp; via x402 · ✓ verified</span>
+        <span class="ticker-item">maxi-0001 ← anonymous &nbsp;<span>800 sats</span>&nbsp; via Lightning · ✓ verified</span>
+        <span class="ticker-item">maxi-0001 → dune-analytics &nbsp;<span>1,500 sats</span>&nbsp; via x402 · ✓ verified</span>
+        <span class="ticker-item">maxi-0001 ← Boyd Cohen &nbsp;<span>10,000 sats</span>&nbsp; via Lightning · ✓ verified</span>
+        <span class="ticker-item">maxi-0001 → alchemy-rpc-001 &nbsp;<span>3,200 sats</span>&nbsp; via x402 · ✓ verified</span>
+        <!-- duplicate for seamless loop -->
+        <span class="ticker-item">maxi-0001 → openai-api-001 &nbsp;<span>2,100 sats</span>&nbsp; via x402 · ✓ verified</span>
+        <span class="ticker-item">maxi-0001 ← anonymous &nbsp;<span>800 sats</span>&nbsp; via Lightning · ✓ verified</span>
+        <span class="ticker-item">maxi-0001 → dune-analytics &nbsp;<span>1,500 sats</span>&nbsp; via x402 · ✓ verified</span>
+        <span class="ticker-item">maxi-0001 ← Boyd Cohen &nbsp;<span>10,000 sats</span>&nbsp; via Lightning · ✓ verified</span>
+        <span class="ticker-item">maxi-0001 → alchemy-rpc-001 &nbsp;<span>3,200 sats</span>&nbsp; via x402 · ✓ verified</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section class="section fade-in">
+  <div class="section-label">The problem</div>
+  <div class="problem-grid">
+    <div class="problem-card">
+      <h3>Enterprise tools</h3>
+      <p>Control towers and governance platforms exist — <em>but they cost $50K/year, require IT approval, and weren't built for you running one agent.</em></p>
+    </div>
+    <div class="problem-card">
+      <h3>Dev/CLI tools</h3>
+      <p>Wallet primitives and policy engines exist — <em>but they're command-line infrastructure with no visibility layer a normal person can use.</em></p>
+    </div>
+    <div class="problem-card">
+      <h3>No cross-rail proof</h3>
+      <p>Your agent transacts across Lightning, x402, Solana, and more — <em>but no tool surfaces verified proof across all rails in one place.</em></p>
+    </div>
+    <div class="problem-card">
+      <h3>Blind trust</h3>
+      <p>When you deploy an agent with economic autonomy, you hope it's behaving — <em>but you have no cryptographic proof of what it actually did.</em></p>
+    </div>
+  </div>
+
+  <div class="solution-statement fade-in">
+    <h2>The personal agent economy control panel that didn't exist.</h2>
+    <p>
+      <strong>Sovereign is the first tool built specifically for individuals running economically autonomous AI agents.</strong> Not enterprise. Not developer CLI. A real dashboard where you register your identity, delegate to your agent with constraints, watch every transaction get cryptographically verified, and revoke authority at any time — with one click.<br><br>
+      Your private key never leaves your device. Your agent operates with your cryptographic authority — and only within the limits you set.
+    </p>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how-section" id="how">
+  <div class="how-inner">
+    <div class="section-label fade-in">How it works</div>
+    <h2 class="how-headline fade-in">Three primitives.<br>Full sovereignty.</h2>
+    <div class="steps">
+      <div class="step fade-in">
+        <span class="step-num">01 —</span>
+        <svg class="step-icon" viewBox="0 0 48 48" fill="none">
+          <rect x="8" y="8" width="32" height="32" rx="2" stroke="#1DB584" stroke-width="1.5"/>
+          <path d="M16 24L21 29L32 18" stroke="#1DB584" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <h3>Register</h3>
+        <p>Generate a secp256k1 keypair in your browser. Your private key never leaves your device. Register your public key on Observer Protocol — you are now a cryptographic principal.</p>
+        <div class="step-detail">
+          Your keypair uses the same cryptography as Bitcoin.<br>
+          <code>pub: bc1q…3f7a · Verified on OP</code>
+        </div>
+      </div>
+      <div class="step fade-in">
+        <span class="step-num">02 —</span>
+        <svg class="step-icon" viewBox="0 0 48 48" fill="none">
+          <path d="M24 8L36 14V24C36 31 30.5 37 24 40C17.5 37 12 31 12 24V14L24 8Z" stroke="#6B5CE7" stroke-width="1.5"/>
+          <path d="M19 24L22.5 27.5L29 21" stroke="#6B5CE7" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <h3>Delegate</h3>
+        <p>Cryptographically authorize your agent to act on your behalf. Set spending limits per transaction and per month. Restrict payment rails. Define approved counterparty types. Set an expiry.</p>
+        <div class="step-detail">
+          <code>50,000 sat/txn · 500,000 sat/mo</code><br>
+          Lightning · x402 · Solana · expires 90d
+        </div>
+      </div>
+      <div class="step fade-in">
+        <span class="step-num">03 —</span>
+        <svg class="step-icon" viewBox="0 0 48 48" fill="none">
+          <circle cx="24" cy="24" r="14" stroke="#1DB584" stroke-width="1.5"/>
+          <circle cx="24" cy="24" r="4" fill="#1DB584"/>
+          <path d="M24 10V14M24 34V38M10 24H14M34 24H38" stroke="#1DB584" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        <h3>Verify</h3>
+        <p>Watch every transaction your agent makes get cryptographically attested and recorded on Observer Protocol — in real time, across every payment rail. Full proof on demand. Revoke anytime.</p>
+        <div class="step-detail">
+          <code>28 txns · 847,000 sats · rep: 847</code><br>
+          All verified · 1-click revocation active
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DASHBOARD PREVIEW -->
+<section class="preview-section fade-in">
+  <div class="preview-header">
+    <h2>Your agent's full economic record. Live.</h2>
+    <p>Every transaction attested and cryptographically signed. Counterparty identity verified where possible. Payment rail recorded. All of it tied back to your delegation credential — provably yours, provably constrained.</p>
+  </div>
+
+  <!-- Mock dashboard -->
+  <div class="dashboard-mock">
+    <div class="dash-nav">
+      <div class="dash-nav-logo">
+        <svg width="18" height="20" viewBox="0 0 32 36" fill="none">
+          <path d="M16 1L2 6.5V18C2 25.5 8.5 32.5 16 35C23.5 32.5 30 25.5 30 18V6.5L16 1Z" fill="rgba(29,181,132,0.15)" stroke="#1DB584" stroke-width="1.5"/>
+          <path d="M11 18L14.5 21.5L21 14" stroke="#1DB584" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Sovereign
+      </div>
+      <div class="dash-tab active">Transactions</div>
+      <div class="dash-tab">Delegation</div>
+      <div class="dash-tab">Settings</div>
+      <div class="dash-user">
+        <div class="dash-user-dot"></div>
+        Boyd Cohen
+      </div>
+    </div>
+    <div class="dash-body">
+      <div class="dash-identity">
+        <div>
+          <div class="dash-identity-name">Boyd Cohen</div>
+          <div class="dash-identity-key">pub: bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh · maxi-0001 delegated</div>
+        </div>
+        <div class="dash-identity-badge">● VERIFIED ON OP</div>
+      </div>
+      <div class="dash-stats">
+        <div class="dash-stat">
+          <div class="dash-stat-label">Active delegations</div>
+          <div class="dash-stat-value">1</div>
+          <div class="dash-stat-sub">maxi-0001 active</div>
+        </div>
+        <div class="dash-stat">
+          <div class="dash-stat-label">Transactions (30d)</div>
+          <div class="dash-stat-value">28</div>
+          <div class="dash-stat-sub up">↑ 12 this week</div>
+        </div>
+        <div class="dash-stat">
+          <div class="dash-stat-label">Volume (30d) ●</div>
+          <div class="dash-stat-value">847K</div>
+          <div class="dash-stat-sub">sats · ≈ $520</div>
+        </div>
+        <div class="dash-stat">
+          <div class="dash-stat-label">Rep score</div>
+          <div class="dash-stat-value">847</div>
+          <div class="dash-stat-sub up">↑ 23 this month</div>
+        </div>
+      </div>
+      <div class="dash-live-badge">
+        <div class="ticker-dot"></div>
+        LIVE · maxi-0001 transaction feed
+      </div>
+      <div class="dash-table-header">
+        <div>Timestamp</div>
+        <div>Type</div>
+        <div>Counterparty</div>
+        <div>Rail</div>
+        <div style="text-align:right">Amount</div>
+        <div>Status</div>
+      </div>
+      <div class="dash-row">
+        <div class="dash-row-time">2026-03-25 14:31</div>
+        <div><span class="dash-row-type type-out">outbound</span></div>
+        <div class="dash-row-counterparty">openai-api-001</div>
+        <div>x402</div>
+        <div class="dash-row-amount">2,100 sats</div>
+        <div class="dash-row-verified">✓ Verified</div>
+      </div>
+      <div class="dash-row">
+        <div class="dash-row-time">2026-03-25 14:28</div>
+        <div><span class="dash-row-type type-in">inbound</span></div>
+        <div class="dash-row-counterparty">anonymous</div>
+        <div>Lightning</div>
+        <div class="dash-row-amount">800 sats</div>
+        <div class="dash-row-verified">✓ Verified</div>
+      </div>
+      <div class="dash-row">
+        <div class="dash-row-time">2026-03-25 14:15</div>
+        <div><span class="dash-row-type type-out">outbound</span></div>
+        <div class="dash-row-counterparty">dune-analytics-agent</div>
+        <div>x402</div>
+        <div class="dash-row-amount">1,500 sats</div>
+        <div class="dash-row-verified">✓ Verified</div>
+      </div>
+      <div class="dash-row">
+        <div class="dash-row-time">2026-03-25 13:44</div>
+        <div><span class="dash-row-type type-in">inbound</span></div>
+        <div class="dash-row-counterparty" style="color: var(--teal)">Boyd Cohen</div>
+        <div>Lightning</div>
+        <div class="dash-row-amount">10,000 sats</div>
+        <div class="dash-row-verified">✓ Verified</div>
+      </div>
+      <div class="dash-row">
+        <div class="dash-row-time">2026-03-25 12:03</div>
+        <div><span class="dash-row-type type-out">outbound</span></div>
+        <div class="dash-row-counterparty">alchemy-rpc-001</div>
+        <div>x402</div>
+        <div class="dash-row-amount">3,200 sats</div>
+        <div class="dash-row-verified">✓ Verified</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPARISON -->
+<section class="compare-section fade-in" id="compare">
+  <div class="compare-inner">
+    <div class="section-label">vs. alternatives</div>
+    <h2 class="compare-headline">The market has enterprise control towers and developer CLIs. It has nothing for you.</h2>
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th>Capability</th>
+          <th>Enterprise tools</th>
+          <th>Crypto wallet SDKs</th>
+          <th>Dev observability</th>
+          <th class="highlight">Sovereign</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="feature-name">Built for individuals</td>
+          <td class="cross">✗</td>
+          <td class="cross">✗</td>
+          <td class="cross">✗</td>
+          <td class="highlight check">✓</td>
+        </tr>
+        <tr>
+          <td class="feature-name">Cross-rail verification (Lightning, x402, Solana)</td>
+          <td class="cross">✗</td>
+          <td class="partial">Partial</td>
+          <td class="cross">✗</td>
+          <td class="highlight check">✓</td>
+        </tr>
+        <tr>
+          <td class="feature-name">Cryptographic proof per transaction</td>
+          <td class="partial">Partial</td>
+          <td class="partial">Partial</td>
+          <td class="cross">✗</td>
+          <td class="highlight check">✓</td>
+        </tr>
+        <tr>
+          <td class="feature-name">Human → agent delegation</td>
+          <td class="cross">✗</td>
+          <td class="partial">CLI only</td>
+          <td class="cross">✗</td>
+          <td class="highlight check">✓</td>
+        </tr>
+        <tr>
+          <td class="feature-name">Real-time counterparty visibility</td>
+          <td class="partial">Internal only</td>
+          <td class="cross">✗</td>
+          <td class="partial">API calls only</td>
+          <td class="highlight check">✓</td>
+        </tr>
+        <tr>
+          <td class="feature-name">One-click revocation</td>
+          <td class="check">✓</td>
+          <td class="partial">CLI only</td>
+          <td class="cross">✗</td>
+          <td class="highlight check">✓</td>
+        </tr>
+        <tr>
+          <td class="feature-name">Free for individuals</td>
+          <td class="cross">✗ $50K+/yr</td>
+          <td class="partial">Dev only</td>
+          <td class="partial">Limited</td>
+          <td class="highlight check">✓ Forever free</td>
+        </tr>
+        <tr>
+          <td class="feature-name">Self-sovereign (keys stay with you)</td>
+          <td class="cross">✗</td>
+          <td class="partial">Varies</td>
+          <td class="cross">✗</td>
+          <td class="highlight check">✓</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- WHO ITS FOR -->
+<section class="who-section fade-in">
+  <div class="section-label">Who it's for</div>
+  <h2 style="font-size: clamp(28px, 3.5vw, 44px); font-weight: 700; letter-spacing: -0.8px; max-width: 600px;">The edge builders. The sovereign individuals. The people running agents before everyone else.</h2>
+  <div class="who-grid">
+    <div class="who-card">
+      <div class="who-avatar">⚡</div>
+      <h3>The solo agent operator</h3>
+      <p>You have one agent doing real economic work — paying APIs, earning sats, transacting across chains. You want proof it's behaving. You want to revoke it if it's not.</p>
+      <div class="who-quote">"I built an AI agent that pays for its own compute. I had no idea what it was actually spending until Sovereign."</div>
+    </div>
+    <div class="who-card">
+      <div class="who-avatar">🔑</div>
+      <h3>The Bitcoin sovereignty advocate</h3>
+      <p>You believe in self-custody, individual sovereignty, and building outside permission structures. Sovereign gives your agent the same principles you apply to your Bitcoin.</p>
+      <div class="who-quote">"Not your keys, not your agent's authority. Sovereign is the first tool that takes that seriously."</div>
+    </div>
+    <div class="who-card">
+      <div class="who-avatar">🛠</div>
+      <h3>The indie builder</h3>
+      <p>You're building something with agents before anyone else. You need verifiable track records for your agents to establish trust with counterparties, investors, and users.</p>
+      <div class="who-quote">"My agent's reputation score on Observer Protocol is becoming a real asset. Sovereign is how I manage and display it."</div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing-section" id="pricing">
+  <div class="pricing-eyebrow">Pricing</div>
+  <h2 class="pricing-headline">Start sovereign.<br>Scale when ready.</h2>
+  <p class="pricing-sub">Sovereign is free forever for individuals. Upgrade when your agent operation outgrows one agent.</p>
+
+  <div class="pricing-grid">
+    <div class="pricing-card featured">
+      <div class="price-tier">Sovereign</div>
+      <div class="price-amount">$0</div>
+      <div class="price-period">forever free · individuals</div>
+      <div class="price-desc">Everything an individual needs to establish cryptographic sovereignty over their AI agent. Your keys. Your rules. No limits on time.</div>
+      <ul class="price-features">
+        <li>1 human identity on Observer Protocol</li>
+        <li>1 agent delegation with full constraints</li>
+        <li>Up to 100 verified transactions/month</li>
+        <li>Real-time transaction feed</li>
+        <li>One-click delegation revocation</li>
+        <li>Full cryptographic proof per transaction</li>
+        <li>Cross-rail: Lightning, x402, Solana, MPP</li>
+        <li>Sovereign dashboard access</li>
+      </ul>
+      <a href="#" class="price-btn price-btn-free">Get started free →</a>
+    </div>
+
+    <div class="pricing-card">
+      <div class="price-tier">Operator</div>
+      <div class="price-amount">$49</div>
+      <div class="price-period">per month · indie builders</div>
+      <div class="price-desc">For builders running multiple agents with real operations. Full Agentic Terminal intelligence layer included.</div>
+      <ul class="price-features">
+        <li>Up to 10 agents</li>
+        <li>Unlimited transactions</li>
+        <li>Multi-agent dashboard</li>
+        <li>Cross-agent analytics</li>
+        <li>Full AT intelligence layer</li>
+        <li>API access</li>
+        <li>Org attestation support</li>
+        <li>Priority support</li>
+      </ul>
+      <a href="#" class="price-btn price-btn-operator">Start Operator →</a>
+    </div>
+
+    <div class="pricing-card">
+      <div class="price-tier">Enterprise</div>
+      <div class="price-amount">Custom</div>
+      <div class="price-period">institutional · fleet scale</div>
+      <div class="price-desc">For organizations deploying agent fleets with governance, compliance, and full institutional controls.</div>
+      <ul class="price-features">
+        <li>Unlimited agents</li>
+        <li>Fleet management dashboard</li>
+        <li>Compliance export and audit logs</li>
+        <li>SIEM integration</li>
+        <li>Custom SLA</li>
+        <li>Dedicated support</li>
+        <li>On-premise deployment option</li>
+        <li>Custom attestation frameworks</li>
+      </ul>
+      <a href="mailto:boyd@agenticterminal.ai" class="price-btn price-btn-enterprise">Contact us →</a>
+    </div>
+  </div>
+</section>
+
+<!-- BUILT ON -->
+<section class="builton-section fade-in">
+  <div class="builton-label">Built on</div>
+  <div class="builton-logos">
+    <div class="builton-item"><span></span>Observer Protocol</div>
+    <div class="builton-item"><span></span>Bitcoin Lightning</div>
+    <div class="builton-item"><span></span>x402</div>
+    <div class="builton-item"><span></span>Solana</div>
+    <div class="builton-item"><span></span>Machine Payments Protocol</div>
+    <div class="builton-item"><span></span>secp256k1</div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="cta-section fade-in">
+  <h2>Your agent.<br>Your keys.<br><em>Your rules.</em></h2>
+  <p>Be among the first individuals to establish cryptographic sovereignty over an AI agent. Free, forever. No enterprise contract. No permission required.</p>
+  <div class="cta-actions">
+    <a href="#" class="btn-primary">Start sovereign — it's free</a>
+    <a href="https://observerprotocol.org" target="_blank" class="btn-secondary">Learn about Observer Protocol ↗</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-left">
+    <strong>Sovereign by Agentic Terminal</strong>
+    agenticterminal.ai · Powered by Observer Protocol · Monterrey, Mexico
+  </div>
+  <div class="footer-links">
+    <a href="https://observerprotocol.org">Observer Protocol</a>
+    <a href="#">Docs</a>
+    <a href="#">Privacy</a>
+    <a href="mailto:boyd@agenticterminal.ai">Contact</a>
+  </div>
+</footer>
+
+<script>
+  // Nav scroll behavior
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 40);
+  });
+
+  // Fade-in on scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(el => {
+      if (el.isIntersecting) {
+        el.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
