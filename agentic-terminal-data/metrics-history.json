@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0.0",
   "description": "Agentic Terminal time-series metrics history - Cross-protocol AI agent settlement data",
-  "last_updated": "2026-03-29T16:00:04.350Z",
+  "last_updated": "2026-03-30T16:00:05.229Z",
   "weeks": [
     {
       "week_start": "2026-02-17",
@@ -13,16 +13,16 @@
           "l402_github_forks": 68,
           "l402_github_issues": 30,
           "l402_contributors": 2,
-          "lightning_nodes": 5752,
-          "lightning_channels": 18059,
-          "lightning_capacity_btc": 2730.99,
-          "lightning_capacity_usd": 180217940.81,
+          "lightning_nodes": 5770,
+          "lightning_channels": 18160,
+          "lightning_capacity_btc": 2736.18,
+          "lightning_capacity_usd": 182638440.87,
           "known_l402_endpoints": 1
         },
         "stablecoin_api_rails": {
-          "x402_github_stars": 5803,
-          "x402_github_forks": 1362,
-          "x402_github_issues": 419,
+          "x402_github_stars": 5807,
+          "x402_github_forks": 1364,
+          "x402_github_issues": 424,
           "x402_contributors": 30,
           "x402_daily_transactions": 5930,
           "x402_cumulative_transactions": 79945315,
@@ -70,7 +70,7 @@
         "stablecoin_api_rails": {
           "x402_github_stars": 5555,
           "x402_github_forks": 1192,
-          "x402_github_issues": 419,
+          "x402_github_issues": 424,
           "x402_contributors": 30,
           "x402_daily_transactions": 5930,
           "x402_cumulative_transactions": 79945315,
@@ -246,27 +246,27 @@
     {
       "week_start": "2026-03-24",
       "week_end": "2026-03-30",
-      "snapshot_date": "2026-03-29",
+      "snapshot_date": "2026-03-30",
       "metrics": {
         "bitcoin_lightning": {
           "l402_github_stars": 259,
           "l402_github_forks": 68,
           "l402_github_issues": 30,
           "l402_contributors": 2,
-          "lightning_nodes": 5770,
-          "lightning_channels": 18160,
-          "lightning_capacity_btc": 2736.18,
-          "lightning_capacity_usd": 182638440.87,
+          "lightning_nodes": 5774,
+          "lightning_channels": 18270,
+          "lightning_capacity_btc": 2746.77,
+          "lightning_capacity_usd": 184226601.29,
           "known_l402_endpoints": 1
         },
         "stablecoin_api_rails": {
-          "x402_github_stars": 5807,
-          "x402_github_forks": 1364,
-          "x402_github_issues": 424,
+          "x402_github_stars": 5808,
+          "x402_github_forks": 1367,
+          "x402_github_issues": 431,
           "x402_contributors": 30,
-          "x402_daily_transactions": 5930,
-          "x402_cumulative_transactions": 79945315,
-          "x402_cumulative_volume_usd": 27548007.300868504,
+          "x402_daily_transactions": 6474,
+          "x402_cumulative_transactions": 79980262,
+          "x402_cumulative_volume_usd": 27558349.591096926,
           "erc8004_agents_registered": 83431
         },
         "emerging_protocols": {
@@ -280,11 +280,11 @@
       "wow_changes": {
         "bitcoin_lightning": {
           "l402_github_stars_pct": 0.3875968992248062,
-          "lightning_nodes_pct": 0.9623797025371827,
-          "lightning_capacity_btc_pct": 0.6066890222379104
+          "lightning_nodes_pct": 1.0323709536307961,
+          "lightning_capacity_btc_pct": 0.9960730674197018
         },
         "stablecoin_api_rails": {
-          "x402_github_stars_pct": 0.5367036011080333
+          "x402_github_stars_pct": 0.554016620498615
         },
         "emerging_protocols": {
           "ark_github_stars_pct": null
@@ -293,7 +293,8 @@
     }
   ],
   "insights": [
-    "x402 approaching major milestone: 5,807 GitHub stars. Coinbase's standard maintains production lead."
+    "Lightning Network growing: 5,774 nodes (+1.0%).",
+    "x402 approaching major milestone: 5,808 GitHub stars. Coinbase's standard maintains production lead."
   ],
   "metadata": {
     "data_source": "Agentic Terminal Daily Collection",
@@ -304,6 +305,6 @@
       "Ark Protocol",
       "Lightning Network"
     ],
-    "next_expected_update": "2026-03-29"
+    "next_expected_update": "2026-04-05"
   }
 }
