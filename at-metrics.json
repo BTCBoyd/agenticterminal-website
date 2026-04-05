@@ -1,22 +1,22 @@
 {
-  "generated_at": "2026-04-04T12:10:02.093218Z",
+  "generated_at": "2026-04-05T12:10:01.664518Z",
   "metrics": {
     "lightning_node_count": {
-      "value": 5828.0,
+      "value": 5835.0,
       "unit": "count",
-      "timestamp": "2026-04-04T12:05:03.052171-04:00",
+      "timestamp": "2026-04-05T12:05:03.427984-04:00",
       "source": "1ml.com"
     },
     "lightning_capacity_btc": {
-      "value": 2756.31420338,
+      "value": 2768.15021741,
       "unit": "btc",
-      "timestamp": "2026-04-04T12:05:03.052171-04:00",
+      "timestamp": "2026-04-05T12:05:03.427984-04:00",
       "source": "1ml.com"
     },
     "x402_github_stars": {
-      "value": 15.0,
+      "value": 26.0,
       "unit": "stars",
-      "timestamp": "2026-04-04T12:05:03.375844-04:00",
+      "timestamp": "2026-04-05T12:05:03.698848-04:00",
       "source": "github.com"
     }
   }
