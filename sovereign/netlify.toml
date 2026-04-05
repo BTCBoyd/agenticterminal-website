@@ -1,6 +1,5 @@
 [build]
   publish = "."
-  base = "."
 
 # Handle SPA routing
 [[redirects]]
