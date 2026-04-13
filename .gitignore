@@ -19,3 +19,6 @@ test-local.sh
 # Temporary files
 *.tmp
 .cache/
+
+# Local Netlify folder
+.netlify
