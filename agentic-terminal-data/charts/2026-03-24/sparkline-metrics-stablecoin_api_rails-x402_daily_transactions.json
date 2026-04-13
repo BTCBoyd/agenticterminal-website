@@ -1,0 +1,27 @@
+{
+  "chart_type": "sparkline",
+  "metric_path": "metrics.stablecoin_api_rails.x402_daily_transactions",
+  "label": "x402 Daily Transactions",
+  "generated_at": "2026-03-24T17:01:29.226Z",
+  "date_range": {
+    "start": "2026-02-17",
+    "end": "2026-03-30"
+  },
+  "values": [
+    37969,
+    37969,
+    178731,
+    60477,
+    37969,
+    37969
+  ],
+  "current_value": 37969,
+  "previous_value": 37969,
+  "change_percent": 0,
+  "change_direction": "→",
+  "image_path": "/home/futurebit/.openclaw/workspace/agentic-terminal-data/charts/2026-03-24/sparkline-metrics-stablecoin_api_rails-x402_daily_transactions.png",
+  "dimensions": {
+    "width": 1200,
+    "height": 675
+  }
+}

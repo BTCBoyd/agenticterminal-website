@@ -1,0 +1,8 @@
+{
+  "chart_type": "interest-usage-gap",
+  "status": "insufficient_data",
+  "generated_at": "2026-03-26T17:00:33.811Z",
+  "weeks_needed": 2,
+  "image_path": "/home/futurebit/.openclaw/workspace/agentic-terminal-data/charts/2026-03-26/interest-usage-gap.png",
+  "message": "Need 2 more weeks of data for meaningful visualization"
+}

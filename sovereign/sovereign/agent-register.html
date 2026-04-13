@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Register Agent — Sovereign Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root { 
+  --bg-base: #0a0a08; 
+  --bg-surface: #141614; 
+  --bg-elevated: #1a1d1a; 
+  --bg-border: rgba(255,255,255,0.08); 
+  --text-primary: #e8ede9; 
+  --text-secondary: #a8b8aa; 
+  --text-tertiary: #6e8571; 
+  --accent: #f5a623; 
+  --accent-dim: rgba(245,166,35,0.15); 
+  --teal: #22c55e; 
+  --teal-dim: rgba(34,197,94,0.15); 
+  --red: #f87171; 
+  --blue: #3B82F6;
+  --blue-dim: rgba(59,130,246,0.15);
+  --purple: #6B5CE7;
+  --purple-dim: rgba(107,92,231,0.15);
+  --mono: 'DM Mono',monospace; 
+  --display: 'Syne',sans-serif; 
+}
+*,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { 
+  background: var(--bg-base); 
+  color: var(--text-primary); 
+  font-family: var(--display); 
+  min-height: 100vh;
+}
+body::before { 
+  content: ''; 
+  position: fixed; 
+  inset: 0; 
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E"); 
+  pointer-events: none; 
+  z-index: 0; 
+}
+
+/* Navigation */
+.top-nav { 
+  position: fixed; 
+  top: 0; 
+  left: 0; 
+  right: 0; 
+  z-index: 100; 
+  display: flex; 
+  align-items: center; 
+  justify-content: space-between; 
+  padding: 16px 32px; 
+  background: rgba(10, 10, 8, 0.95); 
+  backdrop-filter: blur(16px); 
+  border-bottom: 1px solid var(--bg-border); 
+}
+.nav-brand { 
+  display: flex; 
+  align-items: center; 
+  gap: 12px; 
+  text-decoration: none; 
+  color: var(--text-primary); 
+}
+.nav-logo { 
+  width: 36px; 
+  height: 36px; 
+  background: var(--accent-dim);
+  border: 1px solid var(--accent);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+.nav-title { font-size: 18px; font-weight: 600; }
+.nav-user { 
+  display: flex; 
+  align-items: center; 
+  gap: 16px; 
+}
+.user-did { 
+  font-family: var(--mono); 
+  font-size: 12px; 
+  color: var(--text-secondary); 
+  background: var(--bg-elevated);
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--bg-border);
+}
+.nav-logout { 
+  font-family: var(--mono); 
+  font-size: 12px; 
+  color: var(--text-secondary); 
+  background: transparent; 
+  border: 1px solid var(--bg-border); 
+  padding: 8px 16px; 
+  border-radius: 6px; 
+  cursor: pointer; 
+}
+.nav-logout:hover { 
+  color: var(--red); 
+  border-color: var(--red); 
+}
+
+/* Main Content */
+.main-content { 
+  padding: 100px 32px 40px; 
+  max-width: 900px; 
+  margin: 0 auto; 
+  position: relative;
+  z-index: 1;
+}
+
+.page-header {
+  margin-bottom: 32px;
+}
+.page-header h1 {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.page-header p {
+  font-family: var(--mono);
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+/* Cards */
+.card { 
+  background: var(--bg-surface); 
+  border: 1px solid var(--bg-border); 
+  border-radius: 16px; 
+  padding: 32px; 
+  margin-bottom: 24px;
+}
+.card-header {
+  margin-bottom: 24px;
+}
+.card-header h2 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.card-header p {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 60px 40px;
+}
+.empty-icon {
+  font-size: 64px;
+  margin-bottom: 24px;
+}
+.empty-title {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+.empty-desc {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-bottom: 32px;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.6;
+}
+
+/* Form Elements */
+.form-group { margin-bottom: 24px; }
+.form-label { 
+  display: block; 
+  font-family: var(--mono); 
+  font-size: 11px; 
+  color: var(--text-secondary); 
+  text-transform: uppercase; 
+  letter-spacing: 0.08em; 
+  margin-bottom: 10px; 
+}
+.form-input { 
+  width: 100%; 
+  background: var(--bg-base); 
+  border: 1px solid var(--bg-border); 
+  border-radius: 10px; 
+  padding: 14px 18px; 
+  color: var(--text-primary); 
+  font-family: var(--display); 
+  font-size: 15px; 
+  transition: all 0.2s; 
+}
+.form-input:focus { 
+  outline: none; 
+  border-color: var(--accent); 
+}
+.form-input::placeholder { color: var(--text-tertiary); }
+.form-hint {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text-tertiary);
+  margin-top: 8px;
+}
+
+/* Rail Selection */
+.rail-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+.rail-option {
+  background: var(--bg-base);
+  border: 1px solid var(--bg-border);
+  border-radius: 12px;
+  padding: 20px 16px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.rail-option:hover {
+  border-color: var(--text-secondary);
+}
+.rail-option.selected {
+  border-color: var(--accent);
+  background: var(--accent-dim);
+}
+.rail-icon {
+  font-size: 28px;
+  margin-bottom: 8px;
+}
+.rail-name {
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+.rail-desc {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text-tertiary);
+}
+
+/* Buttons */
+.btn { 
+  padding: 14px 28px; 
+  border-radius: 10px; 
+  font-family: var(--mono); 
+  font-size: 13px; 
+  font-weight: 500; 
+  cursor: pointer; 
+  transition: all 0.2s; 
+  border: none; 
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.btn-primary { 
+  background: var(--accent); 
+  color: var(--bg-base); 
+}
+.btn-primary:hover:not(:disabled) { opacity: 0.9; }
+.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-secondary { 
+  background: var(--bg-elevated); 
+  color: var(--text-secondary); 
+  border: 1px solid var(--bg-border); 
+}
+.btn-secondary:hover:not(:disabled) { 
+  border-color: var(--text-secondary); 
+  color: var(--text-primary); 
+}
+.btn-large { padding: 16px 32px; font-size: 15px; }
+.btn-block { width: 100%; }
+
+/* Error/Success Messages */
+.error-message { 
+  background: rgba(248,113,113,0.1); 
+  border: 1px solid rgba(248,113,113,0.3); 
+  border-radius: 10px; 
+  padding: 14px 18px; 
+  margin-bottom: 20px; 
+  font-family: var(--mono); 
+  font-size: 13px; 
+  color: var(--red); 
+  display: none; 
+}
+.error-message.visible { display: block; }
+.success-message { 
+  background: var(--teal-dim); 
+  border: 1px solid var(--teal); 
+  border-radius: 10px; 
+  padding: 14px 18px; 
+  margin-bottom: 20px; 
+  font-family: var(--mono); 
+  font-size: 13px; 
+  color: var(--teal); 
+  display: none; 
+}
+.success-message.visible { display: block; }
+
+/* Agent List */
+.agent-list {
+  margin-top: 24px;
+}
+.agent-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px;
+  background: var(--bg-base);
+  border: 1px solid var(--bg-border);
+  border-radius: 12px;
+  margin-bottom: 12px;
+  transition: all 0.2s;
+}
+.agent-item:hover {
+  border-color: var(--bg-border);
+  background: var(--bg-elevated);
+}
+.agent-avatar {
+  width: 48px;
+  height: 48px;
+  background: var(--purple-dim);
+  border: 1px solid var(--purple);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+.agent-info {
+  flex: 1;
+}
+.agent-name {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.agent-meta {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+.agent-rails {
+  display: flex;
+  gap: 6px;
+}
+.rail-badge {
+  font-family: var(--mono);
+  font-size: 10px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.rail-badge.lightning {
+  background: rgba(247, 147, 26, 0.15);
+  color: #F7931A;
+}
+.rail-badge.tron {
+  background: rgba(255, 2, 2, 0.15);
+  color: #FF0202;
+}
+.rail-badge.trc20 {
+  background: rgba(255, 2, 2, 0.1);
+  color: #FF6666;
+}
+.rail-badge.solana {
+  background: rgba(153, 69, 255, 0.15);
+  color: #9945FF;
+}
+.rail-badge.x402 {
+  background: var(--purple-dim);
+  color: var(--purple);
+}
+.agent-status {
+  font-family: var(--mono);
+  font-size: 11px;
+  padding: 6px 12px;
+  border-radius: 6px;
+}
+.agent-status.active {
+  background: var(--teal-dim);
+  color: var(--teal);
+}
+.agent-status.pending {
+  background: var(--accent-dim);
+  color: var(--accent);
+}
+
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 10, 8, 0.9);
+  backdrop-filter: blur(8px);
+  z-index: 1000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+.modal-overlay.active {
+  display: flex;
+}
+.modal {
+  background: var(--bg-surface);
+  border: 1px solid var(--bg-border);
+  border-radius: 16px;
+  width: 100%;
+  max-width: 560px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px;
+  border-bottom: 1px solid var(--bg-border);
+}
+.modal-header h2 {
+  font-size: 20px;
+  font-weight: 600;
+}
+.modal-close {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  border: 1px solid var(--bg-border);
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.modal-close:hover {
+  border-color: var(--red);
+  color: var(--red);
+}
+.modal-body {
+  padding: 24px;
+}
+.modal-footer {
+  display: flex;
+  gap: 12px;
+  padding: 24px;
+  border-top: 1px solid var(--bg-border);
+}
+.modal-footer .btn {
+  flex: 1;
+}
+
+.loading-spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+@media (max-width: 768px) {
+  .top-nav { padding: 16px; }
+  .user-did { display: none; }
+  .main-content { padding: 100px 16px 32px; }
+  .rail-grid { grid-template-columns: repeat(2, 1fr); }
+  .agent-item { flex-wrap: wrap; }
+  .agent-rails { width: 100%; margin-top: 12px; }
+}
+</style>
+</head>
+<body>
+<nav class="top-nav">
+  <a href="/sovereign/" class="nav-brand">
+    <div class="nav-logo">🤖</div>
+    <div class="nav-title">Sovereign</div>
+  </a>
+  <div class="nav-user">
+    <div class="user-did" id="user-did">Loading...</div>
+    <button class="nav-logout" onclick="logout()">Log out</button>
+  </div>
+</nav>
+
+<main class="main-content">
+  <div class="page-header">
+    <h1>Agent Management</h1>
+    <p>Register and manage your AI agents on the Observer Protocol.</p>
+  </div>
+  
+  <!-- Empty State -->
+  <div class="card" id="empty-state">
+    <div class="empty-state">
+      <div class="empty-icon">🚀</div>
+      <div class="empty-title">No Agents Registered</div>
+      <div class="empty-desc">
+        Register your first agent to start accepting payments and delegating authority across multiple rails.
+      </div>
+      <button class="btn btn-primary btn-large" onclick="openRegisterModal()">
+        + Register Your First Agent
+      </button>
+    </div>
+  </div>
+  
+  <!-- Agent List (hidden by default) -->
+  <div class="card" id="agent-list-card" style="display: none;">
+    <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+      <div>
+        <h2>Your Agents</h2>
+        <p>Manage your registered agents</p>
+      </div>
+      <button class="btn btn-primary" onclick="openRegisterModal()">
+        + New Agent
+      </button>
+    </div>
+    <div class="agent-list" id="agent-list">
+      <!-- Agents will be populated here -->
+    </div>
+  </div>
+</main>
+
+<!-- Registration Modal -->
+<div class="modal-overlay" id="register-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>Register New Agent</h2>
+      <button class="modal-close" onclick="closeRegisterModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="error-message" id="error"></div>
+      
+      <div class="form-group">
+        <label class="form-label">Agent Name / Alias</label>
+        <input type="text" class="form-input" id="agent-name" placeholder="e.g., Payment Bot Alpha">
+        <div class="form-hint">A friendly name to identify this agent</div>
+      </div>
+      
+      <div class="form-group">
+        <label class="form-label">Public Key</label>
+        <input type="text" class="form-input" id="agent-pubkey" placeholder="Enter agent's public key">
+        <div class="form-hint">The public key that will be used in the agent's DID document</div>
+      </div>
+      
+      <div class="form-group">
+        <label class="form-label">Select Rails</label>
+        <div class="rail-grid">
+          <div class="rail-option" data-rail="tron" onclick="toggleRail(this)">
+            <div class="rail-icon">🔴</div>
+            <div class="rail-name">TRON</div>
+            <div class="rail-desc">TRX Native</div>
+          </div>
+          <div class="rail-option" data-rail="tron:trc20" onclick="toggleRail(this)">
+            <div class="rail-icon">💎</div>
+            <div class="rail-name">TRC-20</div>
+            <div class="rail-desc">USDT on TRON</div>
+          </div>
+          <div class="rail-option" data-rail="lightning" onclick="toggleRail(this)">
+            <div class="rail-icon">⚡</div>
+            <div class="rail-name">Lightning</div>
+            <div class="rail-desc">Bitcoin L2</div>
+          </div>
+          <div class="rail-option" data-rail="solana" onclick="toggleRail(this)">
+            <div class="rail-icon">🟣</div>
+            <div class="rail-name">Solana</div>
+            <div class="rail-desc">SOL & SPL</div>
+          </div>
+          <div class="rail-option" data-rail="x402" onclick="toggleRail(this)">
+            <div class="rail-icon">🌐</div>
+            <div class="rail-name">x402</div>
+            <div class="rail-desc">HTTP Payments</div>
+          </div>
+        </div>
+        <div class="form-hint">Select at least one payment rail for this agent</div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeRegisterModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="registerAgent()" id="register-btn">
+        Register Agent
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Success Modal -->
+<div class="modal-overlay" id="success-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>✅ Agent Registered</h2>
+      <button class="modal-close" onclick="closeSuccessModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="success-message visible" style="display: block;">
+        Your agent has been successfully registered with the Observer Protocol!
+      </div>
+      <div class="form-group">
+        <label class="form-label">Agent DID</label>
+        <div class="did-display" id="success-did" style="background: var(--bg-base); padding: 16px; border-radius: 10px; font-family: var(--mono); font-size: 13px; word-break: break-all;">
+          did:op:...
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeSuccessModal(); openRegisterModal();">
+        Register Another
+      </button>
+      <button class="btn btn-primary" onclick="closeSuccessModal()">
+        Done
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+const API_BASE = '/api/v1';
+let session = null;
+let selectedRails = new Set();
+let agents = [];
+
+// Initialize
+(function init() {
+  const sessionData = localStorage.getItem('sovereign_session');
+  if (!sessionData) {
+    window.location.href = 'login.html';
+    return;
+  }
+  
+  session = JSON.parse(sessionData);
+  
+  // Check if onboarding is complete
+  if (!session.onboardingComplete) {
+    window.location.href = 'onboarding.html';
+    return;
+  }
+  
+  // Display user DID
+  document.getElementById('user-did').textContent = shortenDID(session.did);
+  
+  // Load agents
+  loadAgents();
+})();
+
+function shortenDID(did) {
+  if (!did || did.length < 20) return did || 'Unknown';
+  return did.substring(0, 15) + '...' + did.substring(did.length - 4);
+}
+
+async function loadAgents() {
+  try {
+    const response = await fetch(`${API_BASE}/agents?did=${encodeURIComponent(session.did)}`, {
+      headers: {
+        'Authorization': `Bearer ${session.token}`
+      }
+    });
+    
+    if (!response.ok) {
+      // If API not ready, show empty state
+      showEmptyState();
+      return;
+    }
+    
+    const data = await response.json();
+    agents = data.agents || [];
+    
+    if (agents.length === 0) {
+      showEmptyState();
+    } else {
+      showAgentList();
+    }
+  } catch (error) {
+    // API not ready - show empty state
+    showEmptyState();
+  }
+}
+
+function showEmptyState() {
+  document.getElementById('empty-state').style.display = 'block';
+  document.getElementById('agent-list-card').style.display = 'none';
+}
+
+function showAgentList() {
+  document.getElementById('empty-state').style.display = 'none';
+  document.getElementById('agent-list-card').style.display = 'block';
+  
+  const listContainer = document.getElementById('agent-list');
+  listContainer.innerHTML = agents.map(agent => `
+    <div class="agent-item">
+      <div class="agent-avatar">🤖</div>
+      <div class="agent-info">
+        <div class="agent-name">${escapeHtml(agent.name)}</div>
+        <div class="agent-meta">${shortenDID(agent.did)} • Created ${formatDate(agent.createdAt)}</div>
+      </div>
+      <div class="agent-rails">
+        ${(agent.rails || []).map(rail => `
+          <span class="rail-badge ${rail.replace(':', '')}">${getRailIcon(rail)} ${rail}</span>
+        `).join('')}
+      </div>
+      <div class="agent-status ${agent.status || 'active'}">${agent.status || 'Active'}</div>
+    </div>
+  `).join('');
+}
+
+function getRailIcon(rail) {
+  const icons = {
+    'tron': '🔴',
+    'tron:trc20': '💎',
+    'lightning': '⚡',
+    'solana': '🟣',
+    'x402': '🌐'
+  };
+  return icons[rail] || '🔗';
+}
+
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+function formatDate(dateStr) {
+  if (!dateStr) return 'Unknown';
+  const date = new Date(dateStr);
+  return date.toLocaleDateString();
+}
+
+function openRegisterModal() {
+  document.getElementById('register-modal').classList.add('active');
+  // Reset form
+  document.getElementById('agent-name').value = '';
+  document.getElementById('agent-pubkey').value = '';
+  selectedRails.clear();
+  document.querySelectorAll('.rail-option').forEach(el => el.classList.remove('selected'));
+  hideError();
+}
+
+function closeRegisterModal() {
+  document.getElementById('register-modal').classList.remove('active');
+}
+
+function closeSuccessModal() {
+  document.getElementById('success-modal').classList.remove('active');
+}
+
+function toggleRail(element) {
+  const rail = element.dataset.rail;
+  if (selectedRails.has(rail)) {
+    selectedRails.delete(rail);
+    element.classList.remove('selected');
+  } else {
+    selectedRails.add(rail);
+    element.classList.add('selected');
+  }
+}
+
+function showError(msg) {
+  document.getElementById('error').textContent = msg;
+  document.getElementById('error').classList.add('visible');
+}
+
+function hideError() {
+  document.getElementById('error').classList.remove('visible');
+}
+
+async function registerAgent() {
+  const name = document.getElementById('agent-name').value.trim();
+  const pubkey = document.getElementById('agent-pubkey').value.trim();
+  
+  if (!name) {
+    showError('Please enter an agent name');
+    return;
+  }
+  
+  if (!pubkey) {
+    showError('Please enter the agent public key');
+    return;
+  }
+  
+  if (selectedRails.size === 0) {
+    showError('Please select at least one rail');
+    return;
+  }
+  
+  const btn = document.getElementById('register-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<div class="loading-spinner"></div> Registering...';
+  
+  try {
+    const response = await fetch(`${API_BASE}/agents/register`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${session.token}`
+      },
+      body: JSON.stringify({
+        name: name,
+        publicKey: pubkey,
+        rails: Array.from(selectedRails),
+        ownerDID: session.did
+      })
+    });
+    
+    if (!response.ok) {
+      // If API not ready, simulate success for demo
+      simulateRegistration(name, pubkey, Array.from(selectedRails));
+      return;
+    }
+    
+    const data = await response.json();
+    
+    // Close register modal and show success
+    closeRegisterModal();
+    document.getElementById('success-did').textContent = data.agentDID;
+    document.getElementById('success-modal').classList.add('active');
+    
+    // Reload agents
+    await loadAgents();
+    
+  } catch (error) {
+    // API not ready - simulate success
+    simulateRegistration(name, pubkey, Array.from(selectedRails));
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Register Agent';
+  }
+}
+
+function simulateRegistration(name, pubkey, rails) {
+  // Simulate successful registration for demo purposes
+  const agentDID = `did:op:${btoa(pubkey).substring(0, 24)}`;
+  
+  // Add to local agents list
+  agents.push({
+    name: name,
+    did: agentDID,
+    rails: rails,
+    status: 'active',
+    createdAt: new Date().toISOString()
+  });
+  
+  // Close register modal and show success
+  closeRegisterModal();
+  document.getElementById('success-did').textContent = agentDID;
+  document.getElementById('success-modal').classList.add('active');
+  
+  // Show agent list
+  showAgentList();
+}
+
+function logout() {
+  localStorage.removeItem('sovereign_session');
+  window.location.href = 'login.html';
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alerts — Enterprise Dashboard</title>
+<style>
+:root {
+  --bg: #0a0c0a; --bg-card: #141614; --bg-card2: #1a1d1a;
+  --border: rgba(255,255,255,0.08); --text-primary: #e8ede9;
+  --text-secondary: #a8b8aa; --text-muted: #6e8571;
+  --accent: #f5a623; --accent-dim: rgba(245,166,35,0.15);
+  --green: #22c55e; --green-dim: rgba(34,197,94,0.15);
+  --red: #f87171; --red-dim: rgba(248,113,113,0.15);
+  --amber: #fbbf24; --amber-dim: rgba(251,191,36,0.15);
+  --nav-h: 64px; --mono: 'DM Mono', monospace; --display: 'Syne', sans-serif;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text-primary); font-family: var(--display); font-size: 13px; }
+
+nav { position: sticky; top: 0; z-index: 100; height: var(--nav-h); background: rgba(10,12,10,0.95); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); display: flex; align-items: center; padding: 0 24px; }
+.nav-brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--text-primary); padding-right: 32px; }
+.brand-icon { width: 36px; height: 36px; background: var(--accent-dim); border: 1px solid var(--accent); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+.nav-tabs { display: flex; align-items: center; gap: 2px; flex: 1; }
+.nav-tab { padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 500; color: var(--text-secondary); cursor: pointer; border: none; background: none; transition: all 0.15s; }
+.nav-tab:hover { color: var(--text-primary); background: rgba(255,255,255,0.05); }
+.nav-tab.active { color: var(--accent); background: var(--accent-dim); }
+.nav-right { display: flex; align-items: center; gap: 16px; }
+.nav-user { display: flex; align-items: center; gap: 12px; }
+.user-avatar { width: 36px; height: 36px; background: var(--green-dim); border: 1px solid var(--green); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+.nav-logout { font-size: 12px; color: var(--text-muted); cursor: pointer; border: 1px solid var(--border); background: none; padding: 8px 16px; border-radius: 8px; font-family: var(--mono); }
+.nav-logout:hover { color: var(--red); background: var(--red-dim); border-color: var(--red); }
+
+.page { padding: 28px; max-width: 1400px; margin: 0 auto; }
+.page-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
+.page-header h1 { font-size: 24px; font-weight: 700; }
+
+.alert-tabs { display: flex; gap: 4px; margin-bottom: 24px; border-bottom: 1px solid var(--border); }
+.alert-tab { padding: 12px 20px; font-size: 13px; font-weight: 500; color: var(--text-secondary); cursor: pointer; border: none; background: none; border-bottom: 2px solid transparent; font-family: var(--display); display: flex; align-items: center; gap: 8px; }
+.alert-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+.alert-tab-badge { background: var(--red-dim); color: var(--red); padding: 2px 8px; border-radius: 10px; font-family: var(--mono); font-size: 10px; }
+
+.alert-content { display: none; }
+.alert-content.active { display: block; }
+
+.alert-card { background: var(--bg-card); border: 1px solid var(--border); border-left: 3px solid var(--amber); border-radius: 12px; padding: 20px; margin-bottom: 16px; }
+.alert-card.delegation-request { border-left-color: var(--accent); }
+.alert-card.critical { border-left-color: var(--red); }
+.alert-card.resolved { border-left-color: var(--green); opacity: 0.7; }
+.alert-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 16px; }
+.alert-icon { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; background: var(--amber-dim); margin-right: 12px; }
+.alert-icon.delegation { background: var(--accent-dim); }
+.alert-info { flex: 1; }
+.alert-title { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+.alert-meta { font-family: var(--mono); font-size: 11px; color: var(--text-muted); }
+
+.delegation-details { background: var(--bg-card2); border-radius: 8px; padding: 16px; margin: 16px 0; }
+.delegation-detail-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border); }
+.delegation-detail-row:last-child { border-bottom: none; }
+.delegation-detail-label { font-family: var(--mono); font-size: 11px; color: var(--text-muted); text-transform: uppercase; }
+.delegation-detail-value { font-family: var(--mono); font-size: 12px; color: var(--text-secondary); }
+.rail-badge { display: inline-flex; padding: 2px 8px; border-radius: 4px; font-family: var(--mono); font-size: 10px; margin-right: 4px; }
+.rail-badge.tron { background: rgba(255,2,2,0.15); color: #FF0202; }
+.rail-badge.lightning { background: rgba(247,147,26,0.15); color: #F7931A; }
+
+.alert-actions { display: flex; gap: 12px; margin-top: 16px; }
+.btn { padding: 8px 16px; border-radius: 8px; font-size: 12px; font-weight: 500; cursor: pointer; border: 1px solid var(--border); background: var(--bg-card2); color: var(--text-secondary); font-family: var(--mono); }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-primary { color: var(--accent); border-color: var(--accent); background: var(--accent-dim); }
+.btn-success { color: var(--green); border-color: var(--green); background: var(--green-dim); }
+.btn-danger { color: var(--red); border-color: var(--red); background: var(--red-dim); }
+
+.status-badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 6px; font-family: var(--mono); font-size: 10px; }
+.status-badge.approved { background: var(--green-dim); color: var(--green); }
+.status-badge.denied { background: var(--red-dim); color: var(--red); }
+.status-badge.pending { background: var(--amber-dim); color: var(--amber); }
+
+.empty-state { text-align: center; padding: 80px 20px; color: var(--text-secondary); }
+.empty-state-icon { font-size: 48px; margin-bottom: 16px; opacity: 0.5; }
+
+.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 200; align-items: center; justify-content: center; padding: 40px; }
+.modal-overlay.active { display: flex; }
+.modal { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; max-width: 500px; width: 100%; }
+.modal-header { display: flex; align-items: center; justify-content: space-between; padding: 20px 24px; border-bottom: 1px solid var(--border); }
+.modal-title { font-size: 18px; font-weight: 600; }
+.modal-close { background: none; border: none; color: var(--text-muted); font-size: 24px; cursor: pointer; }
+.modal-body { padding: 24px; }
+.modal-footer { display: flex; justify-content: flex-end; gap: 12px; padding: 16px 24px; border-top: 1px solid var(--border); }
+.form-group textarea { width: 100%; background: var(--bg-card2); border: 1px solid var(--border); border-radius: 8px; padding: 12px; color: var(--text-primary); font-family: var(--mono); font-size: 13px; resize: vertical; min-height: 100px; }
+
+.toast { position: fixed; bottom: 24px; right: 24px; background: var(--bg-card); border: 1px solid var(--border); border-left: 3px solid var(--green); border-radius: 8px; padding: 16px 20px; transform: translateX(150%); transition: transform 0.3s; z-index: 300; }
+.toast.show { transform: translateX(0); }
+.toast.error { border-left-color: var(--red); }
+
+.demo-banner { background: var(--amber-dim); border-left: 3px solid var(--amber); padding: 12px 16px; margin-bottom: 24px; border-radius: 8px; font-family: var(--mono); font-size: 12px; color: var(--amber); display: none; }
+</style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="nav-brand">
+    <div class="brand-icon">🏢</div>
+    <div class="brand-name">Enterprise</div>
+  </a>
+  <div class="nav-tabs">
+    <button class="nav-tab" onclick="window.location.href='index.html'">Dashboard</button>
+    <button class="nav-tab" onclick="window.location.href='fleet.html'">Fleet</button>
+    <button class="nav-tab" onclick="window.location.href='delegations.html'">Delegations</button>
+    <button class="nav-tab active">Alerts</button>
+  </div>
+  <div class="nav-right">
+    <div class="nav-user">
+      <span>👤</span>
+      <div>
+        <div style="font-size: 13px; font-weight: 500;">admin@acme.com</div>
+        <div style="font-size: 11px; color: var(--text-muted); font-family: var(--mono);">Acme Corp</div>
+      </div>
+    </div>
+    <button class="nav-logout" onclick="logout()">Log out</button>
+  </div>
+</nav>
+
+<main class="page">
+  <div class="demo-banner" id="demo-banner">⚠ Demo Mode: Backend not connected. Showing sample data.</div>
+  
+  <div class="page-header">
+    <div>
+      <h1>Alerts</h1>
+      <p style="font-family: var(--mono); font-size: 13px; color: var(--text-secondary);">Manage delegation requests and system alerts</p>
+    </div>
+  </div>
+
+  <div class="alert-tabs">
+    <button class="alert-tab active" onclick="showTab('pending', this)">
+      Pending <span class="alert-tab-badge" id="pending-count">0</span>
+    </button>
+    <button class="alert-tab" onclick="showTab('approved', this)">Approved</button>
+    <button class="alert-tab" onclick="showTab('denied', this)">Denied</button>
+  </div>
+
+  <div class="alert-content active" id="alerts-pending">
+    <div id="pending-list"><div class="empty-state"><div class="empty-state-icon">📭</div><div>No pending alerts</div></div></div>
+  </div>
+  <div class="alert-content" id="alerts-approved">
+    <div id="approved-list"><div class="empty-state"><div class="empty-state-icon">✓</div><div>No approved requests</div></div></div>
+  </div>
+  <div class="alert-content" id="alerts-denied">
+    <div id="denied-list"><div class="empty-state"><div class="empty-state-icon">🚫</div><div>No denied requests</div></div></div>
+  </div>
+</main>
+
+<div class="modal-overlay" id="deny-modal">
+  <div class="modal">
+    <div class="modal-header"><h3 class="modal-title">Deny Delegation Request</h3><button class="modal-close" onclick="closeDenyModal()">×</button></div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label style="display: block; font-family: var(--mono); font-size: 11px; color: var(--text-muted); margin-bottom: 8px;">Reason for denial (optional)</label>
+        <textarea id="deny-reason" placeholder="Enter reason..."></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" onclick="closeDenyModal()">Cancel</button>
+      <button class="btn btn-danger" onclick="confirmDeny()">Confirm Deny</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast">
+  <div style="font-size: 14px; font-weight: 600; margin-bottom: 4px;" id="toast-title">Success</div>
+  <div style="font-family: var(--mono); font-size: 12px; color: var(--text-secondary);" id="toast-message">Operation completed</div>
+</div>
+
+<script src="../shared/utils.js"></script>
+<script>
+// E7: Live Approve/Deny
+const demoData = {
+  alerts: [
+    { id: 'del-req-001', type: 'delegation_request', status: 'pending', agentAlias: 'Sales Agent Alpha', agentDid: 'did:op:sov:sales-agent-7f3a9b', requesterAlias: 'Sales Team Lead', rails: ['tron', 'lightning'], maxPerTxn: '5000', maxDaily: '25000', expiresAt: '2026-06-30T23:59:59Z', reason: 'Enable sales team payments', requestedAt: '2026-04-13T10:00:00Z' },
+    { id: 'del-req-002', type: 'delegation_request', status: 'pending', agentAlias: 'Vendor Payroll Bot', agentDid: 'did:op:sov:vendor-payroll-9c2d4e', requesterAlias: 'Finance Director', rails: ['tron:trc20'], maxPerTxn: '10000', maxDaily: '50000', expiresAt: '2026-12-31T23:59:59Z', reason: 'Automated vendor USDT payments', requestedAt: '2026-04-12T15:30:00Z' }
+  ]
+};
+
+let alertsData = [], useDemoData = false, currentDenyId = null;
+
+async function init() {
+  try {
+    const response = await APIClient.get('/alerts');
+    alertsData = response.alerts || [];
+  } catch (error) {
+    useDemoData = true;
+    alertsData = demoData.alerts;
+    document.getElementById('demo-banner').style.display = 'block';
+  }
+  updateCounts();
+  renderAll();
+}
+
+function updateCounts() {
+  const pending = alertsData.filter(a => a.status === 'pending').length;
+  document.getElementById('pending-count').textContent = pending;
+}
+
+function renderAll() {
+  renderPending();
+  renderApproved();
+  renderDenied();
+}
+
+function renderPending() {
+  const container = document.getElementById('pending-list');
+  const pending = alertsData.filter(a => a.status === 'pending');
+  
+  if (!pending.length) {
+    container.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📭</div><div>No pending alerts</div></div>';
+    return;
+  }
+  container.innerHTML = pending.map(a => createDelegationCard(a)).join('');
+}
+
+function renderApproved() {
+  const container = document.getElementById('approved-list');
+  const approved = alertsData.filter(a => a.status === 'approved');
+  
+  if (!approved.length) {
+    container.innerHTML = '<div class="empty-state"><div class="empty-state-icon">✓</div><div>No approved requests</div></div>';
+    return;
+  }
+  container.innerHTML = approved.map(a => createDelegationCard(a)).join('');
+}
+
+function renderDenied() {
+  const container = document.getElementById('denied-list');
+  const denied = alertsData.filter(a => a.status === 'denied');
+  
+  if (!denied.length) {
+    container.innerHTML = '<div class="empty-state"><div class="empty-state-icon">🚫</div><div>No denied requests</div></div>';
+    return;
+  }
+  container.innerHTML = denied.map(a => createDelegationCard(a)).join('');
+}
+
+function createDelegationCard(alert) {
+  const isPending = alert.status === 'pending';
+  const isApproved = alert.status === 'approved';
+  const daysAgo = Math.floor((Date.now() - new Date(alert.requestedAt)) / (1000 * 60 * 60 * 24));
+  
+  return `
+    <div class="alert-card delegation-request ${isApproved ? 'resolved' : ''}" id="alert-${alert.id}">
+      <div class="alert-header">
+        <div style="display: flex; align-items: flex-start;">
+          <div class="alert-icon delegation">📜</div>
+          <div class="alert-info">
+            <div class="alert-title">Delegation Request: ${alert.agentAlias}</div>
+            <div class="alert-meta">Requested by ${alert.requesterAlias} • ${daysAgo === 0 ? 'Today' : daysAgo + ' days ago'}</div>
+          </div>
+        </div>
+        <span class="status-badge ${alert.status}">${alert.status === 'pending' ? '● Pending' : alert.status === 'approved' ? '✓ Approved' : '✗ Denied'}</span>
+      </div>
+      <div class="delegation-details">
+        <div class="delegation-detail-row"><span class="delegation-detail-label">Agent DID</span><span class="delegation-detail-value">${alert.agentDid}</span></div>
+        <div class="delegation-detail-row"><span class="delegation-detail-label">Rails</span><span class="delegation-detail-value">${alert.rails.map(r => `<span class="rail-badge ${r.replace(':', '')}">${r}</span>`).join('')}</span></div>
+        <div class="delegation-detail-row"><span class="delegation-detail-label">Max/Txn</span><span class="delegation-detail-value">$${alert.maxPerTxn}</span></div>
+        <div class="delegation-detail-row"><span class="delegation-detail-label">Max/Day</span><span class="delegation-detail-value">$${alert.maxDaily}</span></div>
+        <div class="delegation-detail-row"><span class="delegation-detail-label">Expires</span><span class="delegation-detail-value">${new Date(alert.expiresAt).toLocaleDateString()}</span></div>
+        <div class="delegation-detail-row"><span class="delegation-detail-label">Reason</span><span class="delegation-detail-value">${alert.reason}</span></div>
+        ${alert.denialReason ? `<div class="delegation-detail-row"><span class="delegation-detail-label">Denial Reason</span><span class="delegation-detail-value" style="color: var(--red);">${alert.denialReason}</span></div>` : ''}
+      </div>
+      ${isPending ? `
+        <div class="alert-actions">
+          <button class="btn btn-success" onclick="approveDelegation('${alert.id}')">✓ Approve</button>
+          <button class="btn btn-danger" onclick="openDenyModal('${alert.id}')">✗ Deny</button>
+        </div>
+      ` : ''}
+    </div>
+  `;
+}
+
+async function approveDelegation(id) {
+  const btn = document.querySelector(`#alert-${id} .btn-success`);
+  btn.disabled = true;
+  btn.textContent = 'Approving...';
+  
+  try {
+    // E7: Live API call
+    await APIClient.post('/delegations/approve', { delegationId: id });
+    
+    // Update local state
+    const alert = alertsData.find(a => a.id === id);
+    if (alert) {
+      alert.status = 'approved';
+      alert.approvedAt = new Date().toISOString();
+    }
+    
+    showToast('Delegation Approved', 'Trust score recalculated. Delegation is now active.', 'success');
+    updateCounts();
+    renderAll();
+  } catch (error) {
+    if (useDemoData) {
+      // Demo mode: simulate success
+      const alert = alertsData.find(a => a.id === id);
+      if (alert) {
+        alert.status = 'approved';
+        alert.approvedAt = new Date().toISOString();
+      }
+      showToast('Delegation Approved (Demo)', 'In production, this would call POST /api/v1/delegations/approve', 'success');
+      updateCounts();
+      renderAll();
+    } else {
+      showToast('Error', error.message, 'error');
+      btn.disabled = false;
+      btn.textContent = '✓ Approve';
+    }
+  }
+}
+
+function openDenyModal(id) {
+  currentDenyId = id;
+  document.getElementById('deny-reason').value = '';
+  document.getElementById('deny-modal').classList.add('active');
+}
+
+function closeDenyModal() {
+  document.getElementById('deny-modal').classList.remove('active');
+  currentDenyId = null;
+}
+
+async function confirmDeny() {
+  if (!currentDenyId) return;
+  
+  const reason = document.getElementById('deny-reason').value;
+  
+  try {
+    // E7: Live API call
+    await APIClient.post('/delegations/deny', { 
+      delegationId: currentDenyId,
+      reason: reason 
+    });
+    
+    // Update local state
+    const alert = alertsData.find(a => a.id === currentDenyId);
+    if (alert) {
+      alert.status = 'denied';
+      alert.denialReason = reason;
+      alert.deniedAt = new Date().toISOString();
+    }
+    
+    closeDenyModal();
+    showToast('Delegation Denied', 'Request has been rejected.', 'success');
+    updateCounts();
+    renderAll();
+  } catch (error) {
+    if (useDemoData) {
+      // Demo mode: simulate success
+      const alert = alertsData.find(a => a.id === currentDenyId);
+      if (alert) {
+        alert.status = 'denied';
+        alert.denialReason = reason;
+        alert.deniedAt = new Date().toISOString();
+      }
+      closeDenyModal();
+      showToast('Delegation Denied (Demo)', 'In production, this would call POST /api/v1/delegations/deny', 'success');
+      updateCounts();
+      renderAll();
+    } else {
+      showToast('Error', error.message, 'error');
+    }
+  }
+}
+
+function showTab(tab, btn) {
+  document.querySelectorAll('.alert-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.alert-content').forEach(c => c.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById(`alerts-${tab}`).classList.add('active');
+}
+
+function showToast(title, message, type) {
+  const toast = document.getElementById('toast');
+  document.getElementById('toast-title').textContent = title;
+  document.getElementById('toast-message').textContent = message;
+  toast.className = 'toast show' + (type === 'error' ? ' error' : '');
+  setTimeout(() => toast.classList.remove('show'), 5000);
+}
+
+function logout() {
+  localStorage.removeItem('enterprise_session');
+  window.location.href = 'login.html';
+}
+
+document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>

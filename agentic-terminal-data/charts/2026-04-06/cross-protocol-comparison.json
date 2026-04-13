@@ -1,0 +1,8 @@
+{
+  "chart_type": "cross-protocol-comparison",
+  "status": "insufficient_data",
+  "generated_at": "2026-04-06T17:00:40.290Z",
+  "weeks_needed": 1,
+  "image_path": "/home/futurebit/.openclaw/workspace/agentic-terminal-data/charts/2026-04-06/cross-protocol-comparison.png",
+  "message": "Need 1 more week of data for meaningful visualization"
+}

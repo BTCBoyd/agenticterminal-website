@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phase 4 - Agent Attestation Test</title>
+<style>
+:root { --bg-base: #07070C; --bg-surface: #0E0E16; --bg-elevated: #16161F; --bg-border: #22222E; --text-primary: #EEEEF5; --text-secondary: #7A7A92; --text-tertiary: #44445A; --accent: #6B5CE7; --teal: #1DB584; --red: #E84040; --amber: #F5A623; --mono: 'DM Mono', monospace; --display: 'Syne', sans-serif; }
+body { background: var(--bg-base); color: var(--text-primary); font-family: var(--display); min-height: 100vh; padding: 40px; }
+.test-section { background: var(--bg-surface); border: 1px solid var(--bg-border); padding: 24px; margin-bottom: 24px; border-radius: 8px; }
+.test-title { font-size: 16px; font-weight: 600; margin-bottom: 16px; }
+.test-result { font-family: var(--mono); font-size: 12px; padding: 12px; border-radius: 4px; margin-top: 12px; }
+.test-pass { background: rgba(29, 181, 132, 0.1); border: 1px solid var(--teal); color: var(--teal); }
+.test-fail { background: rgba(232, 64, 64, 0.1); border: 1px solid var(--red); color: var(--red); }
+.test-warn { background: rgba(245, 166, 35, 0.1); border: 1px solid var(--amber); color: var(--amber); }
+.btn { font-family: var(--mono); font-size: 12px; font-weight: 500; padding: 12px 24px; border-radius: 4px; cursor: pointer; border: none; transition: all 0.2s; background: var(--teal); color: var(--bg-base); }
+.btn:hover { opacity: 0.88; }
+pre { font-family: var(--mono); font-size: 11px; background: var(--bg-elevated); padding: 16px; border-radius: 4px; overflow-x: auto; color: var(--text-secondary); }
+</style>
+</head>
+<body>
+<h1 style="margin-bottom: 8px;">Phase 4: Agent Attestation Test</h1>
+<p style="font-family: var(--mono); font-size: 12px; color: var(--text-secondary); margin-bottom: 32px;">Testing delegation credential creation and agent attestation flow</p>
+
+<div class="test-section">
+  <div class="test-title">1. Module Loading</div>
+  <button class="btn" onclick="testModuleLoading()">Run Test</button>
+  <div id="module-test-result"></div>
+</div>
+
+<div class="test-section">
+  <div class="test-title">2. Delegation Credential Creation</div>
+  <button class="btn" onclick="testCredentialCreation()">Run Test</button>
+  <div id="credential-test-result"></div>
+</div>
+
+<div class="test-section">
+  <div class="test-title">3. Credential Signing</div>
+  <button class="btn" onclick="testCredentialSigning()">Run Test</button>
+  <div id="signing-test-result"></div>
+</div>
+
+<div class="test-section">
+  <div class="test-title">4. Agent Type Definitions</div>
+  <button class="btn" onclick="testAgentTypes()">Run Test</button>
+  <div id="agent-types-result"></div>
+</div>
+
+<div class="test-section">
+  <div class="test-title">5. Constraint Validation</div>
+  <button class="btn" onclick="testConstraintValidation()">Run Test</button>
+  <div id="constraint-test-result"></div>
+</div>
+
+<div class="test-section">
+  <div class="test-title">6. Sample Credential</div>
+  <pre id="sample-credential">Click "Generate Sample" to see a delegation credential</pre>
+  <button class="btn" onclick="generateSampleCredential()" style="margin-top: 16px;">Generate Sample</button>
+</div>
+
+<div class="test-section">
+  <div class="test-title">Test Summary</div>
+  <div id="test-summary" style="font-family: var(--mono); font-size: 12px;">Run all tests to see summary</div>
+</div>
+
+<script src="config.js"></script>
+<script src="crypto-keygen.js"></script>
+<script src="storage-idb.js"></script>
+<script src="delegation-credential.js"></script>
+<script src="agent-attestation.js"></script>
+
+<script>
+const testResults = {
+  moduleLoading: null,
+  credentialCreation: null,
+  credentialSigning: null,
+  agentTypes: null,
+  constraintValidation: null,
+};
+
+function showResult(elementId, passed, message) {
+  const el = document.getElementById(elementId);
+  el.className = 'test-result ' + (passed ? 'test-pass' : 'test-fail');
+  el.textContent = (passed ? '✓ PASS: ' : '✗ FAIL: ') + message;
+}
+
+function showWarn(elementId, message) {
+  const el = document.getElementById(elementId);
+  el.className = 'test-result test-warn';
+  el.textContent = '⚠ WARN: ' + message;
+}
+
+async function testModuleLoading() {
+  try {
+    const checks = [];
+    
+    if (typeof DelegationCredential !== 'undefined') {
+      checks.push('DelegationCredential module loaded');
+    } else {
+      throw new Error('DelegationCredential not found');
+    }
+    
+    if (typeof AgentAttestation !== 'undefined') {
+      checks.push('AgentAttestation module loaded');
+    } else {
+      throw new Error('AgentAttestation not found');
+    }
+    
+    if (typeof CryptoKeygen !== 'undefined') {
+      checks.push('CryptoKeygen module loaded');
+    } else {
+      throw new Error('CryptoKeygen not found');
+    }
+    
+    testResults.moduleLoading = true;
+    showResult('module-test-result', true, checks.join(', '));
+  } catch (error) {
+    testResults.moduleLoading = false;
+    showResult('module-test-result', false, error.message);
+  }
+  updateSummary();
+}
+
+async function testCredentialCreation() {
+  try {
+    const credential = DelegationCredential.create({
+      agentPubkey: '03' + 'a'.repeat(64),
+      agentType: 'lnd_node',
+      constraints: {
+        max_per_txn_sats: 100000,
+        max_per_month_sats: 1000000,
+        rails: ['lightning', 'x402'],
+      },
+      humanPubkey: '02' + 'b'.repeat(64),
+      expiryDays: 90,
+    });
+    
+    if (!credential.issuer) throw new Error('Missing issuer');
+    if (!credential.delegate) throw new Error('Missing delegate');
+    if (!credential.constraints) throw new Error('Missing constraints');
+    if (!credential.issued_at) throw new Error('Missing issued_at');
+    if (!credential.expires_at) throw new Error('Missing expires_at');
+    if (credential.signature !== null) throw new Error('Signature should be null initially');
+    
+    testResults.credentialCreation = true;
+    showResult('credential-test-result', true, 'Credential created with all required fields');
+  } catch (error) {
+    testResults.credentialCreation = false;
+    showResult('credential-test-result', false, error.message);
+  }
+  updateSummary();
+}
+
+async function testCredentialSigning() {
+  try {
+    // Generate a test keypair
+    const keypair = await CryptoKeygen.generateKeypair();
+    
+    const credential = DelegationCredential.create({
+      agentPubkey: '03' + 'c'.repeat(64),
+      agentType: 'alby_hub',
+      constraints: {
+        max_per_txn_sats: 50000,
+        max_per_month_sats: 500000,
+        rails: ['lightning'],
+      },
+      humanPubkey: keypair.publicKey,
+      expiryDays: 30,
+    });
+    
+    const signed = await DelegationCredential.signWithHuman(credential, keypair.privateKey);
+    
+    if (!signed.signature) throw new Error('Signature not added');
+    if (signed.verification_status !== 'human_attested') throw new Error('Wrong status');
+    
+    // Verify the signature
+    const valid = await DelegationCredential.verifyHumanSignature(signed);
+    if (!valid) throw new Error('Signature verification failed');
+    
+    testResults.credentialSigning = true;
+    showResult('signing-test-result', true, 'Credential signed and verified successfully');
+  } catch (error) {
+    testResults.credentialSigning = false;
+    showResult('signing-test-result', false, error.message);
+  }
+  updateSummary();
+}
+
+async function testAgentTypes() {
+  try {
+    const types = AgentAttestation.AGENT_TYPES;
+    const required = ['alby_hub', 'lnd_node', 'x402', 'solana', 'op_registered', 'other'];
+    
+    for (const type of required) {
+      if (!types[type]) throw new Error(`Missing agent type: ${type}`);
+      if (!types[type].icon) throw new Error(`Missing icon for ${type}`);
+      if (!types[type].name) throw new Error(`Missing name for ${type}`);
+    }
+    
+    testResults.agentTypes = true;
+    showResult('agent-types-result', true, `All ${required.length} agent types defined`);
+  } catch (error) {
+    testResults.agentTypes = false;
+    showResult('agent-types-result', false, error.message);
+  }
+  updateSummary();
+}
+
+async function testConstraintValidation() {
+  try {
+    // Test valid constraints
+    DelegationCredential.validateConstraints({
+      max_per_txn_sats: 50000,
+      max_per_month_sats: 500000,
+      rails: ['lightning'],
+    });
+    
+    // Test invalid - too low
+    let failed = false;
+    try {
+      DelegationCredential.validateConstraints({
+        max_per_txn_sats: 100,
+        max_per_month_sats: 500000,
+        rails: ['lightning'],
+      });
+    } catch (e) {
+      failed = true;
+    }
+    if (!failed) throw new Error('Should reject txn amount too low');
+    
+    // Test invalid - no rails
+    failed = false;
+    try {
+      DelegationCredential.validateConstraints({
+        max_per_txn_sats: 50000,
+        max_per_month_sats: 500000,
+        rails: [],
+      });
+    } catch (e) {
+      failed = true;
+    }
+    if (!failed) throw new Error('Should reject empty rails');
+    
+    testResults.constraintValidation = true;
+    showResult('constraint-test-result', true, 'Constraint validation working correctly');
+  } catch (error) {
+    testResults.constraintValidation = false;
+    showResult('constraint-test-result', false, error.message);
+  }
+  updateSummary();
+}
+
+async function generateSampleCredential() {
+  try {
+    const keypair = await CryptoKeygen.generateKeypair();
+    
+    const credential = DelegationCredential.create({
+      agentPubkey: '03' + 'd'.repeat(64),
+      agentType: 'lnd_node',
+      constraints: {
+        max_per_txn_sats: 50000,
+        max_per_month_sats: 500000,
+        rails: ['lightning', 'x402'],
+      },
+      humanPubkey: keypair.publicKey,
+      expiryDays: 90,
+    });
+    
+    const signed = await DelegationCredential.signWithHuman(credential, keypair.privateKey);
+    
+    document.getElementById('sample-credential').textContent = JSON.stringify(signed, null, 2);
+  } catch (error) {
+    document.getElementById('sample-credential').textContent = 'Error: ' + error.message;
+  }
+}
+
+function updateSummary() {
+  const results = Object.entries(testResults);
+  const passed = results.filter(([_, v]) => v === true).length;
+  const failed = results.filter(([_, v]) => v === false).length;
+  const pending = results.filter(([_, v]) => v === null).length;
+  
+  let status = '';
+  if (failed > 0) status = ' Some tests failed';
+  else if (pending > 0) status = ' Tests in progress...';
+  else status = ' All tests passed!';
+  
+  document.getElementById('test-summary').innerHTML = `
+    <span style="color: var(--teal);">● Passed: ${passed}</span> | 
+    <span style="color: var(--red);">● Failed: ${failed}</span> | 
+    <span style="color: var(--text-tertiary);">○ Pending: ${pending}</span>
+    <br><br>
+    <strong>${status}</strong>
+  `;
+}
+
+// Auto-run module loading test on page load
+document.addEventListener('DOMContentLoaded', () => {
+  setTimeout(testModuleLoading, 500);
+});
+</script>
+</body>
+</html>

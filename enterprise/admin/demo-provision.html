@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Demo Provisioning — Agentic Terminal Admin</title>
+<style>
+:root {
+  --bg: #0a0c0a;
+  --bg-card: #141614;
+  --bg-card2: #1a1d1a;
+  --bg-input: #0f110f;
+  --border: rgba(255,255,255,0.08);
+  --border-hover: rgba(255,255,255,0.15);
+  --text-primary: #e8ede9;
+  --text-secondary: #a8b8aa;
+  --text-muted: #6e8571;
+  --accent: #6B5CE7;
+  --accent-dim: rgba(107,92,231,0.15);
+  --accent-hover: #7d6eeb;
+  --green: #22c55e;
+  --green-dim: rgba(34,197,94,0.10);
+  --red: #f87171;
+  --red-dim: rgba(248,113,113,0.10);
+  --amber: #fbbf24;
+  --amber-dim: rgba(251,191,36,0.10);
+  --font-mono: 'JetBrains Mono', 'Fira Mono', monospace;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { 
+  background: var(--bg); 
+  color: var(--text-primary); 
+  font-family: 'Inter', system-ui, sans-serif; 
+  font-size: 13px; 
+  min-height: 100vh;
+  line-height: 1.5;
+}
+
+/* Header */
+header { 
+  background: var(--bg-card); 
+  border-bottom: 1px solid var(--border); 
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.brand { 
+  display: flex; 
+  align-items: center; 
+  gap: 12px; 
+}
+.brand-icon { 
+  width: 36px; 
+  height: 36px; 
+  background: var(--accent-dim); 
+  border: 1px solid var(--accent); 
+  border-radius: 8px; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center;
+  font-size: 18px;
+}
+.brand-text { 
+  font-size: 16px; 
+  font-weight: 600; 
+}
+.brand-sub { 
+  font-size: 11px; 
+  color: var(--text-muted); 
+}
+.badge {
+  background: var(--accent-dim);
+  color: var(--accent);
+  padding: 3px 10px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Layout */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 380px 1fr;
+  gap: 24px;
+}
+
+@media (max-width: 900px) {
+  .grid { grid-template-columns: 1fr; }
+}
+
+/* Cards */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.card-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card-title {
+  font-size: 14px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.card-body {
+  padding: 20px;
+}
+
+/* Form Elements */
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-label {
+  display: block;
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+.form-input,
+.form-textarea,
+.form-select {
+  width: 100%;
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 14px;
+  color: var(--text-primary);
+  font-size: 13px;
+  font-family: inherit;
+  transition: border-color 0.15s;
+}
+
+.form-input:focus,
+.form-textarea:focus,
+.form-select:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.form-textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+.form-select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236e8571' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 36px;
+}
+
+.form-hint {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 6px;
+}
+
+/* Role Selector Styles */
+.role-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.role-option:hover {
+  border-color: var(--border-hover);
+  background: rgba(255,255,255,0.02);
+}
+
+.role-option.selected {
+  border-color: var(--accent);
+  background: var(--accent-dim);
+}
+
+.role-radio {
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--border);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.role-option.selected .role-radio {
+  border-color: var(--accent);
+}
+
+.role-option.selected .role-radio::after {
+  content: '';
+  width: 8px;
+  height: 8px;
+  background: var(--accent);
+  border-radius: 50%;
+}
+
+.role-info {
+  flex: 1;
+}
+
+.role-name {
+  font-weight: 600;
+  font-size: 13px;
+  margin-bottom: 2px;
+}
+
+.role-desc {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  background: var(--bg-card2);
+  color: var(--text-secondary);
+  transition: all 0.15s;
+}
+
+.btn:hover {
+  border-color: var(--border-hover);
+  color: var(--text-primary);
+}
+
+.btn-primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
+}
+
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-secondary {
+  background: var(--bg-card2);
+  border-color: var(--border);
+  color: var(--text-secondary);
+}
+
+.btn-sm {
+  padding: 6px 12px;
+  font-size: 12px;
+}
+
+.btn-full {
+  width: 100%;
+}
+
+/* Result Box */
+.result-box {
+  background: var(--green-dim);
+  border: 1px solid rgba(34,197,94,0.2);
+  border-radius: 8px;
+  padding: 16px;
+  margin-top: 16px;
+}
+
+.result-box.error {
+  background: var(--red-dim);
+  border-color: rgba(248,113,113,0.2);
+}
+
+.result-label {
+  font-size: 11px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 8px;
+}
+
+.result-link {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-primary);
+  word-break: break-all;
+  background: rgba(0,0,0,0.2);
+  padding: 10px;
+  border-radius: 6px;
+  margin-bottom: 12px;
+}
+
+.result-meta {
+  display: flex;
+  gap: 16px;
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+
+.result-meta span {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.result-role {
+  background: var(--accent-dim);
+  color: var(--accent);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+/* Table */
+.table-wrap {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+
+th {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+td {
+  font-size: 13px;
+  color: var(--text-primary);
+}
+
+tr:hover td {
+  background: rgba(255,255,255,0.02);
+}
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.status-active {
+  background: var(--green-dim);
+  color: var(--green);
+}
+
+.status-expired {
+  background: var(--red-dim);
+  color: var(--red);
+}
+
+.status-pending {
+  background: var(--amber-dim);
+  color: var(--amber);
+}
+
+.role-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.role-viewer {
+  background: var(--amber-dim);
+  color: var(--amber);
+}
+
+.role-approver {
+  background: rgba(107,92,231,0.15);
+  color: var(--accent);
+}
+
+.role-admin {
+  background: var(--green-dim);
+  color: var(--green);
+}
+
+.mono {
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+
+.text-muted {
+  color: var(--text-muted);
+}
+
+.text-truncate {
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 40px;
+  color: var(--text-muted);
+}
+
+.empty-state-icon {
+  font-size: 32px;
+  margin-bottom: 12px;
+}
+
+/* Toast Notification */
+.toast {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  transform: translateY(100px);
+  opacity: 0;
+  transition: all 0.3s;
+  z-index: 1000;
+}
+
+.toast.show {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.toast-success {
+  border-color: var(--green);
+}
+
+.toast-error {
+  border-color: var(--red);
+}
+
+/* Loading Spinner */
+.spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Copy Button */
+.copy-btn {
+  position: relative;
+}
+
+.copy-btn.copied::after {
+  content: 'Copied!';
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--green);
+  color: #fff;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 11px;
+  white-space: nowrap;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <div class="brand-icon">⚡</div>
+    <div>
+      <div class="brand-text">Demo Provisioning</div>
+      <div class="brand-sub">Agentic Terminal Enterprise — Admin Tool</div>
+    </div>
+  </div>
+  <span class="badge">Internal Use Only</span>
+</header>
+
+<div class="container">
+  <div class="grid">
+    <!-- Left Column: Generate Form -->
+    <div>
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">🎫 Generate Magic Link</div>
+        </div>
+        <div class="card-body">
+          <form id="generateForm">
+            <div class="form-group">
+              <label class="form-label">Organization Name</label>
+              <input type="text" class="form-input" id="orgName" placeholder="e.g., TRON Foundation" required>
+              <div class="form-hint">The organization receiving demo access</div>
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label">Contact Email</label>
+              <input type="email" class="form-input" id="contactEmail" placeholder="engineer@tron.network" required>
+              <div class="form-hint">Primary contact for this demo</div>
+            </div>
+            
+            <!-- Role Selector -->
+            <div class="form-group">
+              <label class="form-label">Access Role</label>
+              
+              <div class="role-option selected" data-role="viewer" onclick="selectRole('viewer')">
+                <div class="role-radio"></div>
+                <div class="role-info">
+                  <div class="role-name">👁️ Viewer</div>
+                  <div class="role-desc">View-only access to org dashboard. Can view fleet, agents, scores, and receipts but cannot make changes.</div>
+                </div>
+              </div>
+              
+              <div class="role-option" data-role="approver" onclick="selectRole('approver')">
+                <div class="role-radio"></div>
+                <div class="role-info">
+                  <div class="role-name">✓ Approver</div>
+                  <div class="role-desc">Can approve or deny delegation requests. Cannot issue new delegations or access settings.</div>
+                </div>
+              </div>
+              
+              <div class="role-option" data-role="admin" onclick="selectRole('admin')">
+                <div class="role-radio"></div>
+                <div class="role-info">
+                  <div class="role-name">⚡ Admin</div>
+                  <div class="role-desc">Full administrative access. Can issue delegations, manage team, and access all settings.</div>
+                </div>
+              </div>
+              
+              <input type="hidden" id="selectedRole" value="viewer">
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label">Notes (Optional)</label>
+              <textarea class="form-textarea" id="notes" placeholder="Any additional context..."></textarea>
+            </div>
+            
+            <button type="submit" class="btn btn-primary btn-full" id="generateBtn">
+              <span>Generate Magic Link</span>
+            </button>
+          </form>
+          
+          <!-- Result Box -->
+          <div id="resultBox" style="display: none;"></div>
+        </div>
+      </div>
+      
+      <!-- Instructions Card -->
+      <div class="card" style="margin-top: 20px;">
+        <div class="card-header">
+          <div class="card-title">📋 How It Works</div>
+        </div>
+        <div class="card-body" style="font-size: 12px; color: var(--text-secondary); line-height: 1.8;">
+          <ol style="padding-left: 16px;">
+            <li>Fill in the organization details</li>
+            <li>Select appropriate access role</li>
+            <li>Click "Generate Magic Link"</li>
+            <li>Copy the generated link</li>
+            <li>Share with the enterprise partner</li>
+            <li>Link expires in <strong>72 hours</strong></li>
+          </ol>
+          <p style="margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border);">
+            When redeemed, the link auto-provisions a demo org with 3 sample TRON agents on Shasta testnet. 
+            The selected role determines what the user can do.
+          </p>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Right Column: Provision List -->
+    <div>
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">📊 Demo Provisions</div>
+          <button class="btn btn-secondary btn-sm" onclick="loadProvisions()">🔄 Refresh</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Organization</th>
+                <th>Role</th>
+                <th>Created</th>
+                <th>Status</th>
+                <th>Remaining</th>
+              </tr>
+            </thead>
+            <tbody id="provisionsTable">
+              <tr>
+                <td colspan="5" class="empty-state">
+                  <div class="empty-state-icon">⏳</div>
+                  <div>Loading provisions...</div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Toast Notification -->
+<div id="toast" class="toast">
+  <span id="toastIcon">✓</span>
+  <span id="toastMessage">Notification</span>
+</div>
+
+<script>
+// API Configuration
+const API_BASE = '/api/v1'; // Adjust based on your API URL
+
+// Elements
+const generateForm = document.getElementById('generateForm');
+const generateBtn = document.getElementById('generateBtn');
+const resultBox = document.getElementById('resultBox');
+const provisionsTable = document.getElementById('provisionsTable');
+const toast = document.getElementById('toast');
+const selectedRoleInput = document.getElementById('selectedRole');
+
+// Role Selection
+function selectRole(role) {
+  // Update hidden input
+  selectedRoleInput.value = role;
+  
+  // Update UI
+  document.querySelectorAll('.role-option').forEach(option => {
+    option.classList.remove('selected');
+    if (option.dataset.role === role) {
+      option.classList.add('selected');
+    }
+  });
+}
+
+// Generate Magic Link
+generateForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  
+  const orgName = document.getElementById('orgName').value.trim();
+  const contactEmail = document.getElementById('contactEmail').value.trim();
+  const notes = document.getElementById('notes').value.trim();
+  const role = selectedRoleInput.value;
+  
+  if (!orgName || !contactEmail) {
+    showToast('Please fill in all required fields', 'error');
+    return;
+  }
+  
+  // Show loading
+  generateBtn.disabled = true;
+  generateBtn.innerHTML = '<div class="spinner"></div> Generating...';
+  
+  try {
+    const response = await fetch(`${API_BASE}/demo/admin/generate`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Admin-Check': 'true'
+      },
+      body: JSON.stringify({ 
+        org_name: orgName, 
+        contact_email: contactEmail, 
+        notes: notes,
+        role: role
+      })
+    });
+    
+    const data = await response.json();
+    
+    if (response.ok && data.success) {
+      showResult(data);
+      showToast('Magic link generated successfully!', 'success');
+      loadProvisions(); // Refresh list
+      generateForm.reset();
+      selectRole('viewer'); // Reset to default role
+    } else {
+      throw new Error(data.detail || 'Failed to generate link');
+    }
+  } catch (error) {
+    showResultError(error.message);
+    showToast(error.message, 'error');
+  } finally {
+    generateBtn.disabled = false;
+    generateBtn.innerHTML = '<span>Generate Magic Link</span>';
+  }
+});
+
+// Show Result
+function showResult(data) {
+  const roleClass = data.role === 'admin' ? 'role-admin' : (data.role === 'approver' ? 'role-approver' : 'role-viewer');
+  
+  resultBox.className = 'result-box';
+  resultBox.style.display = 'block';
+  resultBox.innerHTML = `
+    <div class="result-label">Magic Link Generated</div>
+    <div class="result-link" id="magicLink">${data.magic_link}</div>
+    <div style="display: flex; gap: 10px;">
+      <button class="btn btn-primary btn-sm copy-btn" onclick="copyToClipboard('${data.magic_link}', this)">
+        📋 Copy Link
+      </button>
+      <button class="btn btn-secondary btn-sm" onclick="window.open('${data.magic_link}', '_blank')">
+        🔗 Open Link
+      </button>
+    </div>
+    <div class="result-meta">
+      <span>⏱️ ${data.hours_valid} hours</span>
+      <span>📧 ${data.contact_email}</span>
+      <span>🏢 ${data.org_name}</span>
+      <span class="result-role ${roleClass}">${data.role}</span>
+    </div>
+  `;
+}
+
+// Show Error
+function showResultError(message) {
+  resultBox.className = 'result-box error';
+  resultBox.style.display = 'block';
+  resultBox.innerHTML = `
+    <div class="result-label">Error</div>
+    <div style="color: var(--red);">${message}</div>
+  `;
+}
+
+// Copy to Clipboard
+function copyToClipboard(text, btn) {
+  navigator.clipboard.writeText(text).then(() => {
+    btn.classList.add('copied');
+    btn.textContent = '✓ Copied!';
+    setTimeout(() => {
+      btn.classList.remove('copied');
+      btn.textContent = '📋 Copy Link';
+    }, 2000);
+  });
+}
+
+// Load Provisions
+async function loadProvisions() {
+  provisionsTable.innerHTML = `
+    <tr>
+      <td colspan="5" class="empty-state">
+        <div class="empty-state-icon">⏳</div>
+        <div>Loading provisions...</div>
+      </td>
+    </tr>
+  `;
+  
+  try {
+    const response = await fetch(`${API_BASE}/demo/admin/list`, {
+      headers: { 'X-Admin-Check': 'true' }
+    });
+    
+    if (!response.ok) {
+      throw new Error('Failed to load provisions');
+    }
+    
+    const provisions = await response.json();
+    
+    if (provisions.length === 0) {
+      provisionsTable.innerHTML = `
+        <tr>
+          <td colspan="5" class="empty-state">
+            <div class="empty-state-icon">📝</div>
+            <div>No demo provisions yet</div>
+          </td>
+        </tr>
+      `;
+      return;
+    }
+    
+    provisionsTable.innerHTML = provisions.map(p => {
+      const statusClass = p.is_active ? 'status-active' : 'status-expired';
+      const statusText = p.is_active ? 'Active' : 'Expired';
+      const hoursText = p.hours_remaining !== null 
+        ? `${Math.round(p.hours_remaining)}h` 
+        : '—';
+      
+      const roleClass = p.role === 'admin' ? 'role-admin' : (p.role === 'approver' ? 'role-approver' : 'role-viewer');
+      const roleIcon = p.role === 'admin' ? '⚡' : (p.role === 'approver' ? '✓' : '👁️');
+      
+      return `
+        <tr>
+          <td>
+            <div class="text-truncate" title="${p.org_name}">${p.org_name}</div>
+            <div class="text-muted mono" style="font-size: 11px;">${p.contact_email}</div>
+          </td>
+          <td>
+            <span class="role-badge ${roleClass}">${roleIcon} ${p.role}</span>
+          </td>
+          <td class="text-muted">${formatDate(p.created_at)}</td>
+          <td><span class="status ${statusClass}">${statusText}</span></td>
+          <td class="mono">${hoursText}</td>
+        </tr>
+      `;
+    }).join('');
+  } catch (error) {
+    provisionsTable.innerHTML = `
+      <tr>
+        <td colspan="5" class="empty-state">
+          <div class="empty-state-icon">❌</div>
+          <div>${error.message}</div>
+        </td>
+      </tr>
+    `;
+  }
+}
+
+// Format Date
+function formatDate(dateString) {
+  const date = new Date(dateString);
+  const now = new Date();
+  const diffMs = now - date;
+  const diffHrs = Math.floor(diffMs / (1000 * 60 * 60));
+  const diffDays = Math.floor(diffHrs / 24);
+  
+  if (diffHrs < 1) return 'Just now';
+  if (diffHrs < 24) return `${diffHrs}h ago`;
+  if (diffDays < 7) return `${diffDays}d ago`;
+  return date.toLocaleDateString();
+}
+
+// Show Toast
+function showToast(message, type = 'success') {
+  toast.className = `toast toast-${type}`;
+  toast.querySelector('#toastIcon').textContent = type === 'success' ? '✓' : '✕';
+  toast.querySelector('#toastMessage').textContent = message;
+  toast.classList.add('show');
+  
+  setTimeout(() => {
+    toast.classList.remove('show');
+  }, 3000);
+}
+
+// Load provisions on page load
+loadProvisions();
+
+// Refresh every 30 seconds
+setInterval(loadProvisions, 30000);
+</script>
+
+</body>
+</html>

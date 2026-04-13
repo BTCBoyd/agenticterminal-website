@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alerts — Agentic Terminal Enterprise</title>
+<style>
+:root {
+  --bg: #0a0c0a;
+  --bg-card: #141614;
+  --bg-card2: #1a1d1a;
+  --bg-input: #0f110f;
+  --border: rgba(255,255,255,0.08);
+  --border-hover: rgba(255,255,255,0.15);
+  --text-primary: #e8ede9;
+  --text-secondary: #a8b8aa;
+  --text-muted: #6e8571;
+  --accent: #6B5CE7;
+  --accent-dim: rgba(107,92,231,0.15);
+  --accent-hover: #7d6eeb;
+  --green: #22c55e;
+  --green-dim: rgba(34,197,94,0.10);
+  --red: #f87171;
+  --red-dim: rgba(248,113,113,0.10);
+  --amber: #fbbf24;
+  --amber-dim: rgba(251,191,36,0.10);
+  --font-mono: 'JetBrains Mono', 'Fira Mono', monospace;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { 
+  background: var(--bg); 
+  color: var(--text-primary); 
+  font-family: 'Inter', system-ui, sans-serif; 
+  font-size: 13px; 
+  min-height: 100vh;
+  line-height: 1.5;
+}
+
+/* Header */
+header { 
+  background: var(--bg-card); 
+  border-bottom: 1px solid var(--border); 
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.brand { 
+  display: flex; 
+  align-items: center; 
+  gap: 12px; 
+}
+.brand-icon { 
+  width: 36px; 
+  height: 36px; 
+  background: var(--accent-dim); 
+  border: 1px solid var(--accent); 
+  border-radius: 8px; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center;
+  font-size: 18px;
+}
+.brand-text { 
+  font-size: 16px; 
+  font-weight: 600; 
+}
+.brand-sub { 
+  font-size: 11px; 
+  color: var(--text-muted); 
+}
+
+/* Navigation */
+nav {
+  display: flex;
+  gap: 4px;
+}
+.nav-item {
+  padding: 8px 16px;
+  color: var(--text-secondary);
+  text-decoration: none;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.15s;
+}
+.nav-item:hover {
+  background: rgba(255,255,255,0.05);
+  color: var(--text-primary);
+}
+.nav-item.active {
+  background: var(--accent-dim);
+  color: var(--accent);
+}
+
+/* User Menu */
+.user-menu {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.role-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.role-viewer {
+  background: var(--amber-dim);
+  color: var(--amber);
+  border: 1px solid rgba(251,191,36,0.3);
+}
+
+.role-approver {
+  background: var(--accent-dim);
+  color: var(--accent);
+  border: 1px solid rgba(107,92,231,0.3);
+}
+
+.role-admin {
+  background: var(--green-dim);
+  color: var(--green);
+  border: 1px solid rgba(34,197,94,0.3);
+}
+
+/* Demo Banner */
+.demo-banner {
+  background: linear-gradient(90deg, var(--amber-dim), rgba(251,191,36,0.05));
+  border-bottom: 1px solid rgba(251,191,36,0.3);
+  padding: 10px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.demo-banner.viewer {
+  background: linear-gradient(90deg, var(--amber-dim), rgba(251,191,36,0.05));
+  border-bottom-color: rgba(251,191,36,0.3);
+}
+
+.demo-banner.approver {
+  background: linear-gradient(90deg, var(--accent-dim), rgba(107,92,231,0.05));
+  border-bottom-color: rgba(107,92,231,0.3);
+}
+
+.demo-banner.admin {
+  background: linear-gradient(90deg, var(--green-dim), rgba(34,197,94,0.05));
+  border-bottom-color: rgba(34,197,94,0.3);
+}
+
+.demo-banner-icon {
+  font-size: 16px;
+}
+
+.demo-banner-text {
+  font-size: 13px;
+  color: var(--amber);
+  font-weight: 500;
+}
+
+.demo-banner.approver .demo-banner-text {
+  color: var(--accent);
+}
+
+.demo-banner.admin .demo-banner-text {
+  color: var(--green);
+}
+
+/* Container */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+/* Page Header */
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.page-title {
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.page-subtitle {
+  color: var(--text-secondary);
+  margin-top: 4px;
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  background: var(--bg-card2);
+  color: var(--text-secondary);
+  transition: all 0.15s;
+}
+
+.btn:hover {
+  border-color: var(--border-hover);
+  color: var(--text-primary);
+}
+
+.btn-primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
+}
+
+.btn-sm {
+  padding: 6px 12px;
+  font-size: 12px;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Cards */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.card-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card-title {
+  font-size: 14px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.card-body {
+  padding: 20px;
+}
+
+/* Alert Items */
+.alert-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.alert-item {
+  background: var(--bg-card2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px 20px;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  transition: border-color 0.15s;
+}
+
+.alert-item:hover {
+  border-color: var(--border-hover);
+}
+
+.alert-item.unread {
+  border-left: 3px solid var(--accent);
+}
+
+.alert-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.alert-icon.success {
+  background: var(--green-dim);
+  border: 1px solid rgba(34,197,94,0.3);
+}
+
+.alert-icon.warning {
+  background: var(--amber-dim);
+  border: 1px solid rgba(251,191,36,0.3);
+}
+
+.alert-icon.error {
+  background: var(--red-dim);
+  border: 1px solid rgba(248,113,113,0.3);
+}
+
+.alert-icon.info {
+  background: var(--accent-dim);
+  border: 1px solid rgba(107,92,231,0.3);
+}
+
+.alert-content {
+  flex: 1;
+}
+
+.alert-title {
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+.alert-message {
+  color: var(--text-secondary);
+  font-size: 13px;
+  margin-bottom: 8px;
+}
+
+.alert-meta {
+  display: flex;
+  gap: 16px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.alert-actions {
+  display: flex;
+  gap: 8px;
+}
+
+/* Read-only notice */
+.read-only-notice {
+  background: var(--amber-dim);
+  border: 1px solid rgba(251,191,36,0.3);
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--amber);
+  font-size: 13px;
+}
+
+/* Stats Grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.stat-value {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.stat-label {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+/* Tabs */
+.tabs {
+  display: flex;
+  gap: 4px;
+  padding: 0 20px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(255,255,255,0.02);
+}
+
+.tab {
+  padding: 12px 16px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.15s;
+}
+
+.tab:hover {
+  color: var(--text-primary);
+}
+
+.tab.active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--text-muted);
+}
+
+.empty-state-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+.empty-state-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+@media (max-width: 900px) {
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <div class="brand-icon">⚡</div>
+    <div>
+      <div class="brand-text">Agentic Terminal</div>
+      <div class="brand-sub">Enterprise Dashboard</div>
+    </div>
+  </div>
+  <nav>
+    <a href="fleet.html" class="nav-item">Fleet</a>
+    <a href="delegations.html" class="nav-item">Delegations</a>
+    <a href="alerts.html" class="nav-item active">Alerts</a>
+    <a href="#" class="nav-item" id="settingsLink" style="display: none;">Settings</a>
+  </nav>
+  <div class="user-menu">
+    <span id="roleBadge" class="role-badge role-viewer">Viewer</span>
+    <button class="btn btn-sm" onclick="logout()">Logout</button>
+  </div>
+</header>
+
+<!-- Demo Banner -->
+<div id="demoBanner" class="demo-banner viewer" style="display: none;">
+  <span class="demo-banner-icon">⚡</span>
+  <span class="demo-banner-text" id="bannerText">Viewer Mode — Read Only</span>
+</div>
+
+<div class="container">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Alerts & Notifications</h1>
+      <p class="page-subtitle">Monitor system events and agent activities</p>
+    </div>
+    <button class="btn btn-primary" onclick="markAllRead()" id="markAllReadBtn">
+      <span>Mark All Read</span>
+    </button>
+  </div>
+
+  <!-- Read-only notice for viewers -->
+  <div id="readOnlyNotice" class="read-only-notice" style="display: none;">
+    <span>👁️</span>
+    <span>You have view-only access. Contact an admin to make changes.</span>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-value" id="unreadCount">2</div>
+      <div class="stat-label">Unread Alerts</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">5</div>
+      <div class="stat-label">Total Today</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">0</div>
+      <div class="stat-label">Critical</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">99.9%</div>
+      <div class="stat-label">System Health</div>
+    </div>
+  </div>
+
+  <!-- Alerts Card -->
+  <div class="card">
+    <div class="tabs">
+      <div class="tab active" onclick="filterAlerts('all')">All Alerts</div>
+      <div class="tab" onclick="filterAlerts('unread')">Unread</div>
+      <div class="tab" onclick="filterAlerts('critical')">Critical</div>
+      <div class="tab" onclick="filterAlerts('transactions')">Transactions</div>
+    </div>
+    
+    <div class="card-body">
+      <div class="alert-list" id="alertList">
+        <!-- Alerts populated by JS -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// Sample alerts
+let alerts = [
+  {
+    id: 'alert_001',
+    type: 'success',
+    icon: '✓',
+    title: 'Delegation Request Approved',
+    message: 'Cross-Bridge Agent has been granted bridge:execute permissions.',
+    timestamp: '2026-04-13 14:35',
+    unread: true,
+    category: 'transactions'
+  },
+  {
+    id: 'alert_002',
+    type: 'info',
+    icon: 'ℹ',
+    title: 'New Receipt Generated',
+    message: 'TRON Payment Processor generated a new receipt for 1,000 USDT on Shasta testnet.',
+    timestamp: '2026-04-13 13:20',
+    unread: true,
+    category: 'transactions'
+  },
+  {
+    id: 'alert_003',
+    type: 'warning',
+    icon: '⚠',
+    title: 'Delegation Request Denied',
+    message: 'TRON Treasury Agent request for treasury:full permissions was denied.',
+    timestamp: '2026-04-12 09:47',
+    unread: false,
+    category: 'transactions'
+  },
+  {
+    id: 'alert_004',
+    type: 'info',
+    icon: '🤖',
+    title: 'Demo Organization Provisioned',
+    message: 'Your demo organization has been successfully created with 3 sample TRON agents.',
+    timestamp: '2026-04-12 09:00',
+    unread: false,
+    category: 'system'
+  },
+  {
+    id: 'alert_005',
+    type: 'success',
+    icon: '🎉',
+    title: 'Welcome to Agentic Terminal',
+    message: 'Your demo access is now active. Explore the dashboard to see your agents in action.',
+    timestamp: '2026-04-12 09:00',
+    unread: false,
+    category: 'system'
+  }
+];
+
+let currentFilter = 'all';
+
+// Check permissions and apply role-based UI on page load
+document.addEventListener('DOMContentLoaded', function() {
+  const role = sessionStorage.getItem('demo_role') || 'viewer';
+  const canViewSettings = sessionStorage.getItem('can_view_settings') === 'true';
+  
+  // Update role badge
+  const roleBadge = document.getElementById('roleBadge');
+  const demoBanner = document.getElementById('demoBanner');
+  const bannerText = document.getElementById('bannerText');
+  
+  roleBadge.className = 'role-badge role-' + role;
+  roleBadge.textContent = role.charAt(0).toUpperCase() + role.slice(1);
+  
+  // Show demo banner with appropriate styling
+  demoBanner.style.display = 'flex';
+  demoBanner.className = 'demo-banner ' + role;
+  
+  if (role === 'viewer') {
+    bannerText.textContent = 'Viewer Mode — Read Only';
+    document.getElementById('readOnlyNotice').style.display = 'flex';
+  } else if (role === 'approver') {
+    bannerText.textContent = 'Approver Mode';
+  } else if (role === 'admin') {
+    bannerText.textContent = 'Admin Mode — Full Access';
+  }
+  
+  // Show/hide settings link
+  if (canViewSettings) {
+    document.getElementById('settingsLink').style.display = 'inline-block';
+  }
+  
+  // Render alerts
+  renderAlerts();
+  updateUnreadCount();
+});
+
+function renderAlerts() {
+  let filtered = alerts;
+  
+  if (currentFilter === 'unread') {
+    filtered = alerts.filter(a => a.unread);
+  } else if (currentFilter === 'critical') {
+    filtered = alerts.filter(a => a.type === 'error');
+  } else if (currentFilter === 'transactions') {
+    filtered = alerts.filter(a => a.category === 'transactions');
+  }
+  
+  const list = document.getElementById('alertList');
+  
+  if (filtered.length === 0) {
+    list.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-state-icon">📭</div>
+        <div class="empty-state-title">No alerts</div>
+        <div>You're all caught up!</div>
+      </div>
+    `;
+    return;
+  }
+  
+  list.innerHTML = filtered.map(alert => `
+    <div class="alert-item ${alert.unread ? 'unread' : ''}" id="alert-${alert.id}">
+      <div class="alert-icon ${alert.type}">${alert.icon}</div>
+      <div class="alert-content">
+        <div class="alert-title">${alert.title}</div>
+        <div class="alert-message">${alert.message}</div>
+        <div class="alert-meta">
+          <span>🕐 ${alert.timestamp}</span>
+          ${alert.unread ? '<span style="color: var(--accent);">● Unread</span>' : ''}
+        </div>
+      </div>
+      <div class="alert-actions">
+        ${alert.unread ? `<button class="btn btn-sm" onclick="markRead('${alert.id}')">Mark Read</button>` : ''}
+        <button class="btn btn-sm" onclick="viewDetails('${alert.id}')">Details</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function filterAlerts(filter) {
+  currentFilter = filter;
+  
+  // Update tab styles
+  document.querySelectorAll('.tab').forEach(tab => {
+    tab.classList.remove('active');
+  });
+  event.target.classList.add('active');
+  
+  renderAlerts();
+}
+
+function markRead(alertId) {
+  const alert = alerts.find(a => a.id === alertId);
+  if (alert) {
+    alert.unread = false;
+    renderAlerts();
+    updateUnreadCount();
+  }
+}
+
+function markAllRead() {
+  const role = sessionStorage.getItem('demo_role') || 'viewer';
+  if (role === 'viewer') {
+    alert('You do not have permission to modify alerts.');
+    return;
+  }
+  
+  alerts.forEach(alert => alert.unread = false);
+  renderAlerts();
+  updateUnreadCount();
+}
+
+function updateUnreadCount() {
+  const unread = alerts.filter(a => a.unread).length;
+  document.getElementById('unreadCount').textContent = unread;
+}
+
+function viewDetails(alertId) {
+  alert('View details for alert: ' + alertId);
+}
+
+function logout() {
+  sessionStorage.clear();
+  localStorage.removeItem('demoSession');
+  window.location.href = '/enterprise/demo-access.html';
+}
+</script>
+
+</body>
+</html>

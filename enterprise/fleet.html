@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fleet — Agentic Terminal Enterprise</title>
+<style>
+:root {
+  --bg: #0a0c0a;
+  --bg-card: #141614;
+  --bg-card2: #1a1d1a;
+  --bg-input: #0f110f;
+  --border: rgba(255,255,255,0.08);
+  --border-hover: rgba(255,255,255,0.15);
+  --text-primary: #e8ede9;
+  --text-secondary: #a8b8aa;
+  --text-muted: #6e8571;
+  --accent: #6B5CE7;
+  --accent-dim: rgba(107,92,231,0.15);
+  --accent-hover: #7d6eeb;
+  --green: #22c55e;
+  --green-dim: rgba(34,197,94,0.10);
+  --red: #f87171;
+  --red-dim: rgba(248,113,113,0.10);
+  --amber: #fbbf24;
+  --amber-dim: rgba(251,191,36,0.10);
+  --font-mono: 'JetBrains Mono', 'Fira Mono', monospace;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { 
+  background: var(--bg); 
+  color: var(--text-primary); 
+  font-family: 'Inter', system-ui, sans-serif; 
+  font-size: 13px; 
+  min-height: 100vh;
+  line-height: 1.5;
+}
+
+/* Header */
+header { 
+  background: var(--bg-card); 
+  border-bottom: 1px solid var(--border); 
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.brand { 
+  display: flex; 
+  align-items: center; 
+  gap: 12px; 
+}
+.brand-icon { 
+  width: 36px; 
+  height: 36px; 
+  background: var(--accent-dim); 
+  border: 1px solid var(--accent); 
+  border-radius: 8px; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center;
+  font-size: 18px;
+}
+.brand-text { 
+  font-size: 16px; 
+  font-weight: 600; 
+}
+.brand-sub { 
+  font-size: 11px; 
+  color: var(--text-muted); 
+}
+
+/* Navigation */
+nav {
+  display: flex;
+  gap: 4px;
+}
+.nav-item {
+  padding: 8px 16px;
+  color: var(--text-secondary);
+  text-decoration: none;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.15s;
+}
+.nav-item:hover {
+  background: rgba(255,255,255,0.05);
+  color: var(--text-primary);
+}
+.nav-item.active {
+  background: var(--accent-dim);
+  color: var(--accent);
+}
+
+/* User Menu */
+.user-menu {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.role-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.role-viewer {
+  background: var(--amber-dim);
+  color: var(--amber);
+  border: 1px solid rgba(251,191,36,0.3);
+}
+
+.role-approver {
+  background: var(--accent-dim);
+  color: var(--accent);
+  border: 1px solid rgba(107,92,231,0.3);
+}
+
+.role-admin {
+  background: var(--green-dim);
+  color: var(--green);
+  border: 1px solid rgba(34,197,94,0.3);
+}
+
+/* Demo Banner */
+.demo-banner {
+  background: linear-gradient(90deg, var(--amber-dim), rgba(251,191,36,0.05));
+  border-bottom: 1px solid rgba(251,191,36,0.3);
+  padding: 10px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.demo-banner.viewer {
+  background: linear-gradient(90deg, var(--amber-dim), rgba(251,191,36,0.05));
+  border-bottom-color: rgba(251,191,36,0.3);
+}
+
+.demo-banner.approver {
+  background: linear-gradient(90deg, var(--accent-dim), rgba(107,92,231,0.05));
+  border-bottom-color: rgba(107,92,231,0.3);
+}
+
+.demo-banner.admin {
+  background: linear-gradient(90deg, var(--green-dim), rgba(34,197,94,0.05));
+  border-bottom-color: rgba(34,197,94,0.3);
+}
+
+.demo-banner-icon {
+  font-size: 16px;
+}
+
+.demo-banner-text {
+  font-size: 13px;
+  color: var(--amber);
+  font-weight: 500;
+}
+
+.demo-banner.approver .demo-banner-text {
+  color: var(--accent);
+}
+
+.demo-banner.admin .demo-banner-text {
+  color: var(--green);
+}
+
+/* Container */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+/* Page Header */
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.page-title {
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.page-subtitle {
+  color: var(--text-secondary);
+  margin-top: 4px;
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  background: var(--bg-card2);
+  color: var(--text-secondary);
+  transition: all 0.15s;
+}
+
+.btn:hover {
+  border-color: var(--border-hover);
+  color: var(--text-primary);
+}
+
+.btn-primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
+}
+
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-danger {
+  background: var(--red-dim);
+  border-color: var(--red);
+  color: var(--red);
+}
+
+.btn-sm {
+  padding: 6px 12px;
+  font-size: 12px;
+}
+
+/* Cards */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.card-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card-title {
+  font-size: 14px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.card-body {
+  padding: 20px;
+}
+
+/* Agent Cards Grid */
+.agent-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 20px;
+}
+
+.agent-card {
+  background: var(--bg-card2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px;
+  transition: border-color 0.15s;
+}
+
+.agent-card:hover {
+  border-color: var(--border-hover);
+}
+
+.agent-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.agent-icon {
+  width: 44px;
+  height: 44px;
+  background: var(--accent-dim);
+  border: 1px solid var(--accent);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+}
+
+.agent-info {
+  flex: 1;
+}
+
+.agent-name {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.agent-id {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+}
+
+.agent-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.status-online {
+  background: var(--green-dim);
+  color: var(--green);
+}
+
+.agent-meta {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.meta-label {
+  font-size: 11px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.meta-value {
+  font-size: 13px;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.agent-actions {
+  display: flex;
+  gap: 8px;
+}
+
+/* Stats Grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.stat-value {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.stat-label {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+/* Read-only notice */
+.read-only-notice {
+  background: var(--amber-dim);
+  border: 1px solid rgba(251,191,36,0.3);
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--amber);
+  font-size: 13px;
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--text-muted);
+}
+
+.empty-state-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+.empty-state-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+@media (max-width: 900px) {
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .agent-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <div class="brand-icon">⚡</div>
+    <div>
+      <div class="brand-text">Agentic Terminal</div>
+      <div class="brand-sub">Enterprise Dashboard</div>
+    </div>
+  </div>
+  <nav>
+    <a href="fleet.html" class="nav-item active">Fleet</a>
+    <a href="delegations.html" class="nav-item">Delegations</a>
+    <a href="alerts.html" class="nav-item">Alerts</a>
+    <a href="#" class="nav-item" id="settingsLink" style="display: none;">Settings</a>
+  </nav>
+  <div class="user-menu">
+    <span id="roleBadge" class="role-badge role-viewer">Viewer</span>
+    <button class="btn btn-sm" onclick="logout()">Logout</button>
+  </div>
+</header>
+
+<!-- Demo Banner -->
+<div id="demoBanner" class="demo-banner viewer" style="display: none;">
+  <span class="demo-banner-icon">⚡</span>
+  <span class="demo-banner-text" id="bannerText">Viewer Mode — Read Only</span>
+</div>
+
+<div class="container">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Agent Fleet</h1>
+      <p class="page-subtitle">Manage your organization's autonomous agents</p>
+    </div>
+    <button id="issueCredentialBtn" class="btn btn-primary" onclick="issueCredential()">
+      <span>+</span>
+      <span>Issue Credential</span>
+    </button>
+  </div>
+
+  <!-- Read-only notice for viewers -->
+  <div id="readOnlyNotice" class="read-only-notice" style="display: none;">
+    <span>👁️</span>
+    <span>You have view-only access. Contact an admin to make changes.</span>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-value" id="totalAgents">3</div>
+      <div class="stat-label">Active Agents</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value" id="totalReceipts">5</div>
+      <div class="stat-label">Receipts Today</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">$12.4K</div>
+      <div class="stat-label">Volume (24h)</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">99.9%</div>
+      <div class="stat-label">Uptime</div>
+    </div>
+  </div>
+
+  <!-- Agents Grid -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">🤖 Active Agents</div>
+    </div>
+    <div class="card-body">
+      <div class="agent-grid" id="agentGrid">
+        <!-- Agents populated by JS -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// Check permissions and apply role-based UI on page load
+document.addEventListener('DOMContentLoaded', function() {
+  const role = sessionStorage.getItem('demo_role') || 'viewer';
+  const canIssue = sessionStorage.getItem('can_issue_delegations') === 'true';
+  const canViewSettings = sessionStorage.getItem('can_view_settings') === 'true';
+  
+  // Update role badge
+  const roleBadge = document.getElementById('roleBadge');
+  const demoBanner = document.getElementById('demoBanner');
+  const bannerText = document.getElementById('bannerText');
+  
+  roleBadge.className = 'role-badge role-' + role;
+  roleBadge.textContent = role.charAt(0).toUpperCase() + role.slice(1);
+  
+  // Show demo banner with appropriate styling
+  demoBanner.style.display = 'flex';
+  demoBanner.className = 'demo-banner ' + role;
+  
+  if (role === 'viewer') {
+    bannerText.textContent = 'Viewer Mode — Read Only';
+    document.getElementById('readOnlyNotice').style.display = 'flex';
+    document.getElementById('issueCredentialBtn').style.display = 'none';
+  } else if (role === 'approver') {
+    bannerText.textContent = 'Approver Mode';
+    document.getElementById('issueCredentialBtn').style.display = 'none';
+  } else if (role === 'admin') {
+    bannerText.textContent = 'Admin Mode — Full Access';
+    document.getElementById('issueCredentialBtn').style.display = canIssue ? 'inline-flex' : 'none';
+  }
+  
+  // Show/hide settings link
+  if (canViewSettings) {
+    document.getElementById('settingsLink').style.display = 'inline-block';
+  }
+  
+  // Load demo agents
+  loadAgents();
+});
+
+// Load sample agents
+function loadAgents() {
+  const role = sessionStorage.getItem('demo_role') || 'viewer';
+  const canIssue = sessionStorage.getItem('can_issue_delegations') === 'true';
+  
+  const agents = [
+    {
+      id: 'agent_tron_payment',
+      name: 'TRON Payment Processor',
+      rail: 'TRC20',
+      network: 'Shasta Testnet',
+      status: 'online',
+      receipts: 2,
+      volume: '$3,500'
+    },
+    {
+      id: 'agent_tron_treasury',
+      name: 'TRON Treasury Agent',
+      rail: 'TRON Native',
+      network: 'Shasta Testnet',
+      status: 'online',
+      receipts: 1,
+      volume: '50,000 TRX'
+    },
+    {
+      id: 'agent_cross_bridge',
+      name: 'Cross-Bridge Agent',
+      rail: 'TRC20',
+      network: 'Shasta Testnet',
+      status: 'online',
+      receipts: 2,
+      volume: '$12,500'
+    }
+  ];
+  
+  const grid = document.getElementById('agentGrid');
+  grid.innerHTML = agents.map(agent => `
+    <div class="agent-card">
+      <div class="agent-header">
+        <div class="agent-icon">🤖</div>
+        <div class="agent-info">
+          <div class="agent-name">${agent.name}</div>
+          <div class="agent-id">${agent.id}</div>
+        </div>
+        <span class="agent-status status-online">● Online</span>
+      </div>
+      <div class="agent-meta">
+        <div class="meta-item">
+          <span class="meta-label">Rail</span>
+          <span class="meta-value">${agent.rail}</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Network</span>
+          <span class="meta-value">${agent.network}</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Receipts</span>
+          <span class="meta-value">${agent.receipts}</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Volume</span>
+          <span class="meta-value">${agent.volume}</span>
+        </div>
+      </div>
+      <div class="agent-actions">
+        <button class="btn btn-sm" onclick="viewAgent('${agent.id}')">View Details</button>
+        ${canIssue ? `<button class="btn btn-sm btn-primary" onclick="issueForAgent('${agent.id}')">Issue Credential</button>` : ''}
+      </div>
+    </div>
+  `).join('');
+}
+
+function viewAgent(agentId) {
+  alert('Viewing agent: ' + agentId);
+}
+
+function issueForAgent(agentId) {
+  const canIssue = sessionStorage.getItem('can_issue_delegations') === 'true';
+  if (!canIssue) {
+    alert('You do not have permission to issue credentials.');
+    return;
+  }
+  alert('Issue credential for agent: ' + agentId);
+}
+
+function issueCredential() {
+  const canIssue = sessionStorage.getItem('can_issue_delegations') === 'true';
+  if (!canIssue) {
+    alert('You do not have permission to issue credentials.');
+    return;
+  }
+  alert('Issue new credential modal would open here');
+}
+
+function logout() {
+  sessionStorage.clear();
+  localStorage.removeItem('demoSession');
+  window.location.href = '/enterprise/demo-access.html';
+}
+</script>
+
+</body>
+</html>

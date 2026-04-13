@@ -1,0 +1,25 @@
+{
+  "chart_type": "sparkline",
+  "metric_path": "metrics.stablecoin_api_rails.x402_github_stars",
+  "label": "x402 GitHub Stars",
+  "generated_at": "2026-03-12T17:00:29.190Z",
+  "date_range": {
+    "start": "2026-02-17",
+    "end": "2026-03-16"
+  },
+  "values": [
+    5628,
+    5555,
+    5611,
+    5639
+  ],
+  "current_value": 5639,
+  "previous_value": 5611,
+  "change_percent": 0.5,
+  "change_direction": "↑",
+  "image_path": "/home/futurebit/.openclaw/workspace/agentic-terminal-data/charts/2026-03-12/sparkline-metrics-stablecoin_api_rails-x402_github_stars.png",
+  "dimensions": {
+    "width": 1200,
+    "height": 675
+  }
+}

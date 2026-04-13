@@ -1,0 +1,25 @@
+{
+  "chart_type": "sparkline",
+  "metric_path": "metrics.bitcoin_lightning.l402_github_stars",
+  "label": "L402 GitHub Stars",
+  "generated_at": "2026-03-12T17:00:27.567Z",
+  "date_range": {
+    "start": "2026-02-17",
+    "end": "2026-03-16"
+  },
+  "values": [
+    255,
+    254,
+    255,
+    255
+  ],
+  "current_value": 255,
+  "previous_value": 255,
+  "change_percent": 0,
+  "change_direction": "→",
+  "image_path": "/home/futurebit/.openclaw/workspace/agentic-terminal-data/charts/2026-03-12/sparkline-metrics-bitcoin_lightning-l402_github_stars.png",
+  "dimensions": {
+    "width": 1200,
+    "height": 675
+  }
+}

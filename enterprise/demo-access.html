@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Demo Access — Agentic Terminal Enterprise</title>
+<style>
+:root {
+  --bg: #0a0c0a;
+  --bg-card: #141614;
+  --bg-card2: #1a1d1a;
+  --border: rgba(255,255,255,0.08);
+  --border-hover: rgba(255,255,255,0.15);
+  --text-primary: #e8ede9;
+  --text-secondary: #a8b8aa;
+  --text-muted: #6e8571;
+  --accent: #6B5CE7;
+  --accent-dim: rgba(107,92,231,0.15);
+  --green: #22c55e;
+  --green-dim: rgba(34,197,94,0.10);
+  --red: #f87171;
+  --red-dim: rgba(248,113,113,0.10);
+  --amber: #fbbf24;
+  --amber-dim: rgba(251,191,36,0.10);
+  --font-mono: 'JetBrains Mono', 'Fira Mono', monospace;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { 
+  background: var(--bg); 
+  color: var(--text-primary); 
+  font-family: 'Inter', system-ui, sans-serif; 
+  font-size: 13px; 
+  min-height: 100vh;
+  line-height: 1.5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Demo Banner (shown when in demo mode) */
+.demo-banner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(90deg, var(--amber-dim), rgba(251,191,36,0.05));
+  border-bottom: 1px solid rgba(251,191,36,0.3);
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  z-index: 1000;
+}
+
+.demo-banner-icon {
+  font-size: 16px;
+}
+
+.demo-banner-text {
+  font-size: 13px;
+  color: var(--amber);
+  font-weight: 500;
+}
+
+.demo-banner-text strong {
+  color: var(--text-primary);
+}
+
+/* Card */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  width: 100%;
+  max-width: 420px;
+  padding: 32px;
+  text-align: center;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.brand-icon {
+  width: 44px;
+  height: 44px;
+  background: var(--accent-dim);
+  border: 1px solid var(--accent);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+}
+
+.brand-text {
+  text-align: left;
+}
+
+.brand-name {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.brand-sub {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* States */
+.state {
+  display: none;
+}
+
+.state.active {
+  display: block;
+}
+
+/* Loading */
+.spinner-container {
+  padding: 40px 0;
+}
+
+.spinner {
+  width: 48px;
+  height: 48px;
+  border: 3px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin: 0 auto 16px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.loading-text {
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+/* Success */
+.success-icon {
+  width: 64px;
+  height: 64px;
+  background: var(--green-dim);
+  border: 1px solid rgba(34,197,94,0.3);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  margin: 0 auto 20px;
+}
+
+.success-title {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.success-text {
+  color: var(--text-secondary);
+  font-size: 14px;
+  margin-bottom: 24px;
+}
+
+/* Error */
+.error-icon {
+  width: 64px;
+  height: 64px;
+  background: var(--red-dim);
+  border: 1px solid rgba(248,113,113,0.3);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  margin: 0 auto 20px;
+}
+
+.error-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--red);
+  margin-bottom: 8px;
+}
+
+.error-text {
+  color: var(--text-secondary);
+  font-size: 14px;
+  margin-bottom: 24px;
+}
+
+/* Info Box */
+.info-box {
+  background: var(--bg-card2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+  margin: 20px 0;
+  text-align: left;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+}
+
+.info-row:last-child {
+  border-bottom: none;
+}
+
+.info-label {
+  color: var(--text-muted);
+}
+
+.info-value {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.info-value.highlight {
+  color: var(--amber);
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  background: var(--bg-card2);
+  color: var(--text-secondary);
+  transition: all 0.15s;
+  text-decoration: none;
+}
+
+.btn:hover {
+  border-color: var(--border-hover);
+  color: var(--text-primary);
+}
+
+.btn-primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+  width: 100%;
+}
+
+.btn-primary:hover {
+  opacity: 0.9;
+}
+
+.btn-secondary {
+  background: transparent;
+  border-color: var(--border);
+  color: var(--text-secondary);
+}
+
+/* Features List */
+.features {
+  text-align: left;
+  margin: 20px 0;
+}
+
+.feature-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 10px 0;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.feature-icon {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  background: var(--green-dim);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+}
+
+.feature-icon.disabled {
+  background: var(--red-dim);
+  opacity: 0.5;
+}
+
+/* Footer */
+.footer {
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.footer a {
+  color: var(--text-secondary);
+  text-decoration: none;
+}
+
+.footer a:hover {
+  color: var(--text-primary);
+}
+
+/* No Token State */
+.no-token-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+/* Role badges */
+.role-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 16px;
+}
+
+.role-viewer {
+  background: var(--amber-dim);
+  color: var(--amber);
+  border: 1px solid rgba(251,191,36,0.3);
+}
+
+.role-approver {
+  background: var(--accent-dim);
+  color: var(--accent);
+  border: 1px solid rgba(107,92,231,0.3);
+}
+
+.role-admin {
+  background: var(--green-dim);
+  color: var(--green);
+  border: 1px solid rgba(34,197,94,0.3);
+}
+
+/* Permission list */
+.permission-list {
+  text-align: left;
+  margin: 16px 0;
+  padding: 12px;
+  background: rgba(0,0,0,0.2);
+  border-radius: 8px;
+}
+
+.permission-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 0;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.permission-item.allowed {
+  color: var(--green);
+}
+
+.permission-item.denied {
+  color: var(--text-muted);
+  text-decoration: line-through;
+}
+</style>
+</head>
+<body>
+
+<!-- Demo Banner (hidden by default, shown via JS) -->
+<div id="demoBanner" class="demo-banner" style="display: none;">
+  <span class="demo-banner-icon">⚡</span>
+  <span class="demo-banner-text">
+    <strong>Demo Mode</strong> — Expires in <span id="countdown">--</span> hours
+  </span>
+</div>
+
+<div class="card">
+  <div class="brand">
+    <div class="brand-icon">⚡</div>
+    <div class="brand-text">
+      <div class="brand-name">Enterprise</div>
+      <div class="brand-sub">Agentic Terminal Demo</div>
+    </div>
+  </div>
+  
+  <!-- Loading State -->
+  <div id="loadingState" class="state active">
+    <div class="spinner-container">
+      <div class="spinner"></div>
+      <div class="loading-text">Validating your demo access...</div>
+    </div>
+  </div>
+  
+  <!-- Success State -->
+  <div id="successState" class="state">
+    <div class="success-icon">✓</div>
+    <div class="success-title">Demo Access Granted</div>
+    <div class="success-text">
+      Your demo organization has been provisioned with sample TRON agents.
+    </div>
+    
+    <div class="info-box">
+      <div class="info-row">
+        <span class="info-label">Organization</span>
+        <span class="info-value" id="orgName">—</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Demo Org ID</span>
+        <span class="info-value mono" id="demoOrgId">—</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Role</span>
+        <span class="info-value" id="userRole">—</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Expires</span>
+        <span class="info-value highlight" id="expiresAt">—</span>
+      </div>
+    </div>
+    
+    <!-- Role Badge -->
+    <div id="roleBadge" class="role-badge role-viewer">
+      <span id="roleIcon">👁️</span>
+      <span id="roleText">Viewer Mode</span>
+    </div>
+    
+    <!-- Permissions Summary -->
+    <div id="permissionsList" class="permission-list">
+      <!-- Populated by JS -->
+    </div>
+    
+    <div class="features">
+      <div class="feature-item" id="feat-view">
+        <span class="feature-icon">✓</span>
+        <span>View 3 pre-configured TRON agents</span>
+      </div>
+      <div class="feature-item" id="feat-receipts">
+        <span class="feature-icon">✓</span>
+        <span>Explore transaction history & receipts</span>
+      </div>
+      <div class="feature-item" id="feat-dashboard">
+        <span class="feature-icon">✓</span>
+        <span>Browse Enterprise dashboard features</span>
+      </div>
+      <div class="feature-item" id="feat-approve" style="display: none;">
+        <span class="feature-icon">✓</span>
+        <span>Approve or deny delegation requests</span>
+      </div>
+      <div class="feature-item" id="feat-issue" style="display: none;">
+        <span class="feature-icon">✓</span>
+        <span>Issue new delegation credentials</span>
+      </div>
+      <div class="feature-item" id="feat-settings" style="display: none;">
+        <span class="feature-icon">✓</span>
+        <span>Access organization settings</span>
+      </div>
+    </div>
+    
+    <button class="btn btn-primary" onclick="enterDashboard()">
+      <span>Enter Dashboard</span>
+      <span>→</span>
+    </button>
+  </div>
+  
+  <!-- Error State -->
+  <div id="errorState" class="state">
+    <div class="error-icon">✕</div>
+    <div class="error-title" id="errorTitle">Access Denied</div>
+    <div class="error-text" id="errorText">
+      This demo link is invalid or has expired.
+    </div>
+    <a href="https://agenticterminal.io" class="btn btn-secondary">
+      <span>← Back to Agentic Terminal</span>
+    </a>
+  </div>
+  
+  <!-- No Token State -->
+  <div id="noTokenState" class="state">
+    <div class="no-token-icon">🎫</div>
+    <div class="success-title">Demo Access</div>
+    <div class="success-text">
+      This page requires a valid demo magic link. 
+      Please use the link provided by your administrator.
+    </div>
+    <a href="https://agenticterminal.io" class="btn btn-secondary">
+      <span>← Back to Agentic Terminal</span>
+    </a>
+  </div>
+  
+  <div class="footer">
+    Powered by <a href="https://agenticterminal.io">Agentic Terminal</a> • 
+    <a href="mailto:support@agenticterminal.io">Contact Support</a>
+  </div>
+</div>
+
+<script>
+// API Configuration
+const API_BASE = '/api/v1';
+
+// Get token from URL
+const urlParams = new URLSearchParams(window.location.search);
+const token = urlParams.get('token');
+
+// DOM Elements
+const loadingState = document.getElementById('loadingState');
+const successState = document.getElementById('successState');
+const errorState = document.getElementById('errorState');
+const noTokenState = document.getElementById('noTokenState');
+const demoBanner = document.getElementById('demoBanner');
+
+// State
+let sessionData = null;
+
+// Initialize
+async function init() {
+  if (!token) {
+    showState('noToken');
+    return;
+  }
+  
+  try {
+    const response = await fetch(`${API_BASE}/demo/access?token=${encodeURIComponent(token)}`);
+    const data = await response.json();
+    
+    if (response.ok && data.success) {
+      sessionData = data;
+      showSuccess(data);
+    } else {
+      showError(data.detail || 'Failed to redeem demo token');
+    }
+  } catch (error) {
+    showError('Network error. Please try again.');
+  }
+}
+
+// Show State
+function showState(state) {
+  loadingState.classList.remove('active');
+  successState.classList.remove('active');
+  errorState.classList.remove('active');
+  noTokenState.classList.remove('active');
+  
+  if (state === 'loading') loadingState.classList.add('active');
+  if (state === 'success') successState.classList.add('active');
+  if (state === 'error') errorState.classList.add('active');
+  if (state === 'noToken') noTokenState.classList.add('active');
+}
+
+// Show Success
+function showSuccess(data) {
+  document.getElementById('orgName').textContent = data.org_name;
+  document.getElementById('demoOrgId').textContent = data.demo_org_id.substring(0, 16) + '...';
+  document.getElementById('expiresAt').textContent = formatExpiry(data.expires_at);
+  
+  // Set role display
+  const role = data.role || 'viewer';
+  document.getElementById('userRole').textContent = role.charAt(0).toUpperCase() + role.slice(1);
+  
+  // Update role badge
+  const roleBadge = document.getElementById('roleBadge');
+  const roleIcon = document.getElementById('roleIcon');
+  const roleText = document.getElementById('roleText');
+  
+  roleBadge.className = 'role-badge role-' + role;
+  
+  if (role === 'admin') {
+    roleIcon.textContent = '⚡';
+    roleText.textContent = 'Admin Mode — Full Access';
+  } else if (role === 'approver') {
+    roleIcon.textContent = '✓';
+    roleText.textContent = 'Approver Mode';
+  } else {
+    roleIcon.textContent = '👁️';
+    roleText.textContent = 'Viewer Mode — Read Only';
+  }
+  
+  // Show/hide features based on role
+  const permissions = data.permissions || {};
+  
+  if (permissions.can_approve_delegations) {
+    document.getElementById('feat-approve').style.display = 'flex';
+  }
+  if (permissions.can_issue_delegations) {
+    document.getElementById('feat-issue').style.display = 'flex';
+  }
+  if (permissions.can_view_settings) {
+    document.getElementById('feat-settings').style.display = 'flex';
+  }
+  
+  // Build permissions list
+  const permList = document.getElementById('permissionsList');
+  const permItems = [
+    { key: 'can_view_fleet', label: 'View Agent Fleet', allowed: true },
+    { key: 'can_view_transactions', label: 'View Transactions', allowed: true },
+    { key: 'can_approve_delegations', label: 'Approve Delegations', allowed: permissions.can_approve_delegations },
+    { key: 'can_issue_delegations', label: 'Issue Delegations', allowed: permissions.can_issue_delegations },
+    { key: 'can_view_settings', label: 'Access Settings', allowed: permissions.can_view_settings }
+  ];
+  
+  permList.innerHTML = permItems.map(perm => `
+    <div class="permission-item ${perm.allowed ? 'allowed' : 'denied'}">
+      <span>${perm.allowed ? '✓' : '✕'}</span>
+      <span>${perm.label}</span>
+    </div>
+  `).join('');
+  
+  // Store session with permissions
+  const sessionToStore = {
+    token: data.session_token,
+    demo_org_id: data.demo_org_id,
+    org_name: data.org_name,
+    role: role,
+    permissions: permissions,
+    expires_at: data.expires_at,
+    hours_remaining: data.hours_remaining
+  };
+  
+  localStorage.setItem('demoSession', JSON.stringify(sessionToStore));
+  
+  // Store permissions in sessionStorage for easy access
+  sessionStorage.setItem('demoPermissions', JSON.stringify(permissions));
+  sessionStorage.setItem('demoRole', role);
+  
+  // Store individual permission flags for role-based access control
+  sessionStorage.setItem('can_issue_delegations', role === 'admin');
+  sessionStorage.setItem('can_approve_delegations', role === 'approver' || role === 'admin');
+  sessionStorage.setItem('can_view_settings', role === 'admin');
+  
+  showState('success');
+}
+
+// Show Error
+function showError(message) {
+  document.getElementById('errorText').textContent = message;
+  showState('error');
+}
+
+// Format Expiry
+function formatExpiry(isoDate) {
+  const date = new Date(isoDate);
+  const now = new Date();
+  const diffMs = date - now;
+  const diffHrs = Math.floor(diffMs / (1000 * 60 * 60));
+  
+  if (diffHrs < 24) {
+    return `In ${diffHrs} hours`;
+  }
+  
+  const days = Math.floor(diffHrs / 24);
+  return `In ${days} days (${diffHrs % 24}h)`;
+}
+
+// Enter Dashboard
+function enterDashboard() {
+  if (!sessionData) return;
+  
+  // Redirect to enterprise dashboard with demo flag
+  window.location.href = `/sovereign/enterprise/?demo=1&session=${sessionData.session_token}`;
+}
+
+// Check for existing session on load
+function checkExistingSession() {
+  const stored = localStorage.getItem('demoSession');
+  if (stored) {
+    try {
+      const session = JSON.parse(stored);
+      const expiresAt = new Date(session.expires_at);
+      
+      if (expiresAt > new Date()) {
+        // Session still valid, pre-fill
+        sessionData = session;
+        document.getElementById('orgName').textContent = session.org_name;
+        document.getElementById('demoOrgId').textContent = session.demo_org_id.substring(0, 16) + '...';
+        document.getElementById('expiresAt').textContent = formatExpiry(session.expires_at);
+        
+        // Set role
+        const role = session.role || 'viewer';
+        document.getElementById('userRole').textContent = role.charAt(0).toUpperCase() + role.slice(1);
+        
+        const roleBadge = document.getElementById('roleBadge');
+        const roleIcon = document.getElementById('roleIcon');
+        const roleText = document.getElementById('roleText');
+        
+        roleBadge.className = 'role-badge role-' + role;
+        
+        if (role === 'admin') {
+          roleIcon.textContent = '⚡';
+          roleText.textContent = 'Admin Mode — Full Access';
+        } else if (role === 'approver') {
+          roleIcon.textContent = '✓';
+          roleText.textContent = 'Approver Mode';
+        } else {
+          roleIcon.textContent = '👁️';
+          roleText.textContent = 'Viewer Mode — Read Only';
+        }
+        
+        // Restore permissions
+        const permissions = session.permissions || {};
+        if (permissions.can_approve_delegations) {
+          document.getElementById('feat-approve').style.display = 'flex';
+        }
+        if (permissions.can_issue_delegations) {
+          document.getElementById('feat-issue').style.display = 'flex';
+        }
+        if (permissions.can_view_settings) {
+          document.getElementById('feat-settings').style.display = 'flex';
+        }
+        
+        // Restore permissions to sessionStorage
+        sessionStorage.setItem('demoPermissions', JSON.stringify(permissions));
+        sessionStorage.setItem('demoRole', role);
+        
+        // Restore individual permission flags
+        sessionStorage.setItem('can_issue_delegations', role === 'admin');
+        sessionStorage.setItem('can_approve_delegations', role === 'approver' || role === 'admin');
+        sessionStorage.setItem('can_view_settings', role === 'admin');
+        
+        showState('success');
+        return true;
+      } else {
+        // Session expired
+        localStorage.removeItem('demoSession');
+        sessionStorage.removeItem('demoPermissions');
+        sessionStorage.removeItem('demoRole');
+      }
+    } catch (e) {
+      localStorage.removeItem('demoSession');
+      sessionStorage.removeItem('demoPermissions');
+      sessionStorage.removeItem('demoRole');
+    }
+  }
+  return false;
+}
+
+// Start
+if (!checkExistingSession()) {
+  init();
+}
+</script>
+
+</body>
+</html>

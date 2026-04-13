@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sovereign Dashboard — Phase 2 Live</title>
+<title>Sovereign Dashboard — Phase 4 Agent Attestation</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@0,400;0,500&family=Syne:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-:root { --bg-base: #07070C; --bg-surface: #0E0E16; --bg-elevated: #16161F; --bg-border: #22222E; --text-primary: #EEEEF5; --text-secondary: #7A7A92; --text-tertiary: #44445A; --accent: #6B5CE7; --accent-dim: rgba(107, 92, 231, 0.15); --teal: #1DB584; --teal-dim: rgba(29, 181, 132, 0.12); --red: #E84040; --amber: #E87D20; --mono: 'DM Mono', monospace; --display: 'Syne', sans-serif; }
+:root { --bg-base: #07070C; --bg-surface: #0E0E16; --bg-elevated: #16161F; --bg-border: #22222E; --text-primary: #EEEEF5; --text-secondary: #7A7A92; --text-tertiary: #44445A; --accent: #6B5CE7; --accent-dim: rgba(107, 92, 231, 0.15); --teal: #1DB584; --teal-dim: rgba(29, 181, 132, 0.12); --red: #E84040; --amber: #F5A623; --amber-dim: rgba(245,166,35,0.1); --mono: 'DM Mono', monospace; --display: 'Syne', sans-serif; }
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 body { background: var(--bg-base); color: var(--text-primary); font-family: var(--display); min-height: 100vh; }
 .top-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 16px 32px; background: rgba(7, 7, 12, 0.95); backdrop-filter: blur(16px); border-bottom: 1px solid var(--bg-border); }
@@ -49,6 +49,21 @@ body { background: var(--bg-base); color: var(--text-primary); font-family: var(
 .feed-row.new { background: rgba(29, 181, 132, 0.05); border-left: 2px solid var(--teal); }
 .type-inbound { background: var(--teal-dim); color: var(--teal); padding: 2px 8px; border-radius: 2px; font-size: 10px; }
 .type-outbound { background: var(--accent-dim); color: var(--accent); padding: 2px 8px; border-radius: 2px; font-size: 10px; }
+
+/* Protocol badges for transaction feed */
+.protocol-badge { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 2px; font-family: var(--mono); font-size: 10px; font-weight: 500; }
+.protocol-lightning { background: rgba(247, 147, 26, 0.15); color: #F7931A; }
+.protocol-x402 { background: var(--accent-dim); color: var(--accent); }
+.protocol-x402_stripe { background: rgba(99, 91, 255, 0.15); color: #635BFF; }
+.protocol-x402_stacks { background: rgba(236, 100, 64, 0.15); color: #EC6440; }
+.protocol-l402 { background: rgba(29, 181, 132, 0.15); color: var(--teal); }
+.protocol-unknown { background: var(--bg-elevated); color: var(--text-tertiary); }
+
+/* sBTC/Stacks specific styles */
+.stx-address { font-family: var(--mono); font-size: 11px; color: var(--text-secondary); }
+.stx-address-short { font-family: var(--mono); font-size: 11px; color: var(--text-secondary); }
+.stx-explorer-link { color: #EC6440; text-decoration: none; }
+.stx-explorer-link:hover { text-decoration: underline; }
 .btn { font-family: var(--mono); font-size: 12px; font-weight: 500; padding: 12px 24px; border-radius: 2px; cursor: pointer; border: none; transition: all 0.2s; }
 .btn:hover { opacity: 0.88; }
 .btn-primary { background: var(--teal); color: var(--bg-base); }
@@ -61,7 +76,81 @@ body { background: var(--bg-base); color: var(--text-primary); font-family: var(
 .notification-badge.visible { transform: translateX(0); }
 .notification-badge.error { border-left-color: var(--red); }
 .empty-state { text-align: center; padding: 60px 20px; color: var(--text-secondary); }
-@media (max-width: 1024px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } .charts-section { grid-template-columns: 1fr; } .feed-row { grid-template-columns: 1fr; gap: 8px; } }
+/* Phase 3: OP Registration Banner */
+.unverified-banner { background: var(--amber-dim); border: 1px solid rgba(245,166,35,0.2); border-left: 3px solid var(--amber); padding: 16px 24px; margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+.unverified-banner-text { font-family: var(--mono); font-size: 13px; color: var(--text-secondary); }
+.unverified-banner-text strong { color: var(--amber); }
+.verification-badge { font-family: var(--mono); font-size: 10px; padding: 6px 12px; border-radius: 2px; display: flex; align-items: center; gap: 6px; }
+.verification-badge.verified { background: var(--teal-dim); color: var(--teal); }
+.verification-badge.unverified { background: var(--amber-dim); color: var(--amber); border: 1px solid rgba(245,166,35,0.2); }
+.op-status-card { background: var(--bg-base); border: 1px solid var(--bg-border); border-radius: 8px; padding: 20px; }
+.op-status-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+.op-status-icon { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+.op-status-icon.verified { background: var(--teal-dim); }
+.op-status-icon.unverified { background: var(--amber-dim); }
+.disabled-feature { opacity: 0.5; pointer-events: none; }
+
+/* Phase 5: Transaction Cache & Storage Styles */
+.tx-cache-status { font-family: var(--mono); font-size: 10px; color: var(--text-tertiary); display: flex; align-items: center; gap: 8px; }
+.tx-cache-status .cache-indicator { width: 6px; height: 6px; border-radius: 50%; background: var(--text-tertiary); }
+.tx-cache-status .cache-indicator.active { background: var(--teal); }
+.tx-cache-status .cache-indicator.stale { background: var(--amber); }
+.tx-export-controls { display: flex; align-items: center; gap: 8px; }
+.tx-export-controls select { font-family: var(--mono); font-size: 11px; background: var(--bg-elevated); color: var(--text-secondary); border: 1px solid var(--bg-border); padding: 6px 12px; border-radius: 2px; }
+.tx-export-controls button { white-space: nowrap; }
+
+/* Phase 5: Storage Manager Styles */
+.storage-section { background: var(--bg-surface); border: 1px solid var(--bg-border); padding: 24px; margin-bottom: 16px; }
+.storage-meter { background: var(--bg-elevated); height: 8px; border-radius: 4px; overflow: hidden; margin: 12px 0; }
+.storage-meter-fill { height: 100%; border-radius: 4px; transition: width 0.3s ease, background 0.3s ease; }
+.storage-meter-fill.healthy { background: var(--teal); }
+.storage-meter-fill.warning { background: var(--amber); }
+.storage-meter-fill.critical { background: var(--red); }
+.storage-info { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; font-family: var(--mono); font-size: 11px; color: var(--text-secondary); margin-top: 12px; }
+.storage-alert { background: var(--amber-dim); border: 1px solid rgba(245,166,35,0.2); border-left: 3px solid var(--amber); padding: 12px 16px; margin-top: 16px; font-family: var(--mono); font-size: 11px; color: var(--text-secondary); }
+.storage-alert.critical { background: rgba(232, 64, 64, 0.1); border-color: rgba(232, 64, 64, 0.3); border-left-color: var(--red); }
+
+/* Phase 4.5: AT-ARS Score Card Styles */
+.at-ars-section { margin-bottom: 24px; }
+.at-ars-card { background: var(--bg-surface); border: 1px solid var(--bg-border); border-left: 3px solid var(--accent); padding: 24px; position: relative; }
+.at-ars-card.unverified { border-left-color: var(--text-tertiary); opacity: 0.7; }
+.at-ars-card.verified-no-agent { border-left-color: var(--amber); }
+.at-ars-card.op-unreachable { border-left-color: var(--red); }
+.at-ars-card.showcase { border-left-color: var(--teal); background: linear-gradient(90deg, var(--bg-surface) 0%, rgba(29,181,132,0.05) 100%); }
+.at-ars-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 20px; flex-wrap: wrap; gap: 16px; }
+.at-ars-brand { display: flex; align-items: center; gap: 12px; }
+.at-ars-logo { width: 36px; height: 36px; border-radius: 8px; background: var(--accent-dim); display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 14px; color: var(--accent); font-weight: 600; }
+.at-ars-title { font-size: 16px; font-weight: 600; }
+.at-ars-subtitle { font-family: var(--mono); font-size: 10px; color: var(--text-tertiary); }
+.at-ars-score-display { text-align: right; }
+.at-ars-score-value { font-family: var(--mono); font-size: 48px; font-weight: 500; line-height: 1; }
+.at-ars-score-band { font-family: var(--mono); font-size: 11px; padding: 4px 10px; border-radius: 2px; display: inline-block; margin-top: 6px; }
+.at-ars-score-bar-container { background: var(--bg-elevated); height: 8px; border-radius: 4px; overflow: hidden; margin-bottom: 20px; position: relative; }
+.at-ars-score-bar { height: 100%; border-radius: 4px; transition: width 0.6s ease; }
+.at-ars-score-bar.unproven { background: var(--text-tertiary); }
+.at-ars-score-bar.active { background: var(--amber); }
+.at-ars-score-bar.established { background: var(--teal); }
+.at-ars-score-bar.highly-proven { background: var(--accent); }
+.at-ars-metrics-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 16px; }
+.at-ars-metric { background: var(--bg-elevated); padding: 14px; border-radius: 6px; }
+.at-ars-metric-label { font-family: var(--mono); font-size: 9px; color: var(--text-tertiary); text-transform: uppercase; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+.at-ars-metric-value { font-family: var(--mono); font-size: 20px; font-weight: 500; color: var(--text-primary); }
+.at-ars-metric-value.small { font-size: 14px; }
+.at-ars-mini-bar { height: 4px; background: var(--bg-border); border-radius: 2px; margin-top: 8px; overflow: hidden; }
+.at-ars-mini-bar-fill { height: 100%; background: var(--teal); border-radius: 2px; transition: width 0.4s ease; }
+.at-ars-rail-dots { display: flex; gap: 6px; margin-top: 8px; }
+.at-ars-rail-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--text-tertiary); }
+.at-ars-rail-dot.active { background: var(--teal); }
+.at-ars-footer { display: flex; align-items: center; justify-content: space-between; padding-top: 16px; border-top: 1px solid var(--bg-border); flex-wrap: wrap; gap: 8px; }
+.at-ars-powered { font-family: var(--mono); font-size: 9px; color: var(--text-tertiary); display: flex; align-items: center; gap: 6px; }
+.at-ars-meta { font-family: var(--mono); font-size: 9px; color: var(--text-tertiary); }
+.at-ars-stale-warning { font-family: var(--mono); font-size: 10px; color: var(--amber); display: flex; align-items: center; gap: 6px; }
+.at-ars-locked { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px; text-align: center; }
+.at-ars-locked-icon { font-size: 48px; margin-bottom: 16px; opacity: 0.5; }
+.at-ars-locked-text { font-family: var(--mono); font-size: 12px; color: var(--text-secondary); margin-bottom: 16px; }
+.at-ars-showcase-badge { background: var(--teal-dim); color: var(--teal); font-family: var(--mono); font-size: 9px; padding: 4px 10px; border-radius: 2px; margin-bottom: 12px; display: inline-block; }
+.at-ars-showcase-copy { font-family: var(--mono); font-size: 11px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 16px; padding: 12px; background: var(--bg-elevated); border-radius: 6px; border-left: 2px solid var(--teal); }
+@media (max-width: 1024px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } .charts-section { grid-template-columns: 1fr; } .feed-row { grid-template-columns: 1fr; gap: 8px; } .at-ars-metrics-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 768px) { .nav-tabs { display: none; } .stats-grid { grid-template-columns: 1fr; } .top-nav { padding: 16px; } .main-content { padding: 100px 16px 32px; } }
 </style>
 </head>
@@ -89,17 +178,54 @@ body { background: var(--bg-base); color: var(--text-primary); font-family: var(
   </div>
 </nav>
 <main class="main-content">
+  <!-- Phase 3: Unverified Banner -->
+  <div class="unverified-banner" id="unverified-banner" style="display:none;">
+    <div class="unverified-banner-text">
+      <strong>⚠️ Identity Not Verified on Observer Protocol</strong><br>
+      Complete your OP registration to unlock reputation and attestation features.
+    </div>
+    <button class="btn btn-secondary" style="padding:8px 16px;font-size:11px;white-space:nowrap;" onclick="goToOPRegistration()">
+      Complete Registration
+    </button>
+  </div>
+  
   <div class="identity-card">
     <div class="identity-main">
       <div class="identity-name user-name">Loading...</div>
       <div class="identity-key user-pubkey">—</div>
       <div style="font-family:var(--mono);font-size:10px;color:var(--text-tertiary);margin-top:8px" id="identity-meta">Loading...</div>
     </div>
-    <div style="font-family:var(--mono);font-size:10px;color:var(--teal);background:var(--teal-dim);padding:6px 12px;border-radius:2px;display:flex;align-items:center;gap:6px;">
-      <div class="live-indicator"></div>
-      VERIFIED ON OP
+    <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+      <!-- Phase 4: Attest Agent button -->
+      <button class="btn btn-primary" onclick="AgentAttestation.openModal()" style="padding:8px 16px;font-size:11px;white-space:nowrap;" id="attest-agent-btn" title="Connect your Sovereign identity to an agent">
+        + Attest Agent
+      </button>
+      <!-- Phase 3: Dynamic verification badge -->
+      <div class="verification-badge verified" id="op-verification-badge">
+        <div class="live-indicator"></div>
+        VERIFIED ON OP
+      </div>
     </div>
   </div>
+  <!-- Phase 4.5: AT-ARS Score Card -->
+  <div class="at-ars-section" id="at-ars-section">
+    <div class="at-ars-card" id="at-ars-card">
+      <!-- Card content dynamically rendered by ATARSCard.render() -->
+      <div class="at-ars-header">
+        <div class="at-ars-brand">
+          <div class="at-ars-logo">AT</div>
+          <div>
+            <div class="at-ars-title">AT Reputation Score</div>
+            <div class="at-ars-subtitle">Loading...</div>
+          </div>
+        </div>
+        <div class="at-ars-score-display">
+          <div class="at-ars-score-value">—</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="stats-grid">
     <div class="stat-card">
       <div style="font-family:var(--mono);font-size:9px;color:var(--text-tertiary);text-transform:uppercase;margin-bottom:8px">Active delegations</div>
@@ -139,10 +265,35 @@ body { background: var(--bg-base); color: var(--text-primary); font-family: var(
     </div>
   </div>
   <div class="tab-content active" id="tab-transactions">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
-      <div style="font-size:14px;font-weight:600">Live Transaction Feed</div>
-      <div style="display:flex;align-items:center;gap:8px">
-        <button class="btn btn-secondary" style="padding:6px 12px;font-size:11px" onclick="exportCSV()">↓ Export CSV</button>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:12px">
+      <div>
+        <div style="font-size:14px;font-weight:600">Live Transaction Feed</div>
+        <div class="tx-cache-status" id="tx-cache-status">
+          <div class="cache-indicator" id="cache-indicator"></div>
+          <span id="cache-status-text">Loading cache status...</span>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+        <div class="tx-export-controls">
+          <select id="protocol-filter" onchange="filterTransactionsByProtocol()" style="font-family:var(--mono);font-size:11px;background:var(--bg-elevated);color:var(--text-secondary);border:1px solid var(--bg-border);padding:6px 12px;border-radius:2px;min-width:140px;">
+            <option value="all">All Protocols</option>
+            <option value="lightning">⚡ Lightning</option>
+            <option value="x402">💳 x402</option>
+            <option value="x402_stripe">💳 x402 (Stripe)</option>
+            <option value="x402_stacks">🟧 sBTC (Stacks)</option>
+            <option value="l402">🔒 L402</option>
+          </select>
+          <select id="export-format">
+            <option value="csv">CSV</option>
+            <option value="json">JSON</option>
+          </select>
+          <select id="export-range">
+            <option value="all">All time</option>
+            <option value="30d">Last 30 days</option>
+            <option value="90d">Last 90 days</option>
+          </select>
+          <button class="btn btn-secondary" style="padding:6px 12px;font-size:11px" onclick="exportTransactions()">↓ Export</button>
+        </div>
         <div class="ws-status">
           <div class="live-indicator"></div>
           <span style="font-family:var(--mono);font-size:10px;color:var(--teal)">LIVE</span>
@@ -164,6 +315,40 @@ body { background: var(--bg-base); color: var(--text-primary); font-family: var(
     </div>
   </div>
   <div class="tab-content" id="tab-identity">
+    <!-- Phase 3: OP Registration Status -->
+    <div class="settings-section">
+      <div style="font-size:14px;font-weight:600;margin-bottom:16px">Observer Protocol Status</div>
+      <div class="op-status-card" id="op-status-card">
+        <div class="op-status-header">
+          <div class="op-status-icon unverified" id="op-status-icon">⚠️</div>
+          <div>
+            <div style="font-size:14px;font-weight:600" id="op-status-title">Not Registered</div>
+            <div style="font-family:var(--mono);font-size:11px;color:var(--text-secondary)" id="op-status-desc">Complete registration to unlock all features</div>
+          </div>
+        </div>
+        <div id="op-status-actions">
+          <button class="btn btn-primary" style="width:auto;padding:10px 20px;" onclick="goToOPRegistration()">
+            Complete Registration
+          </button>
+        </div>
+        <div class="receipt-card" id="op-receipt-card" style="display:none;">
+          <div style="font-family:var(--mono);font-size:10px;color:var(--text-tertiary);margin-bottom:12px;">VERIFICATION RECEIPT</div>
+          <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--bg-border);font-family:var(--mono);font-size:11px;">
+            <span style="color:var(--text-tertiary);">Public Key Hash</span>
+            <span style="color:var(--text-secondary);" id="op-receipt-hash">—</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--bg-border);font-family:var(--mono);font-size:11px;">
+            <span style="color:var(--text-tertiary);">Verified At</span>
+            <span style="color:var(--text-secondary);" id="op-receipt-date">—</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:8px 0;font-family:var(--mono);font-size:11px;">
+            <span style="color:var(--text-tertiary);">Status</span>
+            <span style="color:var(--teal);">Active</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
     <div class="settings-section">
       <div style="font-size:14px;font-weight:600;margin-bottom:16px">Your Identity</div>
       <div style="display:flex;justify-content:space-between;padding:16px 0;border-bottom:1px solid var(--bg-border)">
@@ -181,6 +366,58 @@ body { background: var(--bg-base); color: var(--text-primary); font-family: var(
     </div>
   </div>
   <div class="tab-content" id="tab-settings">
+    <!-- Phase 5: Storage Management -->
+    <div class="storage-section">
+      <div style="font-size:14px;font-weight:600;margin-bottom:8px">Storage Management</div>
+      <div style="font-family:var(--mono);font-size:10px;color:var(--text-tertiary);margin-bottom:16px">Local data storage — No server storage</div>
+      
+      <div class="storage-meter">
+        <div class="storage-meter-fill healthy" id="storage-meter-fill" style="width:0%"></div>
+      </div>
+      
+      <div class="storage-info">
+        <div>
+          <div style="color:var(--text-tertiary);margin-bottom:4px">Used</div>
+          <div id="storage-used">—</div>
+        </div>
+        <div>
+          <div style="color:var(--text-tertiary);margin-bottom:4px">Available</div>
+          <div id="storage-available">—</div>
+        </div>
+        <div>
+          <div style="color:var(--text-tertiary);margin-bottom:4px">Limit</div>
+          <div id="storage-limit">100 MB</div>
+        </div>
+      </div>
+      
+      <div class="storage-alert" id="storage-alert" style="display:none;">
+        <strong>⚠️ Storage Warning:</strong> <span id="storage-alert-text"></span>
+      </div>
+      
+      <div style="margin-top:16px;display:flex;gap:12px;">
+        <button class="btn btn-secondary" style="padding:8px 16px;font-size:11px" onclick="showStorageBreakdown()">View Breakdown</button>
+        <button class="btn btn-secondary" style="padding:8px 16px;font-size:11px" onclick="clearTransactionCache()">Clear Transaction Cache</button>
+      </div>
+      
+      <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--bg-border);">
+        <div style="font-size:12px;font-weight:600;margin-bottom:12px">Cache Settings</div>
+        <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+          <div>
+            <label style="font-family:var(--mono);font-size:10px;color:var(--text-tertiary);display:block;margin-bottom:4px">Transaction History</label>
+            <select id="cache-days-setting" onchange="updateCacheSettings()" style="font-family:var(--mono);font-size:11px;background:var(--bg-elevated);color:var(--text-secondary);border:1px solid var(--bg-border);padding:6px 12px;border-radius:2px;">
+              <option value="30">30 days</option>
+              <option value="90" selected>90 days</option>
+              <option value="365">1 year</option>
+              <option value="unlimited">Unlimited</option>
+            </select>
+          </div>
+          <div style="font-family:var(--mono);font-size:10px;color:var(--text-tertiary);">
+            Cache is encrypted and stored locally
+          </div>
+        </div>
+      </div>
+    </div>
+    
     <div class="settings-section">
       <div style="font-size:14px;font-weight:600;margin-bottom:16px">Notifications</div>
       <div style="display:flex;justify-content:space-between;align-items:center;padding:16px 0">
@@ -203,12 +440,19 @@ body { background: var(--bg-base); color: var(--text-primary); font-family: var(
     </div>
     <div class="settings-section" style="border-color:rgba(232,64,64,0.2)">
       <div style="font-size:14px;font-weight:600;margin-bottom:16px;color:var(--red)">Danger Zone</div>
-      <div style="display:flex;justify-content:space-between;align-items:center;padding:16px 0">
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:16px 0;border-bottom:1px solid var(--bg-border);">
         <div>
           <div style="font-family:var(--mono);font-size:12px;color:var(--text-secondary)">Revoke all delegations</div>
           <div style="font-family:var(--mono);font-size:10px;color:var(--text-tertiary);margin-top:4px">Immediately revoke all agent permissions</div>
         </div>
         <button class="btn btn-danger" onclick="revokeAll()">Revoke all</button>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:16px 0">
+        <div>
+          <div style="font-family:var(--mono);font-size:12px;color:var(--text-secondary)">Clear all data</div>
+          <div style="font-family:var(--mono);font-size:10px;color:var(--text-tertiary);margin-top:4px">Remove all cached data. Your identity will be preserved.</div>
+        </div>
+        <button class="btn btn-danger" onclick="clearAllData()">Clear cache</button>
       </div>
     </div>
   </div>
@@ -218,12 +462,22 @@ body { background: var(--bg-base); color: var(--text-primary); font-family: var(
   <div style="font-family:var(--mono);font-size:12px;color:var(--text-secondary)" id="notif-text">Something happened</div>
 </div>
 <script src="config.js"></script>
+<script src="crypto-encrypt.js"></script>
+<script src="crypto-keygen.js"></script>
+<script src="storage-idb.js"></script>
 <script src="auth.js"></script>
+<script src="op-registration.js"></script>
 <script src="api.js"></script>
 <script src="charts.js"></script>
 <script src="websocket.js"></script>
 <script src="notifications.js"></script>
+<script src="delegation-credential.js"></script>
+<script src="agent-attestation.js"></script>
 <script src="delegation-manager.js"></script>
+<script src="at-ars-score.js"></script>
+<!-- Phase 5: Storage Architecture -->
+<script src="storage-manager.js"></script>
+<script src="transaction-pipeline.js"></script>
 <script>
 // Auth check
 const AUTH_KEY='sovereign_session', USER_KEY='sovereign_user';
@@ -252,6 +506,31 @@ async function initDashboard() {
   document.getElementById('agent-id').textContent = session.agentId || CONFIG.AGENT_ID;
   document.getElementById('identity-meta').textContent = `Registered: ${new Date(session.loggedInAt).toLocaleDateString()} · ${session.authMethod || 'Standard'} login`;
   
+  // Phase 5: Initialize storage and transaction pipeline
+  if (typeof StorageManager !== 'undefined') {
+    await StorageManager.init();
+    await updateStorageStatus();
+  }
+  
+  if (typeof TransactionPipeline !== 'undefined') {
+    await TransactionPipeline.init();
+    
+    // Update transaction cache from OP
+    const user = getUser();
+    if (user && user.publicKey) {
+      try {
+        await TransactionPipeline.updateCache(user.publicKey);
+      } catch (error) {
+        console.warn('[Dashboard] Failed to update transaction cache:', error.message);
+      }
+    }
+    
+    await updateCacheStatus();
+  }
+  
+  // Phase 3: Check OP registration status
+  await checkOPRegistrationStatus();
+  
   // Load stats
   await loadStats();
   
@@ -261,6 +540,16 @@ async function initDashboard() {
   // Load delegation
   if (typeof DelegationManager !== 'undefined') {
     await DelegationManager.init();
+  }
+  
+  // Phase 4: Initialize agent attestation
+  if (typeof AgentAttestation !== 'undefined') {
+    await AgentAttestation.init();
+  }
+  
+  // Phase 4.5: Initialize AT-ARS Score Card
+  if (typeof ATARSCard !== 'undefined') {
+    await ATARSCard.init();
   }
   
   // Initialize WebSocket
@@ -273,6 +562,95 @@ async function initDashboard() {
     Notifications.init();
     updateNotifButton();
   }
+  
+  // Phase 5: Set up cache status refresh
+  setInterval(updateCacheStatus, 30000); // Every 30 seconds
+}
+
+// Phase 3: Check and update OP registration status
+async function checkOPRegistrationStatus() {
+  try {
+    // Initialize OP registration module
+    const result = await OPRegistration.init();
+    const isVerified = result.state === OPRegistration.STATE.REGISTERED;
+    
+    // Update verification badge in header
+    const badge = document.getElementById('op-verification-badge');
+    if (badge) {
+      if (isVerified) {
+        badge.className = 'verification-badge verified';
+        badge.innerHTML = '<div class="live-indicator"></div> VERIFIED ON OP';
+      } else if (result.state === OPRegistration.STATE.SKIP) {
+        // OAuth users - hide badge
+        badge.style.display = 'none';
+      } else {
+        badge.className = 'verification-badge unverified';
+        badge.innerHTML = '⚠️ UNVERIFIED';
+      }
+    }
+    
+    // Show/hide unverified banner
+    const banner = document.getElementById('unverified-banner');
+    if (banner && !isVerified && result.state !== OPRegistration.STATE.SKIP) {
+      banner.style.display = 'flex';
+    }
+    
+    // Update Identity tab OP status
+    updateIdentityTabOPStatus(isVerified, result.receipt);
+    
+    // Disable rep score if unverified
+    if (!isVerified && result.state !== OPRegistration.STATE.SKIP) {
+      const repCard = document.getElementById('stat-rep')?.closest('.stat-card');
+      if (repCard) {
+        repCard.classList.add('disabled-feature');
+        document.getElementById('stat-rep').textContent = '—';
+        document.getElementById('stat-rep-trend').textContent = 'Complete OP registration';
+      }
+    }
+    
+  } catch (error) {
+    console.error('Failed to check OP registration:', error);
+  }
+}
+
+// Update Identity tab OP status
+function updateIdentityTabOPStatus(isVerified, receipt) {
+  const icon = document.getElementById('op-status-icon');
+  const title = document.getElementById('op-status-title');
+  const desc = document.getElementById('op-status-desc');
+  const actions = document.getElementById('op-status-actions');
+  const receiptCard = document.getElementById('op-receipt-card');
+  
+  if (!icon || !title) return;
+  
+  if (isVerified) {
+    icon.className = 'op-status-icon verified';
+    icon.textContent = '✓';
+    title.textContent = 'Verified on Observer Protocol';
+    desc.textContent = 'Your identity is attested on-chain';
+    if (actions) actions.style.display = 'none';
+    if (receiptCard) {
+      receiptCard.style.display = 'block';
+      if (receipt) {
+        document.getElementById('op-receipt-hash').textContent = receipt.pubkeyHash || '—';
+        document.getElementById('op-receipt-date').textContent = receipt.verifiedAt 
+          ? new Date(receipt.verifiedAt).toLocaleDateString() 
+          : '—';
+      }
+    }
+  } else {
+    icon.className = 'op-status-icon unverified';
+    icon.textContent = '⚠️';
+    title.textContent = 'Not Registered';
+    desc.textContent = 'Complete registration to unlock all features';
+    if (actions) actions.style.display = 'block';
+    if (receiptCard) receiptCard.style.display = 'none';
+  }
+}
+
+// Navigate to OP registration
+function goToOPRegistration() {
+  window.location.href = '/sovereign/op-registration.html';
 }
 
 // Load stats from API
@@ -325,12 +703,80 @@ async function loadTransactions() {
   }
 }
 
+// Protocol filter state
+let currentProtocolFilter = 'all';
+
+// Format protocol for display
+function formatProtocol(protocol) {
+  const protocols = {
+    'lightning': { label: '⚡ Lightning', class: 'protocol-lightning' },
+    'x402': { label: '💳 x402', class: 'protocol-x402' },
+    'x402_stripe': { label: '💳 x402 (Stripe)', class: 'protocol-x402_stripe' },
+    'x402_stacks': { label: '🟧 sBTC', class: 'protocol-x402_stacks' },
+    'x402-sbtc': { label: '🟧 sBTC', class: 'protocol-x402_stacks' },
+    'l402': { label: '🔒 L402', class: 'protocol-l402' },
+  };
+  
+  const p = protocols[protocol?.toLowerCase()];
+  if (p) {
+    return `<span class="protocol-badge ${p.class}">${p.label}</span>`;
+  }
+  return `<span class="protocol-badge protocol-unknown">${protocol || 'Unknown'}</span>`;
+}
+
+// Format counterparty for display (handles both Lightning and Stacks addresses)
+function formatCounterparty(tx) {
+  const protocol = (tx.protocol || tx.rail || '').toLowerCase();
+  
+  // For sBTC/Stacks transactions
+  if (protocol === 'x402_stacks' || protocol === 'x402-sbtc' || protocol === 'x402_stx') {
+    const address = tx.counterparty || tx.to || tx.from || tx.stx_address || tx.recipient_address;
+    if (!address) return 'Unknown';
+    
+    // Shorten STX address (SPxxx...xxxx or STxxx...xxxx format)
+    const shortAddress = address.length > 20 
+      ? `${address.slice(0, 8)}...${address.slice(-6)}`
+      : address;
+    
+    // Link to Stacks explorer
+    const explorerUrl = `https://explorer.hiro.so/address/${address}`;
+    return `<a href="${explorerUrl}" target="_blank" rel="noopener" class="stx-explorer-link" title="${address}">${shortAddress}</a>`;
+  }
+  
+  // For Lightning and other protocols
+  return tx.counterparty || tx.to || tx.from || 'Unknown';
+}
+
+// Filter transactions by protocol
+function filterTransactionsByProtocol() {
+  const filter = document.getElementById('protocol-filter')?.value || 'all';
+  currentProtocolFilter = filter;
+  
+  let filtered = allTransactions;
+  
+  if (filter !== 'all') {
+    filtered = allTransactions.filter(tx => {
+      const protocol = (tx.protocol || tx.rail || '').toLowerCase();
+      // Handle variations of protocol names
+      if (filter === 'x402_stacks') {
+        return protocol === 'x402_stacks' || protocol === 'x402-sbtc' || protocol === 'x402_stx';
+      }
+      return protocol === filter.toLowerCase();
+    });
+  }
+  
+  renderTransactions(filtered);
+}
+
 // Render transaction feed
 function renderTransactions(transactions) {
   const container = document.getElementById('feed-rows');
   
   if (!transactions || transactions.length === 0) {
-    container.innerHTML = '<div class="empty-state">No transactions found</div>';
+    const filterMsg = currentProtocolFilter !== 'all' 
+      ? `No ${currentProtocolFilter} transactions found`
+      : 'No transactions found';
+    container.innerHTML = `<div class="empty-state">${filterMsg}</div>`;
     return;
   }
   
@@ -339,14 +785,14 @@ function renderTransactions(transactions) {
     const dateStr = date.toLocaleString('en-US', { month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit' });
     const direction = tx.direction || 'inbound';
     const amount = tx.amount_sats ? `${tx.amount_sats.toLocaleString()} sats` : tx.amount;
-    const rail = tx.protocol || tx.rail || 'Lightning';
-    const counterparty = tx.counterparty || tx.to || tx.from || 'Unknown';
+    const protocol = tx.protocol || tx.rail || 'Lightning';
+    const counterparty = formatCounterparty(tx);
     
     return `<div class="feed-row" data-tx-id="${tx.id}">
       <div>${dateStr}</div>
       <div><span class="type-${direction}">${direction}</span></div>
       <div>${counterparty}</div>
-      <div>${rail}</div>
+      <div>${formatProtocol(protocol)}</div>
       <div style="text-align:right">${amount}</div>
       <div style="color:var(--teal)">● ${tx.status || 'Verified'}</div>
     </div>`;
@@ -362,14 +808,29 @@ function addTransactionToFeed(tx) {
   const dateStr = date.toLocaleString('en-US', { month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit' });
   const direction = tx.direction || 'inbound';
   const amount = tx.amount_sats ? `${tx.amount_sats.toLocaleString()} sats` : tx.amount;
+  const protocol = tx.protocol || tx.rail || 'Lightning';
+  const counterparty = formatCounterparty(tx);
+  
+  // Check if current filter would show this transaction
+  if (currentProtocolFilter !== 'all') {
+    const txProtocol = protocol.toLowerCase();
+    const filter = currentProtocolFilter.toLowerCase();
+    if (filter === 'x402_stacks') {
+      if (txProtocol !== 'x402_stacks' && txProtocol !== 'x402-sbtc' && txProtocol !== 'x402_stx') {
+        return; // Don't add if filtered out
+      }
+    } else if (txProtocol !== filter) {
+      return; // Don't add if filtered out
+    }
+  }
   
   const row = document.createElement('div');
   row.className = 'feed-row new';
   row.innerHTML = `
     <div>${dateStr}</div>
     <div><span class="type-${direction}">${direction}</span></div>
-    <div>${tx.counterparty || 'Unknown'}</div>
-    <div>${tx.protocol || 'Lightning'}</div>
+    <div>${counterparty}</div>
+    <div>${formatProtocol(protocol)}</div>
     <div style="text-align:right">${amount}</div>
     <div style="color:var(--teal)">● ${tx.status || 'Verified'}</div>
   `;
@@ -380,7 +841,7 @@ function addTransactionToFeed(tx) {
   setTimeout(() => row.classList.remove('new'), 3000);
   
   // Show notification
-  showNotif(direction === 'inbound' ? 'Payment Received' : 'Payment Sent', `${amount} via ${tx.protocol || 'Lightning'}`);
+  showNotif(direction === 'inbound' ? 'Payment Received' : 'Payment Sent', `${amount} via ${protocol}`);
   
   // Update stats
   loadStats();
@@ -494,6 +955,134 @@ if (typeof WebSocketClient !== 'undefined') {
   });
 }
 
+// Phase 5: Export transactions with selected format
+async function exportTransactions() {
+  const format = document.getElementById('export-format')?.value || 'csv';
+  const range = document.getElementById('export-range')?.value || 'all';
+  
+  let transactions = TransactionPipeline.getTransactions();
+  
+  // Apply range filter
+  if (range !== 'all') {
+    const days = parseInt(range);
+    const since = Date.now() - (days * 24 * 60 * 60 * 1000);
+    transactions = transactions.filter(tx => tx.timestamp >= since);
+  }
+  
+  if (transactions.length === 0) {
+    showNotif('No Data', 'No transactions to export for selected range', 'error');
+    return;
+  }
+  
+  try {
+    if (format === 'csv') {
+      const csv = TransactionPipeline.exportToCSV(transactions);
+      const date = new Date().toISOString().split('T')[0];
+      TransactionPipeline.downloadExport(csv, `sovereign-transactions-${date}.csv`, 'text/csv');
+    } else {
+      const json = TransactionPipeline.exportToJSON(transactions);
+      const date = new Date().toISOString().split('T')[0];
+      TransactionPipeline.downloadExport(json, `sovereign-transactions-${date}.json`, 'application/json');
+    }
+    
+    showNotif('Export Complete', `${transactions.length} transactions exported as ${format.toUpperCase()}`);
+  } catch (error) {
+    console.error('[Export] Failed:', error);
+    showNotif('Export Failed', error.message, 'error');
+  }
+}
+
+// Phase 5: Update cache status indicator
+async function updateCacheStatus() {
+  const indicator = document.getElementById('cache-indicator');
+  const text = document.getElementById('cache-status-text');
+  
+  if (!indicator || !text) return;
+  
+  const stats = TransactionPipeline.getCacheStats();
+  
+  if (stats.count === 0) {
+    indicator.className = 'cache-indicator';
+    text.textContent = 'No cached transactions';
+  } else {
+    const isStale = TransactionPipeline.isCacheStale();
+    indicator.className = 'cache-indicator ' + (isStale ? 'stale' : 'active');
+    const lastUpdate = stats.lastUpdated ? new Date(stats.lastUpdated).toLocaleTimeString() : 'never';
+    text.textContent = `${stats.count} cached · ${stats.sizeFormatted} · Updated ${lastUpdate}`;
+  }
+}
+
+// Phase 5: Storage management functions
+async function updateStorageStatus() {
+  const health = await StorageManager.getHealthStatus();
+  const quota = await StorageManager.getQuota();
+  
+  // Update meter
+  const fill = document.getElementById('storage-meter-fill');
+  if (fill) {
+    fill.style.width = `${Math.min(100, quota.usagePercent * 100)}%`;
+    fill.className = 'storage-meter-fill ' + health.status;
+  }
+  
+  // Update info
+  document.getElementById('storage-used').textContent = quota.formatted.usage;
+  document.getElementById('storage-available').textContent = quota.formatted.available;
+  document.getElementById('storage-limit').textContent = quota.formatted.limit;
+  
+  // Show alert if needed
+  const alert = document.getElementById('storage-alert');
+  const alertText = document.getElementById('storage-alert-text');
+  if (health.action && alert && alertText) {
+    alert.style.display = 'block';
+    alert.className = 'storage-alert ' + (health.status === 'critical' ? 'critical' : '');
+    alertText.textContent = health.message;
+  } else if (alert) {
+    alert.style.display = 'none';
+  }
+}
+
+async function showStorageBreakdown() {
+  const breakdown = await StorageManager.getStorageBreakdown();
+  
+  let message = `Storage Breakdown:\n\n`;
+  message += `IndexedDB: ${breakdown.formatted.indexedDB}\n`;
+  message += `  - Identity: ${breakdown.indexedDB.items.identity ? TransactionPipeline._formatBytes(breakdown.indexedDB.items.identity) : '0 B'}\n`;
+  message += `  - Transaction Cache: ${breakdown.indexedDB.items.transactionCache ? TransactionPipeline._formatBytes(breakdown.indexedDB.items.transactionCache) : '0 B'}\n`;
+  message += `  - AT-ARS Scores: ${breakdown.indexedDB.items.atarsScores ? TransactionPipeline._formatBytes(breakdown.indexedDB.items.atarsScores) : '0 B'}\n`;
+  message += `\nlocalStorage: ${breakdown.formatted.localStorage}\n`;
+  message += `sessionStorage: ${breakdown.formatted.sessionStorage}\n`;
+  message += `\nTotal: ${breakdown.formatted.total}`;
+  
+  alert(message);
+}
+
+async function clearTransactionCache() {
+  if (!confirm('Clear transaction cache? This will be rebuilt from Observer Protocol on next load.')) return;
+  
+  await TransactionPipeline.clearCache();
+  await updateCacheStatus();
+  showNotif('Cache Cleared', 'Transaction cache has been cleared');
+}
+
+async function clearAllData() {
+  if (!confirm('Clear all cached data? Your identity will be preserved.')) return;
+  if (!confirm('Are you sure? This will remove all transaction history, credentials, and settings from this device.')) return;
+  
+  await StorageManager.clearAllData(true); // Keep identity
+  await updateStorageStatus();
+  showNotif('Data Cleared', 'All cached data has been removed');
+}
+
+function updateCacheSettings() {
+  const days = document.getElementById('cache-days-setting').value;
+  if (days === 'unlimited') {
+    TransactionPipeline.setCacheWindowDays(-1);
+  } else {
+    TransactionPipeline.setCacheWindowDays(parseInt(days));
+  }
+  showNotif('Settings Saved', 'Cache settings updated');
+}
+
 // Initialize on load
 document.addEventListener('DOMContentLoaded', initDashboard);
 
@@ -503,6 +1092,401 @@ setInterval(() => {
     loadStats();
   }
 }, CONFIG.REFRESH_INTERVAL);
+
+// ============================================================
+// Phase 4.5: AT-ARS Score Card Module
+// ============================================================
+
+const ATARSCard = {
+  // Dashboard state tracking
+  STATE: {
+    UNVERIFIED: 'unverified',
+    VERIFIED_NO_AGENT: 'verified_no_agent',
+    AGENT_UNPROVEN: 'agent_unproven',
+    ACTIVE: 'active',
+    OP_UNREACHABLE: 'op_unreachable',
+  },
+  
+  currentState: null,
+  currentScore: null,
+  isOPReachable: true,
+  cachedScore: null,
+  
+  /**
+   * Initialize AT-ARS card
+   */
+  async init() {
+    await this.render();
+  },
+  
+  /**
+   * Determine dashboard state and render appropriate view
+   */
+  async render() {
+    const card = document.getElementById('at-ars-card');
+    if (!card) return;
+    
+    // Check OP registration status
+    const opState = await this.checkOPState();
+    
+    if (!opState.isVerified) {
+      this.currentState = this.STATE.UNVERIFIED;
+      this.renderUnverified(card);
+      return;
+    }
+    
+    // Check if user has attested any agents
+    const hasAgent = await this.checkHasAgent();
+    
+    if (!hasAgent) {
+      // Show Maxi showcase if no agents attested
+      this.currentState = this.STATE.VERIFIED_NO_AGENT;
+      this.renderMaxiShowcase(card);
+      return;
+    }
+    
+    // User has attested agents - compute their score
+    await this.computeAndRenderUserScore(card);
+  },
+  
+  /**
+   * Check OP registration state
+   */
+  async checkOPState() {
+    try {
+      if (typeof OPRegistration !== 'undefined') {
+        const result = await OPRegistration.init();
+        return {
+          isVerified: result.state === OPRegistration.STATE.REGISTERED,
+          receipt: result.receipt,
+        };
+      }
+      // Fallback: check localStorage
+      const receipt = localStorage.getItem('OP_REGISTRATION_RECEIPT');
+      return { isVerified: !!receipt, receipt: receipt ? JSON.parse(receipt) : null };
+    } catch (error) {
+      console.warn('[ATARS] Error checking OP state:', error);
+      return { isVerified: false, receipt: null };
+    }
+  },
+  
+  /**
+   * Check if user has attested any agents
+   */
+  async checkHasAgent() {
+    try {
+      // Check AgentAttestation module
+      if (typeof AgentAttestation !== 'undefined') {
+        const agents = AgentAttestation.getAttestedAgents();
+        return agents && agents.length > 0;
+      }
+      // Fallback: check storage
+      const stored = await StorageIDB.getSession('attested_agents');
+      return stored && stored.agents && stored.agents.length > 0;
+    } catch (error) {
+      console.warn('[ATARS] Error checking agents:', error);
+      return false;
+    }
+  },
+  
+  /**
+   * Compute and render user's AT-ARS score
+   */
+  async computeAndRenderUserScore(card) {
+    try {
+      // Get user's attested agent pubkey
+      const agentPubkey = await this.getUserAgentPubkey();
+      if (!agentPubkey) {
+        this.renderMaxiShowcase(card);
+        return;
+      }
+      
+      // Check OP reachability
+      this.isOPReachable = await API.isOPReachable();
+      
+      let score;
+      let fromCache = false;
+      
+      if (this.isOPReachable) {
+        // Fetch fresh VAC data
+        const vac = await API.getVAC(agentPubkey);
+        
+        if (vac && ATARS.isValidVAC(vac)) {
+          score = ATARS.computeScore(vac);
+          // Cache the score
+          await StorageIDB.cacheATARSScore(agentPubkey, score);
+        } else {
+          // Try cache if VAC fetch failed
+          const cached = await StorageIDB.getCachedATARSScore(agentPubkey);
+          if (cached) {
+            score = cached.score;
+            fromCache = true;
+          } else {
+            score = ATARS.getDefaultScore();
+          }
+        }
+      } else {
+        // OP unreachable - use cached score
+        this.currentState = this.STATE.OP_UNREACHABLE;
+        const cached = await StorageIDB.getCachedATARSScore(agentPubkey);
+        if (cached) {
+          score = cached.score;
+          fromCache = true;
+          this.cachedScore = cached;
+        } else {
+          score = ATARS.getDefaultScore();
+        }
+      }
+      
+      this.currentScore = score;
+      
+      // Determine state based on transaction count
+      if (score.components.transactions.raw < 5) {
+        this.currentState = this.STATE.AGENT_UNPROVEN;
+      } else {
+        this.currentState = this.STATE.ACTIVE;
+      }
+      
+      this.renderScoreCard(card, score, fromCache);
+      
+    } catch (error) {
+      console.error('[ATARS] Error computing score:', error);
+      this.renderMaxiShowcase(card);
+    }
+  },
+  
+  /**
+   * Get user's first attested agent pubkey
+   */
+  async getUserAgentPubkey() {
+    try {
+      if (typeof AgentAttestation !== 'undefined') {
+        const agents = AgentAttestation.getAttestedAgents();
+        if (agents && agents.length > 0) {
+          return agents[0].pubkey;
+        }
+      }
+      // Fallback: get from storage
+      const stored = await StorageIDB.getSession('attested_agents');
+      if (stored && stored.agents && stored.agents.length > 0) {
+        return stored.agents[0].pubkey || stored.agents[0].credential?.delegate;
+      }
+      return null;
+    } catch (error) {
+      console.warn('[ATARS] Error getting agent pubkey:', error);
+      return null;
+    }
+  },
+  
+  /**
+   * Render unverified state (greyed card, lock icon)
+   */
+  renderUnverified(card) {
+    card.className = 'at-ars-card unverified';
+    card.innerHTML = `
+      <div class="at-ars-locked">
+        <div class="at-ars-locked-icon">🔒</div>
+        <div class="at-ars-locked-text">Complete OP registration to unlock<br>AT Reputation Score</div>
+        <button class="btn btn-secondary" onclick="goToOPRegistration()" style="padding:10px 20px;font-size:11px;">
+          Complete Registration
+        </button>
+      </div>
+    `;
+  },
+  
+  /**
+   * Render Maxi Agent 1 showcase
+   */
+  renderMaxiShowcase(card) {
+    const maxiScore = ATARS.computeMaxiScore();
+    const display = ATARS.formatForDisplay(maxiScore);
+    
+    card.className = 'at-ars-card showcase';
+    card.innerHTML = `
+      <div class="at-ars-showcase-badge">AGENT 1 SHOWCASE</div>
+      <div class="at-ars-showcase-copy">
+        Agent 1 on Observer Protocol. Maxi — AI co-founder of OP and AT — is the first agent scored on AT-ARS-1.0.
+      </div>
+      <div class="at-ars-header" style="margin-bottom:16px;">
+        <div class="at-ars-brand">
+          <div class="at-ars-logo" style="background:var(--teal-dim);color:var(--teal);">M</div>
+          <div>
+            <div class="at-ars-title">${maxiScore.agent.displayName}</div>
+            <div class="at-ars-subtitle">${maxiScore.agent.description}</div>
+          </div>
+        </div>
+        <div class="at-ars-score-display">
+          <div class="at-ars-score-value" style="color:${display.bandColor};">${display.score}</div>
+          <div class="at-ars-score-band" style="background:${display.bandColor}20;color:${display.bandColor};">${display.band}</div>
+        </div>
+      </div>
+      <div class="at-ars-score-bar-container">
+        <div class="at-ars-score-bar ${display.band.toLowerCase().replace(' ', '-')}" style="width:${display.barWidth};"></div>
+      </div>
+      <div class="at-ars-metrics-grid">
+        <div class="at-ars-metric">
+          <div class="at-ars-metric-label">Transactions</div>
+          <div class="at-ars-metric-value">${display.metrics.transactions}</div>
+        </div>
+        <div class="at-ars-metric">
+          <div class="at-ars-metric-label">Counterparties</div>
+          <div class="at-ars-metric-value">${display.metrics.counterparties}</div>
+        </div>
+        <div class="at-ars-metric">
+          <div class="at-ars-metric-label">Age</div>
+          <div class="at-ars-metric-value">${display.metrics.age}</div>
+        </div>
+        <div class="at-ars-metric">
+          <div class="at-ars-metric-label">Rail Diversity</div>
+          <div class="at-ars-rail-dots">
+            ${['lightning', 'x402', 'x402_stacks', 'l402', 'solana', 'other'].map((rail, i) => `
+              <div class="at-ars-rail-dot ${display.metrics.rails.includes(rail) ? 'active' : ''}" title="${rail}"></div>
+            `).join('')}
+          </div>
+        </div>
+        <div class="at-ars-metric">
+          <div class="at-ars-metric-label">Recency (30d)</div>
+          <div class="at-ars-metric-value small">${display.metrics.recency}</div>
+          <div class="at-ars-mini-bar">
+            <div class="at-ars-mini-bar-fill" style="width:${display.metrics.recencyBar};"></div>
+          </div>
+        </div>
+        <div class="at-ars-metric">
+          <div class="at-ars-metric-label">A2A Ratio</div>
+          <div class="at-ars-metric-value">${display.metrics.a2aRatio}</div>
+        </div>
+      </div>
+      <div class="at-ars-footer">
+        <div class="at-ars-powered">
+          <span>⚡</span> Powered by Agentic Terminal
+        </div>
+        <div class="at-ars-meta">${display.footer.model} · ${display.footer.computedAt}</div>
+      </div>
+      <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--bg-border);text-align:center;">
+        <button class="btn btn-primary" onclick="AgentAttestation.openModal()" style="padding:10px 24px;font-size:12px;">
+          + Attest Your First Agent
+        </button>
+      </div>
+    `;
+  },
+  
+  /**
+   * Render score card with user's data
+   */
+  renderScoreCard(card, score, fromCache = false) {
+    const display = ATARS.formatForDisplay(score);
+    const isStale = fromCache && this.cachedScore && this.cachedScore.isStale;
+    
+    // Determine card style based on state
+    if (this.currentState === this.STATE.OP_UNREACHABLE || isStale) {
+      card.className = 'at-ars-card op-unreachable';
+    } else if (score.components.transactions.raw < 5) {
+      card.className = 'at-ars-card verified-no-agent';
+    } else {
+      card.className = 'at-ars-card';
+    }
+    
+    let warningHtml = '';
+    if (this.currentState === this.STATE.OP_UNREACHABLE || isStale) {
+      warningHtml = `
+        <div class="at-ars-stale-warning" style="margin-bottom:12px;">
+          <span>⚠</span> Score may be stale · ${this.cachedScore ? this.cachedScore.ageHours + 'h old' : 'cached'}
+        </div>
+      `;
+    } else if (score.components.transactions.raw < 5) {
+      warningHtml = `
+        <div class="at-ars-stale-warning" style="margin-bottom:12px;color:var(--text-secondary);">
+          <span>ℹ</span> Score will strengthen as your agent transacts more
+        </div>
+      `;
+    }
+    
+    card.innerHTML = `
+      <div class="at-ars-header">
+        <div class="at-ars-brand">
+          <div class="at-ars-logo">AT</div>
+          <div>
+            <div class="at-ars-title">AT Reputation Score</div>
+            <div class="at-ars-subtitle">Your agent on Observer Protocol</div>
+          </div>
+        </div>
+        <div class="at-ars-score-display">
+          <div class="at-ars-score-value" style="color:${display.bandColor};">${display.score}</div>
+          <div class="at-ars-score-band" style="background:${display.bandColor}20;color:${display.bandColor};">${display.band}</div>
+        </div>
+      </div>
+      ${warningHtml}
+      <div class="at-ars-score-bar-container">
+        <div class="at-ars-score-bar ${display.band.toLowerCase().replace(' ', '-')}" style="width:${display.barWidth};"></div>
+      </div>
+      <div class="at-ars-metrics-grid">
+        <div class="at-ars-metric">
+          <div class="at-ars-metric-label">Transactions</div>
+          <div class="at-ars-metric-value">${display.metrics.transactions}</div>
+        </div>
+        <div class="at-ars-metric">
+          <div class="at-ars-metric-label">Counterparties</div>
+          <div class="at-ars-metric-value">${display.metrics.counterparties}</div>
+        </div>
+        <div class="at-ars-metric">
+          <div class="at-ars-metric-label">Age</div>
+          <div class="at-ars-metric-value">${display.metrics.age}</div>
+        </div>
+        <div class="at-ars-metric">
+          <div class="at-ars-metric-label">Rail Diversity</div>
+          <div class="at-ars-rail-dots">
+            ${['lightning', 'x402', 'x402_stacks', 'l402', 'solana', 'other'].map((rail, i) => `
+              <div class="at-ars-rail-dot ${display.metrics.rails.includes(rail) ? 'active' : ''}" title="${rail}"></div>
+            `).join('')}
+          </div>
+        </div>
+        <div class="at-ars-metric">
+          <div class="at-ars-metric-label">Recency (30d)</div>
+          <div class="at-ars-metric-value small">${display.metrics.recency}</div>
+          <div class="at-ars-mini-bar">
+            <div class="at-ars-mini-bar-fill" style="width:${display.metrics.recencyBar};"></div>
+          </div>
+        </div>
+        <div class="at-ars-metric">
+          <div class="at-ars-metric-label">A2A Ratio</div>
+          <div class="at-ars-metric-value">${display.metrics.a2aRatio}</div>
+        </div>
+      </div>
+      <div class="at-ars-footer">
+        <div class="at-ars-powered">
+          <span>⚡</span> Powered by Agentic Terminal
+        </div>
+        <div class="at-ars-meta">${display.footer.model} · ${display.footer.computedAt}</div>
+      </div>
+    `;
+  },
+  
+  /**
+   * Get current state (for debugging/testing)
+   */
+  getState() {
+    return {
+      state: this.currentState,
+      score: this.currentScore,
+      isOPReachable: this.isOPReachable,
+      cachedScore: this.cachedScore,
+    };
+  },
+  
+  /**
+   * Force refresh score
+   */
+  async refresh() {
+    // Clear API cache for VAC
+    API.cache.delete(`vac_${await this.getUserAgentPubkey()}`);
+    await this.render();
+  },
+};
+
+// Make globally available
+if (typeof window !== 'undefined') {
+  window.ATARSCard = ATARSCard;
+}
 </script>
 </body>
 </html>

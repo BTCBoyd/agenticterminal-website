@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AT-ARS Score Test Suite</title>
+<style>
+body { font-family: 'DM Mono', monospace; background: #07070C; color: #EEEEF5; padding: 40px; max-width: 1200px; margin: 0 auto; }
+h1 { color: #1DB584; font-size: 24px; margin-bottom: 8px; }
+h2 { color: #7A7A92; font-size: 14px; font-weight: normal; margin-bottom: 32px; }
+.test-section { background: #0E0E16; border: 1px solid #22222E; padding: 24px; margin-bottom: 24px; border-radius: 8px; }
+.test-title { color: #6B5CE7; font-size: 14px; margin-bottom: 16px; text-transform: uppercase; }
+.test-result { display: flex; align-items: center; gap: 12px; padding: 12px; margin: 8px 0; background: #16161F; border-radius: 4px; }
+.test-pass { color: #1DB584; }
+.test-fail { color: #E84040; }
+.test-info { color: #7A7A92; font-size: 12px; }
+pre { background: #16161F; padding: 16px; border-radius: 4px; overflow-x: auto; font-size: 11px; color: #EEEEF5; }
+.score-display { font-size: 32px; font-weight: bold; margin: 16px 0; }
+.band-unproven { color: #7A7A92; }
+.band-active { color: #F5A623; }
+.band-established { color: #1DB584; }
+.band-highly { color: #6B5CE7; }
+.metric-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #22222E; }
+.metric-label { color: #7A7A92; }
+.metric-value { color: #EEEEF5; }
+.summary { background: #1DB58420; border-left: 3px solid #1DB584; padding: 16px; margin-top: 24px; }
+</style>
+</head>
+<body>
+<h1>AT-ARS Score Test Suite</h1>
+<h2>Phase 4.5: AT Reputation Score Computation Validation</h2>
+
+<div class="test-section">
+  <div class="test-title">Boundary Value Tests (Score Bands)</div>
+  <div id="boundary-tests"></div>
+</div>
+
+<div class="test-section">
+  <div class="test-title">Maxi Agent 1 Score</div>
+  <div id="maxi-test"></div>
+</div>
+
+<div class="test-section">
+  <div class="test-title">Weight Validation (Should Sum to 100%)</div>
+  <div id="weight-test"></div>
+</div>
+
+<div class="test-section">
+  <div class="test-title">Normalization Range Tests</div>
+  <div id="normalization-tests"></div>
+</div>
+
+<div class="test-section">
+  <div class="test-title">Edge Cases</div>
+  <div id="edge-case-tests"></div>
+</div>
+
+<div class="summary" id="test-summary"></div>
+
+<script src="at-ars-score.js"></script>
+<script>
+// Test results accumulator
+const results = {
+  passed: 0,
+  failed: 0,
+  tests: []
+};
+
+function assert(condition, name, details = '') {
+  const passed = !!condition;
+  if (passed) results.passed++; else results.failed++;
+  results.tests.push({ passed, name, details });
+  return passed;
+}
+
+function renderTest(containerId, name, passed, details = '') {
+  const container = document.getElementById(containerId);
+  const div = document.createElement('div');
+  div.className = 'test-result';
+  div.innerHTML = `
+    <span class="${passed ? 'test-pass' : 'test-fail'}">${passed ? '✓' : '✗'}</span>
+    <div>
+      <div>${name}</div>
+      ${details ? `<div class="test-info">${details}</div>` : ''}
+    </div>
+  `;
+  container.appendChild(div);
+}
+
+// ============================================
+// Boundary Value Tests (Score Bands)
+// ============================================
+
+function runBoundaryTests() {
+  // Test UNPROVEN band (0-25)
+  const unprovenVac = {
+    total_transactions: 10,
+    unique_counterparties: 5,
+    transactions_last_30d: 0,
+    a2a_transactions: 0,
+    first_transaction_timestamp: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(), // 1 day
+    rails: ['lightning']
+  };
+  const unprovenScore = ATARS.computeScore(unprovenVac);
+  const unprovenPass = assert(unprovenScore.score <= 25, 'UNPROVEN band (score <= 25)', `Score: ${unprovenScore.score}`);
+  renderTest('boundary-tests', 'UNPROVEN band boundary', unprovenPass, `Score: ${unprovenScore.score}, Band: ${unprovenScore.band}`);
+
+  // Test boundary 25/26 (just above UNPROVEN)
+  const activeLowVac = {
+    total_transactions: 50,
+    unique_counterparties: 20,
+    transactions_last_30d: 5,
+    a2a_transactions: 10,
+    first_transaction_timestamp: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
+    rails: ['lightning', 'x402']
+  };
+  const activeLowScore = ATARS.computeScore(activeLowVac);
+  const activeLowPass = assert(activeLowScore.score >= 26 && activeLowScore.score <= 50, 'ACTIVE band - low end (26-50)', `Score: ${activeLowScore.score}`);
+  renderTest('boundary-tests', 'ACTIVE band boundary (26)', activeLowPass, `Score: ${activeLowScore.score}, Band: ${activeLowScore.band}`);
+
+  // Test boundary 50/51 (just above ACTIVE)
+  const establishedLowVac = {
+    total_transactions: 150,
+    unique_counterparties: 40,
+    transactions_last_30d: 15,
+    a2a_transactions: 80,
+    first_transaction_timestamp: new Date(Date.now() - 90 * 24 * 60 * 60 * 1000).toISOString(),
+    rails: ['lightning', 'x402', 'l402']
+  };
+  const establishedLowScore = ATARS.computeScore(establishedLowVac);
+  const establishedLowPass = assert(establishedLowScore.score >= 51 && establishedLowScore.score <= 75, 'ESTABLISHED band - low end (51-75)', `Score: ${establishedLowScore.score}`);
+  renderTest('boundary-tests', 'ESTABLISHED band boundary (51)', establishedLowPass, `Score: ${establishedLowScore.score}, Band: ${establishedLowScore.band}`);
+
+  // Test boundary 75/76 (just above ESTABLISHED)
+  const highlyProvenVac = {
+    total_transactions: 500,
+    unique_counterparties: 100,
+    transactions_last_30d: 30,
+    a2a_transactions: 450,
+    first_transaction_timestamp: new Date(Date.now() - 365 * 24 * 60 * 60 * 1000).toISOString(),
+    rails: ['lightning', 'x402', 'l402', 'solana', 'other']
+  };
+  const highlyProvenScore = ATARS.computeScore(highlyProvenVac);
+  const highlyProvenPass = assert(highlyProvenScore.score >= 76 && highlyProvenScore.score <= 100, 'HIGHLY PROVEN band (76-100)', `Score: ${highlyProvenScore.score}`);
+  renderTest('boundary-tests', 'HIGHLY PROVEN band boundary (76)', highlyProvenPass, `Score: ${highlyProvenScore.score}, Band: ${highlyProvenScore.band}`);
+}
+
+// ============================================
+// Maxi Agent 1 Test
+// ============================================
+
+function runMaxiTest() {
+  const maxiScore = ATARS.computeMaxiScore();
+  
+  // Maxi should be ESTABLISHED or HIGHLY PROVEN
+  const expectedBand = ['ESTABLISHED', 'HIGHLY PROVEN'].includes(maxiScore.band);
+  const bandPass = assert(expectedBand, 'Maxi band is ESTABLISHED or HIGHLY PROVEN', `Band: ${maxiScore.band}`);
+  renderTest('maxi-test', 'Maxi Agent 1 Band', bandPass, `Band: ${maxiScore.band}`);
+  
+  // Maxi should have score > 50
+  const scorePass = assert(maxiScore.score > 50, 'Maxi score > 50', `Score: ${maxiScore.score}`);
+  renderTest('maxi-test', 'Maxi Score Value', scorePass, `Score: ${maxiScore.score}`);
+  
+  // Display Maxi's full breakdown
+  const container = document.getElementById('maxi-test');
+  const breakdown = document.createElement('div');
+  breakdown.style.marginTop = '16px';
+  breakdown.innerHTML = `
+    <div class="score-display band-${maxiScore.band.toLowerCase().replace(' ', '-')}">${maxiScore.score}</div>
+    <div class="metric-row"><span class="metric-label">Band:</span><span class="metric-value">${maxiScore.band}</span></div>
+    <div class="metric-row"><span class="metric-label">Transactions:</span><span class="metric-value">${maxiScore.components.transactions.raw} / ${maxiScore.components.transactions.max}</span></div>
+    <div class="metric-row"><span class="metric-label">Counterparties:</span><span class="metric-value">${maxiScore.components.counterparties.raw} / ${maxiScore.components.counterparties.max}</span></div>
+    <div class="metric-row"><span class="metric-label">Age:</span><span class="metric-value">${maxiScore.components.age.raw} days / ${maxiScore.components.age.max}</span></div>
+    <div class="metric-row"><span class="metric-label">Recency (30d):</span><span class="metric-value">${maxiScore.components.recency.raw} txns</span></div>
+    <div class="metric-row"><span class="metric-label">A2A Ratio:</span><span class="metric-value">${maxiScore.components.a2aRatio.percentage}%</span></div>
+    <div class="metric-row"><span class="metric-label">Rails:</span><span class="metric-value">${maxiScore.railDiversity.rails.join(', ')}</span></div>
+    <pre>${JSON.stringify(maxiScore, null, 2)}</pre>
+  `;
+  container.appendChild(breakdown);
+}
+
+// ============================================
+// Weight Validation
+// ============================================
+
+function runWeightTest() {
+  const weights = ATARS.WEIGHTS;
+  const total = Object.values(weights).reduce((a, b) => a + b, 0);
+  const weightPass = assert(Math.abs(total - 1.0) < 0.001, 'Weights sum to 100%', `Sum: ${(total * 100).toFixed(1)}%`);
+  renderTest('weight-test', 'Weight Sum Validation', weightPass, `Total: ${(total * 100).toFixed(1)}%`);
+  
+  // Display individual weights
+  const container = document.getElementById('weight-test');
+  const breakdown = document.createElement('div');
+  breakdown.style.marginTop = '16px';
+  breakdown.innerHTML = Object.entries(weights).map(([key, val]) => `
+    <div class="metric-row">
+      <span class="metric-label">${key}:</span>
+      <span class="metric-value">${(val * 100).toFixed(0)}%</span>
+    </div>
+  `).join('');
+  container.appendChild(breakdown);
+}
+
+// ============================================
+// Normalization Tests
+// ============================================
+
+function runNormalizationTests() {
+  // Test transaction capping at 500
+  const highTxVac = {
+    total_transactions: 1000, // Should cap at 500
+    unique_counterparties: 50,
+    transactions_last_30d: 15,
+    a2a_transactions: 400,
+    first_transaction_timestamp: new Date(Date.now() - 180 * 24 * 60 * 60 * 1000).toISOString(),
+    rails: ['lightning', 'x402']
+  };
+  const highTxScore = ATARS.computeScore(highTxVac);
+  const txNormPass = assert(highTxScore.components.transactions.normalized === 1.0, 'Transactions capped at 500', `Normalized: ${highTxScore.components.transactions.normalized}`);
+  renderTest('normalization-tests', 'Transaction Cap (500)', txNormPass, `Raw: 1000, Normalized: ${highTxScore.components.transactions.normalized}`);
+  
+  // Test age capping at 365 days
+  const oldAgentVac = {
+    total_transactions: 100,
+    unique_counterparties: 20,
+    transactions_last_30d: 10,
+    a2a_transactions: 50,
+    first_transaction_timestamp: new Date(Date.now() - 1000 * 24 * 60 * 60 * 1000).toISOString(), // 1000 days
+    rails: ['lightning']
+  };
+  const oldAgentScore = ATARS.computeScore(oldAgentVac);
+  const ageNormPass = assert(oldAgentScore.components.age.normalized === 1.0, 'Age capped at 365 days', `Normalized: ${oldAgentScore.components.age.normalized}`);
+  renderTest('normalization-tests', 'Age Cap (365 days)', ageNormPass, `Raw: ${oldAgentScore.components.age.raw} days, Normalized: ${oldAgentScore.components.age.normalized}`);
+  
+  // Test zero values
+  const zeroVac = {
+    total_transactions: 0,
+    unique_counterparties: 0,
+    transactions_last_30d: 0,
+    a2a_transactions: 0,
+    first_transaction_timestamp: null,
+    rails: []
+  };
+  const zeroScore = ATARS.computeScore(zeroVac);
+  const zeroPass = assert(zeroScore.score === 0, 'Zero values produce zero score', `Score: ${zeroScore.score}`);
+  renderTest('normalization-tests', 'Zero Input Handling', zeroPass, `Score: ${zeroScore.score}`);
+}
+
+// ============================================
+// Edge Cases
+// ============================================
+
+function runEdgeCaseTests() {
+  // Test null/undefined VAC
+  const nullScore = ATARS.computeScore(null);
+  const nullPass = assert(nullScore.score === 0, 'Null VAC returns default score', `Score: ${nullScore.score}`);
+  renderTest('edge-case-tests', 'Null VAC Handling', nullPass, `Returns default score: ${nullScore.score}`);
+  
+  // Test empty object
+  const emptyScore = ATARS.computeScore({});
+  const emptyPass = assert(emptyScore.score === 0, 'Empty VAC returns default score', `Score: ${emptyScore.score}`);
+  renderTest('edge-case-tests', 'Empty VAC Handling', emptyPass, `Returns default score: ${emptyScore.score}`);
+  
+  // Test missing first_transaction_timestamp
+  const noTimestampVac = {
+    total_transactions: 50,
+    unique_counterparties: 10,
+    transactions_last_30d: 5,
+    a2a_transactions: 20,
+    rails: ['lightning']
+  };
+  const noTimestampScore = ATARS.computeScore(noTimestampVac);
+  const noTimestampPass = assert(noTimestampScore.components.age.normalized === 0, 'Missing timestamp = age 0', `Age normalized: ${noTimestampScore.components.age.normalized}`);
+  renderTest('edge-case-tests', 'Missing Timestamp', noTimestampPass, `Age component: ${noTimestampScore.components.age.normalized}`);
+  
+  // Test VAC validation
+  const validVac = {
+    total_transactions: 10,
+    unique_counterparties: 5
+  };
+  const invalidVac = { foo: 'bar' };
+  const validPass = assert(ATARS.isValidVAC(validVac), 'Valid VAC recognized', 'Has required fields');
+  const invalidPass = assert(!ATARS.isValidVAC(invalidVac), 'Invalid VAC rejected', 'Missing required fields');
+  renderTest('edge-case-tests', 'VAC Validation (Valid)', validPass, 'Has total_transactions & unique_counterparties');
+  renderTest('edge-case-tests', 'VAC Validation (Invalid)', invalidPass, 'Missing required fields correctly rejected');
+}
+
+// ============================================
+// Run All Tests
+// ============================================
+
+function runAllTests() {
+  runBoundaryTests();
+  runMaxiTest();
+  runWeightTest();
+  runNormalizationTests();
+  runEdgeCaseTests();
+  
+  // Render summary
+  const summary = document.getElementById('test-summary');
+  const total = results.passed + results.failed;
+  const passRate = ((results.passed / total) * 100).toFixed(1);
+  summary.innerHTML = `
+    <div style="font-size: 18px; font-weight: bold; margin-bottom: 8px;">
+      Test Summary: ${results.passed}/${total} passed (${passRate}%)
+    </div>
+    <div style="color: ${results.failed === 0 ? '#1DB584' : '#E84040'};">
+      ${results.failed === 0 ? '✓ All tests passed!' : `✗ ${results.failed} test(s) failed`}
+    </div>
+  `;
+}
+
+// Run tests on load
+document.addEventListener('DOMContentLoaded', runAllTests);
+</script>
+</body>
+</html>

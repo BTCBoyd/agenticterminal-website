@@ -1,0 +1,208 @@
+{
+  "generated_at": "2026-03-23T17:00:59.333Z",
+  "date": "2026-03-23",
+  "charts": {
+    "cross_protocol_comparison": {
+      "chart_type": "cross-protocol-comparison",
+      "status": "insufficient_data",
+      "generated_at": "2026-03-23T17:00:55.852Z",
+      "weeks_needed": 3,
+      "image_path": "/home/futurebit/.openclaw/workspace/agentic-terminal-data/charts/2026-03-23/cross-protocol-comparison.png",
+      "message": "Need 3 more weeks of data for meaningful visualization"
+    },
+    "interest_usage_gap": {
+      "chart_type": "interest-usage-gap",
+      "status": "insufficient_data",
+      "generated_at": "2026-03-23T17:00:56.285Z",
+      "weeks_needed": 3,
+      "image_path": "/home/futurebit/.openclaw/workspace/agentic-terminal-data/charts/2026-03-23/interest-usage-gap.png",
+      "message": "Need 3 more weeks of data for meaningful visualization"
+    },
+    "sparklines": {
+      "metrics.bitcoin_lightning.l402_github_stars": {
+        "chart_type": "sparkline",
+        "metric_path": "metrics.bitcoin_lightning.l402_github_stars",
+        "label": "L402 GitHub Stars",
+        "generated_at": "2026-03-23T17:00:56.670Z",
+        "date_range": {
+          "start": "2026-02-17",
+          "end": "2026-03-23"
+        },
+        "values": [
+          258,
+          254,
+          255,
+          255,
+          258
+        ],
+        "current_value": 258,
+        "previous_value": 255,
+        "change_percent": 1.2,
+        "change_direction": "↑",
+        "image_path": "/home/futurebit/.openclaw/workspace/agentic-terminal-data/charts/2026-03-23/sparkline-metrics-bitcoin_lightning-l402_github_stars.png",
+        "dimensions": {
+          "width": 1200,
+          "height": 675
+        }
+      },
+      "metrics.bitcoin_lightning.lightning_nodes": {
+        "chart_type": "sparkline",
+        "metric_path": "metrics.bitcoin_lightning.lightning_nodes",
+        "label": "Lightning Nodes",
+        "generated_at": "2026-03-23T17:00:57.149Z",
+        "date_range": {
+          "start": "2026-02-17",
+          "end": "2026-03-23"
+        },
+        "values": [
+          5695,
+          5463,
+          5563,
+          5655,
+          5709
+        ],
+        "current_value": 5709,
+        "previous_value": 5655,
+        "change_percent": 1,
+        "change_direction": "↑",
+        "image_path": "/home/futurebit/.openclaw/workspace/agentic-terminal-data/charts/2026-03-23/sparkline-metrics-bitcoin_lightning-lightning_nodes.png",
+        "dimensions": {
+          "width": 1200,
+          "height": 675
+        }
+      },
+      "metrics.bitcoin_lightning.lightning_capacity_btc": {
+        "chart_type": "sparkline",
+        "metric_path": "metrics.bitcoin_lightning.lightning_capacity_btc",
+        "label": "Lightning Capacity (BTC)",
+        "generated_at": "2026-03-23T17:00:57.664Z",
+        "date_range": {
+          "start": "2026-02-17",
+          "end": "2026-03-23"
+        },
+        "values": [
+          2709.04,
+          2592.39,
+          2638.06,
+          2675.74,
+          2722.82
+        ],
+        "current_value": 2722.82,
+        "previous_value": 2675.74,
+        "change_percent": 1.8,
+        "change_direction": "↑",
+        "image_path": "/home/futurebit/.openclaw/workspace/agentic-terminal-data/charts/2026-03-23/sparkline-metrics-bitcoin_lightning-lightning_capacity_btc.png",
+        "dimensions": {
+          "width": 1200,
+          "height": 675
+        }
+      },
+      "metrics.stablecoin_api_rails.x402_github_stars": {
+        "chart_type": "sparkline",
+        "metric_path": "metrics.stablecoin_api_rails.x402_github_stars",
+        "label": "x402 GitHub Stars",
+        "generated_at": "2026-03-23T17:00:58.005Z",
+        "date_range": {
+          "start": "2026-02-17",
+          "end": "2026-03-23"
+        },
+        "values": [
+          5753,
+          5555,
+          5611,
+          5671,
+          5762
+        ],
+        "current_value": 5762,
+        "previous_value": 5671,
+        "change_percent": 1.6,
+        "change_direction": "↑",
+        "image_path": "/home/futurebit/.openclaw/workspace/agentic-terminal-data/charts/2026-03-23/sparkline-metrics-stablecoin_api_rails-x402_github_stars.png",
+        "dimensions": {
+          "width": 1200,
+          "height": 675
+        }
+      },
+      "metrics.stablecoin_api_rails.x402_daily_transactions": {
+        "chart_type": "sparkline",
+        "metric_path": "metrics.stablecoin_api_rails.x402_daily_transactions",
+        "label": "x402 Daily Transactions",
+        "generated_at": "2026-03-23T17:00:58.667Z",
+        "date_range": {
+          "start": "2026-02-17",
+          "end": "2026-03-23"
+        },
+        "values": [
+          64864,
+          64864,
+          178731,
+          60477,
+          37969
+        ],
+        "current_value": 37969,
+        "previous_value": 60477,
+        "change_percent": -37.2,
+        "change_direction": "↓",
+        "image_path": "/home/futurebit/.openclaw/workspace/agentic-terminal-data/charts/2026-03-23/sparkline-metrics-stablecoin_api_rails-x402_daily_transactions.png",
+        "dimensions": {
+          "width": 1200,
+          "height": 675
+        }
+      },
+      "metrics.stablecoin_api_rails.erc8004_agents_registered": {
+        "chart_type": "sparkline",
+        "metric_path": "metrics.stablecoin_api_rails.erc8004_agents_registered",
+        "label": "ERC-8004 Agents",
+        "generated_at": "2026-03-23T17:00:59.038Z",
+        "date_range": {
+          "start": "2026-02-17",
+          "end": "2026-03-23"
+        },
+        "values": [
+          24500,
+          24500,
+          67000,
+          24500,
+          83431
+        ],
+        "current_value": 83431,
+        "previous_value": 24500,
+        "change_percent": 240.5,
+        "change_direction": "↑",
+        "image_path": "/home/futurebit/.openclaw/workspace/agentic-terminal-data/charts/2026-03-23/sparkline-metrics-stablecoin_api_rails-erc8004_agents_registered.png",
+        "dimensions": {
+          "width": 1200,
+          "height": 675
+        }
+      },
+      "metrics.emerging_protocols.ark_github_stars": {
+        "chart_type": "sparkline",
+        "metric_path": "metrics.emerging_protocols.ark_github_stars",
+        "label": "Ark GitHub Stars",
+        "generated_at": "2026-03-23T17:00:59.332Z",
+        "date_range": {
+          "start": "2026-02-17",
+          "end": "2026-03-23"
+        },
+        "values": [
+          157,
+          156,
+          156,
+          157,
+          157
+        ],
+        "current_value": 157,
+        "previous_value": 157,
+        "change_percent": 0,
+        "change_direction": "→",
+        "image_path": "/home/futurebit/.openclaw/workspace/agentic-terminal-data/charts/2026-03-23/sparkline-metrics-emerging_protocols-ark_github_stars.png",
+        "dimensions": {
+          "width": 1200,
+          "height": 675
+        }
+      }
+    }
+  },
+  "total_charts": 9,
+  "output_directory": "/home/futurebit/.openclaw/workspace/agentic-terminal-data/charts/2026-03-23"
+}

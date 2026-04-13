@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Audit Trail — Enterprise Dashboard</title>
+<style>
+:root {
+  --bg: #0a0c0a; --bg-card: #141614; --bg-card2: #1a1d1a;
+  --border: rgba(255,255,255,0.08); --text-primary: #e8ede9;
+  --text-secondary: #a8b8aa; --text-muted: #6e8571;
+  --accent: #f5a623; --accent-dim: rgba(245,166,35,0.15);
+  --green: #22c55e; --green-dim: rgba(34,197,94,0.15);
+  --red: #f87171; --red-dim: rgba(248,113,113,0.15);
+  --amber: #fbbf24; --amber-dim: rgba(251,191,36,0.15);
+  --purple: #6B5CE7; --purple-dim: rgba(107,92,231,0.15);
+  --nav-h: 64px; --mono: 'DM Mono', monospace; --display: 'Syne', sans-serif;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text-primary); font-family: var(--display); font-size: 13px; }
+
+nav { position: sticky; top: 0; z-index: 100; height: var(--nav-h); background: rgba(10,12,10,0.95); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); display: flex; align-items: center; padding: 0 24px; }
+.nav-brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--text-primary); padding-right: 32px; }
+.brand-icon { width: 36px; height: 36px; background: var(--accent-dim); border: 1px solid var(--accent); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+.nav-tabs { display: flex; align-items: center; gap: 2px; flex: 1; }
+.nav-tab { padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 500; color: var(--text-secondary); cursor: pointer; border: none; background: none; transition: all 0.15s; }
+.nav-tab:hover { color: var(--text-primary); background: rgba(255,255,255,0.05); }
+.nav-tab.active { color: var(--accent); background: var(--accent-dim); }
+.nav-right { display: flex; align-items: center; gap: 16px; }
+.nav-user { display: flex; align-items: center; gap: 12px; }
+.nav-logout { font-size: 12px; color: var(--text-muted); cursor: pointer; border: 1px solid var(--border); background: none; padding: 8px 16px; border-radius: 8px; font-family: var(--mono); }
+.nav-logout:hover { color: var(--red); background: var(--red-dim); border-color: var(--red); }
+
+.page { padding: 28px; max-width: 1400px; margin: 0 auto; }
+.page-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; flex-wrap: wrap; gap: 16px; }
+.page-header h1 { font-size: 24px; font-weight: 700; }
+
+.filter-bar { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; padding: 16px 20px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; }
+.filter-bar label { font-family: var(--mono); font-size: 12px; color: var(--text-muted); }
+.filter-bar select, .filter-bar input { background: var(--bg-card2); border: 1px solid var(--border); color: var(--text-primary); padding: 8px 14px; border-radius: 8px; font-family: var(--mono); font-size: 12px; }
+.btn { padding: 8px 16px; border-radius: 8px; font-size: 12px; font-weight: 500; cursor: pointer; border: 1px solid var(--border); background: var(--bg-card2); color: var(--text-secondary); font-family: var(--mono); }
+.btn-primary { color: var(--accent); border-color: var(--accent); background: var(--accent-dim); }
+.btn-primary:hover { background: var(--accent); color: var(--bg); }
+
+.audit-table { width: 100%; border-collapse: collapse; background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+.audit-table th { padding: 14px 18px; text-align: left; font-family: var(--mono); font-size: 10px; color: var(--text-muted); text-transform: uppercase; border-bottom: 1px solid var(--border); background: var(--bg-card2); }
+.audit-table td { padding: 14px 18px; font-size: 13px; border-bottom: 1px solid rgba(255,255,255,0.04); }
+.audit-table tr:hover { background: rgba(255,255,255,0.02); }
+.audit-table tr:last-child td { border-bottom: none; }
+
+.event-type { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 6px; font-family: var(--mono); font-size: 10px; font-weight: 600; }
+.event-type.agent_registered { background: var(--purple-dim); color: var(--purple); }
+.event-type.receipt_attached { background: var(--green-dim); color: var(--green); }
+.event-type.score_updated { background: var(--accent-dim); color: var(--accent); }
+.event-type.delegation_approved { background: var(--green-dim); color: var(--green); }
+.event-type.delegation_denied { background: var(--red-dim); color: var(--red); }
+.event-type.credential_issued { background: var(--amber-dim); color: var(--amber); }
+.event-type.vac_issued { background: var(--purple-dim); color: var(--purple); }
+
+.timestamp { font-family: var(--mono); font-size: 12px; color: var(--text-secondary); white-space: nowrap; }
+.actor-did { font-family: var(--mono); font-size: 11px; color: var(--text-secondary); max-width: 200px; overflow: hidden; text-overflow: ellipsis; }
+.target { font-family: var(--mono); font-size: 11px; color: var(--text-secondary); }
+.details-btn { font-family: var(--mono); font-size: 11px; color: var(--accent); cursor: pointer; background: none; border: none; padding: 0; }
+.details-btn:hover { text-decoration: underline; }
+
+.details-row { display: none; background: var(--bg-card2); }
+.details-row.show { display: table-row; }
+.details-content { padding: 16px 18px; }
+.details-json { background: var(--bg); padding: 12px; border-radius: 8px; font-family: var(--mono); font-size: 11px; color: var(--text-secondary); overflow-x: auto; white-space: pre-wrap; word-break: break-word; }
+
+.demo-banner { background: var(--amber-dim); border-left: 3px solid var(--amber); padding: 12px 16px; margin-bottom: 24px; border-radius: 8px; font-family: var(--mono); font-size: 12px; color: var(--amber); display: none; }
+
+.empty-state { text-align: center; padding: 80px 20px; color: var(--text-secondary); }
+.empty-state-icon { font-size: 48px; margin-bottom: 16px; opacity: 0.5; }
+
+.pagination { display: flex; align-items: center; justify-content: space-between; margin-top: 20px; padding: 16px 20px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; }
+.pagination-info { font-family: var(--mono); font-size: 12px; color: var(--text-muted); }
+.pagination-btns { display: flex; gap: 8px; }
+</style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="nav-brand">
+    <div class="brand-icon">🏢</div>
+    <div class="brand-name">Enterprise</div>
+  </a>
+  <div class="nav-tabs">
+    <button class="nav-tab" onclick="window.location.href='index.html'">Dashboard</button>
+    <button class="nav-tab" onclick="window.location.href='fleet.html'">Fleet</button>
+    <button class="nav-tab" onclick="window.location.href='delegations.html'">Delegations</button>
+    <button class="nav-tab" onclick="window.location.href='alerts.html'">Alerts</button>
+    <button class="nav-tab active">Audit</button>
+  </div>
+  <div class="nav-right">
+    <div class="nav-user">
+      <span>👤</span>
+      <div><div style="font-size: 13px; font-weight: 500;">admin@acme.com</div><div style="font-size: 11px; color: var(--text-muted); font-family: var(--mono);">Acme Corp</div></div>
+    </div>
+    <button class="nav-logout" onclick="logout()">Log out</button>
+  </div>
+</nav>
+
+<main class="page">
+  <div class="demo-banner" id="demo-banner">⚠ Demo Mode: Backend not connected. Showing sample audit events.</div>
+  
+  <div class="page-header">
+    <div>
+      <h1>Audit Trail</h1>
+      <p style="font-family: var(--mono); font-size: 13px; color: var(--text-secondary);">Log of all system actions</p>
+    </div>
+    <button class="btn btn-primary" onclick="exportCSV()">↓ Export CSV</button>
+  </div>
+
+  <div class="filter-bar">
+    <label>Action:</label>
+    <select id="action-filter" onchange="filterEvents()">
+      <option value="all">All Actions</option>
+      <option value="AGENT_REGISTERED">Agent Registered</option>
+      <option value="RECEIPT_ATTACHED">Receipt Attached</option>
+      <option value="SCORE_UPDATED">Score Updated</option>
+      <option value="DELEGATION_APPROVED">Delegation Approved</option>
+      <option value="DELEGATION_DENIED">Delegation Denied</option>
+      <option value="CREDENTIAL_ISSUED">Credential Issued</option>
+      <option value="VAC_ISSUED">VAC Issued</option>
+    </select>
+    <label>Date Range:</label>
+    <input type="date" id="date-from" onchange="filterEvents()">
+    <input type="date" id="date-to" onchange="filterEvents()">
+    <input type="text" id="actor-filter" placeholder="Filter by actor DID..." oninput="filterEvents()" style="flex: 1; max-width: 300px;">
+  </div>
+
+  <div class="audit-table-wrap">
+    <table class="audit-table">
+      <thead>
+        <tr>
+          <th>Timestamp</th>
+          <th>Action</th>
+          <th>Actor</th>
+          <th>Target</th>
+          <th>Details</th>
+        </tr>
+      </thead>
+      <tbody id="audit-tbody">
+        <tr><td colspan="5" class="empty-state"><div class="empty-state-icon">📋</div><div>Loading audit log...</div></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="pagination">
+    <div class="pagination-info" id="pagination-info">Showing 0 events</div>
+    <div class="pagination-btns">
+      <button class="btn" onclick="prevPage()" id="prev-btn">← Previous</button>
+      <button class="btn" onclick="nextPage()" id="next-btn">Next →</button>
+    </div>
+  </div>
+</main>
+
+<script src="../shared/utils.js"></script>
+<script>
+// E8: Audit Trail
+const demoEvents = [
+  { id: 'evt-001', timestamp: '2026-04-13T16:45:00Z', type: 'DELEGATION_APPROVED', actor: 'did:op:ent:admin@acme.com', target: 'did:op:sov:sales-agent-7f3a9b', details: { delegationId: 'del-req-001', rails: ['tron', 'lightning'], maxPerTxn: '5000' } },
+  { id: 'evt-002', timestamp: '2026-04-13T15:30:00Z', type: 'RECEIPT_ATTACHED', actor: 'did:op:ent:acme-payroll', target: 'did:op:sov:agent-alpha-7f3a9b', details: { receiptId: 'urn:uuid:receipt-001', rail: 'tron:trc20', amount: '5000 USDT', tronTxHash: 'a1b2c3d4...' } },
+  { id: 'evt-003', timestamp: '2026-04-13T15:30:00Z', type: 'SCORE_UPDATED', actor: 'system', target: 'did:op:sov:agent-alpha-7f3a9b', details: { previousScore: 832, newScore: 847, change: +15, reason: 'Receipt attached' } },
+  { id: 'evt-004', timestamp: '2026-04-13T14:20:00Z', type: 'AGENT_REGISTERED', actor: 'did:op:ent:admin@acme.com', target: 'did:op:sov:vendor-payroll-9c2d4e', details: { alias: 'Vendor Payroll Bot', rails: ['tron:trc20'] } },
+  { id: 'evt-005', timestamp: '2026-04-13T12:00:00Z', type: 'CREDENTIAL_ISSUED', actor: 'did:op:ent:admin@acme.com', target: 'did:op:sov:legacy-agent-001', details: { credentialType: 'DelegationVC', rails: ['lightning'], expiry: '2026-06-30' } },
+  { id: 'evt-006', timestamp: '2026-04-13T10:15:00Z', type: 'VAC_ISSUED', actor: 'system', target: 'did:op:sov:agent-alpha-7f3a9b', details: { vacId: 'vac-001', expiry: '2026-06-15', issuer: 'did:op:observerprotocol' } },
+  { id: 'evt-007', timestamp: '2026-04-12T18:30:00Z', type: 'DELEGATION_DENIED', actor: 'did:op:ent:admin@acme.com', target: 'did:op:sov:untrusted-agent', details: { delegationId: 'del-req-000', reason: 'Insufficient trust score' } },
+  { id: 'evt-008', timestamp: '2026-04-12T16:00:00Z', type: 'RECEIPT_ATTACHED', actor: 'did:op:ent:global-logistics-corp', target: 'did:op:sov:agent-alpha-7f3a9b', details: { receiptId: 'urn:uuid:receipt-002', rail: 'lightning', amount: '250000 sats' } },
+  { id: 'evt-009', timestamp: '2026-04-12T14:00:00Z', type: 'SCORE_UPDATED', actor: 'system', target: 'did:op:sov:agent-alpha-7f3a9b', details: { previousScore: 820, newScore: 832, change: +12 } },
+  { id: 'evt-010', timestamp: '2026-04-12T10:00:00Z', type: 'AGENT_REGISTERED', actor: 'did:op:ent:admin@acme.com', target: 'did:op:sov:agent-alpha-7f3a9b', details: { alias: 'Alpha Trading Agent', rails: ['tron', 'lightning', 'solana'] } }
+];
+
+let events = [], filteredEvents = [], useDemoData = false;
+let currentPage = 1, pageSize = 10;
+
+async function init() {
+  try {
+    const response = await APIClient.get('/audit/events');
+    events = response.events || [];
+  } catch (error) {
+    useDemoData = true;
+    events = demoEvents;
+    document.getElementById('demo-banner').style.display = 'block';
+  }
+  filteredEvents = [...events];
+  renderTable();
+}
+
+function renderTable() {
+  const tbody = document.getElementById('audit-tbody');
+  const start = (currentPage - 1) * pageSize;
+  const pageEvents = filteredEvents.slice(start, start + pageSize);
+  
+  if (!pageEvents.length) {
+    tbody.innerHTML = '<tr><td colspan="5" class="empty-state"><div class="empty-state-icon">📋</div><div>No events found</div></td></tr>';
+    document.getElementById('pagination-info').textContent = 'Showing 0 events';
+    return;
+  }
+
+  tbody.innerHTML = pageEvents.map(evt => `
+    <tr>
+      <td class="timestamp">${formatTimestamp(evt.timestamp)}</td>
+      <td><span class="event-type ${evt.type.toLowerCase()}">${formatEventType(evt.type)}</span></td>
+      <td class="actor-did" title="${evt.actor}">${shortenDid(evt.actor)}</td>
+      <td class="target">${shortenDid(evt.target)}</td>
+      <td><button class="details-btn" onclick="toggleDetails('${evt.id}')">View Details ↓</button></td>
+    </tr>
+    <tr class="details-row" id="details-${evt.id}">
+      <td colspan="5">
+        <div class="details-content">
+          <div class="details-json">${JSON.stringify(evt.details, null, 2)}</div>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+
+  document.getElementById('pagination-info').textContent = 
+    `Showing ${start + 1}-${Math.min(start + pageSize, filteredEvents.length)} of ${filteredEvents.length} events`;
+  document.getElementById('prev-btn').disabled = currentPage === 1;
+  document.getElementById('next-btn').disabled = start + pageSize >= filteredEvents.length;
+}
+
+function filterEvents() {
+  const actionFilter = document.getElementById('action-filter').value;
+  const dateFrom = document.getElementById('date-from').value;
+  const dateTo = document.getElementById('date-to').value;
+  const actorFilter = document.getElementById('actor-filter').value.toLowerCase();
+
+  filteredEvents = events.filter(evt => {
+    if (actionFilter !== 'all' && evt.type !== actionFilter) return false;
+    if (dateFrom && new Date(evt.timestamp) < new Date(dateFrom)) return false;
+    if (dateTo && new Date(evt.timestamp) > new Date(dateTo + 'T23:59:59')) return false;
+    if (actorFilter && !evt.actor.toLowerCase().includes(actorFilter) && !evt.target.toLowerCase().includes(actorFilter)) return false;
+    return true;
+  });
+
+  currentPage = 1;
+  renderTable();
+}
+
+function toggleDetails(id) {
+  const row = document.getElementById(`details-${id}`);
+  row.classList.toggle('show');
+}
+
+function nextPage() {
+  if ((currentPage * pageSize) < filteredEvents.length) {
+    currentPage++;
+    renderTable();
+  }
+}
+
+function prevPage() {
+  if (currentPage > 1) {
+    currentPage--;
+    renderTable();
+  }
+}
+
+function exportCSV() {
+  const headers = ['Timestamp', 'Action', 'Actor', 'Target', 'Details'];
+  const rows = filteredEvents.map(e => [
+    e.timestamp, e.type, e.actor, e.target, JSON.stringify(e.details)
+  ]);
+  const csv = [headers.join(','), ...rows.map(r => r.map(v => `"${v}"`).join(','))].join('\n');
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `audit-trail-${new Date().toISOString().split('T')[0]}.csv`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function formatTimestamp(ts) {
+  return new Date(ts).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' });
+}
+
+function formatEventType(type) {
+  return type.replace(/_/g, ' ').toLowerCase().replace(/\b\w/g, l => l.toUpperCase());
+}
+
+function shortenDid(did) {
+  if (!did || did.length < 25) return did || '—';
+  return `${did.slice(0, 18)}...${did.slice(-8)}`;
+}
+
+function logout() {
+  localStorage.removeItem('enterprise_session');
+  window.location.href = 'login.html';
+}
+
+document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>

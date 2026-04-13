@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sovereign Dashboard - Phase 5 Test</title>
+<style>
+body { font-family: system-ui, sans-serif; max-width: 900px; margin: 40px auto; padding: 20px; background: #f5f5f5; }
+.test-section { background: white; padding: 20px; margin: 20px 0; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+h1 { color: #333; }
+h2 { color: #666; font-size: 18px; margin-top: 0; }
+.test-result { padding: 10px; margin: 8px 0; border-radius: 4px; font-family: monospace; font-size: 13px; }
+.test-result.pass { background: #d4edda; color: #155724; border-left: 4px solid #28a745; }
+.test-result.fail { background: #f8d7da; color: #721c24; border-left: 4px solid #dc3545; }
+.test-result.info { background: #d1ecf1; color: #0c5460; border-left: 4px solid #17a2b8; }
+button { background: #007bff; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; margin: 5px; }
+button:hover { background: #0056b3; }
+button:disabled { background: #ccc; cursor: not-allowed; }
+pre { background: #f8f9fa; padding: 15px; border-radius: 4px; overflow-x: auto; font-size: 12px; }
+.summary { font-size: 14px; margin: 10px 0; }
+</style>
+</head>
+<body>
+<h1>🔐 Sovereign Dashboard - Phase 5 Test Suite</h1>
+<p class="summary">Testing client-side storage architecture and transaction pipeline</p>
+
+<div class="test-section">
+  <h2>Configuration</h2>
+  <div id="config-tests"></div>
+</div>
+
+<div class="test-section">
+  <h2>IndexedDB Storage</h2>
+  <div id="storage-tests"></div>
+  <button onclick="runStorageTests()">Run Storage Tests</button>
+</div>
+
+<div class="test-section">
+  <h2>Encryption</h2>
+  <div id="encryption-tests"></div>
+  <button onclick="runEncryptionTests()">Run Encryption Tests</button>
+</div>
+
+<div class="test-section">
+  <h2>Transaction Pipeline</h2>
+  <div id="transaction-tests"></div>
+  <button onclick="runTransactionTests()">Run Transaction Tests</button>
+</div>
+
+<div class="test-section">
+  <h2>Storage Manager</h2>
+  <div id="manager-tests"></div>
+  <button onclick="runManagerTests()">Run Manager Tests</button>
+</div>
+
+<div class="test-section">
+  <h2>Integration</h2>
+  <div id="integration-tests"></div>
+  <button onclick="runIntegrationTests()">Run Integration Tests</button>
+</div>
+
+<div class="test-section">
+  <h2>Test Results Summary</h2>
+  <div id="test-summary"></div>
+</div>
+
+<!-- Load Phase 5 modules -->
+<script src="config.js"></script>
+<script src="crypto-encrypt.js"></script>
+<script src="storage-idb.js"></script>
+<script src="storage-manager.js"></script>
+<script src="transaction-pipeline.js"></script>
+
+<script>
+const results = [];
+
+function addResult(section, name, passed, message) {
+  const result = { section, name, passed, message, time: new Date().toISOString() };
+  results.push(result);
+  
+  const container = document.getElementById(section + '-tests');
+  const div = document.createElement('div');
+  div.className = 'test-result ' + (passed ? 'pass' : 'fail');
+  div.textContent = (passed ? '✓' : '✗') + ' ' + name + (message ? ': ' + message : '');
+  container.appendChild(div);
+  
+  updateSummary();
+}
+
+function addInfo(section, message) {
+  const container = document.getElementById(section + '-tests');
+  const div = document.createElement('div');
+  div.className = 'test-result info';
+  div.textContent = 'ℹ ' + message;
+  container.appendChild(div);
+}
+
+function updateSummary() {
+  const passed = results.filter(r => r.passed).length;
+  const failed = results.filter(r => !r.passed).length;
+  document.getElementById('test-summary').innerHTML = `
+    <strong>Total:</strong> ${results.length} tests<br>
+    <strong>Passed:</strong> ${passed} ✓<br>
+    <strong>Failed:</strong> ${failed} ✗
+  `;
+}
+
+// Config Tests
+addResult('config', 'CONFIG loaded', typeof CONFIG !== 'undefined', CONFIG ? 'v' + CONFIG.VERSION : 'missing');
+addResult('config', 'Storage config exists', CONFIG && CONFIG.STORAGE, CONFIG?.STORAGE?.DEFAULT_LIMIT_MB + 'MB default');
+addResult('config', 'Transaction config exists', CONFIG && CONFIG.TRANSACTIONS, 'cache: ' + CONFIG?.TRANSACTIONS?.DEFAULT_LIMIT + ' tx');
+
+// Storage Tests
+async function runStorageTests() {
+  const section = 'storage';
+  document.getElementById(section + '-tests').innerHTML = '';
+  
+  // Test IndexedDB availability
+  addResult(section, 'IndexedDB available', typeof indexedDB !== 'undefined', 'present');
+  
+  // Test StorageIDB
+  try {
+    await StorageIDB.init();
+    addResult(section, 'StorageIDB initialized', true, 'DB v' + StorageIDB.DB_VERSION);
+  } catch (e) {
+    addResult(section, 'StorageIDB initialized', false, e.message);
+  }
+  
+  // Test stores exist
+  try {
+    const stores = ['identities', 'session', 'at_ars_scores', 'transaction_cache', 'credentials', 'op_receipts', 'metadata'];
+    const db = await StorageIDB.init();
+    stores.forEach(store => {
+      const exists = db.objectStoreNames.contains(store);
+      addResult(section, `Store "${store}" exists`, exists);
+    });
+  } catch (e) {
+    addResult(section, 'Store check failed', false, e.message);
+  }
+  
+  // Test metadata operations
+  try {
+    await StorageIDB.setMetadata('test_key', { test: true });
+    const value = await StorageIDB.getMetadata('test_key');
+    addResult(section, 'Metadata write/read', value && value.test === true);
+    await StorageIDB.setMetadata('test_key', null); // Cleanup
+  } catch (e) {
+    addResult(section, 'Metadata operations', false, e.message);
+  }
+  
+  // Test backup confirmed flag
+  try {
+    await StorageIDB.setBackupConfirmed(true);
+    const confirmed = await StorageIDB.isBackupConfirmed();
+    addResult(section, 'Backup confirmed flag', confirmed === true);
+  } catch (e) {
+    addResult(section, 'Backup confirmed flag', false, e.message);
+  }
+}
+
+// Encryption Tests
+async function runEncryptionTests() {
+  const section = 'encryption';
+  document.getElementById(section + '-tests').innerHTML = '';
+  
+  // Test CryptoEncrypt available
+  addResult(section, 'CryptoEncrypt loaded', typeof CryptoEncrypt !== 'undefined', 'present');
+  
+  // Test encrypt/decrypt
+  try {
+    const testData = 'test-private-key-12345';
+    const passphrase = 'test-passphrase-secure-123';
+    
+    const encrypted = await CryptoEncrypt.encrypt(testData, passphrase);
+    addResult(section, 'Encryption works', encrypted && encrypted.length > 0, encrypted.substring(0, 20) + '...');
+    
+    const decrypted = await CryptoEncrypt.decrypt(encrypted, passphrase);
+    addResult(section, 'Decryption works', decrypted === testData);
+    
+    // Test wrong passphrase
+    try {
+      await CryptoEncrypt.decrypt(encrypted, 'wrong-passphrase');
+      addResult(section, 'Wrong passphrase rejected', false, 'should have thrown');
+    } catch (e) {
+      addResult(section, 'Wrong passphrase rejected', true, 'correctly throws error');
+    }
+  } catch (e) {
+    addResult(section, 'Encryption test failed', false, e.message);
+  }
+  
+  // Test passphrase strength
+  try {
+    const weak = CryptoEncrypt.checkPassphraseStrength('123');
+    const strong = CryptoEncrypt.checkPassphraseStrength('Correct-Horse-Battery-Staple-99');
+    addResult(section, 'Passphrase strength check', weak.rating === 'weak' && strong.rating === 'strong');
+  } catch (e) {
+    addResult(section, 'Passphrase strength check', false, e.message);
+  }
+}
+
+// Transaction Tests
+async function runTransactionTests() {
+  const section = 'transaction';
+  document.getElementById(section + '-tests').innerHTML = '';
+  
+  // Test TransactionPipeline available
+  addResult(section, 'TransactionPipeline loaded', typeof TransactionPipeline !== 'undefined', 'present');
+  
+  // Test initialization
+  try {
+    await TransactionPipeline.init();
+    addResult(section, 'Pipeline initialized', true);
+  } catch (e) {
+    addResult(section, 'Pipeline initialized', false, e.message);
+  }
+  
+  // Test cache operations
+  try {
+    // Add test transaction
+    TransactionPipeline._cache = {
+      transactions: [
+        { id: 'tx1', timestamp: Date.now(), amount: 1000, type: 'inbound', from: 'test', to: 'me' }
+      ],
+      lastUpdated: Date.now(),
+      count: 1
+    };
+    
+    const txs = TransactionPipeline.getTransactions();
+    addResult(section, 'Get transactions', txs.length === 1);
+    
+    const stats = TransactionPipeline.getCacheStats();
+    addResult(section, 'Cache stats', stats.count === 1, stats.sizeFormatted);
+    
+    // Test export
+    const csv = TransactionPipeline.exportToCSV();
+    addResult(section, 'CSV export', csv.includes('tx1') && csv.includes('inbound'));
+    
+    const json = TransactionPipeline.exportToJSON();
+    addResult(section, 'JSON export', json.includes('tx1'));
+    
+    // Test rolling window
+    TransactionPipeline.setCacheWindowDays(30);
+    addResult(section, 'Cache window setting', TransactionPipeline.getCacheWindowDays() === 30);
+    
+    // Cleanup
+    await TransactionPipeline.clearCache();
+    addResult(section, 'Clear cache', TransactionPipeline._cache.count === 0);
+    
+  } catch (e) {
+    addResult(section, 'Cache operations failed', false, e.message);
+  }
+}
+
+// Storage Manager Tests
+async function runManagerTests() {
+  const section = 'manager';
+  document.getElementById(section + '-tests').innerHTML = '';
+  
+  // Test StorageManager available
+  addResult(section, 'StorageManager loaded', typeof StorageManager !== 'undefined', 'present');
+  
+  // Test initialization
+  try {
+    await StorageManager.init();
+    addResult(section, 'Manager initialized', true);
+  } catch (e) {
+    addResult(section, 'Manager initialized', false, e.message);
+  }
+  
+  // Test quota
+  try {
+    const quota = await StorageManager.getQuota();
+    addResult(section, 'Quota retrieved', quota && quota.limitMB > 0, `${quota.formatted.usage} / ${quota.formatted.limit}`);
+    addInfo(section, `Storage API: ${'storage' in navigator ? 'available' : 'not available'}`);
+  } catch (e) {
+    addResult(section, 'Quota retrieval', false, e.message);
+  }
+  
+  // Test storage limits
+  try {
+    const original = StorageManager.getStorageLimitMB();
+    StorageManager.setStorageLimitMB(200);
+    const updated = StorageManager.getStorageLimitMB();
+    addResult(section, 'Storage limit setting', updated === 200);
+    StorageManager.setStorageLimitMB(original); // Restore
+  } catch (e) {
+    addResult(section, 'Storage limit setting', false, e.message);
+  }
+  
+  // Test health check
+  try {
+    const health = await StorageManager.getHealthStatus();
+    addResult(section, 'Health check', ['healthy', 'warning', 'critical'].includes(health.status), health.status);
+  } catch (e) {
+    addResult(section, 'Health check', false, e.message);
+  }
+  
+  // Test breakdown
+  try {
+    const breakdown = await StorageManager.getStorageBreakdown();
+    addResult(section, 'Storage breakdown', breakdown && typeof breakdown.total === 'number', breakdown.formatted.total);
+  } catch (e) {
+    addResult(section, 'Storage breakdown', false, e.message);
+  }
+}
+
+// Integration Tests
+async function runIntegrationTests() {
+  const section = 'integration';
+  document.getElementById(section + '-tests').innerHTML = '';
+  
+  // Test end-to-end: encrypt → store → retrieve → decrypt
+  try {
+    const testKey = 'test_identity_key_12345';
+    const passphrase = 'integration-test-passphrase-secure';
+    
+    // Encrypt
+    const encrypted = await CryptoEncrypt.encrypt(testKey, passphrase);
+    
+    // Store in IDB
+    await StorageIDB.storeIdentity({
+      publicKey: 'test_pubkey_' + Date.now(),
+      encryptedPrivateKey: encrypted,
+      displayName: 'Test User',
+      keyType: 'secp256k1',
+    });
+    
+    // Retrieve
+    const identity = await StorageIDB.getIdentity();
+    addResult(section, 'Store/retrieve identity', identity && identity.encryptedPrivateKey === encrypted);
+    
+    // Decrypt
+    const decrypted = await CryptoEncrypt.decrypt(identity.encryptedPrivateKey, passphrase);
+    addResult(section, 'Decrypt retrieved key', decrypted === testKey);
+    
+    // Cleanup
+    await StorageIDB.deleteIdentity();
+    addResult(section, 'Cleanup identity', true);
+    
+  } catch (e) {
+    addResult(section, 'End-to-end test failed', false, e.message);
+  }
+  
+  // Test credential storage with encryption
+  try {
+    const credential = {
+      id: 'cred_test_' + Date.now(),
+      pubkey: 'test_agent_pubkey',
+      type: 'delegation',
+      encryptedData: await CryptoEncrypt.encrypt(JSON.stringify({ scope: 'test' }), 'session-key'),
+      issuedAt: Date.now(),
+    };
+    
+    await StorageIDB.storeCredential(credential);
+    const retrieved = await StorageIDB.getCredential(credential.id);
+    addResult(section, 'Store/retrieve credential', retrieved && retrieved.id === credential.id);
+    
+    await StorageIDB.deleteCredential(credential.id);
+    addResult(section, 'Cleanup credential', true);
+    
+  } catch (e) {
+    addResult(section, 'Credential storage test failed', false, e.message);
+  }
+  
+  // Test OP receipt storage
+  try {
+    const pubkey = 'test_op_pubkey_' + Date.now();
+    const receipt = {
+      pubkey: pubkey,
+      status: 'verified',
+      verifiedAt: Date.now(),
+      receiptData: { hash: 'abc123' },
+    };
+    
+    await StorageIDB.storeOPReceipt(pubkey, receipt);
+    const isVerified = await StorageIDB.isOPVerified(pubkey);
+    addResult(section, 'Store/verify OP receipt', isVerified === true);
+    
+    await StorageIDB.deleteOPReceipt(pubkey);
+    addResult(section, 'Cleanup OP receipt', true);
+    
+  } catch (e) {
+    addResult(section, 'OP receipt test failed', false, e.message);
+  }
+}
+
+// Auto-run tests on load
+setTimeout(() => {
+  runStorageTests();
+  runEncryptionTests();
+  runTransactionTests();
+  runManagerTests();
+  runIntegrationTests();
+}, 500);
+</script>
+</body>
+</html>

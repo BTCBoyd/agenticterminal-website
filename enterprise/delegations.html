@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Delegations — Agentic Terminal Enterprise</title>
+<style>
+:root {
+  --bg: #0a0c0a;
+  --bg-card: #141614;
+  --bg-card2: #1a1d1a;
+  --bg-input: #0f110f;
+  --border: rgba(255,255,255,0.08);
+  --border-hover: rgba(255,255,255,0.15);
+  --text-primary: #e8ede9;
+  --text-secondary: #a8b8aa;
+  --text-muted: #6e8571;
+  --accent: #6B5CE7;
+  --accent-dim: rgba(107,92,231,0.15);
+  --accent-hover: #7d6eeb;
+  --green: #22c55e;
+  --green-dim: rgba(34,197,94,0.10);
+  --red: #f87171;
+  --red-dim: rgba(248,113,113,0.10);
+  --amber: #fbbf24;
+  --amber-dim: rgba(251,191,36,0.10);
+  --font-mono: 'JetBrains Mono', 'Fira Mono', monospace;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { 
+  background: var(--bg); 
+  color: var(--text-primary); 
+  font-family: 'Inter', system-ui, sans-serif; 
+  font-size: 13px; 
+  min-height: 100vh;
+  line-height: 1.5;
+}
+
+/* Header */
+header { 
+  background: var(--bg-card); 
+  border-bottom: 1px solid var(--border); 
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.brand { 
+  display: flex; 
+  align-items: center; 
+  gap: 12px; 
+}
+.brand-icon { 
+  width: 36px; 
+  height: 36px; 
+  background: var(--accent-dim); 
+  border: 1px solid var(--accent); 
+  border-radius: 8px; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center;
+  font-size: 18px;
+}
+.brand-text { 
+  font-size: 16px; 
+  font-weight: 600; 
+}
+.brand-sub { 
+  font-size: 11px; 
+  color: var(--text-muted); 
+}
+
+/* Navigation */
+nav {
+  display: flex;
+  gap: 4px;
+}
+.nav-item {
+  padding: 8px 16px;
+  color: var(--text-secondary);
+  text-decoration: none;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.15s;
+}
+.nav-item:hover {
+  background: rgba(255,255,255,0.05);
+  color: var(--text-primary);
+}
+.nav-item.active {
+  background: var(--accent-dim);
+  color: var(--accent);
+}
+
+/* User Menu */
+.user-menu {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.role-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.role-viewer {
+  background: var(--amber-dim);
+  color: var(--amber);
+  border: 1px solid rgba(251,191,36,0.3);
+}
+
+.role-approver {
+  background: var(--accent-dim);
+  color: var(--accent);
+  border: 1px solid rgba(107,92,231,0.3);
+}
+
+.role-admin {
+  background: var(--green-dim);
+  color: var(--green);
+  border: 1px solid rgba(34,197,94,0.3);
+}
+
+/* Demo Banner */
+.demo-banner {
+  background: linear-gradient(90deg, var(--amber-dim), rgba(251,191,36,0.05));
+  border-bottom: 1px solid rgba(251,191,36,0.3);
+  padding: 10px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.demo-banner.viewer {
+  background: linear-gradient(90deg, var(--amber-dim), rgba(251,191,36,0.05));
+  border-bottom-color: rgba(251,191,36,0.3);
+}
+
+.demo-banner.approver {
+  background: linear-gradient(90deg, var(--accent-dim), rgba(107,92,231,0.05));
+  border-bottom-color: rgba(107,92,231,0.3);
+}
+
+.demo-banner.admin {
+  background: linear-gradient(90deg, var(--green-dim), rgba(34,197,94,0.05));
+  border-bottom-color: rgba(34,197,94,0.3);
+}
+
+.demo-banner-icon {
+  font-size: 16px;
+}
+
+.demo-banner-text {
+  font-size: 13px;
+  color: var(--amber);
+  font-weight: 500;
+}
+
+.demo-banner.approver .demo-banner-text {
+  color: var(--accent);
+}
+
+.demo-banner.admin .demo-banner-text {
+  color: var(--green);
+}
+
+/* Container */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+/* Page Header */
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.page-title {
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.page-subtitle {
+  color: var(--text-secondary);
+  margin-top: 4px;
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  background: var(--bg-card2);
+  color: var(--text-secondary);
+  transition: all 0.15s;
+}
+
+.btn:hover {
+  border-color: var(--border-hover);
+  color: var(--text-primary);
+}
+
+.btn-primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
+}
+
+.btn-success {
+  background: var(--green-dim);
+  border-color: var(--green);
+  color: var(--green);
+}
+
+.btn-success:hover {
+  background: rgba(34,197,94,0.2);
+}
+
+.btn-danger {
+  background: var(--red-dim);
+  border-color: var(--red);
+  color: var(--red);
+}
+
+.btn-danger:hover {
+  background: rgba(248,113,113,0.2);
+}
+
+.btn-sm {
+  padding: 6px 12px;
+  font-size: 12px;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Cards */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.card-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card-title {
+  font-size: 14px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.card-body {
+  padding: 0;
+}
+
+/* Table */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 14px 16px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+
+th {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  background: rgba(255,255,255,0.02);
+}
+
+tr:hover td {
+  background: rgba(255,255,255,0.02);
+}
+
+/* Status Badges */
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.status-pending {
+  background: var(--amber-dim);
+  color: var(--amber);
+}
+
+.status-approved {
+  background: var(--green-dim);
+  color: var(--green);
+}
+
+.status-denied {
+  background: var(--red-dim);
+  color: var(--red);
+}
+
+/* Action Buttons in Table */
+.actions {
+  display: flex;
+  gap: 8px;
+}
+
+/* Read-only notice */
+.read-only-notice {
+  background: var(--amber-dim);
+  border: 1px solid rgba(251,191,36,0.3);
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--amber);
+  font-size: 13px;
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--text-muted);
+}
+
+.empty-state-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+.empty-state-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+/* Tabs */
+.tabs {
+  display: flex;
+  gap: 4px;
+  padding: 0 20px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(255,255,255,0.02);
+}
+
+.tab {
+  padding: 12px 16px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.15s;
+}
+
+.tab:hover {
+  color: var(--text-primary);
+}
+
+.tab.active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+/* Filter Bar */
+.filter-bar {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.search-input {
+  flex: 1;
+  max-width: 300px;
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 12px;
+  color: var(--text-primary);
+  font-size: 13px;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <div class="brand-icon">⚡</div>
+    <div>
+      <div class="brand-text">Agentic Terminal</div>
+      <div class="brand-sub">Enterprise Dashboard</div>
+    </div>
+  </div>
+  <nav>
+    <a href="fleet.html" class="nav-item">Fleet</a>
+    <a href="delegations.html" class="nav-item active">Delegations</a>
+    <a href="alerts.html" class="nav-item">Alerts</a>
+    <a href="#" class="nav-item" id="settingsLink" style="display: none;">Settings</a>
+  </nav>
+  <div class="user-menu">
+    <span id="roleBadge" class="role-badge role-viewer">Viewer</span>
+    <button class="btn btn-sm" onclick="logout()">Logout</button>
+  </div>
+</header>
+
+<!-- Demo Banner -->
+<div id="demoBanner" class="demo-banner viewer" style="display: none;">
+  <span class="demo-banner-icon">⚡</span>
+  <span class="demo-banner-text" id="bannerText">Viewer Mode — Read Only</span>
+</div>
+
+<div class="container">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Delegation Requests</h1>
+      <p class="page-subtitle">Review and manage agent credential requests</p>
+    </div>
+    <button id="issueCredentialBtn" class="btn btn-primary" onclick="issueCredential()">
+      <span>+</span>
+      <span>Issue Credential</span>
+    </button>
+  </div>
+
+  <!-- Read-only notice for viewers -->
+  <div id="readOnlyNotice" class="read-only-notice" style="display: none;">
+    <span>👁️</span>
+    <span>You have view-only access. Contact an admin to make changes.</span>
+  </div>
+
+  <!-- Delegations Card -->
+  <div class="card">
+    <div class="tabs">
+      <div class="tab active" onclick="filterStatus('all')">All Requests</div>
+      <div class="tab" onclick="filterStatus('pending')">Pending</div>
+      <div class="tab" onclick="filterStatus('approved')">Approved</div>
+      <div class="tab" onclick="filterStatus('denied')">Denied</div>
+    </div>
+    
+    <div class="filter-bar">
+      <input type="text" class="search-input" placeholder="Search requests..." id="searchInput">
+      <span style="color: var(--text-muted); font-size: 12px;">Showing <span id="requestCount">3</span> requests</span>
+    </div>
+    
+    <div class="card-body">
+      <table id="delegationsTable">
+        <thead>
+          <tr>
+            <th>Request</th>
+            <th>Agent</th>
+            <th>Requested By</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody">
+          <!-- Populated by JS -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+// Sample delegation requests
+const delegationRequests = [
+  {
+    id: 'req_001',
+    agentName: 'TRON Payment Processor',
+    agentId: 'agent_tron_payment',
+    requestedBy: 'demo@tron.foundation',
+    date: '2026-04-13 14:30',
+    status: 'pending',
+    scope: 'payments:write'
+  },
+  {
+    id: 'req_002',
+    agentName: 'Cross-Bridge Agent',
+    agentId: 'agent_cross_bridge',
+    requestedBy: 'demo@tron.foundation',
+    date: '2026-04-13 12:15',
+    status: 'approved',
+    scope: 'bridge:execute'
+  },
+  {
+    id: 'req_003',
+    agentName: 'TRON Treasury Agent',
+    agentId: 'agent_tron_treasury',
+    requestedBy: 'demo@tron.foundation',
+    date: '2026-04-12 09:45',
+    status: 'denied',
+    scope: 'treasury:full'
+  }
+];
+
+let currentFilter = 'all';
+
+// Check permissions and apply role-based UI on page load
+document.addEventListener('DOMContentLoaded', function() {
+  const role = sessionStorage.getItem('demo_role') || 'viewer';
+  const canApprove = sessionStorage.getItem('can_approve_delegations') === 'true';
+  const canIssue = sessionStorage.getItem('can_issue_delegations') === 'true';
+  const canViewSettings = sessionStorage.getItem('can_view_settings') === 'true';
+  
+  // Update role badge
+  const roleBadge = document.getElementById('roleBadge');
+  const demoBanner = document.getElementById('demoBanner');
+  const bannerText = document.getElementById('bannerText');
+  
+  roleBadge.className = 'role-badge role-' + role;
+  roleBadge.textContent = role.charAt(0).toUpperCase() + role.slice(1);
+  
+  // Show demo banner with appropriate styling
+  demoBanner.style.display = 'flex';
+  demoBanner.className = 'demo-banner ' + role;
+  
+  if (role === 'viewer') {
+    bannerText.textContent = 'Viewer Mode — Read Only';
+    document.getElementById('readOnlyNotice').style.display = 'flex';
+    document.getElementById('issueCredentialBtn').style.display = 'none';
+  } else if (role === 'approver') {
+    bannerText.textContent = 'Approver Mode';
+    document.getElementById('issueCredentialBtn').style.display = 'none';
+  } else if (role === 'admin') {
+    bannerText.textContent = 'Admin Mode — Full Access';
+    document.getElementById('issueCredentialBtn').style.display = canIssue ? 'inline-flex' : 'none';
+  }
+  
+  // Show/hide settings link
+  if (canViewSettings) {
+    document.getElementById('settingsLink').style.display = 'inline-block';
+  }
+  
+  // Load table
+  renderTable();
+});
+
+function renderTable() {
+  const canApprove = sessionStorage.getItem('can_approve_delegations') === 'true';
+  const role = sessionStorage.getItem('demo_role') || 'viewer';
+  
+  const filtered = currentFilter === 'all' 
+    ? delegationRequests 
+    : delegationRequests.filter(r => r.status === currentFilter);
+  
+  document.getElementById('requestCount').textContent = filtered.length;
+  
+  const tbody = document.getElementById('tableBody');
+  tbody.innerHTML = filtered.map(req => {
+    let statusClass = 'status-pending';
+    if (req.status === 'approved') statusClass = 'status-approved';
+    if (req.status === 'denied') statusClass = 'status-denied';
+    
+    let actionsHtml = '';
+    if (req.status === 'pending') {
+      if (canApprove) {
+        actionsHtml = `
+          <div class="actions">
+            <button class="btn btn-sm btn-success" onclick="approveRequest('${req.id}')">✓ Approve</button>
+            <button class="btn btn-sm btn-danger" onclick="denyRequest('${req.id}')">✕ Deny</button>
+          </div>
+        `;
+      } else {
+        actionsHtml = `
+          <div class="actions">
+            <button class="btn btn-sm" disabled>Pending Approval</button>
+          </div>
+        `;
+      }
+    } else {
+      actionsHtml = `
+        <div class="actions">
+          <button class="btn btn-sm" onclick="viewDetails('${req.id}')">View Details</button>
+        </div>
+      `;
+    }
+    
+    return `
+      <tr>
+        <td>
+          <div style="font-weight: 500;">${req.scope}</div>
+          <div style="font-size: 11px; color: var(--text-muted); font-family: var(--font-mono);">${req.id}</div>
+        </td>
+        <td>${req.agentName}</td>
+        <td>${req.requestedBy}</td>
+        <td>${req.date}</td>
+        <td><span class="status ${statusClass}">${req.status}</span></td>
+        <td>${actionsHtml}</td>
+      </tr>
+    `;
+  }).join('');
+}
+
+function filterStatus(status) {
+  currentFilter = status;
+  
+  // Update tab styles
+  document.querySelectorAll('.tab').forEach(tab => {
+    tab.classList.remove('active');
+  });
+  event.target.classList.add('active');
+  
+  renderTable();
+}
+
+function approveRequest(reqId) {
+  const canApprove = sessionStorage.getItem('can_approve_delegations') === 'true';
+  if (!canApprove) {
+    alert('You do not have permission to approve requests.');
+    return;
+  }
+  
+  const req = delegationRequests.find(r => r.id === reqId);
+  if (req) {
+    req.status = 'approved';
+    renderTable();
+    alert('Request ' + reqId + ' approved successfully!');
+  }
+}
+
+function denyRequest(reqId) {
+  const canApprove = sessionStorage.getItem('can_approve_delegations') === 'true';
+  if (!canApprove) {
+    alert('You do not have permission to deny requests.');
+    return;
+  }
+  
+  const req = delegationRequests.find(r => r.id === reqId);
+  if (req) {
+    req.status = 'denied';
+    renderTable();
+    alert('Request ' + reqId + ' denied.');
+  }
+}
+
+function viewDetails(reqId) {
+  alert('View details for request: ' + reqId);
+}
+
+function issueCredential() {
+  const canIssue = sessionStorage.getItem('can_issue_delegations') === 'true';
+  if (!canIssue) {
+    alert('You do not have permission to issue credentials.');
+    return;
+  }
+  alert('Issue new credential modal would open here');
+}
+
+function logout() {
+  sessionStorage.clear();
+  localStorage.removeItem('demoSession');
+  window.location.href = '/enterprise/demo-access.html';
+}
+</script>
+
+</body>
+</html>

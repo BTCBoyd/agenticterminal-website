@@ -254,6 +254,56 @@ const API = {
   },
   
   /**
+   * Get VAC (Verifiable Activity Credential) data for an agent
+   * Phase 4.5: AT Reputation Score data source
+   * @param {string} pubkey - Agent public key
+   * @returns {Promise<Object|null>} VAC data or null if unavailable
+   */
+  async getVAC(pubkey) {
+    if (!pubkey) {
+      console.warn('[API] getVAC called without pubkey');
+      return null;
+    }
+    
+    const cacheKey = `vac_${pubkey}`;
+    const cached = this.cache.get(cacheKey);
+    
+    // Use cache if less than 5 minutes old
+    if (cached && Date.now() - cached.timestamp < 300000) {
+      return cached.data;
+    }
+    
+    try {
+      const data = await this.fetchWithTimeout(
+        `${CONFIG.API_BASE}/observer/agents/${pubkey}/vac`,
+        {},
+        8000 // 8 second timeout for VAC
+      );
+      
+      // Cache the result
+      this.cache.set(cacheKey, { data, timestamp: Date.now() });
+      
+      return data;
+    } catch (error) {
+      console.warn('[API] VAC fetch failed:', error.message);
+      return null;
+    }
+  },
+  
+  /**
+   * Check if OP API is reachable
+   * @returns {Promise<boolean>}
+   */
+  async isOPReachable() {
+    try {
+      const result = await this.healthCheck();
+      return result.healthy;
+    } catch (error) {
+      return false;
+    }
+  },
+  
+  /**
    * Verify event on Observer Protocol
    */
   async verifyEvent(eventId) {
@@ -307,6 +357,144 @@ const API = {
       return { healthy: true, data };
     } catch (error) {
       return { healthy: false, error: error.message };
+    }
+  },
+  
+  /**
+   * Submit delegation credential to OP
+   * Phase 4: Submit attested agent delegation
+   */
+  async submitDelegation(credential) {
+    return this.fetchWithTimeout(
+      `${CONFIG.API_BASE}/observer/delegations`,
+      {
+        method: 'POST',
+        body: JSON.stringify(credential),
+      }
+    );
+  },
+  
+  /**
+   * Get delegations for a human pubkey
+   * Phase 4: Fetch existing delegations
+   */
+  async getDelegationsByHuman(humanPubkey) {
+    try {
+      const data = await this.fetchWithTimeout(
+        `${CONFIG.API_BASE}/observer/delegations/${humanPubkey}`
+      );
+      return data.delegations || [];
+    } catch (error) {
+      console.warn('Failed to fetch delegations:', error.message);
+      return [];
+    }
+  },
+  
+  // ============================================================
+  // Phase 5: Transaction API Endpoints
+  // ============================================================
+  
+  /**
+   * Get transaction history for a pubkey
+   * @param {string} pubkey - Agent public key
+   * @param {Object} options - Query options
+   * @param {number} options.since - Fetch transactions after this timestamp
+   * @param {number} options.until - Fetch transactions before this timestamp
+   * @param {number} options.limit - Maximum number of transactions
+   * @param {string} options.type - Filter by transaction type
+   * @returns {Promise<Object>} Transaction data
+   */
+  async getTransactionsForPubkey(pubkey, options = {}) {
+    if (!pubkey) {
+      throw new Error('Public key required');
+    }
+    
+    const { since, until, limit = 1000, type } = options;
+    
+    const params = new URLSearchParams();
+    if (since) params.append('since', since.toString());
+    if (until) params.append('until', until.toString());
+    if (limit) params.append('limit', limit.toString());
+    if (type) params.append('type', type);
+    
+    const queryString = params.toString();
+    const url = `${CONFIG.API_BASE}/observer/agents/${pubkey}/transactions${queryString ? `?${queryString}` : ''}`;
+    
+    return this.fetchWithTimeout(url, {}, CONFIG.TRANSACTIONS?.FETCH_TIMEOUT || 15000);
+  },
+  
+  /**
+   * Get transaction by ID
+   * @param {string} txId - Transaction ID
+   * @returns {Promise<Object|null>} Transaction or null
+   */
+  async getTransactionById(txId) {
+    try {
+      const data = await this.fetchWithTimeout(
+        `${CONFIG.API_BASE}/observer/transactions/${txId}`,
+        {},
+        10000
+      );
+      return data.transaction || null;
+    } catch (error) {
+      console.warn('[API] Transaction fetch failed:', error.message);
+      return null;
+    }
+  },
+  
+  /**
+   * Get transaction summary for a pubkey
+   * @param {string} pubkey - Agent public key
+   * @returns {Promise<Object|null>} Summary stats
+   */
+  async getTransactionSummary(pubkey) {
+    try {
+      const data = await this.fetchWithTimeout(
+        `${CONFIG.API_BASE}/observer/agents/${pubkey}/transactions/summary`,
+        {},
+        10000
+      );
+      return data.summary || null;
+    } catch (error) {
+      console.warn('[API] Transaction summary fetch failed:', error.message);
+      return null;
+    }
+  },
+  
+  /**
+   * Verify a transaction with OP
+   * @param {string} txId - Transaction ID
+   * @returns {Promise<Object>} Verification result
+   */
+  async verifyTransaction(txId) {
+    try {
+      const data = await this.fetchWithTimeout(
+        `${CONFIG.API_BASE}/observer/transactions/${txId}/verify`,
+        {},
+        10000
+      );
+      return data;
+    } catch (error) {
+      console.warn('[API] Transaction verification failed:', error.message);
+      return { verified: false, error: error.message };
+    }
+  },
+  
+  /**
+   * Get transaction types/categories
+   * @returns {Promise<Array>} Available transaction types
+   */
+  async getTransactionTypes() {
+    try {
+      const data = await this.fetchWithTimeout(
+        `${CONFIG.API_BASE}/observer/transactions/types`,
+        {},
+        5000
+      );
+      return data.types || ['inbound', 'outbound', 'delegate', 'revoke'];
+    } catch (error) {
+      console.warn('[API] Transaction types fetch failed:', error.message);
+      return ['inbound', 'outbound', 'delegate', 'revoke'];
     }
   },
 };

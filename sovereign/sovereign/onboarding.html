@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Onboarding — Sovereign Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root { 
+  --bg-base: #0a0a08; 
+  --bg-surface: #141614; 
+  --bg-elevated: #1a1d1a; 
+  --bg-border: rgba(255,255,255,0.08); 
+  --text-primary: #e8ede9; 
+  --text-secondary: #a8b8aa; 
+  --text-tertiary: #6e8571; 
+  --accent: #f5a623; 
+  --accent-dim: rgba(245,166,35,0.15); 
+  --teal: #22c55e; 
+  --teal-dim: rgba(34,197,94,0.15); 
+  --red: #f87171; 
+  --purple: #6B5CE7;
+  --purple-dim: rgba(107,92,231,0.15);
+  --mono: 'DM Mono',monospace; 
+  --display: 'Syne',sans-serif; 
+}
+*,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { 
+  background: var(--bg-base); 
+  color: var(--text-primary); 
+  font-family: var(--display); 
+  min-height: 100vh; 
+  padding: 40px 24px;
+}
+body::before { 
+  content: ''; 
+  position: fixed; 
+  inset: 0; 
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E"); 
+  pointer-events: none; 
+  z-index: 0; 
+}
+.container { 
+  width: 100%; 
+  max-width: 720px; 
+  margin: 0 auto; 
+  position: relative; 
+  z-index: 1; 
+}
+.brand { 
+  display: flex; 
+  align-items: center; 
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 40px; 
+}
+.brand-logo { 
+  width: 40px; 
+  height: 40px; 
+  background: var(--accent-dim); 
+  border: 1px solid var(--accent); 
+  border-radius: 10px; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  font-size: 20px; 
+}
+.brand-title { font-size: 20px; font-weight: 600; }
+
+.progress-bar { 
+  display: flex; 
+  align-items: center; 
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 40px;
+}
+.progress-step { 
+  display: flex; 
+  align-items: center; 
+  gap: 8px; 
+}
+.step-circle { 
+  width: 32px; 
+  height: 32px; 
+  border-radius: 50%; 
+  background: var(--bg-elevated); 
+  border: 1px solid var(--bg-border); 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  font-family: var(--mono); 
+  font-size: 12px; 
+  color: var(--text-tertiary);
+  transition: all 0.3s;
+}
+.step-circle.active { 
+  background: var(--accent-dim); 
+  border-color: var(--accent); 
+  color: var(--accent); 
+}
+.step-circle.completed { 
+  background: var(--teal-dim); 
+  border-color: var(--teal); 
+  color: var(--teal); 
+}
+.step-line { 
+  width: 60px; 
+  height: 2px; 
+  background: var(--bg-border); 
+  transition: all 0.3s;
+}
+.step-line.completed { background: var(--teal); }
+.step-label { 
+  font-family: var(--mono); 
+  font-size: 10px; 
+  color: var(--text-tertiary); 
+  margin-top: 8px;
+  text-align: center;
+}
+
+.card { 
+  background: var(--bg-surface); 
+  border: 1px solid var(--bg-border); 
+  border-radius: 16px; 
+  padding: 40px; 
+}
+.card-header { 
+  text-align: center; 
+  margin-bottom: 32px; 
+}
+.card-header h1 { 
+  font-size: 24px; 
+  font-weight: 600; 
+  margin-bottom: 8px; 
+}
+.card-header p { 
+  font-family: var(--mono); 
+  font-size: 13px; 
+  color: var(--text-secondary); 
+  line-height: 1.6; 
+}
+
+.error-message { 
+  background: rgba(248,113,113,0.1); 
+  border: 1px solid rgba(248,113,113,0.3); 
+  border-radius: 8px; 
+  padding: 14px 18px; 
+  margin-bottom: 20px; 
+  font-family: var(--mono); 
+  font-size: 13px; 
+  color: var(--red); 
+  display: none; 
+}
+.error-message.visible { display: block; }
+
+.success-message { 
+  background: var(--teal-dim); 
+  border: 1px solid var(--teal); 
+  border-radius: 8px; 
+  padding: 14px 18px; 
+  margin-bottom: 20px; 
+  font-family: var(--mono); 
+  font-size: 13px; 
+  color: var(--teal); 
+  display: none; 
+}
+.success-message.visible { display: block; }
+
+.did-display { 
+  background: var(--bg-base); 
+  border: 1px solid var(--bg-border); 
+  border-radius: 12px; 
+  padding: 20px; 
+  margin-bottom: 24px;
+}
+.did-label { 
+  font-family: var(--mono); 
+  font-size: 10px; 
+  color: var(--text-tertiary); 
+  text-transform: uppercase; 
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.did-value { 
+  font-family: var(--mono); 
+  font-size: 14px; 
+  color: var(--text-primary); 
+  word-break: break-all;
+  line-height: 1.5;
+}
+.did-badge {
+  font-size: 9px;
+  color: var(--teal);
+  background: var(--teal-dim);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.btn { 
+  padding: 14px 28px; 
+  border-radius: 8px; 
+  font-family: var(--mono); 
+  font-size: 13px; 
+  font-weight: 500; 
+  cursor: pointer; 
+  transition: all 0.2s; 
+  border: none; 
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.btn-primary { 
+  background: var(--accent); 
+  color: var(--bg-base); 
+}
+.btn-primary:hover:not(:disabled) { opacity: 0.9; }
+.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-secondary { 
+  background: var(--bg-elevated); 
+  color: var(--text-secondary); 
+  border: 1px solid var(--bg-border); 
+}
+.btn-secondary:hover:not(:disabled) { 
+  border-color: var(--text-secondary); 
+  color: var(--text-primary); 
+}
+.btn-block { width: 100%; }
+
+.action-row {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.form-group { margin-bottom: 20px; }
+.form-label { 
+  display: block; 
+  font-family: var(--mono); 
+  font-size: 11px; 
+  color: var(--text-secondary); 
+  text-transform: uppercase; 
+  letter-spacing: 0.08em; 
+  margin-bottom: 8px; 
+}
+.form-input { 
+  width: 100%; 
+  background: var(--bg-base); 
+  border: 1px solid var(--bg-border); 
+  border-radius: 8px; 
+  padding: 14px 16px; 
+  color: var(--text-primary); 
+  font-family: var(--mono); 
+  font-size: 14px; 
+  transition: border-color 0.2s; 
+}
+.form-input:focus { 
+  outline: none; 
+  border-color: var(--accent); 
+}
+.form-input::placeholder { color: var(--text-tertiary); }
+
+.api-key-display {
+  background: var(--bg-base);
+  border: 1px solid var(--teal);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 24px;
+  position: relative;
+}
+.api-key-value {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--teal);
+  word-break: break-all;
+  line-height: 1.6;
+  padding-right: 80px;
+}
+.copy-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  padding: 6px 12px;
+  font-size: 11px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--bg-border);
+  color: var(--text-secondary);
+  border-radius: 6px;
+  cursor: pointer;
+}
+.copy-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.warning-box {
+  background: var(--accent-dim);
+  border: 1px solid rgba(245,166,35,0.2);
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 24px;
+}
+.warning-box-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.warning-box-text {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin: 24px 0;
+}
+.feature-item {
+  background: var(--bg-elevated);
+  border: 1px solid var(--bg-border);
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+}
+.feature-icon {
+  font-size: 28px;
+  margin-bottom: 12px;
+}
+.feature-title {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.feature-desc {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+.step { display: none; }
+.step.active { display: block; }
+
+.checklist {
+  margin: 24px 0;
+}
+.checklist-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--bg-border);
+  border-radius: 10px;
+  margin-bottom: 12px;
+  transition: all 0.3s;
+}
+.checklist-item.completed {
+  border-color: var(--teal);
+  background: var(--teal-dim);
+}
+.checklist-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--bg-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  flex-shrink: 0;
+}
+.checklist-item.completed .checklist-icon {
+  background: var(--teal);
+}
+.checklist-text {
+  flex: 1;
+}
+.checklist-title {
+  font-size: 14px;
+  font-weight: 500;
+}
+.checklist-desc {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text-secondary);
+  margin-top: 2px;
+}
+
+.loading-spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+@media (max-width: 600px) {
+  .card { padding: 28px; }
+  .feature-grid { grid-template-columns: 1fr; }
+  .step-line { width: 30px; }
+  .action-row { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="brand">
+    <div class="brand-logo">🤖</div>
+    <div class="brand-title">Sovereign Onboarding</div>
+  </div>
+  
+  <div class="progress-bar">
+    <div class="progress-step">
+      <div>
+        <div class="step-circle active" id="step-circle-1">1</div>
+        <div class="step-label">DID</div>
+      </div>
+    </div>
+    <div class="step-line" id="step-line-1"></div>
+    <div class="progress-step">
+      <div>
+        <div class="step-circle" id="step-circle-2">2</div>
+        <div class="step-label">API Key</div>
+      </div>
+    </div>
+    <div class="step-line" id="step-line-2"></div>
+    <div class="progress-step">
+      <div>
+        <div class="step-circle" id="step-circle-3">3</div>
+        <div class="step-label">Confirm</div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="card">
+    <div class="error-message" id="error"></div>
+    <div class="success-message" id="success"></div>
+    
+    <!-- Step 1: DID Verification -->
+    <div class="step active" id="step-1">
+      <div class="card-header">
+        <h1>Your Decentralized Identity</h1>
+        <p>Your DID has been derived from your wallet. This is your sovereign identity on the network.</p>
+      </div>
+      
+      <div class="did-display">
+        <div class="did-label">
+          Your DID
+          <span class="did-badge">✓ Verified</span>
+        </div>
+        <div class="did-value" id="user-did">Loading...</div>
+      </div>
+      
+      <div class="warning-box">
+        <div class="warning-box-title">⚠️ Important</div>
+        <div class="warning-box-text">
+          Your DID is permanently linked to your wallet. Keep your wallet secure — 
+          anyone with access to your wallet can control this identity.
+        </div>
+      </div>
+      
+      <div class="feature-grid">
+        <div class="feature-item">
+          <div class="feature-icon">🔐</div>
+          <div class="feature-title">Self-Custodial</div>
+          <div class="feature-desc">You control your keys</div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">🌐</div>
+          <div class="feature-title">Portable</div>
+          <div class="feature-desc">Use across platforms</div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">🤖</div>
+          <div class="feature-title">Agent-Ready</div>
+          <div class="feature-desc">Deploy AI agents</div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">⚡</div>
+          <div class="feature-title">Multi-Rail</div>
+          <div class="feature-desc">Lightning, TRON, Solana</div>
+        </div>
+      </div>
+      
+      <button class="btn btn-primary btn-block" onclick="proceedToStep2()">
+        Continue to API Key Setup
+      </button>
+    </div>
+    
+    <!-- Step 2: API Key Generation -->
+    <div class="step" id="step-2">
+      <div class="card-header">
+        <h1>Generate API Key</h1>
+        <p>Create an API key to authenticate your agents with the Observer Protocol.</p>
+      </div>
+      
+      <div id="api-key-creation">
+        <div class="form-group">
+          <label class="form-label">Key Name (Optional)</label>
+          <input type="text" class="form-input" id="key-name" placeholder="e.g., Production Key">
+        </div>
+        
+        <div class="warning-box">
+          <div class="warning-box-title">🔒 Security Notice</div>
+          <div class="warning-box-text">
+            Your API key will be shown only once. Store it securely — we cannot recover it for you.
+          </div>
+        </div>
+        
+        <button class="btn btn-primary btn-block" onclick="generateAPIKey()" id="generate-btn">
+          Generate API Key
+        </button>
+      </div>
+      
+      <div id="api-key-display" style="display: none;">
+        <div class="success-message visible" style="display: block;">
+          API Key generated successfully!
+        </div>
+        
+        <div class="api-key-display">
+          <div class="api-key-value" id="api-key-value">op_live_xxxxxxxx...</div>
+          <button class="copy-btn" onclick="copyAPIKey()">Copy</button>
+        </div>
+        
+        <div class="warning-box">
+          <div class="warning-box-title">⚠️ Store This Key</div>
+          <div class="warning-box-text">
+            This is the only time you'll see this key. Copy it to your password manager or secure storage now.
+          </div>
+        </div>
+        
+        <button class="btn btn-primary btn-block" onclick="proceedToStep3()">
+          I've Saved My Key
+        </button>
+      </div>
+    </div>
+    
+    <!-- Step 3: Confirmation -->
+    <div class="step" id="step-3">
+      <div class="card-header">
+        <h1>🎉 You're All Set!</h1>
+        <p>Your Sovereign identity is ready. Here's what's configured:</p>
+      </div>
+      
+      <div class="checklist">
+        <div class="checklist-item completed">
+          <div class="checklist-icon">✓</div>
+          <div class="checklist-text">
+            <div class="checklist-title">DID Created</div>
+            <div class="checklist-desc" id="confirm-did">did:key:z...</div>
+          </div>
+        </div>
+        <div class="checklist-item completed">
+          <div class="checklist-icon">✓</div>
+          <div class="checklist-text">
+            <div class="checklist-title">API Key Generated</div>
+            <div class="checklist-desc" id="confirm-key">Key ending in ...xxxx</div>
+          </div>
+        </div>
+        <div class="checklist-item completed">
+          <div class="checklist-icon">✓</div>
+          <div class="checklist-text">
+            <div class="checklist-title">Ready for Agent Registration</div>
+            <div class="checklist-desc">You can now register agents</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="feature-grid">
+        <div class="feature-item">
+          <div class="feature-icon">🚀</div>
+          <div class="feature-title">Register Agent</div>
+          <div class="feature-desc">Deploy your first agent</div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">📊</div>
+          <div class="feature-title">Dashboard</div>
+          <div class="feature-desc">View your fleet</div>
+        </div>
+      </div>
+      
+      <div class="action-row">
+        <button class="btn btn-secondary" onclick="goToDashboard()" style="flex: 1;">
+          Go to Dashboard
+        </button>
+        <button class="btn btn-primary" onclick="registerAgent()" style="flex: 1;">
+          Register Agent →
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const API_BASE = '/api/v1';
+let session = null;
+let apiKey = null;
+
+// Load session on page load
+(function init() {
+  const sessionData = localStorage.getItem('sovereign_session');
+  if (!sessionData) {
+    // Redirect to login if no session
+    window.location.href = 'login.html';
+    return;
+  }
+  
+  session = JSON.parse(sessionData);
+  
+  // Check if onboarding is already complete
+  if (session.onboardingComplete) {
+    window.location.href = 'index.html';
+    return;
+  }
+  
+  // Display DID
+  document.getElementById('user-did').textContent = session.did || 'did:key:z...';
+})();
+
+function showStep(stepNum) {
+  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+  document.getElementById(`step-${stepNum}`).classList.add('active');
+  
+  // Update progress indicators
+  for (let i = 1; i <= 3; i++) {
+    const circle = document.getElementById(`step-circle-${i}`);
+    const line = document.getElementById(`step-line-${i}`);
+    
+    if (i < stepNum) {
+      circle.classList.add('completed');
+      circle.textContent = '✓';
+      if (line) line.classList.add('completed');
+    } else if (i === stepNum) {
+      circle.classList.add('active');
+      circle.textContent = i;
+    }
+  }
+}
+
+function showError(msg) {
+  document.getElementById('error').textContent = msg;
+  document.getElementById('error').classList.add('visible');
+}
+
+function showSuccess(msg) {
+  document.getElementById('success').textContent = msg;
+  document.getElementById('success').classList.add('visible');
+}
+
+function proceedToStep2() {
+  showStep(2);
+}
+
+async function generateAPIKey() {
+  const btn = document.getElementById('generate-btn');
+  const originalText = btn.textContent;
+  btn.disabled = true;
+  btn.innerHTML = '<div class="loading-spinner"></div> Generating...';
+  
+  try {
+    // Request challenge from server
+    const challengeRes = await fetch(`${API_BASE}/auth/challenge`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ did: session.did })
+    });
+    
+    if (!challengeRes.ok) {
+      throw new Error('Failed to get challenge from server');
+    }
+    
+    const { challenge } = await challengeRes.json();
+    
+    // Sign challenge with wallet (simplified - in production, use proper signing)
+    // For now, we'll simulate the signed challenge
+    const signedChallenge = await signChallenge(challenge, session.walletType);
+    
+    // Generate API key
+    const keyRes = await fetch(`${API_BASE}/auth/apikey`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        did: session.did,
+        challenge: challenge,
+        signedChallenge: signedChallenge,
+        keyName: document.getElementById('key-name').value || 'Default Key'
+      })
+    });
+    
+    if (!keyRes.ok) {
+      const error = await keyRes.json();
+      throw new Error(error.message || 'Failed to generate API key');
+    }
+    
+    const data = await keyRes.json();
+    apiKey = data.apiKey;
+    
+    // Display API key
+    document.getElementById('api-key-value').textContent = apiKey;
+    document.getElementById('api-key-creation').style.display = 'none';
+    document.getElementById('api-key-display').style.display = 'block';
+    
+  } catch (error) {
+    showError(error.message || 'Failed to generate API key');
+    btn.disabled = false;
+    btn.textContent = originalText;
+  }
+}
+
+async function signChallenge(challenge, walletType) {
+  // In production, this would actually sign with the wallet
+  // For now, we simulate the signing process
+  
+  if (walletType === 'metamask' && window.ethereum) {
+    // Request signature from MetaMask
+    const accounts = await window.ethereum.request({ method: 'eth_accounts' });
+    if (accounts.length > 0) {
+      const message = `Agentic Terminal Challenge: ${challenge}`;
+      const signature = await window.ethereum.request({
+        method: 'personal_sign',
+        params: [message, accounts[0]]
+      });
+      return signature;
+    }
+  } else if (walletType === 'alby' && window.webln) {
+    // Alby signing would go here
+    // For now, return a simulated signature
+    return 'alby_sig_' + btoa(challenge).substring(0, 32);
+  }
+  
+  // Fallback: simulated signature for development
+  return 'sig_' + btoa(challenge + session.did).substring(0, 48);
+}
+
+function copyAPIKey() {
+  navigator.clipboard.writeText(apiKey).then(() => {
+    const btn = document.querySelector('.copy-btn');
+    btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = 'Copy', 2000);
+  });
+}
+
+function proceedToStep3() {
+  // Update confirmation details
+  document.getElementById('confirm-did').textContent = session.did;
+  document.getElementById('confirm-key').textContent = 'Key ending in ...' + apiKey.slice(-8);
+  
+  // Mark onboarding as complete
+  session.onboardingComplete = true;
+  session.apiKeyCreated = true;
+  localStorage.setItem('sovereign_session', JSON.stringify(session));
+  
+  showStep(3);
+}
+
+function goToDashboard() {
+  window.location.href = 'index.html';
+}
+
+function registerAgent() {
+  window.location.href = 'agent-register.html';
+}
+</script>
+</body>
+</html>

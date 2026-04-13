@@ -1,11 +1,12 @@
 /**
  * Sovereign Dashboard - Advanced Delegation Management
- * Phase 2: Edit, revoke, renew delegations with history
+ * Phase 2-4: Edit, revoke, renew delegations with history + Agent Attestation
  */
 
 const DelegationManager = {
   currentDelegation: null,
   delegationHistory: [],
+  attestedAgents: [],
   
   /**
    * Initialize delegation manager
@@ -13,7 +14,24 @@ const DelegationManager = {
   async init() {
     await this.loadDelegation();
     await this.loadHistory();
+    await this.loadAttestedAgents();
     this.render();
+  },
+  
+  /**
+   * Load attested agents from AgentAttestation module
+   * Phase 4: Load agent attestations
+   */
+  async loadAttestedAgents() {
+    try {
+      if (typeof AgentAttestation !== 'undefined') {
+        await AgentAttestation.init();
+        this.attestedAgents = AgentAttestation.getAttestedAgents();
+      }
+    } catch (error) {
+      console.error('Failed to load attested agents:', error);
+      this.attestedAgents = [];
+    }
   },
   
   /**
@@ -51,12 +69,95 @@ const DelegationManager = {
     const container = document.getElementById('delegation-content');
     if (!container) return;
     
-    if (!this.currentDelegation) {
-      container.innerHTML = this.renderEmptyState();
-      return;
+    let html = '';
+    
+    // Phase 4: Render attested agents section
+    html += this.renderAttestedAgents();
+    
+    // Render traditional delegation card if exists
+    if (this.currentDelegation) {
+      html += this.renderDelegationCard() + this.renderHistory();
+    } else if (this.attestedAgents.length === 0) {
+      // Only show empty state if no attested agents either
+      html += this.renderEmptyState();
     }
     
-    container.innerHTML = this.renderDelegationCard() + this.renderHistory();
+    container.innerHTML = html;
+  },
+  
+  /**
+   * Render attested agents section
+   * Phase 4: Show agents attested via agent-attestation.js
+   */
+  renderAttestedAgents() {
+    if (this.attestedAgents.length === 0) {
+      return `
+        <div style="background:var(--bg-surface);border:1px solid var(--bg-border);padding:24px;margin-bottom:24px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+            <div>
+              <div style="font-size:14px;font-weight:600;">Attested Agents</div>
+              <div style="font-family:var(--mono);font-size:11px;color:var(--text-secondary);margin-top:4px;">Connect your Sovereign identity to agents</div>
+            </div>
+            <button class="btn btn-primary" onclick="AgentAttestation.openModal()" style="padding:8px 16px;font-size:11px;">+ Attest Agent</button>
+          </div>
+          <div style="text-align:center;padding:40px 20px;color:var(--text-secondary);">
+            <div style="font-size:32px;margin-bottom:12px;">🤖</div>
+            <div style="font-family:var(--mono);font-size:12px;">No attested agents yet</div>
+          </div>
+        </div>
+      `;
+    }
+    
+    const agentTypes = AgentAttestation.AGENT_TYPES;
+    
+    return `
+      <div style="background:var(--bg-surface);border:1px solid var(--bg-border);padding:24px;margin-bottom:24px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+          <div>
+            <div style="font-size:14px;font-weight:600;">Attested Agents</div>
+            <div style="font-family:var(--mono);font-size:11px;color:var(--text-secondary);margin-top:4px;">${this.attestedAgents.length} agent${this.attestedAgents.length !== 1 ? 's' : ''} connected</div>
+          </div>
+          <button class="btn btn-primary" onclick="AgentAttestation.openModal()" style="padding:8px 16px;font-size:11px;">+ Attest Agent</button>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          ${this.attestedAgents.map(agent => {
+            const type = agentTypes[agent.type] || agentTypes.other;
+            const formatted = DelegationCredential.formatForDisplay(agent.credential);
+            return `
+              <div style="background:var(--bg-elevated);border:1px solid var(--bg-border);border-radius:8px;padding:16px;">
+                <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+                  <div style="font-size:28px;">${type.icon}</div>
+                  <div style="flex:1;">
+                    <div style="font-size:13px;font-weight:600;">${type.name}</div>
+                    <div style="font-family:var(--mono);font-size:10px;color:var(--text-secondary);word-break:break-all;">${agent.pubkey.slice(0, 40)}...</div>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:6px;padding:4px 10px;border-radius:4px;font-family:var(--mono);font-size:10px;background:${formatted.isBilateral ? 'var(--teal-dim)' : 'var(--amber-dim)'};color:${formatted.isBilateral ? 'var(--teal)' : 'var(--amber)'};">
+                    ${formatted.isBilateral ? '✓ Bilateral' : '⏸ Human-attested'}
+                  </div>
+                </div>
+                <div style="display:grid;grid-template-columns:repeat(3, 1fr);gap:12px;font-family:var(--mono);font-size:11px;">
+                  <div>
+                    <div style="color:var(--text-tertiary);text-transform:uppercase;font-size:9px;margin-bottom:2px;">Max/Txn</div>
+                    <div>${formatted.constraints.perTxn}</div>
+                  </div>
+                  <div>
+                    <div style="color:var(--text-tertiary);text-transform:uppercase;font-size:9px;margin-bottom:2px;">Max/Month</div>
+                    <div>${formatted.constraints.perMonth}</div>
+                  </div>
+                  <div>
+                    <div style="color:var(--text-tertiary);text-transform:uppercase;font-size:9px;margin-bottom:2px;">Expires</div>
+                    <div style="color:${formatted.daysUntilExpiry < 7 ? 'var(--red)' : ''}">${formatted.daysUntilExpiry} days</div>
+                  </div>
+                </div>
+                <div style="display:flex;gap:8px;margin-top:12px;padding-top:12px;border-top:1px solid var(--bg-border);">
+                  <span style="font-family:var(--mono);font-size:10px;color:var(--text-secondary);">Rails: ${formatted.constraints.rails.join(', ')}</span>
+                </div>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      </div>
+    `;
   },
   
   /**
@@ -64,16 +165,21 @@ const DelegationManager = {
    */
   renderEmptyState() {
     return `
-      <div class="delegation-empty">
+      <div class="delegation-empty" style="background:var(--bg-surface);border:1px solid var(--bg-border);padding:24px;">
         <div style="text-align:center;padding:60px 20px;">
           <div style="font-size:48px;margin-bottom:16px;">🔑</div>
           <h3 style="font-size:18px;margin-bottom:8px;">No Active Delegation</h3>
           <p style="font-family:var(--mono);font-size:13px;color:var(--text-secondary);margin-bottom:24px;">
-            Create your first delegation to allow your agent to transact on your behalf.
+            Create a delegation to allow your agent to transact on your behalf with spending constraints.
           </p>
-          <button class="btn btn-primary" onclick="DelegationManager.showCreateModal()">
-            Create Delegation
-          </button>
+          <div style="display:flex;gap:12px;justify-content:center;">
+            <button class="btn btn-primary" onclick="AgentAttestation.openModal()">
+              Attest Agent
+            </button>
+            <button class="btn btn-secondary" onclick="DelegationManager.showCreateModal()">
+              Create Legacy Delegation
+            </button>
+          </div>
         </div>
       </div>
     `;

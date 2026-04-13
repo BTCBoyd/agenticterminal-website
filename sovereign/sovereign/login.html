@@ -3,583 +3,610 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Login — Sovereign Dashboard</title>
+<title>Sovereign Login — DID Wallet Auth</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root {
-  --bg-base: #07070C;
-  --bg-surface: #0E0E16;
-  --bg-elevated: #16161F;
-  --bg-border: #22222E;
-  --text-primary: #EEEEF5;
-  --text-secondary: #7A7A92;
-  --text-tertiary: #44445A;
-  --accent: #6B5CE7;
-  --accent-dim: rgba(107, 92, 231, 0.15);
-  --teal: #1DB584;
-  --teal-dim: rgba(29, 181, 132, 0.12);
-  --red: #E84040;
-  --mono: 'DM Mono', monospace;
-  --display: 'Syne', sans-serif;
+:root { 
+  --bg-base: #0a0a08; 
+  --bg-surface: #141614; 
+  --bg-elevated: #1a1d1a; 
+  --bg-border: rgba(255,255,255,0.08); 
+  --text-primary: #e8ede9; 
+  --text-secondary: #a8b8aa; 
+  --text-tertiary: #6e8571; 
+  --accent: #f5a623; 
+  --accent-dim: rgba(245,166,35,0.15); 
+  --teal: #22c55e; 
+  --teal-dim: rgba(34,197,94,0.15); 
+  --red: #f87171; 
+  --mono: 'DM Mono',monospace; 
+  --display: 'Syne',sans-serif; 
 }
-
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-body {
-  background: var(--bg-base);
-  color: var(--text-primary);
-  font-family: var(--display);
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 24px;
+*,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { 
+  background: var(--bg-base); 
+  color: var(--text-primary); 
+  font-family: var(--display); 
+  min-height: 100vh; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  padding: 24px; 
 }
-
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-  pointer-events: none;
-  z-index: 1000;
-  opacity: 0.4;
+body::before { 
+  content: ''; 
+  position: fixed; 
+  inset: 0; 
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E"); 
+  pointer-events: none; 
+  z-index: 0; 
 }
-
-.login-container {
-  width: 100%;
-  max-width: 420px;
-  position: relative;
-  z-index: 1;
+.login-container { width: 100%; max-width: 480px; position: relative; z-index: 1; }
+.brand { text-align: center; margin-bottom: 40px; }
+.brand-logo { width: 64px; height: 64px; margin: 0 auto 20px; background: var(--accent-dim); border: 1px solid var(--accent); border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 28px; }
+.brand-title { font-size: 32px; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 8px; }
+.brand-subtitle { font-family: var(--mono); font-size: 13px; color: var(--text-secondary); }
+.login-card { 
+  background: var(--bg-surface); 
+  border: 1px solid var(--bg-border); 
+  border-radius: 12px; 
+  padding: 40px; 
 }
-
-.brand {
-  text-align: center;
-  margin-bottom: 48px;
+.login-header { margin-bottom: 32px; text-align: center; }
+.login-header h1 { font-size: 22px; font-weight: 600; margin-bottom: 8px; }
+.login-header p { font-family: var(--mono); font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+.wallet-option { 
+  display: flex; 
+  align-items: center; 
+  gap: 16px; 
+  padding: 20px; 
+  background: var(--bg-elevated); 
+  border: 1px solid var(--bg-border); 
+  border-radius: 10px; 
+  cursor: pointer; 
+  transition: all 0.2s; 
+  margin-bottom: 12px; 
+  text-decoration: none; 
+  color: inherit; 
+  width: 100%; 
+  text-align: left; 
 }
-
-.brand-logo {
-  width: 56px;
-  height: 64px;
-  margin: 0 auto 24px;
+.wallet-option:hover { 
+  border-color: var(--accent); 
+  background: var(--accent-dim); 
 }
-
-.brand-title {
-  font-size: 28px;
-  font-weight: 700;
-  letter-spacing: -0.5px;
-  margin-bottom: 8px;
+.wallet-option-icon { 
+  width: 48px; 
+  height: 48px; 
+  border-radius: 12px; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  font-size: 24px; 
+  flex-shrink: 0; 
 }
-
-.brand-subtitle {
-  font-family: var(--mono);
-  font-size: 13px;
-  color: var(--text-secondary);
+.wallet-option-icon.metamask { background: linear-gradient(135deg, #F6851B, #E2761B); }
+.wallet-option-icon.alby { background: linear-gradient(135deg, #FFDE6E, #F8C455); }
+.wallet-option-text { flex: 1; }
+.wallet-option-title { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+.wallet-option-desc { font-family: var(--mono); font-size: 12px; color: var(--text-secondary); }
+.wallet-option-badge { 
+  font-family: var(--mono); 
+  font-size: 10px; 
+  color: var(--accent); 
+  background: var(--accent-dim); 
+  padding: 4px 10px; 
+  border-radius: 4px; 
 }
-
-.login-card {
-  background: var(--bg-surface);
-  border: 1px solid var(--bg-border);
-  border-radius: 8px;
-  padding: 40px;
+.divider { 
+  display: flex; 
+  align-items: center; 
+  margin: 24px 0; 
+  font-family: var(--mono); 
+  font-size: 11px; 
+  color: var(--text-tertiary); 
+  text-transform: uppercase; 
 }
-
-.login-header {
-  margin-bottom: 32px;
+.divider::before,.divider::after { 
+  content: ''; 
+  flex: 1; 
+  height: 1px; 
+  background: var(--bg-border); 
 }
-
-.login-header h1 {
-  font-size: 22px;
-  font-weight: 600;
-  margin-bottom: 8px;
+.divider span { padding: 0 16px; }
+.error-message { 
+  background: rgba(248,113,113,0.1); 
+  border: 1px solid rgba(248,113,113,0.3); 
+  border-radius: 8px; 
+  padding: 14px 18px; 
+  margin-bottom: 20px; 
+  font-family: var(--mono); 
+  font-size: 13px; 
+  color: var(--red); 
+  display: none; 
 }
-
-.login-header p {
-  font-family: var(--mono);
-  font-size: 13px;
-  color: var(--text-secondary);
-  line-height: 1.6;
+.error-message.visible { display: block; }
+.loading-message { 
+  background: var(--accent-dim); 
+  border: 1px solid var(--accent); 
+  border-radius: 8px; 
+  padding: 14px 18px; 
+  margin-bottom: 20px; 
+  font-family: var(--mono); 
+  font-size: 13px; 
+  color: var(--accent); 
+  display: none; 
+  align-items: center; 
+  gap: 10px;
 }
-
-.form-group {
-  margin-bottom: 24px;
+.loading-message.visible { display: flex; }
+.spinner { 
+  width: 16px; 
+  height: 16px; 
+  border: 2px solid var(--accent); 
+  border-top-color: transparent; 
+  border-radius: 50%; 
+  animation: spin 1s linear infinite; 
 }
-
-.form-label {
-  display: block;
-  font-family: var(--mono);
-  font-size: 11px;
-  color: var(--text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  margin-bottom: 8px;
+@keyframes spin { to { transform: rotate(360deg); } }
+.did-preview { 
+  background: var(--bg-base); 
+  border: 1px solid var(--bg-border); 
+  border-radius: 8px; 
+  padding: 16px; 
+  margin-bottom: 20px; 
+  font-family: var(--mono); 
+  font-size: 12px; 
 }
-
-.form-input {
-  width: 100%;
-  background: var(--bg-elevated);
-  border: 1px solid var(--bg-border);
-  border-radius: 4px;
-  padding: 12px 16px;
-  color: var(--text-primary);
-  font-family: var(--display);
-  font-size: 15px;
-  transition: border-color 0.2s;
+.did-preview-label { 
+  color: var(--text-tertiary); 
+  font-size: 10px; 
+  text-transform: uppercase; 
+  margin-bottom: 8px; 
 }
-
-.form-input:focus {
-  outline: none;
-  border-color: var(--teal);
-}
-
-.form-input::placeholder {
-  color: var(--text-tertiary);
-}
-
-.form-hint {
-  font-family: var(--mono);
-  font-size: 11px;
-  color: var(--text-tertiary);
-  margin-top: 8px;
+.did-preview-value { 
+  color: var(--text-primary); 
+  word-break: break-all; 
   line-height: 1.5;
 }
-
-.btn {
-  width: 100%;
-  padding: 14px 24px;
-  border-radius: 4px;
-  font-family: var(--mono);
-  font-size: 13px;
-  font-weight: 500;
-  letter-spacing: 0.04em;
-  cursor: pointer;
-  transition: all 0.2s;
-  border: none;
+.btn { 
+  width: 100%; 
+  padding: 14px 24px; 
+  border-radius: 8px; 
+  font-family: var(--mono); 
+  font-size: 13px; 
+  font-weight: 500; 
+  letter-spacing: 0.04em; 
+  cursor: pointer; 
+  transition: all 0.2s; 
+  border: none; 
 }
-
-.btn-primary {
-  background: var(--teal);
-  color: var(--bg-base);
+.btn-primary { 
+  background: var(--accent); 
+  color: var(--bg-base); 
 }
-
-.btn-primary:hover {
-  opacity: 0.88;
+.btn-primary:hover:not(:disabled) { opacity: 0.9; }
+.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-secondary { 
+  background: var(--bg-elevated); 
+  color: var(--text-secondary); 
+  border: 1px solid var(--bg-border); 
 }
-
-.btn-primary:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+.btn-secondary:hover:not(:disabled) { 
+  border-color: var(--text-secondary); 
+  color: var(--text-primary); 
 }
-
-.btn-secondary {
-  background: var(--bg-elevated);
-  color: var(--text-secondary);
-  border: 1px solid var(--bg-border);
+.back-link { 
+  display: block; 
+  text-align: center; 
+  margin-top: 24px; 
+  font-family: var(--mono); 
+  font-size: 12px; 
+  color: var(--text-secondary); 
+  text-decoration: none; 
 }
-
-.btn-secondary:hover {
-  border-color: var(--text-secondary);
-  color: var(--text-primary);
+.back-link:hover { color: var(--text-primary); }
+.security-note { 
+  text-align: center; 
+  margin-top: 32px; 
+  font-family: var(--mono); 
+  font-size: 11px; 
+  color: var(--text-tertiary); 
+  line-height: 1.6; 
 }
-
-.divider {
-  display: flex;
-  align-items: center;
-  margin: 24px 0;
-  font-family: var(--mono);
-  font-size: 11px;
-  color: var(--text-tertiary);
-  text-transform: uppercase;
+.security-note strong { color: var(--text-secondary); }
+.step { display: none; } 
+.step.active { display: block; }
+.wallet-info { 
+  display: flex; 
+  align-items: center; 
+  gap: 12px; 
+  padding: 16px; 
+  background: var(--teal-dim); 
+  border: 1px solid var(--teal); 
+  border-radius: 8px; 
+  margin-bottom: 20px; 
 }
-
-.divider::before,
-.divider::after {
-  content: '';
-  flex: 1;
-  height: 1px;
-  background: var(--bg-border);
-}
-
-.divider span {
-  padding: 0 16px;
-}
-
-.login-option {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 16px;
-  background: var(--bg-elevated);
-  border: 1px solid var(--bg-border);
-  border-radius: 4px;
-  cursor: pointer;
-  transition: all 0.2s;
-  margin-bottom: 12px;
-  text-decoration: none;
-  color: inherit;
-}
-
-.login-option:hover {
-  border-color: var(--teal);
-  background: rgba(29, 181, 132, 0.05);
-}
-
-.login-option-icon {
-  width: 40px;
-  height: 40px;
-  background: var(--bg-surface);
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 20px;
-  flex-shrink: 0;
-}
-
-.login-option-text {
-  flex: 1;
-}
-
-.login-option-title {
-  font-size: 14px;
-  font-weight: 600;
-  margin-bottom: 2px;
-}
-
-.login-option-desc {
-  font-family: var(--mono);
-  font-size: 11px;
-  color: var(--text-secondary);
-}
-
-.login-option-badge {
-  font-family: var(--mono);
-  font-size: 9px;
-  color: var(--teal);
-  background: var(--teal-dim);
-  padding: 2px 6px;
-  border-radius: 2px;
-}
-
-.error-message {
-  background: rgba(232, 64, 64, 0.1);
-  border: 1px solid rgba(232, 64, 64, 0.3);
-  border-radius: 4px;
-  padding: 12px 16px;
-  margin-bottom: 24px;
-  font-family: var(--mono);
-  font-size: 12px;
-  color: var(--red);
-  display: none;
-}
-
-.error-message.visible {
-  display: block;
-}
-
-.back-link {
-  display: block;
-  text-align: center;
-  margin-top: 24px;
-  font-family: var(--mono);
-  font-size: 12px;
-  color: var(--text-secondary);
-  text-decoration: none;
-  transition: color 0.2s;
-}
-
-.back-link:hover {
-  color: var(--text-primary);
-}
-
-.security-note {
-  text-align: center;
-  margin-top: 32px;
-  font-family: var(--mono);
-  font-size: 11px;
-  color: var(--text-tertiary);
-  line-height: 1.6;
-}
-
-.security-note strong {
-  color: var(--text-secondary);
-}
-
-/* QR Modal */
-.qr-modal {
-  position: fixed;
-  inset: 0;
-  background: rgba(7, 7, 12, 0.95);
-  display: none;
-  align-items: center;
-  justify-content: center;
-  z-index: 2000;
-  padding: 24px;
-}
-
-.qr-modal.visible {
-  display: flex;
-}
-
-.qr-modal-content {
-  background: var(--bg-surface);
-  border: 1px solid var(--bg-border);
-  border-radius: 8px;
-  padding: 32px;
-  text-align: center;
-  max-width: 360px;
-  width: 100%;
-}
-
-.qr-code-image {
-  width: 256px;
-  height: 256px;
-  margin: 24px auto;
-  border-radius: 8px;
-  background: white;
-  padding: 8px;
-}
-
-.qr-status {
-  font-family: var(--mono);
-  font-size: 13px;
-  color: var(--teal);
-  margin-bottom: 8px;
-}
-
-.qr-hint {
-  font-family: var(--mono);
-  font-size: 11px;
-  color: var(--text-secondary);
-  margin-bottom: 24px;
-}
-
-@media (max-width: 480px) {
-  .login-card {
-    padding: 28px;
-  }
-  
-  .brand-title {
-    font-size: 24px;
-  }
+.wallet-info-icon { font-size: 24px; }
+.wallet-info-text { flex: 1; }
+.wallet-info-title { font-size: 14px; font-weight: 600; color: var(--teal); }
+.wallet-info-desc { font-family: var(--mono); font-size: 11px; color: var(--text-secondary); }
+@media (max-width: 480px) { 
+  .login-card { padding: 28px; } 
+  .brand-title { font-size: 28px; } 
 }
 </style>
 </head>
 <body>
-
 <div class="login-container">
   <div class="brand">
-    <svg class="brand-logo" viewBox="0 0 32 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M16 1L2 6.5V18C2 25.5 8.5 32.5 16 35C23.5 32.5 30 25.5 30 18V6.5L16 1Z" fill="rgba(29,181,132,0.15)" stroke="#1DB584" stroke-width="1.5"/>
-      <path d="M11 18L14.5 21.5L21 14" stroke="#1DB584" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
+    <div class="brand-logo">🤖</div>
     <div class="brand-title">Sovereign</div>
-    <div class="brand-subtitle">Your agent. Your keys. Your rules.</div>
+    <div class="brand-subtitle">DID Wallet Authentication</div>
   </div>
   
   <div class="login-card">
-    <div class="login-header">
-      <h1>Sign in to your dashboard</h1>
-      <p>Access your agent's economic record, manage delegations, and verify transactions.</p>
-    </div>
-    
     <div class="error-message" id="error"></div>
+    <div class="loading-message" id="loading"><div class="spinner"></div><span id="loading-text">Connecting...</span></div>
     
-    <!-- Alby Extension Login -->
-    <div id="alby-section">
-      <div class="login-option" onclick="loginWithAlby()">
-        <div class="login-option-icon" style="background: linear-gradient(135deg, #FFDE6E 0%, #F8C455 100%);">⚡</div>
-        <div class="login-option-text">
-          <div class="login-option-title">Alby Browser Extension</div>
-          <div class="login-option-desc">One-click login with Lightning</div>
-        </div>
-        <span class="login-option-badge">FASTEST</span>
+    <!-- Step 1: Wallet Selection -->
+    <div class="step active" id="step-wallet-select">
+      <div class="login-header">
+        <h1>Connect Your Wallet</h1>
+        <p>Choose your wallet to authenticate. No email or password required.</p>
       </div>
       
-      <div class="login-option" onclick="showQRModal()">
-        <div class="login-option-icon">⬛</div>
-        <div class="login-option-text">
-          <div class="login-option-title">Scan QR Code</div>
-          <div class="login-option-desc">Use your mobile Lightning wallet</div>
+      <button class="wallet-option" onclick="connectMetamask()">
+        <div class="wallet-option-icon metamask">🦊</div>
+        <div class="wallet-option-text">
+          <div class="wallet-option-title">MetaMask</div>
+          <div class="wallet-option-desc">Connect with Ethereum wallet</div>
         </div>
-      </div>
+        <span class="wallet-option-badge">EVM</span>
+      </button>
+      
+      <button class="wallet-option" onclick="connectAlby()">
+        <div class="wallet-option-icon alby">⚡</div>
+        <div class="wallet-option-text">
+          <div class="wallet-option-title">Alby</div>
+          <div class="wallet-option-desc">Connect with Lightning wallet</div>
+        </div>
+        <span class="wallet-option-badge">LIGHTNING</span>
+      </button>
+      
+      <div class="divider"><span>or</span></div>
+      
+      <button class="wallet-option" onclick="showExistingWallet()">
+        <div class="wallet-option-icon" style="background: var(--bg-base);">🔑</div>
+        <div class="wallet-option-text">
+          <div class="wallet-option-title">Existing Account</div>
+          <div class="wallet-option-desc">Sign in with existing DID</div>
+        </div>
+      </button>
     </div>
     
-    <div class="divider"><span>or</span></div>
+    <!-- Step 2: Wallet Connected - Confirm DID -->
+    <div class="step" id="step-confirm-did">
+      <div class="login-header">
+        <h1>Verify Your Identity</h1>
+        <p>Your wallet public key will be used to derive your DID.</p>
+      </div>
+      
+      <div class="wallet-info">
+        <div class="wallet-info-icon" id="wallet-icon">🦊</div>
+        <div class="wallet-info-text">
+          <div class="wallet-info-title" id="wallet-name">MetaMask Connected</div>
+          <div class="wallet-info-desc" id="wallet-address">0x...</div>
+        </div>
+      </div>
+      
+      <div class="did-preview">
+        <div class="did-preview-label">Derived DID</div>
+        <div class="did-preview-value" id="did-value">did:key:z...</div>
+      </div>
+      
+      <button class="btn btn-primary" onclick="confirmDID()">Continue to Dashboard</button>
+      <button class="btn btn-secondary" onclick="showStep('step-wallet-select')" style="margin-top: 12px;">Use Different Wallet</button>
+    </div>
     
-    <form id="login-form">
-      <div class="form-group">
-        <label class="form-label">Display Name</label>
-        <input type="text" class="form-input" id="display-name" placeholder="e.g., Boyd Cohen" required>
+    <!-- Step 3: Existing Wallet Login -->
+    <div class="step" id="step-existing-wallet">
+      <div class="login-header">
+        <h1>Sign In with DID</h1>
+        <p>Enter your existing DID to access your account.</p>
       </div>
       
-      <div class="form-group">
-        <label class="form-label">Public Key</label>
-        <input type="text" class="form-input" id="public-key" placeholder="020e1929..." required>
-        <div class="form-hint">Your secp256k1 public key registered on Observer Protocol</div>
+      <div class="did-preview" style="padding: 0; background: transparent; border: none;">
+        <div class="did-preview-label">Your DID</div>
+        <input type="text" id="existing-did-input" placeholder="did:key:z..." style="
+          width: 100%;
+          background: var(--bg-base);
+          border: 1px solid var(--bg-border);
+          border-radius: 8px;
+          padding: 14px 16px;
+          color: var(--text-primary);
+          font-family: var(--mono);
+          font-size: 13px;
+          margin-top: 8px;
+        ">
       </div>
       
-      <button type="submit" class="btn btn-primary" id="login-btn">Sign in</button>
-    </form>
+      <button class="btn btn-primary" onclick="loginWithExistingDID()">Sign In</button>
+      <button class="btn btn-secondary" onclick="showStep('step-wallet-select')" style="margin-top: 12px;">Back</button>
+    </div>
   </div>
   
-  <a href="/" class="back-link">← Back to Sovereign homepage</a>
-  
+  <a href="/sovereign/" class="back-link">← Back to Sovereign</a>
   <div class="security-note">
-    <strong>Your keys never leave your device.</strong><br>
-    Sovereign uses local session storage. No server sees your private key.
+    <strong>Self-custodial authentication.</strong><br>
+    Your keys never leave your device. DID derived from wallet public key.
   </div>
 </div>
 
-<!-- QR Code Modal -->
-<div class="qr-modal" id="qr-modal">
-  <div class="qr-modal-content">
-    <h3 style="font-size:18px;font-weight:600;margin-bottom:8px;">Scan to Login</h3>
-    <p style="font-family:var(--mono);font-size:12px;color:var(--text-secondary);margin-bottom:16px;">
-      Use your mobile Lightning wallet to scan
-    </p>
-    <div id="qr-container">
-      <div class="qr-code-image" style="display:flex;align-items:center;justify-content:center;background:var(--bg-elevated);">
-        <span style="font-size:48px;">⏳</span>
-      </div>
-    </div>
-    <div class="qr-status" id="qr-status">Generating QR code...</div>
-    <div class="qr-hint">Waiting for scan...</div>
-    <button class="btn btn-secondary" onclick="hideQRModal()" style="margin-top:16px;">Cancel</button>
-  </div>
-</div>
-
-<script src="config.js"></script>
-<script src="auth.js"></script>
-<script src="alby-auth.js"></script>
-<script src="qr-auth.js"></script>
 <script>
-document.getElementById('login-form').addEventListener('submit', function(e) {
-  e.preventDefault();
-  
-  const displayName = document.getElementById('display-name').value.trim();
-  const publicKey = document.getElementById('public-key').value.trim();
-  const errorEl = document.getElementById('error');
-  const btn = document.getElementById('login-btn');
-  
-  if (!displayName || !publicKey) {
-    errorEl.textContent = 'Please enter both display name and public key.';
-    errorEl.classList.add('visible');
-    return;
-  }
-  
-  if (publicKey.length < 20) {
-    errorEl.textContent = 'Public key appears invalid (too short).';
-    errorEl.classList.add('visible');
-    return;
-  }
-  
-  btn.disabled = true;
-  btn.textContent = 'Signing in...';
-  
-  setTimeout(() => {
-    try {
-      Auth.login(displayName, publicKey);
-      window.location.href = '/sovereign/';
-    } catch (err) {
-      errorEl.textContent = 'Authentication failed. Please try again.';
-      errorEl.classList.add('visible');
-      btn.disabled = false;
-      btn.textContent = 'Sign in';
-    }
-  }, 500);
-});
+// Configuration
+const API_BASE = '/api/v1';
+let walletConnection = null;
 
-// Alby login
-async function loginWithAlby() {
-  const errorEl = document.getElementById('error');
+function showStep(stepId) {
+  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+  document.getElementById(stepId).classList.add('active');
+  hideError();
+  hideLoading();
+}
+
+function showError(msg) {
+  document.getElementById('error').textContent = msg;
+  document.getElementById('error').classList.add('visible');
+}
+
+function hideError() {
+  document.getElementById('error').classList.remove('visible');
+}
+
+function showLoading(text) {
+  document.getElementById('loading-text').textContent = text;
+  document.getElementById('loading').classList.add('visible');
+}
+
+function hideLoading() {
+  document.getElementById('loading').classList.remove('visible');
+}
+
+// Derive DID from public key
+function deriveDID(publicKey, method = 'key') {
+  // Simplified DID derivation - in production, use proper multibase encoding
+  const prefix = method === 'key' ? 'did:key:z' : 'did:ethr:';
+  if (method === 'key') {
+    // Base58 encode the public key (simplified)
+    const encoded = btoa(publicKey).replace(/=/g, '').replace(/\+/g, '-').replace(/\//g, '_');
+    return prefix + encoded.substring(0, 32);
+  }
+  return prefix + publicKey;
+}
+
+// Shorten DID for display
+function shortenDID(did) {
+  if (did.length <= 20) return did;
+  return did.substring(0, 12) + '...' + did.substring(did.length - 6);
+}
+
+// MetaMask Connection
+async function connectMetamask() {
+  showLoading('Connecting to MetaMask...');
   
   try {
-    if (typeof AlbyAuth === 'undefined') {
-      // Fallback if AlbyAuth not loaded
-      if (typeof window.webln !== 'undefined') {
-        await window.webln.enable();
-        const info = await window.webln.getInfo();
-        
-        const session = {
-          displayName: info.node?.alias || 'Alby User',
-          publicKey: info.node?.pubkey || 'alby_' + Date.now(),
-          agentId: CONFIG.AGENT_ID,
-          loggedInAt: Date.now(),
-          expiresAt: Date.now() + CONFIG.SESSION_TIMEOUT,
-          authMethod: 'alby_extension',
-        };
-        
-        localStorage.setItem(Auth.SESSION_KEY, JSON.stringify(session));
-        localStorage.setItem(Auth.USER_KEY, JSON.stringify({
-          displayName: session.displayName,
-          publicKey: session.publicKey,
-        }));
-        
-        window.location.href = '/sovereign/';
-      } else {
-        // Redirect to Alby OAuth
-        window.location.href = 'https://getalby.com/oauth?client_id=sovereign_dashboard&response_type=code&redirect_uri=https://agenticterminal.io/sovereign/alby-callback.html&scope=account:read';
-      }
-    } else {
-      const result = await AlbyAuth.initiateLogin();
-      if (result.method === 'extension') {
-        window.location.href = '/sovereign/';
-      }
+    // Check if MetaMask is installed
+    if (typeof window.ethereum === 'undefined') {
+      throw new Error('MetaMask not installed. Please install MetaMask extension.');
     }
-  } catch (error) {
-    errorEl.textContent = 'Alby login failed: ' + error.message;
-    errorEl.classList.add('visible');
-  }
-}
-
-// QR Login
-function showQRModal() {
-  const modal = document.getElementById('qr-modal');
-  modal.classList.add('visible');
-  
-  // Generate QR code
-  if (typeof QRAuth !== 'undefined') {
-    QRAuth.generateAuthQR('qr-container');
-  } else {
-    // Fallback QR generation
-    const sessionId = 'qr_' + Math.random().toString(36).substr(2, 16);
-    const authUrl = `https://agenticterminal.io/sovereign/qr-login?session=${sessionId}`;
-    const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=256x256&data=${encodeURIComponent(authUrl)}&color=1DB584&bgcolor=07070C`;
     
-    document.getElementById('qr-container').innerHTML = `<img src="${qrUrl}" alt="Scan to login" class="qr-code-image">`;
-    document.getElementById('qr-status').textContent = 'Waiting for scan...';
+    // Request account access
+    const accounts = await window.ethereum.request({ 
+      method: 'eth_requestAccounts' 
+    });
+    
+    if (!accounts || accounts.length === 0) {
+      throw new Error('No accounts found. Please unlock MetaMask.');
+    }
+    
+    const address = accounts[0];
+    
+    // Get public key (for DID derivation, we use the address as identifier)
+    // In production, you'd derive the actual public key or use eth_sign for challenge
+    
+    walletConnection = {
+      type: 'metamask',
+      address: address,
+      publicKey: address // Simplified - use address as identifier
+    };
+    
+    // Derive DID
+    const did = deriveDID(address, 'ethr');
+    walletConnection.did = did;
+    
+    // Update UI
+    document.getElementById('wallet-icon').textContent = '🦊';
+    document.getElementById('wallet-name').textContent = 'MetaMask Connected';
+    document.getElementById('wallet-address').textContent = shortenAddress(address);
+    document.getElementById('did-value').textContent = did;
+    
+    showStep('step-confirm-did');
+    
+  } catch (error) {
+    showError(error.message || 'Failed to connect to MetaMask');
+  } finally {
+    hideLoading();
   }
 }
 
-function hideQRModal() {
-  document.getElementById('qr-modal').classList.remove('visible');
-  if (typeof QRAuth !== 'undefined') {
-    QRAuth.stopPolling();
+// Alby Connection
+async function connectAlby() {
+  showLoading('Connecting to Alby...');
+  
+  try {
+    // Check if Alby/WebLN is available
+    if (typeof window.webln === 'undefined') {
+      // Redirect to Alby installation
+      window.open('https://getalby.com', '_blank');
+      throw new Error('Alby not installed. Opening installation page...');
+    }
+    
+    // Enable WebLN
+    await window.webln.enable();
+    
+    // Get node info
+    const info = await window.webln.getInfo();
+    
+    walletConnection = {
+      type: 'alby',
+      node: info.node,
+      publicKey: info.node.pubkey
+    };
+    
+    // Derive DID
+    const did = deriveDID(info.node.pubkey, 'key');
+    walletConnection.did = did;
+    
+    // Update UI
+    document.getElementById('wallet-icon').textContent = '⚡';
+    document.getElementById('wallet-name').textContent = 'Alby Connected';
+    document.getElementById('wallet-address').textContent = info.node.alias || shortenKey(info.node.pubkey);
+    document.getElementById('did-value').textContent = did;
+    
+    showStep('step-confirm-did');
+    
+  } catch (error) {
+    showError(error.message || 'Failed to connect to Alby');
+  } finally {
+    hideLoading();
   }
 }
 
-// Check if already logged in
-if (typeof Auth !== 'undefined' && Auth.isAuthenticated()) {
-  window.location.href = '/sovereign/';
+// Show existing wallet step
+function showExistingWallet() {
+  showStep('step-existing-wallet');
 }
 
-// Check for error in URL
-const urlParams = new URLSearchParams(window.location.search);
-const error = urlParams.get('error');
-if (error) {
-  const errorEl = document.getElementById('error');
-  const messages = {
-    'alby_denied': 'Alby login was cancelled.',
-    'callback_failed': 'Authentication failed. Please try again.',
-    'invalid_state': 'Security check failed. Please try again.',
-  };
-  errorEl.textContent = messages[error] || 'Authentication failed.';
-  errorEl.classList.add('visible');
+// Login with existing DID
+async function loginWithExistingDID() {
+  const did = document.getElementById('existing-did-input').value.trim();
+  
+  if (!did || !did.startsWith('did:')) {
+    showError('Please enter a valid DID (e.g., did:key:z...)');
+    return;
+  }
+  
+  showLoading('Authenticating...');
+  
+  try {
+    // Call auth endpoint
+    const response = await fetch(`${API_BASE}/auth/did`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ did })
+    });
+    
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message || 'Authentication failed');
+    }
+    
+    const data = await response.json();
+    
+    // Store session
+    localStorage.setItem('sovereign_session', JSON.stringify({
+      did: did,
+      token: data.token,
+      onboardingComplete: data.onboardingComplete || false
+    }));
+    
+    // Redirect based on onboarding status
+    if (data.onboardingComplete) {
+      window.location.href = '/sovereign/sovereign/';
+    } else {
+      window.location.href = '/sovereign/sovereign/onboarding.html';
+    }
+    
+  } catch (error) {
+    showError(error.message || 'Authentication failed');
+    hideLoading();
+  }
 }
+
+// Confirm DID and proceed
+async function confirmDID() {
+  if (!walletConnection || !walletConnection.did) {
+    showError('No wallet connection found');
+    return;
+  }
+  
+  showLoading('Creating account...');
+  
+  try {
+    // Check if account exists or create new one
+    const response = await fetch(`${API_BASE}/auth/did`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        did: walletConnection.did,
+        publicKey: walletConnection.publicKey,
+        walletType: walletConnection.type
+      })
+    });
+    
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message || 'Authentication failed');
+    }
+    
+    const data = await response.json();
+    
+    // Store session
+    localStorage.setItem('sovereign_session', JSON.stringify({
+      did: walletConnection.did,
+      walletType: walletConnection.type,
+      address: walletConnection.address || walletConnection.publicKey,
+      token: data.token,
+      onboardingComplete: data.onboardingComplete || false
+    }));
+    
+    // Redirect based on onboarding status
+    if (data.onboardingComplete) {
+      window.location.href = '/sovereign/sovereign/';
+    } else {
+      window.location.href = '/sovereign/sovereign/onboarding.html';
+    }
+    
+  } catch (error) {
+    showError(error.message || 'Failed to create account');
+    hideLoading();
+  }
+}
+
+// Helper: Shorten Ethereum address
+function shortenAddress(address) {
+  if (!address || address.length < 10) return address;
+  return address.substring(0, 6) + '...' + address.substring(address.length - 4);
+}
+
+// Helper: Shorten public key
+function shortenKey(key) {
+  if (!key || key.length < 10) return key;
+  return key.substring(0, 8) + '...' + key.substring(key.length - 8);
+}
+
+// Check for existing session on load
+(function checkExistingSession() {
+  const session = localStorage.getItem('sovereign_session');
+  if (session) {
+    const data = JSON.parse(session);
+    // Optionally auto-redirect if session is valid
+    // window.location.href = '/sovereign/sovereign/';
+  }
+})();
 </script>
-
 </body>
 </html>

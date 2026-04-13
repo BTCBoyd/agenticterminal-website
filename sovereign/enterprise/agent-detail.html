@@ -1,0 +1,1255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agent Detail — Enterprise Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0c0a;
+  --bg-card: #141614;
+  --bg-card2: #1a1d1a;
+  --border: rgba(255,255,255,0.08);
+  --border-hover: rgba(255,255,255,0.15);
+  --text-primary: #e8ede9;
+  --text-secondary: #a8b8aa;
+  --text-muted: #6e8571;
+  --accent: #f5a623;
+  --accent-dim: rgba(245,166,35,0.15);
+  --green: #22c55e;
+  --green-dim: rgba(34,197,94,0.15);
+  --red: #f87171;
+  --red-dim: rgba(248,113,113,0.15);
+  --amber: #fbbf24;
+  --amber-dim: rgba(251,191,36,0.15);
+  --tron: #FF0202;
+  --tron-dim: rgba(255,2,2,0.15);
+  --purple: #6B5CE7;
+  --purple-dim: rgba(107,92,231,0.15);
+  --nav-h: 64px;
+  --mono: 'DM Mono', monospace;
+  --display: 'Syne', sans-serif;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text-primary); font-family: var(--display); font-size: 13px; min-height: 100vh; }
+
+nav { 
+  position: sticky; 
+  top: 0; 
+  z-index: 100; 
+  height: var(--nav-h); 
+  background: rgba(10,12,10,0.95); 
+  backdrop-filter: blur(12px); 
+  border-bottom: 1px solid var(--border); 
+  display: flex; 
+  align-items: center; 
+  padding: 0 24px; 
+}
+.nav-brand { 
+  display: flex; 
+  align-items: center; 
+  gap: 12px; 
+  text-decoration: none; 
+  color: var(--text-primary); 
+  padding-right: 32px; 
+  flex-shrink: 0; 
+}
+.brand-icon { 
+  width: 36px; 
+  height: 36px; 
+  background: var(--accent-dim); 
+  border: 1px solid var(--accent); 
+  border-radius: 10px; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  font-size: 18px; 
+}
+.brand-name { font-size: 17px; font-weight: 600; }
+
+.nav-back {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 13px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  transition: all 0.15s;
+}
+.nav-back:hover {
+  background: rgba(255,255,255,0.05);
+  color: var(--text-primary);
+}
+
+.page { padding: 28px; max-width: 1200px; margin: 0 auto; }
+
+/* Agent Header */
+.agent-header {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 24px;
+}
+.agent-header-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.agent-identity {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.agent-avatar {
+  width: 64px;
+  height: 64px;
+  background: var(--accent-dim);
+  border: 2px solid var(--accent);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+}
+.agent-title h1 {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.agent-did {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.agent-did button {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 2px;
+}
+.agent-did button:hover {
+  color: var(--accent);
+}
+
+.agent-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+.agent-stat {
+  background: var(--bg-card2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+}
+.agent-stat-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.agent-stat-value {
+  font-family: var(--mono);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+.agent-stat-sub {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text-secondary);
+  margin-top: 4px;
+}
+
+/* Trust Score */
+.trust-score-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: 12px;
+  padding: 20px;
+}
+.trust-score-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+.trust-score-value {
+  font-family: var(--mono);
+  font-size: 48px;
+  font-weight: 700;
+  line-height: 1;
+}
+.trust-score-band {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-family: var(--mono);
+  font-size: 11px;
+  background: var(--accent-dim);
+  color: var(--accent);
+  margin-top: 8px;
+}
+.trust-score-bar {
+  height: 8px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+.trust-score-bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.5s ease;
+}
+
+/* Tabs */
+.tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 24px;
+  border-bottom: 1px solid var(--border);
+}
+.tab {
+  padding: 12px 20px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  cursor: pointer;
+  border: none;
+  background: none;
+  border-bottom: 2px solid transparent;
+  transition: all 0.15s;
+  font-family: var(--display);
+}
+.tab:hover {
+  color: var(--text-primary);
+}
+.tab.active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+.tab-content {
+  display: none;
+}
+.tab-content.active {
+  display: block;
+}
+
+/* Receipt Cards */
+.receipt-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 16px;
+  transition: all 0.2s;
+}
+.receipt-card:hover {
+  border-color: var(--accent);
+}
+.receipt-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+.receipt-issuer {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text-muted);
+}
+.receipt-issuer-did {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-top: 4px;
+}
+.receipt-verified {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-family: var(--mono);
+  font-size: 10px;
+  background: var(--green-dim);
+  color: var(--green);
+}
+.receipt-body {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 16px;
+  margin-bottom: 16px;
+}
+.receipt-field label {
+  display: block;
+  font-family: var(--mono);
+  font-size: 9px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.receipt-field value {
+  display: block;
+  font-family: var(--mono);
+  font-size: 14px;
+  color: var(--text-primary);
+}
+.receipt-tron {
+  background: var(--bg-card2);
+  border-radius: 8px;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.receipt-tron-hash {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+.receipt-tron-link {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--accent);
+  text-decoration: none;
+  padding: 6px 12px;
+  border: 1px solid var(--accent);
+  border-radius: 6px;
+  background: var(--accent-dim);
+}
+.receipt-tron-link:hover {
+  background: var(--accent);
+  color: var(--bg);
+}
+
+/* Counterparty Cards */
+.counterparty-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.counterparty-card:hover {
+  border-color: var(--accent);
+  background: var(--bg-card2);
+}
+.counterparty-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+.counterparty-did {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--text-primary);
+}
+.counterparty-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-family: var(--mono);
+  font-size: 10px;
+}
+.counterparty-status.mutual {
+  background: var(--green-dim);
+  color: var(--green);
+}
+.counterparty-status.issued {
+  background: var(--purple-dim);
+  color: var(--purple);
+}
+.counterparty-status.received {
+  background: var(--accent-dim);
+  color: var(--accent);
+}
+.counterparty-rails {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.rail-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 600;
+}
+.rail-badge.tron {
+  background: var(--tron-dim);
+  color: var(--tron);
+}
+.rail-badge.trc20 {
+  background: rgba(255, 102, 102, 0.15);
+  color: #FF6666;
+}
+.rail-badge.lightning {
+  background: rgba(247, 147, 26, 0.15);
+  color: #F7931A;
+}
+.rail-badge.solana {
+  background: rgba(153, 69, 255, 0.15);
+  color: #9945FF;
+}
+.rail-badge.x402 {
+  background: var(--purple-dim);
+  color: var(--purple);
+}
+.counterparty-stats {
+  display: flex;
+  gap: 24px;
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+/* Delegation Cards */
+.delegation-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 16px;
+}
+.delegation-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+.delegation-delegate {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--text-primary);
+}
+.delegation-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-family: var(--mono);
+  font-size: 10px;
+}
+.delegation-status.active {
+  background: var(--green-dim);
+  color: var(--green);
+}
+.delegation-status.expired {
+  background: var(--red-dim);
+  color: var(--red);
+}
+.delegation-rails {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.delegation-constraints {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  padding: 16px;
+  background: var(--bg-card2);
+  border-radius: 8px;
+}
+.delegation-constraint label {
+  display: block;
+  font-family: var(--mono);
+  font-size: 9px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.delegation-constraint value {
+  display: block;
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+/* Filter Bar */
+.filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+.filter-bar select {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-family: var(--mono);
+  font-size: 12px;
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--text-secondary);
+}
+.empty-state-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+  opacity: 0.5;
+}
+.empty-state-title {
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+.empty-state-desc {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* Modal */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.8);
+  z-index: 200;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+}
+.modal-overlay.active {
+  display: flex;
+}
+.modal {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  max-width: 600px;
+  width: 100%;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border);
+}
+.modal-title {
+  font-size: 18px;
+  font-weight: 600;
+}
+.modal-close {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 24px;
+  cursor: pointer;
+}
+.modal-close:hover {
+  color: var(--text-primary);
+}
+.modal-body {
+  padding: 24px;
+}
+
+/* Demo Mode Banner */
+.demo-banner {
+  background: var(--amber-dim);
+  border: 1px solid rgba(245,166,35,0.2);
+  border-left: 3px solid var(--amber);
+  padding: 12px 16px;
+  margin-bottom: 24px;
+  border-radius: 8px;
+}
+.demo-banner-text {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--amber);
+}
+
+.btn {
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  background: var(--bg-card2);
+  color: var(--text-secondary);
+  transition: all 0.15s;
+  font-family: var(--mono);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.btn:hover {
+  border-color: var(--border-hover);
+  color: var(--text-primary);
+}
+.btn-primary {
+  color: var(--accent);
+  border-color: var(--accent);
+  background: var(--accent-dim);
+}
+.btn-primary:hover {
+  background: var(--accent);
+  color: var(--bg);
+}
+
+@media (max-width: 768px) {
+  .agent-stats { grid-template-columns: repeat(2, 1fr); }
+  .tabs { overflow-x: auto; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="fleet.html" class="nav-brand">
+    <div class="brand-icon">🏢</div>
+    <div class="brand-name">Enterprise</div>
+  </a>
+  <a href="fleet.html" class="nav-back">
+    ← Back to Fleet
+  </a>
+</nav>
+
+<main class="page">
+  <!-- Demo Mode Banner -->
+  <div class="demo-banner" id="demo-banner" style="display: none;">
+    <span class="demo-banner-text">⚠ Demo Mode: Backend not connected. Showing sample data.</span>
+  </div>
+
+  <!-- Agent Header -->
+  <div class="agent-header" id="agent-header">
+    <div class="agent-header-top">
+      <div class="agent-identity">
+        <div class="agent-avatar">🤖</div>
+        <div class="agent-title">
+          <h1 id="agent-alias">Loading...</h1>
+          <div class="agent-did">
+            <span id="agent-did">—</span>
+            <button onclick="copyDID()" title="Copy DID">📋</button>
+          </div>
+        </div>
+      </div>
+      <div class="trust-score-card" style="min-width: 200px;">
+        <div class="trust-score-header">
+          <div>
+            <div style="font-family: var(--mono); font-size: 10px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 4px;">Trust Score</div>
+            <div class="trust-score-value" id="trust-score">—</div>
+            <div class="trust-score-band" id="trust-band">—</div>
+          </div>
+        </div>
+        <div class="trust-score-bar">
+          <div class="trust-score-bar-fill" id="trust-bar" style="width: 0%; background: var(--accent);"></div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: 11px;">
+          <span id="trust-trend">→</span>
+          <span id="trust-trend-value">—</span>
+        </div>
+      </div>
+    </div>
+    <div class="agent-stats">
+      <div class="agent-stat">
+        <div class="agent-stat-label">VAC Health</div>
+        <div class="agent-stat-value" style="color: var(--green);" id="vac-health">● Active</div>
+        <div class="agent-stat-sub" id="vac-expiry">Expires in 45 days</div>
+      </div>
+      <div class="agent-stat">
+        <div class="agent-stat-label">Total Transactions</div>
+        <div class="agent-stat-value" id="total-tx">—</div>
+        <div class="agent-stat-sub">Last 30 days</div>
+      </div>
+      <div class="agent-stat">
+        <div class="agent-stat-label">Total Volume</div>
+        <div class="agent-stat-value" id="total-vol">—</div>
+        <div class="agent-stat-sub">Across all rails</div>
+      </div>
+      <div class="agent-stat">
+        <div class="agent-stat-label">Active Delegations</div>
+        <div class="agent-stat-value" id="active-del">—</div>
+        <div class="agent-stat-sub">Issued to others</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('receipts', this)">Receipt VCs</button>
+    <button class="tab" onclick="showTab('counterparties', this)">Counterparties</button>
+    <button class="tab" onclick="showTab('delegations', this)">Delegations</button>
+  </div>
+
+  <!-- Receipts Tab -->
+  <div class="tab-content active" id="tab-receipts">
+    <div class="filter-bar">
+      <label style="font-family: var(--mono); font-size: 12px; color: var(--text-muted);">Filter by rail:</label>
+      <select id="receipt-filter" onchange="filterReceipts()">
+        <option value="all">All Rails</option>
+        <option value="tron">🔴 TRON</option>
+        <option value="tron:trc20">💎 TRC-20</option>
+        <option value="lightning">⚡ Lightning</option>
+        <option value="solana">🟣 Solana</option>
+        <option value="x402">🌐 x402</option>
+      </select>
+    </div>
+    <div id="receipts-list">
+      <div class="empty-state">
+        <div class="empty-state-icon">📭</div>
+        <div class="empty-state-title">No receipts yet</div>
+        <div class="empty-state-desc">This agent hasn't received any receipt VCs.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Counterparties Tab -->
+  <div class="tab-content" id="tab-counterparties">
+    <div id="counterparties-list">
+      <div class="empty-state">
+        <div class="empty-state-icon">👥</div>
+        <div class="empty-state-title">No counterparties yet</div>
+        <div class="empty-state-desc">This agent hasn't transacted with any other agents.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Delegations Tab -->
+  <div class="tab-content" id="tab-delegations">
+    <div id="delegations-list">
+      <div class="empty-state">
+        <div class="empty-state-icon">🔐</div>
+        <div class="empty-state-title">No delegations yet</div>
+        <div class="empty-state-desc">This agent hasn't issued any delegation credentials.</div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- Counterparty Detail Modal -->
+<div class="modal-overlay" id="counterparty-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 class="modal-title">Counterparty Details</h3>
+      <button class="modal-close" onclick="closeModal()">×</button>
+    </div>
+    <div class="modal-body" id="counterparty-modal-body">
+      <!-- Populated by JS -->
+    </div>
+  </div>
+</div>
+
+<script>
+// Agent Detail Page Logic (E4)
+
+// Demo data for graceful fallback
+const demoData = {
+  agent: {
+    did: 'did:op:ent:agent-alpha-7f3a9b',
+    alias: 'Alpha Trading Agent',
+    vacStatus: 'active',
+    vacExpiry: '2026-06-15T00:00:00Z',
+    trustScore: {
+      overall: 847,
+      trend: 'up',
+      trendValue: 23,
+      band: 'Highly Proven'
+    },
+    stats: {
+      totalTransactions: 156,
+      totalVolume: '$45,230.50',
+      activeDelegations: 3
+    }
+  },
+  receipts: [
+    {
+      id: 'urn:uuid:receipt-001',
+      issuerDid: 'did:op:ent:acme-payroll',
+      rail: 'tron:trc20',
+      asset: 'USDT',
+      amount: '5000.00',
+      tronTxHash: 'a1b2c3d4e5f6789012345678901234567890abcdef1234567890abcdef123456',
+      timestamp: '2026-04-12T14:30:00Z',
+      scoreContribution: 15,
+      verified: true,
+      network: 'shasta'
+    },
+    {
+      id: 'urn:uuid:receipt-002',
+      issuerDid: 'did:op:ent:global-logistics',
+      rail: 'lightning',
+      asset: 'BTC',
+      amount: '250000',
+      paymentHash: 'abc123def4567890abcdef1234567890abcdef1234567890abcdef12345678',
+      timestamp: '2026-04-11T09:15:00Z',
+      scoreContribution: 12,
+      verified: true
+    },
+    {
+      id: 'urn:uuid:receipt-003',
+      issuerDid: 'did:op:sov:beta-agent-9c2d4e',
+      rail: 'tron',
+      asset: 'TRX',
+      amount: '10000',
+      tronTxHash: 'f1e2d3c4b5a697887766554433221100abcdefabcdef1234567890abcdef12',
+      timestamp: '2026-04-10T16:45:00Z',
+      scoreContribution: 8,
+      verified: true,
+      network: 'shasta'
+    }
+  ],
+  counterparties: [
+    {
+      did: 'did:op:ent:acme-payroll',
+      status: 'mutual',
+      rails: ['tron:trc20', 'lightning'],
+      transactionCount: 45,
+      totalVolume: '$125,000',
+      lastInteraction: '2026-04-12T14:30:00Z'
+    },
+    {
+      did: 'did:op:ent:global-logistics',
+      status: 'received',
+      rails: ['lightning', 'solana'],
+      transactionCount: 32,
+      totalVolume: '$45,200',
+      lastInteraction: '2026-04-11T09:15:00Z'
+    },
+    {
+      did: 'did:op:sov:beta-agent-9c2d4e',
+      status: 'issued',
+      rails: ['tron', 'lightning'],
+      transactionCount: 28,
+      totalVolume: '$12,500',
+      lastInteraction: '2026-04-10T16:45:00Z'
+    }
+  ],
+  delegations: [
+    {
+      id: 'del-001',
+      delegateDid: 'did:op:ent:acme-corp',
+      rails: ['tron', 'tron:trc20', 'lightning'],
+      maxPerTxn: '10000',
+      maxDaily: '50000',
+      expiresAt: '2026-06-30T23:59:59Z',
+      status: 'active',
+      constraints: { approvedCounterparties: ['did:op:ent:verified-vendors'] }
+    },
+    {
+      id: 'del-002',
+      delegateDid: 'did:op:sov:beta-agent-9c2d4e',
+      rails: ['lightning'],
+      maxPerTxn: '100000',
+      maxDaily: '500000',
+      expiresAt: '2026-05-15T23:59:59Z',
+      status: 'active',
+      constraints: {}
+    }
+  ]
+};
+
+let agentData = null;
+let useDemoData = false;
+
+// Initialize page
+async function init() {
+  const agentId = new URLSearchParams(window.location.search).get('id');
+  
+  if (!agentId) {
+    showError('No agent ID specified');
+    return;
+  }
+
+  try {
+    await loadAgentData(agentId);
+  } catch (error) {
+    console.warn('API unavailable, using demo data:', error.message);
+    useDemoData = true;
+    agentData = demoData;
+    document.getElementById('demo-banner').style.display = 'block';
+  }
+
+  renderAgentHeader();
+  renderReceipts();
+  renderCounterparties();
+  renderDelegations();
+}
+
+// Load agent data from API
+async function loadAgentData(agentId) {
+  const [agent, receipts, counterparties, delegations] = await Promise.all([
+    APIClient.get(`/agents/${agentId}`),
+    APIClient.get(`/agents/${agentId}/receipts`),
+    APIClient.get(`/agents/${agentId}/counterparties`),
+    APIClient.get(`/agents/${agentId}/delegations`)
+  ]);
+
+  agentData = {
+    agent,
+    receipts: receipts.receipts || [],
+    counterparties: counterparties.counterparties || [],
+    delegations: delegations.delegations || []
+  };
+}
+
+// Render agent header
+function renderAgentHeader() {
+  if (!agentData) return;
+  
+  const { agent } = agentData;
+  
+  document.getElementById('agent-alias').textContent = agent.alias || 'Unnamed Agent';
+  document.getElementById('agent-did').textContent = agent.did;
+  
+  // Trust score
+  const score = agent.trustScore?.overall || 0;
+  document.getElementById('trust-score').textContent = score;
+  document.getElementById('trust-bar').style.width = Math.min(score / 10, 100) + '%';
+  
+  const band = agent.trustScore?.band || 'Unproven';
+  document.getElementById('trust-band').textContent = band;
+  
+  const trend = agent.trustScore?.trend || 'flat';
+  document.getElementById('trust-trend').textContent = trend === 'up' ? '↑' : trend === 'down' ? '↓' : '→';
+  document.getElementById('trust-trend-value').textContent = `${agent.trustScore?.trendValue || 0} pts`;
+  
+  // Stats
+  const daysToExpiry = Math.ceil((new Date(agent.vacExpiry) - new Date()) / (1000 * 60 * 60 * 24));
+  document.getElementById('vac-health').textContent = '● Active';
+  document.getElementById('vac-expiry').textContent = `Expires in ${daysToExpiry} days`;
+  document.getElementById('total-tx').textContent = agent.stats?.totalTransactions || 0;
+  document.getElementById('total-vol').textContent = agent.stats?.totalVolume || '$0';
+  document.getElementById('active-del').textContent = agent.stats?.activeDelegations || 0;
+}
+
+// Render receipts
+function renderReceipts() {
+  const container = document.getElementById('receipts-list');
+  if (!agentData?.receipts?.length) {
+    container.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-state-icon">📭</div>
+        <div class="empty-state-title">No receipts yet</div>
+        <div class="empty-state-desc">This agent hasn't received any receipt VCs.</div>
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = agentData.receipts.map(r => createReceiptCard(r)).join('');
+}
+
+// Create receipt card HTML
+function createReceiptCard(receipt) {
+  const isTron = receipt.rail === 'tron' || receipt.rail === 'tron:trc20';
+  const explorerUrl = isTron ? `https://shasta.tronscan.io/#/transaction/${receipt.tronTxHash}` : '#';
+  const shortHash = receipt.tronTxHash ? `${receipt.tronTxHash.slice(0, 12)}...${receipt.tronTxHash.slice(-8)}` : '';
+  const shortIssuer = receipt.issuerDid.length > 30 ? `${receipt.issuerDid.slice(0, 22)}...${receipt.issuerDid.slice(-8)}` : receipt.issuerDid;
+
+  return `
+    <div class="receipt-card">
+      <div class="receipt-header">
+        <div>
+          <div class="receipt-issuer">Issuer</div>
+          <div class="receipt-issuer-did">${shortIssuer}</div>
+        </div>
+        <div class="receipt-verified">
+          <span>✓</span>
+          <span>Verified</span>
+        </div>
+      </div>
+      <div class="receipt-body">
+        <div class="receipt-field">
+          <label>Amount</label>
+          <value>${receipt.amount} ${receipt.asset}</value>
+        </div>
+        <div class="receipt-field">
+          <label>Rail</label>
+          <value><span class="rail-badge ${receipt.rail.replace(':', '')}">${formatRail(receipt.rail)}</span></value>
+        </div>
+        <div class="receipt-field">
+          <label>Timestamp</label>
+          <value>${formatDateTime(receipt.timestamp)}</value>
+        </div>
+        <div class="receipt-field">
+          <label>Score Impact</label>
+          <value style="color: var(--green);">+${receipt.scoreContribution} pts</value>
+        </div>
+      </div>
+      ${isTron ? `
+        <div class="receipt-tron">
+          <div class="receipt-tron-hash">${shortHash}</div>
+          <a href="${explorerUrl}" target="_blank" rel="noopener" class="receipt-tron-link">View on TronScan ↗</a>
+        </div>
+      ` : ''}
+    </div>
+  `;
+}
+
+// Render counterparties
+function renderCounterparties() {
+  const container = document.getElementById('counterparties-list');
+  if (!agentData?.counterparties?.length) {
+    container.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-state-icon">👥</div>
+        <div class="empty-state-title">No counterparties yet</div>
+        <div class="empty-state-desc">This agent hasn't transacted with any other agents.</div>
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = agentData.counterparties.map(c => createCounterpartyCard(c)).join('');
+}
+
+// Create counterparty card HTML
+function createCounterpartyCard(cp) {
+  const shortDid = cp.did.length > 35 ? `${cp.did.slice(0, 25)}...${cp.did.slice(-10)}` : cp.did;
+  const statusLabels = {
+    mutual: 'Mutual Trust',
+    issued: 'Receipt Issued',
+    received: 'Receipt Received'
+  };
+
+  return `
+    <div class="counterparty-card" onclick="showCounterpartyDetail('${cp.did}')">
+      <div class="counterparty-header">
+        <div class="counterparty-did">${shortDid}</div>
+        <div class="counterparty-status ${cp.status}">
+          <span>${cp.status === 'mutual' ? '⇄' : cp.status === 'issued' ? '→' : '←'}</span>
+          <span>${statusLabels[cp.status]}</span>
+        </div>
+      </div>
+      <div class="counterparty-rails">
+        ${cp.rails.map(r => `<span class="rail-badge ${r.replace(':', '')}">${formatRail(r)}</span>`).join('')}
+      </div>
+      <div class="counterparty-stats">
+        <span>${cp.transactionCount} transactions</span>
+        <span>•</span>
+        <span>${cp.totalVolume} volume</span>
+        <span>•</span>
+        <span>Last: ${formatDate(cp.lastInteraction)}</span>
+      </div>
+    </div>
+  `;
+}
+
+// Render delegations
+function renderDelegations() {
+  const container = document.getElementById('delegations-list');
+  if (!agentData?.delegations?.length) {
+    container.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-state-icon">🔐</div>
+        <div class="empty-state-title">No delegations yet</div>
+        <div class="empty-state-desc">This agent hasn't issued any delegation credentials.</div>
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = agentData.delegations.map(d => createDelegationCard(d)).join('');
+}
+
+// Create delegation card HTML
+function createDelegationCard(del) {
+  const shortDelegate = del.delegateDid.length > 35 ? `${del.delegateDid.slice(0, 25)}...${del.delegateDid.slice(-10)}` : del.delegateDid;
+  const isExpired = new Date(del.expiresAt) < new Date();
+
+  return `
+    <div class="delegation-card">
+      <div class="delegation-header">
+        <div class="delegation-delegate">${shortDelegate}</div>
+        <div class="delegation-status ${isExpired ? 'expired' : del.status}">
+          <span>●</span>
+          <span>${isExpired ? 'Expired' : 'Active'}</span>
+        </div>
+      </div>
+      <div class="delegation-rails">
+        ${del.rails.map(r => `<span class="rail-badge ${r.replace(':', '')}">${formatRail(r)}</span>`).join('')}
+      </div>
+      <div class="delegation-constraints">
+        <div class="delegation-constraint">
+          <label>Max per Transaction</label>
+          <value>${del.maxPerTxn}</value>
+        </div>
+        <div class="delegation-constraint">
+          <label>Max Daily</label>
+          <value>${del.maxDaily}</value>
+        </div>
+        <div class="delegation-constraint">
+          <label>Expires</label>
+          <value>${formatDate(del.expiresAt)}</value>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+// Filter receipts by rail
+function filterReceipts() {
+  const filter = document.getElementById('receipt-filter').value;
+  const container = document.getElementById('receipts-list');
+  
+  if (!agentData?.receipts?.length) return;
+
+  const filtered = filter === 'all' 
+    ? agentData.receipts 
+    : agentData.receipts.filter(r => r.rail === filter);
+
+  if (!filtered.length) {
+    container.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-state-icon">🔍</div>
+        <div class="empty-state-title">No receipts for this rail</div>
+        <div class="empty-state-desc">Try selecting a different rail filter.</div>
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = filtered.map(r => createReceiptCard(r)).join('');
+}
+
+// Show counterparty detail modal
+function showCounterpartyDetail(did) {
+  const cp = agentData.counterparties.find(c => c.did === did);
+  if (!cp) return;
+
+  const modalBody = document.getElementById('counterparty-modal-body');
+  const relatedReceipts = agentData.receipts.filter(r => r.issuerDid === did);
+
+  modalBody.innerHTML = `
+    <div style="margin-bottom: 20px;">
+      <div style="font-family: var(--mono); font-size: 11px; color: var(--text-muted); margin-bottom: 4px;">DID</div>
+      <div style="font-family: var(--mono); font-size: 13px; color: var(--text-primary); word-break: break-all;">${did}</div>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 20px;">
+      <div style="background: var(--bg-card2); padding: 16px; border-radius: 8px;">
+        <div style="font-family: var(--mono); font-size: 10px; color: var(--text-muted); text-transform: uppercase;">Transactions</div>
+        <div style="font-family: var(--mono); font-size: 24px; font-weight: 700; margin-top: 4px;">${cp.transactionCount}</div>
+      </div>
+      <div style="background: var(--bg-card2); padding: 16px; border-radius: 8px;">
+        <div style="font-family: var(--mono); font-size: 10px; color: var(--text-muted); text-transform: uppercase;">Volume</div>
+        <div style="font-family: var(--mono); font-size: 24px; font-weight: 700; margin-top: 4px;">${cp.totalVolume}</div>
+      </div>
+      <div style="background: var(--bg-card2); padding: 16px; border-radius: 8px;">
+        <div style="font-family: var(--mono); font-size: 10px; color: var(--text-muted); text-transform: uppercase;">Last Interaction</div>
+        <div style="font-family: var(--mono); font-size: 14px; margin-top: 4px;">${formatDate(cp.lastInteraction)}</div>
+      </div>
+    </div>
+    <div style="margin-bottom: 16px;">
+      <div style="font-family: var(--mono); font-size: 11px; color: var(--text-muted); margin-bottom: 8px;">Rails Used</div>
+      <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+        ${cp.rails.map(r => `<span class="rail-badge ${r.replace(':', '')}">${formatRail(r)}</span>`).join('')}
+      </div>
+    </div>
+    ${relatedReceipts.length ? `
+      <div>
+        <div style="font-family: var(--mono); font-size: 11px; color: var(--text-muted); margin-bottom: 12px;">Receipt VCs (${relatedReceipts.length})</div>
+        ${relatedReceipts.map(r => createReceiptCard(r)).join('')}
+      </div>
+    ` : ''}
+  `;
+
+  document.getElementById('counterparty-modal').classList.add('active');
+}
+
+// Close modal
+function closeModal() {
+  document.getElementById('counterparty-modal').classList.remove('active');
+}
+
+// Tab switching
+function showTab(tabId, btn) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  
+  btn.classList.add('active');
+  document.getElementById(`tab-${tabId}`).classList.add('active');
+}
+
+// Copy DID to clipboard
+async function copyDID() {
+  const did = document.getElementById('agent-did').textContent;
+  try {
+    await navigator.clipboard.writeText(did);
+    alert('DID copied to clipboard');
+  } catch (error) {
+    console.error('Copy failed:', error);
+  }
+}
+
+// Format helpers
+function formatRail(rail) {
+  const rails = {
+    'tron': '🔴 TRON',
+    'tron:trc20': '💎 TRC-20',
+    'lightning': '⚡ Lightning',
+    'solana': '🟣 Solana',
+    'x402': '🌐 x402'
+  };
+  return rails[rail] || rail;
+}
+
+function formatDate(dateString) {
+  if (!dateString) return '—';
+  return new Date(dateString).toLocaleDateString('en-US', {
+    year: 'numeric', month: 'short', day: 'numeric'
+  });
+}
+
+function formatDateTime(dateString) {
+  if (!dateString) return '—';
+  return new Date(dateString).toLocaleString('en-US', {
+    month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'
+  });
+}
+
+function showError(message) {
+  document.body.innerHTML = `
+    <div style="display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 20px; text-align: center;">
+      <div>
+        <div style="font-size: 48px; margin-bottom: 16px;">⚠️</div>
+        <div style="font-size: 18px; color: var(--red); margin-bottom: 8px;">Error</div>
+        <div style="font-family: var(--mono); font-size: 14px; color: var(--text-secondary);">${message}</div>
+        <a href="fleet.html" style="display: inline-block; margin-top: 24px; color: var(--accent); text-decoration: none;">← Back to Fleet</a>
+      </div>
+    </div>
+  `;
+}
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>
