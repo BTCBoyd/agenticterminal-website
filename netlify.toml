@@ -1,4 +1,32 @@
 [build]
-  base      = "."
-  publish   = "."
-  functions = "netlify/functions"
+  publish = "."
+  command = "echo 'Static site - no build needed'"
+
+[build.environment]
+  NODE_VERSION = "18"
+
+[[redirects]]
+  from = "/waitlist/*"
+  to = "/waitlist/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/enterprise/*"
+  to = "/enterprise/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/sovereign/*"
+  to = "/sovereign/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[context.production]
+  environment = { NODE_ENV = "production" }
+
+[context.deploy-preview]
+  environment = { NODE_ENV = "staging" }
