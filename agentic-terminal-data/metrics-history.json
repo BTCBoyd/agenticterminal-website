@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0.0",
   "description": "Agentic Terminal time-series metrics history - Cross-protocol AI agent settlement data",
-  "last_updated": "2026-04-25T16:00:03.374Z",
+  "last_updated": "2026-04-26T16:00:03.948Z",
   "weeks": [
     {
       "week_start": "2026-02-17",
@@ -11,18 +11,18 @@
         "bitcoin_lightning": {
           "l402_github_stars": 261,
           "l402_github_forks": 70,
-          "l402_github_issues": 37,
+          "l402_github_issues": 38,
           "l402_contributors": 2,
-          "lightning_nodes": 5986,
-          "lightning_channels": 19105,
-          "lightning_capacity_btc": 2790.14,
-          "lightning_capacity_usd": 218369422.96,
+          "lightning_nodes": 6002,
+          "lightning_channels": 19140,
+          "lightning_capacity_btc": 2791.63,
+          "lightning_capacity_usd": 216764547.19,
           "known_l402_endpoints": 1
         },
         "stablecoin_api_rails": {
-          "x402_github_stars": 58,
-          "x402_github_forks": 56,
-          "x402_github_issues": 85,
+          "x402_github_stars": 59,
+          "x402_github_forks": 57,
+          "x402_github_issues": 89,
           "x402_contributors": 30,
           "x402_daily_transactions": 97214,
           "x402_cumulative_transactions": 83078761,
@@ -59,7 +59,7 @@
         "bitcoin_lightning": {
           "l402_github_stars": 254,
           "l402_github_forks": 63,
-          "l402_github_issues": 37,
+          "l402_github_issues": 38,
           "l402_contributors": 2,
           "lightning_nodes": 5463,
           "lightning_channels": 16241,
@@ -70,7 +70,7 @@
         "stablecoin_api_rails": {
           "x402_github_stars": 5555,
           "x402_github_forks": 1192,
-          "x402_github_issues": 85,
+          "x402_github_issues": 89,
           "x402_contributors": 30,
           "x402_daily_transactions": 97214,
           "x402_cumulative_transactions": 83078761,
@@ -438,28 +438,28 @@
     {
       "week_start": "2026-04-21",
       "week_end": "2026-04-27",
-      "snapshot_date": "2026-04-25",
+      "snapshot_date": "2026-04-26",
       "metrics": {
         "bitcoin_lightning": {
           "l402_github_stars": 261,
           "l402_github_forks": 70,
           "l402_github_issues": 38,
           "l402_contributors": 2,
-          "lightning_nodes": 6002,
-          "lightning_channels": 19140,
-          "lightning_capacity_btc": 2791.63,
-          "lightning_capacity_usd": 216764547.19,
+          "lightning_nodes": 6012,
+          "lightning_channels": 19208,
+          "lightning_capacity_btc": 2794.66,
+          "lightning_capacity_usd": 216634204.4,
           "known_l402_endpoints": 1
         },
         "stablecoin_api_rails": {
-          "x402_github_stars": 59,
-          "x402_github_forks": 57,
-          "x402_github_issues": 89,
+          "x402_github_stars": 60,
+          "x402_github_forks": 58,
+          "x402_github_issues": 93,
           "x402_contributors": 30,
-          "x402_daily_transactions": 97214,
-          "x402_cumulative_transactions": 83078761,
-          "x402_cumulative_volume_usd": 28618346.177963436,
-          "erc8004_agents_registered": 24500
+          "x402_daily_transactions": 37795,
+          "x402_cumulative_transactions": 83346159,
+          "x402_cumulative_volume_usd": 28621257.3728351,
+          "erc8004_agents_registered": 83431
         },
         "emerging_protocols": {
           "ark_github_stars": 157,
@@ -472,11 +472,11 @@
       "wow_changes": {
         "bitcoin_lightning": {
           "l402_github_stars_pct": 0,
-          "lightning_nodes_pct": 0.5360134003350084,
-          "lightning_capacity_btc_pct": 0.22870396300524515
+          "lightning_nodes_pct": 0.7035175879396985,
+          "lightning_capacity_btc_pct": 0.33749093441903577
         },
         "stablecoin_api_rails": {
-          "x402_github_stars_pct": 3.508771929824561
+          "x402_github_stars_pct": 5.263157894736842
         },
         "emerging_protocols": {
           "ark_github_stars_pct": null
