@@ -1,0 +1,30 @@
+{
+  "chart_type": "sparkline",
+  "metric_path": "metrics.bitcoin_lightning.lightning_nodes",
+  "label": "Lightning Nodes",
+  "generated_at": "2026-04-16T17:00:43.456Z",
+  "date_range": {
+    "start": "2026-02-17",
+    "end": "2026-04-20"
+  },
+  "values": [
+    5910,
+    5463,
+    5563,
+    5655,
+    5709,
+    5774,
+    5841,
+    5908,
+    5924
+  ],
+  "current_value": 5924,
+  "previous_value": 5908,
+  "change_percent": 0.3,
+  "change_direction": "↑",
+  "image_path": "/home/futurebit/.openclaw/workspace/agentic-terminal-data/charts/2026-04-16/sparkline-metrics-bitcoin_lightning-lightning_nodes.png",
+  "dimensions": {
+    "width": 1200,
+    "height": 675
+  }
+}

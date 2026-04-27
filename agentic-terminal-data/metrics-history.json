@@ -459,7 +459,52 @@
           "x402_daily_transactions": 37795,
           "x402_cumulative_transactions": 83346159,
           "x402_cumulative_volume_usd": 28621257.3728351,
-          "erc8004_agents_registered": 83431
+          "erc8004_agents_registered": 83431,
+          "erc8004_data_source": "8004agents.ai",
+          "erc8004_data_quality": "carried_forward",
+          "erc8004_by_chain": {
+            "ethereum": {
+              "agents": 1271,
+              "status": "syncing"
+            },
+            "base": {
+              "agents": 5929,
+              "status": "syncing"
+            },
+            "bnb_chain": {
+              "agents": 7241,
+              "status": "syncing"
+            },
+            "arbitrum": {
+              "agents": 83,
+              "status": "syncing"
+            },
+            "monad": {
+              "agents": 59,
+              "status": "syncing"
+            },
+            "bsc_testnet": {
+              "agents": 85,
+              "status": "syncing"
+            },
+            "polygon": {
+              "agents": 51,
+              "status": "syncing"
+            },
+            "sepolia": {
+              "agents": 74,
+              "status": "syncing"
+            },
+            "avalanche": {
+              "agents": 199,
+              "status": "syncing"
+            },
+            "base_sepolia": {
+              "agents": 8,
+              "status": "syncing"
+            }
+          },
+          "erc8004_fallback_date": "2026-04-26"
         },
         "emerging_protocols": {
           "ark_github_stars": 157,

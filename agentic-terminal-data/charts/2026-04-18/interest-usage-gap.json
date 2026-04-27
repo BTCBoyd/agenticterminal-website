@@ -1,0 +1,49 @@
+{
+  "chart_type": "interest-usage-gap",
+  "title": "Interest ↔ Usage Gap",
+  "generated_at": "2026-04-18T17:00:34.771Z",
+  "date_range": {
+    "start": "2026-02-17",
+    "end": "2026-04-20"
+  },
+  "metrics": {
+    "l402_stars": [
+      261,
+      254,
+      255,
+      255,
+      258,
+      259,
+      260,
+      261,
+      261
+    ],
+    "erc8004_agents": [
+      24500,
+      24500,
+      67000,
+      24500,
+      83431,
+      83431,
+      83431,
+      83431,
+      83431
+    ],
+    "gap_values": [
+      0,
+      -2.681992337164751,
+      -175.7682383298147,
+      -2.2988505747126435,
+      -241.68411916490734,
+      -241.30097740245526,
+      -240.91783564000315,
+      -240.53469387755104,
+      -240.53469387755104
+    ]
+  },
+  "image_path": "/home/futurebit/.openclaw/workspace/agentic-terminal-data/charts/2026-04-18/interest-usage-gap.png",
+  "dimensions": {
+    "width": 1200,
+    "height": 675
+  }
+}
