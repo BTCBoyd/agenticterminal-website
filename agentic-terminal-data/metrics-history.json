@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0.0",
   "description": "Agentic Terminal time-series metrics history - Cross-protocol AI agent settlement data",
-  "last_updated": "2026-04-26T16:00:03.948Z",
+  "last_updated": "2026-04-27T16:00:03.716Z",
   "weeks": [
     {
       "week_start": "2026-02-17",
@@ -13,20 +13,20 @@
           "l402_github_forks": 70,
           "l402_github_issues": 38,
           "l402_contributors": 2,
-          "lightning_nodes": 6002,
-          "lightning_channels": 19140,
-          "lightning_capacity_btc": 2791.63,
-          "lightning_capacity_usd": 216764547.19,
+          "lightning_nodes": 6012,
+          "lightning_channels": 19208,
+          "lightning_capacity_btc": 2794.66,
+          "lightning_capacity_usd": 216634204.4,
           "known_l402_endpoints": 1
         },
         "stablecoin_api_rails": {
-          "x402_github_stars": 59,
-          "x402_github_forks": 57,
-          "x402_github_issues": 89,
+          "x402_github_stars": 60,
+          "x402_github_forks": 58,
+          "x402_github_issues": 93,
           "x402_contributors": 30,
-          "x402_daily_transactions": 97214,
-          "x402_cumulative_transactions": 83078761,
-          "x402_cumulative_volume_usd": 28618346.177963436,
+          "x402_daily_transactions": 37795,
+          "x402_cumulative_transactions": 83346159,
+          "x402_cumulative_volume_usd": 28621257.3728351,
           "erc8004_agents_registered": 24500
         },
         "emerging_protocols": {
@@ -70,11 +70,11 @@
         "stablecoin_api_rails": {
           "x402_github_stars": 5555,
           "x402_github_forks": 1192,
-          "x402_github_issues": 89,
+          "x402_github_issues": 93,
           "x402_contributors": 30,
-          "x402_daily_transactions": 97214,
-          "x402_cumulative_transactions": 83078761,
-          "x402_cumulative_volume_usd": 28618346.177963436,
+          "x402_daily_transactions": 37795,
+          "x402_cumulative_transactions": 83346159,
+          "x402_cumulative_volume_usd": 28621257.3728351,
           "erc8004_agents_registered": 24500
         },
         "emerging_protocols": {
@@ -121,8 +121,8 @@
           "x402_github_issues": 317,
           "x402_contributors": 30,
           "x402_daily_transactions": 178731,
-          "x402_cumulative_transactions": 83078761,
-          "x402_cumulative_volume_usd": 28618346.177963436,
+          "x402_cumulative_transactions": 83346159,
+          "x402_cumulative_volume_usd": 28621257.3728351,
           "erc8004_agents_registered": 67000
         },
         "emerging_protocols": {
@@ -438,73 +438,28 @@
     {
       "week_start": "2026-04-21",
       "week_end": "2026-04-27",
-      "snapshot_date": "2026-04-26",
+      "snapshot_date": "2026-04-27",
       "metrics": {
         "bitcoin_lightning": {
           "l402_github_stars": 261,
           "l402_github_forks": 70,
           "l402_github_issues": 38,
           "l402_contributors": 2,
-          "lightning_nodes": 6012,
-          "lightning_channels": 19208,
-          "lightning_capacity_btc": 2794.66,
-          "lightning_capacity_usd": 216634204.4,
+          "lightning_nodes": 6008,
+          "lightning_channels": 19385,
+          "lightning_capacity_btc": 2816.75,
+          "lightning_capacity_usd": 222992164.95,
           "known_l402_endpoints": 1
         },
         "stablecoin_api_rails": {
-          "x402_github_stars": 60,
-          "x402_github_forks": 58,
-          "x402_github_issues": 93,
+          "x402_github_stars": 61,
+          "x402_github_forks": 59,
+          "x402_github_issues": 97,
           "x402_contributors": 30,
-          "x402_daily_transactions": 37795,
-          "x402_cumulative_transactions": 83346159,
-          "x402_cumulative_volume_usd": 28621257.3728351,
-          "erc8004_agents_registered": 83431,
-          "erc8004_data_source": "8004agents.ai",
-          "erc8004_data_quality": "carried_forward",
-          "erc8004_by_chain": {
-            "ethereum": {
-              "agents": 1271,
-              "status": "syncing"
-            },
-            "base": {
-              "agents": 5929,
-              "status": "syncing"
-            },
-            "bnb_chain": {
-              "agents": 7241,
-              "status": "syncing"
-            },
-            "arbitrum": {
-              "agents": 83,
-              "status": "syncing"
-            },
-            "monad": {
-              "agents": 59,
-              "status": "syncing"
-            },
-            "bsc_testnet": {
-              "agents": 85,
-              "status": "syncing"
-            },
-            "polygon": {
-              "agents": 51,
-              "status": "syncing"
-            },
-            "sepolia": {
-              "agents": 74,
-              "status": "syncing"
-            },
-            "avalanche": {
-              "agents": 199,
-              "status": "syncing"
-            },
-            "base_sepolia": {
-              "agents": 8,
-              "status": "syncing"
-            }
-          },
-          "erc8004_fallback_date": "2026-04-26"
+          "x402_daily_transactions": 49735,
+          "x402_cumulative_transactions": 83676690,
+          "x402_cumulative_volume_usd": 28631456.15652342,
+          "erc8004_agents_registered": 83431
         },
         "emerging_protocols": {
           "ark_github_stars": 157,
@@ -517,11 +472,11 @@
       "wow_changes": {
         "bitcoin_lightning": {
           "l402_github_stars_pct": 0,
-          "lightning_nodes_pct": 0.7035175879396985,
-          "lightning_capacity_btc_pct": 0.33749093441903577
+          "lightning_nodes_pct": 0.6365159128978224,
+          "lightning_capacity_btc_pct": 1.1305946303038057
         },
         "stablecoin_api_rails": {
-          "x402_github_stars_pct": 5.263157894736842
+          "x402_github_stars_pct": 7.017543859649122
         },
         "emerging_protocols": {
           "ark_github_stars_pct": null
@@ -541,6 +496,6 @@
       "Ark Protocol",
       "Lightning Network"
     ],
-    "next_expected_update": "2026-04-26"
+    "next_expected_update": "2026-05-03"
   }
 }
