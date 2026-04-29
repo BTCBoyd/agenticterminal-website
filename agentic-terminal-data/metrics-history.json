@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0.0",
   "description": "Agentic Terminal time-series metrics history - Cross-protocol AI agent settlement data",
-  "last_updated": "2026-04-28T16:00:03.885Z",
+  "last_updated": "2026-04-29T16:00:04.004Z",
   "weeks": [
     {
       "week_start": "2026-02-17",
