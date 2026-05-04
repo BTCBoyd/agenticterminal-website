@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0.0",
   "description": "Agentic Terminal time-series metrics history - Cross-protocol AI agent settlement data",
-  "last_updated": "2026-05-03T16:00:04.031Z",
+  "last_updated": "2026-05-04T16:00:03.277Z",
   "weeks": [
     {
       "week_start": "2026-02-17",
@@ -496,6 +496,6 @@
       "Ark Protocol",
       "Lightning Network"
     ],
-    "next_expected_update": "2026-05-03"
+    "next_expected_update": "2026-05-10"
   }
 }
