@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0.0",
   "description": "Agentic Terminal time-series metrics history - Cross-protocol AI agent settlement data",
-  "last_updated": "2026-05-08T16:00:03.676Z",
+  "last_updated": "2026-05-09T16:00:03.345Z",
   "weeks": [
     {
       "week_start": "2026-02-17",
@@ -477,6 +477,53 @@
         },
         "stablecoin_api_rails": {
           "x402_github_stars_pct": 7.017543859649122
+        },
+        "emerging_protocols": {
+          "ark_github_stars_pct": null
+        }
+      }
+    },
+    {
+      "week_start": "2026-05-05",
+      "week_end": "2026-05-11",
+      "snapshot_date": "2026-05-09",
+      "metrics": {
+        "bitcoin_lightning": {
+          "l402_github_stars": 262,
+          "l402_github_forks": 70,
+          "l402_github_issues": 36,
+          "l402_contributors": 2,
+          "lightning_nodes": 6066,
+          "lightning_channels": 19857,
+          "lightning_capacity_btc": 2919.81,
+          "lightning_capacity_usd": 234781872,
+          "known_l402_endpoints": 1
+        },
+        "stablecoin_api_rails": {
+          "x402_github_stars": 72,
+          "x402_github_forks": 77,
+          "x402_github_issues": 129,
+          "x402_contributors": 30,
+          "x402_daily_transactions": 86292,
+          "x402_cumulative_transactions": 85447670,
+          "x402_cumulative_volume_usd": 28691528.434540484,
+          "erc8004_agents_registered": 83431
+        },
+        "emerging_protocols": {
+          "ark_github_stars": 157,
+          "ark_github_forks": 56,
+          "ark_skill_stars": 4,
+          "ark_skill_forks": 3,
+          "ark_status": "active_development"
+        }
+      },
+      "wow_changes": {
+        "bitcoin_lightning": {
+          "l402_github_stars_pct": null,
+          "lightning_nodes_pct": null
+        },
+        "stablecoin_api_rails": {
+          "x402_github_stars_pct": null
         },
         "emerging_protocols": {
           "ark_github_stars_pct": null
