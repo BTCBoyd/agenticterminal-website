@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0.0",
   "description": "Agentic Terminal time-series metrics history - Cross-protocol AI agent settlement data",
-  "last_updated": "2026-05-10T16:00:03.331Z",
+  "last_updated": "2026-05-11T16:00:03.807Z",
   "weeks": [
     {
       "week_start": "2026-02-17",
@@ -13,15 +13,15 @@
           "l402_github_forks": 70,
           "l402_github_issues": 36,
           "l402_contributors": 2,
-          "lightning_nodes": 6066,
-          "lightning_channels": 19857,
-          "lightning_capacity_btc": 2919.81,
-          "lightning_capacity_usd": 234781872,
+          "lightning_nodes": 6065,
+          "lightning_channels": 19865,
+          "lightning_capacity_btc": 2904.05,
+          "lightning_capacity_usd": 234519464.76,
           "known_l402_endpoints": 1
         },
         "stablecoin_api_rails": {
-          "x402_github_stars": 72,
-          "x402_github_forks": 77,
+          "x402_github_stars": 73,
+          "x402_github_forks": 78,
           "x402_github_issues": 129,
           "x402_contributors": 30,
           "x402_daily_transactions": 86292,
@@ -486,27 +486,27 @@
     {
       "week_start": "2026-05-05",
       "week_end": "2026-05-11",
-      "snapshot_date": "2026-05-10",
+      "snapshot_date": "2026-05-11",
       "metrics": {
         "bitcoin_lightning": {
           "l402_github_stars": 262,
           "l402_github_forks": 70,
           "l402_github_issues": 36,
           "l402_contributors": 2,
-          "lightning_nodes": 6065,
-          "lightning_channels": 19865,
-          "lightning_capacity_btc": 2904.05,
-          "lightning_capacity_usd": 234519464.76,
+          "lightning_nodes": 6067,
+          "lightning_channels": 19888,
+          "lightning_capacity_btc": 2907.39,
+          "lightning_capacity_usd": 235959868.71,
           "known_l402_endpoints": 1
         },
         "stablecoin_api_rails": {
-          "x402_github_stars": 73,
+          "x402_github_stars": 74,
           "x402_github_forks": 78,
           "x402_github_issues": 129,
           "x402_contributors": 30,
-          "x402_daily_transactions": 86292,
-          "x402_cumulative_transactions": 85447670,
-          "x402_cumulative_volume_usd": 28691528.434540484,
+          "x402_daily_transactions": 18003,
+          "x402_cumulative_transactions": 85849855,
+          "x402_cumulative_volume_usd": 28701974.72136987,
           "erc8004_agents_registered": 83431
         },
         "emerging_protocols": {
@@ -520,11 +520,11 @@
       "wow_changes": {
         "bitcoin_lightning": {
           "l402_github_stars_pct": 0,
-          "lightning_nodes_pct": -0.016485328058028353,
-          "lightning_capacity_btc_pct": -0.5397611488418685
+          "lightning_nodes_pct": 0.016485328058028353,
+          "lightning_capacity_btc_pct": -0.4253701439477251
         },
         "stablecoin_api_rails": {
-          "x402_github_stars_pct": 1.3888888888888888
+          "x402_github_stars_pct": 2.7777777777777777
         },
         "emerging_protocols": {
           "ark_github_stars_pct": null
@@ -544,6 +544,6 @@
       "Ark Protocol",
       "Lightning Network"
     ],
-    "next_expected_update": "2026-05-10"
+    "next_expected_update": "2026-05-17"
   }
 }
